@@ -2,6 +2,10 @@
 title: "お知らせ"
 ---
 
+### 2018
+
+- 2018/1/3 HPを少しだけ更新しました。RStudioでの管理をしやすくするために少しだけURLが変わりました。
+
 ### 2017
 
 - 2017/5/9 長谷川晃先生(東海学院大学人間関係学部)の論文が Journal of Rational-Emotive & Cognitive-Behavior Therapy誌にアクセプトされました。
