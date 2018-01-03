@@ -1,0 +1,113 @@
+---
+title: "Rでグラフィカルモデルを書こう！"
+---
+
+## グラフィカルモデル
+
+以下のスライドにあるように，ベイジアン認知モデリングにおいて，階層モデルなどの複雑なモデルを使う場合，モデルの記述が大変になる。そこで，グラフィカルモデル（プレート表現）を用いると便利です。
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=48" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+
+## DiagrammeRでグラフィカルモデル
+
+グラフィカルモデルを描く場合，[TikZ library for drawing Bayesian networks](https://github.com/jluttine/tikz-bayesnet)というLaTeXのライブラリもありますが，RのDiagrammeRパッケージを使って描くこともできます。解析もRstudio上で行うのであれば，モデルの記述もRStudio上で行えると良いかなあと思います。
+
+## 使用パッケージ
+
+もちろん，DiagrammeRを使います。
+
+```{r,message=FALSE}
+library(DiagrammeR)
+```
+
+
+## グラフィカルモデルの例1
+
+まず，簡単な例として，Bayesian Cognitive Modeling: A practical CourseのFig2.1を描いてみます。これは，連続的な潜在変数のθと離散的な顕在変数nから，離散的な顕在変数kが生成されるのを表すモデルになります。以下のように，grViz("digraph dot {...}",engine = "dot")内に，graph []でタイトルなどを定義し，node[]でノードを定義し，edge []でエッジを定義します。中身を見てもらえば，大体どこを変更すれば良いか分かるのではないかと思います。
+
+```{r, message=FALSE, warning=FALSE}
+grViz("
+  digraph dot {
+    graph [compound = true, nodesep = .5, ranksep = .25,
+           color = black, label='Fig2.1 in Bayesian Cognitive Modeling: A practical Course']
+
+      node [shape = circle,style = filled,fillcolor = white,color = black,label = '&theta;'] theta
+      node [shape = square,style = filled,fillcolor = grey,color = black,label = 'k'] k
+      node [shape = square,style = filled,fillcolor = grey,color = black,label = 'n'] n
+    
+      edge [color = black]
+        theta -> k
+        n -> k
+    }",engine = "dot")
+```
+
+Rmarkdownを使っている場合，LaTeX記法が使えますので，以下のように書くときれいに数式も書けます。
+
+```
+$$ 
+\theta \sim Beta(1, 1)\\
+k \sim Binomial(\theta,n)\\
+$$
+```
+
+$$ 
+\theta \sim Beta(1, 1)\\
+k \sim Binomial(\theta,n)\\
+$$
+
+## グラフィカルモデルの例2
+
+もう少し複雑なモデルの例として，Linear Ballistic Accumulator Model(解説は[こちら](https://ykunisato.github.io/lbaStan/lbaStan.html))の１参加者用のグラフィカルモデルを描いてみます。
+
+今度は，上記に加えて，graph []にsplines = lineを追加してエッジがまっすぐになるようにしました。そして，個人内で試行数分反応時間があることから，ループをsubgraph cluster1 {}（つまりプレート）を追加することで，表現しています。
+
+
+```{r}
+grViz("
+  digraph dot {
+    graph [splines = line,compound = true, nodesep = .5, ranksep = .25,
+           color = black, label='Linear Ballistic Accumulator Model for single participant']
+      node [shape = circle,style = filled,fillcolor = white,color = black,label = 'k'] k
+      node [label = 'A'] A
+      node [label = '&tau;'] t
+      node [label = 'v[1]'] v1
+      node [label = 'v[2]'] v2
+      node [label = 'S'] s
+      node [label = 'LBA@_{t}'] lba
+      node [fillcolor = grey,label = 'RT@_{t}'] rt
+        subgraph cluster1 {
+          labelloc=b
+          label = 'Trials t = 1...T'
+            edge [color = black]
+              lba -> rt
+        }
+      edge [color = black]
+        A -> lba
+        v1 -> lba
+        v2 -> lba
+        k -> lba
+        t -> lba
+        s -> lba [taolport=s,headport=e]
+  }",engine = "dot")
+```
+
+数式は以下になります。今度もLaTeX記法で記載します。
+
+```
+$$ 
+k \sim Normal(.5,1)T[0,]\\
+A \sim Normal(.5,1)T[0,]\\
+\tau \sim Normal(.5,.5)T[0,]\\
+v[1],v[2] \sim Normal(2,1)T[0,]\\
+S = 1 \hspace{30pt}
+$$
+```
+
+$$ 
+k \sim Normal(.5,1)T[0,]\\
+A \sim Normal(.5,1)T[0,]\\
+\tau \sim Normal(.5,.5)T[0,]\\
+v[1],v[2] \sim Normal(2,1)T[0,]\\
+S = 1 \hspace{30pt}
+$$

@@ -1,0 +1,99 @@
+---
+title: "国際会議発表"
+---
+
+### 2017
+
+- Sakamoto, J., Nagai, T., Kunisato, Y., Sawa, K., Takata, N.(2017).  Bayesian modeling of human activity data based on the gamma family of dynamic models. Presented at the 50th Annual Meeting of the Society for Mathematical Psychology, July 23, Warwick, Coventry, UK.
+
+- Somatori, K., Kunisato, Y(2017). Do depressive symptoms influence randomness in decision making in the reversal learning task? – A hierarchical Bayesian modeling approach - The 50th Annual Meeting of the Society for Mathematical Psychology, July 23, Coventry, England.
+
+### 2016
+
+- Sakamoto, J., Somatori, K., & Kunisato, Y. (2016). Healthy university sutudents' day-to-day pain variability , depression, and pain-catastrophising: using the experience sampling method and Bayesian linear model. Poster session presented at the 46th annual Congress of the European Association for Behavioural and Cognitive Therapies, September 1, Stockholm, Sweden.
+
+- Somatori, K., Shimotomai, A., & Kunisato, Y. (2016). Does the Propositional Approach Co-exist Rescorla-Wagner model: the prediction of extinction form acquisition. The 46th annual Congress of the European Association for Behavioural and Cognitive Therapies, September 1, Stockholm, Sweden.
+ 
+- Sakamoto, J., Okubo, M., & Kunisato, Y. (2016). How depression affects future pain and decision-making: Computational approach with Bayesiancognitive modeling. Poster session presented at the 8th World Congress of Behavioural and Cognitive Therapies, June 25, Merboulne, VIC, Australia.
+ 
+- Hasegawa, A., & Kunisato, Y., Morimoto, H., Nishimura, H., Matsuda, Y. (2016) How do depression, rumination and social problem solving interact with each other? A three-wave longitudinal study. Poster session presented at the 31st International Congress of Psychology, July 26, Yokohama, Japan.
+ 
+- Tsuchiya, M. & Kunisato, Y. (2016). Developing a new emotional-switching Stroop task. Poster session presented at the 31st International Congress of Psychology, July 25, Yokohama, Japan.
+ 
+- Somatori, K., Shimotomai, A., & Kunisato, Y. (2016). How people estimate their confidence: Bayesian model comparison leads to a more efficient model. Poster session presented at the 31st International Congress of Psychology, July 27, Yokohama, Japan.
+ 
+- Sakamoto, J., Okubo, M., & Kunisato, Y. (2016). Depression and future pain estimation: Investigating judgment process using Bayesian cognitive models. Poster session presented at the 31st International Congress of Psychology, July 27, Yokohama, Japan.
+ 
+- Kaneko, M. & Kunisato, Y. (2016). Developing a behavioral task to measure procrastination using the delay-discounting paradigm. Poster session presented at the 31st International Congress of Psychology, July 28, Yokohama, Japan.
+ 
+- Sakamoto, J., Somatori, K., & Kunisato, Y. (2016). Bayesian liner model for partial missing experience sampling method data: pain variability in healthy university students. Poster session presented at the 31st International Congress of Psychology, July 29, Yokohama, Japan.
+ 
+### 2015
+
+- Sakamoto, J., Somatori, K., Okubo, M., & Kunisato, Y. (2015). Depression and Intertemporal Choice of Pain: Maximum Likelihood Estimation vs. Hierarchical Bayesian Analysis. The 48th Annual Meeting of the Society for Mathematical Psychology, July 18, Newport Beach, California, USA.
+
+- Somatori, K., Sakamoto, J., Shimotomai, A., & Kunisato, Y(2015). What is a true measure for meta-cognition?: A Bayesian cognitive modeling approach. The 48th Annual Meeting of the Society for Mathematical Psychology, July 18, Newport Beach, California, USA.
+
+- Tanaka, T., Kunisato, Y., Okada, K., & Okubo, M. (2015). Why people frequently commit the base-rate fallacy. The 48th Annual Meeting of the Society for Mathematical Psychology, July 18, Newport Beach, California, USA.
+
+### 2014
+
+- Kunisato, Y., Okamoto Y., Yoshimura S., Ueda K., Matsunaga M., Okada G., Nishiyama Y., Katsuragawa T., Suzuki S., Yamawaki S. (2014) The Volume of Right Superior Temporal Gyrus Mediated the Affect of Rumination to Treatment Response to CBT in Patients with Depression The European Association for Behavioural and Cognitive Therapies, September 10 - 13 , Hague, Netherlands.
+ 
+- Suzuki, S., Son, S., Yada, S., Shimizu, K., Kunisato, Y., Suyama, H., Ogawa, Y., Takei, Y., Sasaki, M., Ito, D., Koseki, S., Koseki, M., & Shirai, M. 2014 Cognitive and behavioral determinats of sick-leave duration and relapses in patients with depression. 28th International Congress of Applied Psychology, July 8-13, Paris, French(EP-060067)
+ 
+- Ogawa, Y., Koga, H., Takei, Y., Shimada, M., Nagao, A., Sasaki, M., Kunisato, Y., Suyama, H., Ito, D., Koseki, M., Koseki, S., Tanigawa, K., & Suzuki,S. 2014 Communication behaviors of cancer patients who hesitate when talking to their doctors. 28th International Congress of Applied Psychology, July 8-13, Paris, French(EP-080029)
+ 
+### 2013
+
+- Ogawa, Y., Takei, Y., Koga, H., Shimada, M., Nagao, A., Sasaki, M., Kunisato, Y., Tanigawa, K., Suzuki, S. (2013). Characteristics of Cancer Outpatients who Hesitate to Speak with their Doctors During Medical Consultations, The 4th Asian Cognitive Behavior Therapy (CBT) Conference, August 23 - 25, Tokyo, Japan.
+ 
+- Ogawa, Y., Takei, Y., Koga, H., Shimada, M., Nagao, A., Sasaki, M., Kunisato, Y., Tanigawa, K., Suzuki, S. (2013). Characteristics of cancer outpatients and their hesitation types while communicating with their doctors during medical consultations, 15th World Congress of Psycho-Oncology and Psychosocial Academy, November 6, Rotterdam, Netherlands.
+ 
+- Yada, S., Machida, Y., Son, S., Shimizu, K., Kunisato, Y., Kaneko, Y., Suyama, H., Shirai, M., Suzuki, S. (2013). The Relationship between Periods of Sick Leave and Automatic Thoughts among Employees with Depression, The 4th Asian Cognitive Behavior Therapy (CBT) Conference, August 23 - 25, Tokyo, Japan.
+ 
+### 2012
+
+- Kunisato,Y., Okamoto, Y., Okada, G., Nishiyama, Y., Kanai, Y., Sasaki-Aoki, S., Iwanaga, M., Yamawaki, S. (2012). DELAY DISCOUNTING CORRELATED WITH ACC AND PFC: A VBM STUDY, The 16th Congress of International Society for Biomedical Research on Alcoholism (ISBRA), September 10-11, Sapporo, Japan. (Abstbook of The 16th Congress of ISBRA, P99, 2012).
+ 
+- Takebayashi, Y., Tanaka, K., Tukue, R., Okamoto, Y., Kunisato, Y., Okada, G., Tsukue, I., Shimohara, C., Konuma, K., Sugiura, Y., Yamawaki, S. (2012). IMPAIRMENTS OF ATTENTIONAL FUNCTION RELATES TO DEPRESSIVE SYMPTOM DURING ABSTINENCE IN PATIENTS WITH ALCOHOL DEPENDENCE, The 16th Congress of International Society for Biomedical Research on Alcoholism (ISBRA), September 10-11, Sapporo, Japan. (Abstbook of The 16th Congress of ISBRA, P122, 2012).
+ 
+- Tanaka, K., Takebayashi, Y., Tukue, R., Okamoto, Y., Kunisato, Y., Okada, G., Tsukue, I., Shimohara, C., Konuma, K., Sugiura, Y., Yamawaki, S.(2012). RELATIONSHIP BETWEEN ATTENTION CONTROL AND EMOTION DYSREGULATION IN ALCOHOL DEPENDENT PATIENTS, The 16th Congress of International Society for Biomedical Research on Alcoholism (ISBRA), September 10-11, Sapporo, Japan. (Abstbook of The 16th Congress of ISBRA, P122, 2012).
+ 
+- Tsukue, R., Okamoto, Y., Kunisato, Y., Takebayashi, Y., Tanaka, K., Tsukue, I., Shimohara, C., Konuma, K., Okada, G., Sugiura, Y., Yamawaki, S. (2012). RELATIONSHIP BETWEEN DELAY DISCOUNTING, ATTENTION CONTROL AND EMOTIONAL REGULATION IN ALCOHOLISM, The 16th Congress of International Society for Biomedical Research on Alcoholism (ISBRA), September 10-11, Sapporo, Japan. (Abstbook of The 16th Congress of ISBRA, P122, 2012).
+ 
+- Suzuki, S., Tanoue, A., Shimizu, K., Ohno, M., Ito, D., Suyama, H., Yokoyama, S., Kunisato, K., Okayama, N., & Son, S. (2012). Effect of Reinforcement Sensitivity on Job Satisfaction and Stress Responses,The 12th International Congress of Behavioral Medicine (ICBM), August 31, Budapest, Hungary.(International Journal of Behavioral Medicine, 19 (Suppl 1), s69-s70, 2012)
+ 
+- Kunisato, Y., Okamoto, Y., Okada, G., Nishiyama, Y., Kanai, Y., Sasaki- Aoki, S., Yoshimura, S., Katsuragawa, T., Suzuki, S., & Yamawaki, S.(2012).The Association between Brain’s Default Mode Network and Anhedonia: a Resting State FMRI Study, The 12th International Congress of Behavioral Medicine (ICBM), August 29, Budapest, Hungary.(International Journal of Behavioral Medicine, 19 (Suppl 1), s258, 2012)
+ 
+### 2011
+
+- Toki, S., Okamoto, Y., Onoda, K., Yoshimura, S., Kunisato, Y., Okada, G., Yamawaki, S. (2011). Hippocampal Activation predicts Treatment Response to Antidepressant for Depression, The 50 th annual meeting of American College of Neuropsychopharmacology (ACNP), December 7, Hawaii, USA. (Abstbook of The 50 th annual meeting of American College of Neuropsychopharmacology, p324, 2011).
+ 
+- Takagaki, K., Okajima, I., Kunisato, Y., Nakajima, S., & Sakano, Y. (2011). Relationship between avoidant behaviors and activation on depressive symptom. Open Paper session presented at the 3rd Asian Cognitive Behavior Therapy Conference, July 14, Seoul, Korea.(Abstbook of 3rd Asian Cognitive Behavioral Therapy Conference: Searching for Asian CBT Model of Therapy and Practice, p57, 2011.) [Oral presentation]
+ 
+- Yokoyama,S., Noda, T., Koseki, S., Ito, D., Kunisato, Y., Suyama, H., Sugimura, Y., Ishihara, N., Shimizu, Y., Nakazawa, K., & Suzuki, S. (2011). The relationship between frontal and temporal activation and automatic thoughts: Multi-channel near-infared spectroscopy (NIRS) study. the 3rd Asian Cognitive Behavior Therapy Conference, July 14, Seoul, Korea.(Abstbook of 3rd Asian Cognitive Behavioral Therapy Conference: Searching for Asian CBT Model of Therapy and Practice, p78, 2011.) Best Poster Award
+ 
+- Kunisato, Y., Okamoto, Y., Yoshimura, S., Ueda, K., Matsunaga, M., Okada, G., Onoda, K., Suzuki, S., & Yamawaki, S. (2011). The volume of right superior temporal gyrus predicts treatment response in treatment-resistant depression patients after cognitive behavioral group therapy. the 3rd Asian Cognitive Behavior Therapy Conference, July 15, Seoul, Korea.(Abstbook of 3rd Asian Cognitive Behavioral Therapy Conference: Searching for Asian CBT Model of Therapy and Practice, p95, 2011.)
+ 
+- Okayama, N., Saito, S., Ito, R., Shimizu, K., Tanoue, A., Ohono, M., Kunisato, Y., & Suzuki, S. (2011). The relations among the BIS/BAS scale for workplaces, job stressor, and stress response. the 3rd Asian Cognitive Behavior Therapy Conference, July 15, Seoul, Korea.(Abstbook of 3rd Asian Cognitive Behavioral Therapy Conference: Searching for Asian CBT Model of Therapy and Practice, p96, 2011.)
+ 
+- Son, S., Ishihara, N., Suyama, H., Tanoue, A., Shimizu, K., Kunisato, Y., & Suzuki, S.(2011). The relations between cognitive coping strategies for work-stress, and positive-negative stress response. the 3rd Asian Cognitive Behavior Therapy Conference, July 15, Seoul, Korea.(Abstbook of 3rd Asian Cognitive Behavioral Therapy Conference: Searching for Asian CBT Model of Therapy and Practice, p95, 2011.)
+ 
+### 2010
+
+- Demoto, Y., Okamoto, Y., Okada, G., Kunisato, Y., Aoyama, S., Onoda, K., Munakata, A., Nomura, M., Yamawaki, S. (2010). The effects of acute tryptophan depletion and personality trait on future reward prediction. XXVII Congress of the CINP(Collegium Internationale Neuro-Psychopharmacologicum), Jun6-Jun10, Hong Kong, China. (Abstruct in The International Journal of Neuropsychopharmacology,13, p145-146, 2010.)
+ 
+- Kunisato, Y., Okamoto, Y., Aoyama, S., Demoto, Y., Okada, G., Onoda, K., Munakata, A., Nomura, M., Yamawaki, S.(2010). The changes of mood are correlated to fALFF after acute tryptophan depletion : A resting fMRI study. XXVII Congress of the CINP(Collegium Internationale Neuro-Psychopharmacologicum), Jun6-Jun10, Hong Kong, China. (Abstruct in The International Journal of Neuropsychopharmacology,13, p153, 2010.)
+ 
+- Takagaki, K., Okajima, I., Kunisato, Y., Nakajima, S., Akita, K., Kanai, Y., Ishikawa, S., Sakano, Y. (2010). Development and validation of the Japanese version of Cognitive-Behavioral Avoidance Scale (CBAS) : From the Cross-cultural perspectives. 6th World Congress of behavioral and cognitive therapies, Jun2 - Jun 5, Boston, USA. (Abstbook of 6th WORLD CONGRESS OF BEHAVIORAL AND COGNITIVE THERAPIES Translating Science into Practice ,p113)
+ 
+- Kunisato, Y., Takagaki, K., Okajima, I., Nakajima, S., Ishikawa, S., Kanai, Y., Sakano, Y., Okamoto, Y., Yamawaki, S. (2010). Development and validity of the Japanese version of Environmental Reward Observation Scale (EROS). 6th World Congress of behavioral and cognitive therapies, Jun2 - Jun 5, Boston, USA. (Abstbook of 6th WORLD CONGRESS OF BEHAVIORAL AND COGNITIVE THERAPIES Translating Science into Practice ,p114)
+ 
+### 2009
+
+- Onoda, K., Okamoto, Y., Kunisato, Y., Okada, G., Yamaguchi, S., & Yamawaki, S. (2009). High/low discounting rates in reward prediction are differentially involved in dorsal/ventral striatum. 18th The International Society for Brain Electromagnetic Topography (ISBET2009), September 29 -October 2, Kyoto, Japan.(Abstruct in the abstbook of 18th The International Society for Brain Electromagnetic Topography, p63)
+ 
+### 2008
+
+- Kunisato, Y., Ueda, K., & Suzuki, S. (2008). Relation between the depression and the sensitivity to reward and punishment. 10th International Congress of Behavioral Medicine, August 27-30, Tokyo, Japan.(Abstbook of 10th International Congress of Behavioral Medicine,p199)

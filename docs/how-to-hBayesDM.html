@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>hBayesDMでお手軽にベイジアン認知モデリングをやってみよう！</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="site_style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Computational Clinical Psychology Lab</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="research.html">Research</a>
+</li>
+<li>
+  <a href="team.html">Team</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Publications
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="book.html">書籍</a>
+    </li>
+    <li>
+      <a href="articles.html">学術論文</a>
+    </li>
+    <li>
+      <a href="articles-japanese.html">学術論文（日本語）</a>
+    </li>
+    <li>
+      <a href="bulletin.html">紀要論文</a>
+    </li>
+    <li>
+      <a href="presentation.html">国際会議発表</a>
+    </li>
+    <li>
+      <a href="presentation-japanese.html">国内学会・研究会発表</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="code_tips.html">Code &amp; Tips</a>
+</li>
+<li>
+  <a href="education.html">Education</a>
+</li>
+<li>
+  <a href="news.html">News</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">hBayesDMでお手軽にベイジアン認知モデリングをやってみよう！</h1>
+
+</div>
+
+
+<p><a href="https://kunisatolab.github.io/index.html">専修大学人間科学部心理学科　国里愛彦</a></p>
+<p>この記事は，<a href="https://qiita.com/advent-calendar/2017/stan">Stan Advent Calendar 2017</a>の16日目の記事です。</p>
+<p>Stan Advent Calendar 2017をみると，Stanを覚えると色々なことができるなあと感想をもたれるのではないでしょうか？しかし，同時に「Stan難しそう」，「長くコードを書く自信がない」，「最初の一歩を踏み出すのが難しい」などの感想もあるかなと思います。そこで，この記事では，「Stanとかとりあえずいいから，気軽にベイジアン認知モデリングをやってみよう！」ということを目指します。</p>
+<p>心理学や神経科学では，なんらかの認知課題を参加者にしてもらって，そのパフォーマンス（行動データ）を評価することが多いです。行動データの評価は重要ですが，その行動データが生成された背景にはなんらかのプロセスが存在する可能性があります。認知モデリングは，行動データが生成される過程を数理モデルで表現し，行動データから数理モデルのパラメータを推定する方法です。そして，ベイジアン認知モデリングでは，ベイズ統計学を用いて認知モデリングを行います。今回の記事では，ベイジアン認知モデリングを簡単にやってくれるhBayesDMパッケージを紹介します。</p>
+<div id="hbayesdm" class="section level1">
+<h1>hBayesDMとは？</h1>
+<p>hBayesDMは，<a href="https://ccs-lab.github.io/team/young-ahn/">Woo-Young Ahn</a>博士<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>の研究チームが開発したRパッケージです。hBayesDMは，hierarchical Bayesian modeling of Decision-Making tasksを略したものです。つまり，意思決定課題などの心理学・神経科学で用いられる認知課題を階層ベイズモデリングするパッケージです。認知課題の階層ベイズモデリングは，決して簡単とは言い難いStanコードを書く必要があるのですが，hBayesDMはとてもお手軽に階層ベイズモデリングをしてくれます（1行のコードでベイジアン認知モデリングができちゃいます！）。ここでは，階層ベイズについての説明はしません。<a href="http://www.socialpsychology.jp/seminar/seminar_170314.html#kousei_youshi">日本社会心理学会 第4回春の方法論セミナー</a>で簡単に説明していますので，参照ください。また，hBayesDMの詳細は，<a href="http://rpubs.com/CCSL/hBayesDM">Ahn博士の作成した“hBayesDM Getting Started”</a>を参照ください。</p>
+</div>
+<div id="hbayesdm" class="section level1">
+<h1>hBayesDMで扱うモデル</h1>
+<p>hBayesDM v0.4.0では，以下のモデルが使えます（今後も増える予定のようです）。たくさんのモデルが準備されていますね！</p>
+<table>
+<colgroup>
+<col width="29%" />
+<col width="62%" />
+<col width="7%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">実験課題</th>
+<th align="left">モデル</th>
+<th align="left">関数名</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">選択反応時間課題</td>
+<td align="left">Drift diffusion model(Ratcliff, 1978)</td>
+<td align="left">choiceRT_ddm</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Linear Ballistic Accumulator model(Brown &amp; Heathcote,2008)</td>
+<td align="left">choiceRT_lba</td>
+</tr>
+<tr class="odd">
+<td align="left">遅延割引課題</td>
+<td align="left">Constant-Sensitivity (CS) model(Ebert &amp; Prelec,2007)</td>
+<td align="left">dd_cs</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Exponential model(Samuelson, 1937)</td>
+<td align="left">dd_exp</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Hyperbolic model(Mazur,1987)</td>
+<td align="left">dd_hyp</td>
+</tr>
+<tr class="even">
+<td align="left">アイオワギャンブル課題</td>
+<td align="left">Prospect Valence Learning-DecayRI (Ahn et al.,2011;2014)</td>
+<td align="left">igt_pvl_decay</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Prospect Valence Learning-Delta (Ahn et al., 2008)</td>
+<td align="left">igt_pvl_delta</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Value-Plus-Perseverance (Worthy et al., 2013)</td>
+<td align="left">igt_vpp</td>
+</tr>
+<tr class="odd">
+<td align="left">直交GO/NoGo課題</td>
+<td align="left">RW+noise(Guitart-Masip et al., 2012)</td>
+<td align="left">gng_m1</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">RW+noise+go bias(Guitart-Masip et al., 2012)</td>
+<td align="left">gng_m2</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">RW+noise+go bias+Pav.bias(Guitart-Masip et al., 2012)</td>
+<td align="left">gng_m3</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">M5(Cavanagh et al.,2013の表１)</td>
+<td align="left">gng_m4</td>
+</tr>
+<tr class="odd">
+<td align="left">確率的逆転学習課題</td>
+<td align="left">Experience-Weighted Attraction(Ouden et al., 2013) )</td>
+<td align="left">prl_ewa</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Fictitious update(Gläscher et al., 2009)</td>
+<td align="left">prl_fictitious</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Reward-Punishment(Ouden et al., 2013)</td>
+<td align="left">prl_rp</td>
+</tr>
+<tr class="even">
+<td align="left">リスク回避課題</td>
+<td align="left">Prospect Theory(Sokol-Hessner et al., 2009)</td>
+<td align="left">ra_prospect</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">PT without loss aversion</td>
+<td align="left">ra_noLA</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">PT without risk aversion(Tom et al., 2007)</td>
+<td align="left">ra_noRA</td>
+</tr>
+<tr class="odd">
+<td align="left">２腕バンディット課題</td>
+<td align="left">Rescorla-Wagner (delta) model(Erev et al., 2010; Hertwig et al., 2004)</td>
+<td align="left">bandit2arm_delta</td>
+</tr>
+<tr class="even">
+<td align="left">４腕バンディット課題</td>
+<td align="left">Fictive upd.+rew/pun sens.(Seymour et al., 2012)</td>
+<td align="left">bandit4arm_4par</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Fictive upd.+rew/pun sens.+lapse(Seymour et al., 2012)</td>
+<td align="left">bandit4arm_lapse</td>
+</tr>
+<tr class="even">
+<td align="left">最後通牒課題</td>
+<td align="left">Ideal Bayesian observer model(Xiang et al., 2013)</td>
+<td align="left">ug_bayes</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Rescorla-Wagner (delta) model(Gu et al., 2015)</td>
+<td align="left">ug_delta</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="hbayesdm" class="section level1">
+<h1>hBayesDMを使う準備</h1>
+<div class="section level2">
+<h2>前準備</h2>
+<p>hBayesDMを使うには，事前に以下を準備しておく必要があります。</p>
+<ul>
+<li>最新のR (インストールは<a href="https://www.r-project.org/">こちら</a>)</li>
+<li>最新のRStan (インストールは<a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started-(Japanese)">こちら</a>)</li>
+<li>RStudio(必須ではないが，推奨。インストールは<a href="https://www.rstudio.com/">こちら</a>)</li>
+</ul>
+<p>また，ggplot2，loo，mail，modeestなどパッケージも必要です（dependencies=TRUEにしておけば，hBayesDMのインストール時に入ります）。</p>
+</div>
+<div class="section level2">
+<h2>インストール</h2>
+<p>Windowsユーザーは，以下でインストールしてください。</p>
+<pre><code>install.packages(&quot;hBayesDM&quot;, dependencies=TRUE)</code></pre>
+<p>MacやLinuxユーザーは，devtoolsパッケージをインストールした上で，以下のようにgithub経由でインストールしてください。</p>
+<pre><code>devtools::install_github(&quot;CCS-Lab/hBayesDM&quot;)</code></pre>
+</div>
+</div>
+<div id="hbayesdm" class="section level1">
+<h1>hBayesDMで認知モデリングに挑戦！</h1>
+<p>さくっと使ってみましょう。まずは，hBayesDMをロードします。tidyverseもロードしておきます。tidyverseをインストールされてない方は，install.packages(“tidyverse”, dependencies=TRUE)でインストールください。</p>
+<pre class="r"><code>library(hBayesDM)
+library(tidyverse)</code></pre>
+<div class="section level2">
+<h2>遅延割引課題</h2>
+<p>hBayesDMでは，複数の実験課題に対して複数のモデルが準備されています。今回は，その中から遅延割引についてのモデルを用います。</p>
+<p>「今日の1000円」と「1年後の1050円」の２つの選択肢があるとすれば，あなたは，どちらを選ぶでしょうか？</p>
+<p>どちらを選ぶかは，人によりますが，「今日の1000円」を選んだ人も多いのではないでしょうか？いつ貰おうと報酬の客観的な金額は変化しないのですが，遅れて貰える報酬は，主観的には価値が割り引かれる傾向があります。このような遅延してもらえる報酬の価値が割り引かれる現象を遅延割引と呼びます。遅延するにつれて価値が割り引かれる様子は，数理モデルによって表現することができます。hBayesDMでは，Constant-Sensitivity model, Exponential model, Hyperbolic modelの３つの数理モデルを準備しています。ここでは，Hyperbolic modelを取り上げて，説明します。</p>
+</div>
+<div id="hyperbolic-model" class="section level2">
+<h2>Hyperbolic modelとは？</h2>
+<p>Mazur(1987)<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>が提案したHyperbolic modelは，以下のような数理モデルです。Dは遅延になりますので，V(D)は，遅延した報酬の価値を意味します（なお，Vは0から1の範囲の値になります）。V(D)は，1を1+kDで割ったものになりますので，遅延するほど（Dが大きくなるほど），小さな値をとります。</p>
+<p><span class="math display">\[
+V(D) = \frac{1}{1 + kD}
+\]</span></p>
+<p>遅延するほど小さな値をとる程度は，割引率（k）によって制御されます。例えば，下図のように，k = 0.001とk = 0.1の場合，kの値が大きいほど遅延による価値割引の程度が大きくなるようになります。</p>
+<p><img src="how-to-hBayesDM_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>遅延割引課題では，割引率(k)を推定するために，「今日の1000円」と「明日の1100円」のどちらを選ぶかといった選択を何度もしてもらいます。これらの選択肢に対する個人の反応（行動データ）から，kを推定します。なお，kの推定にあたり，選択肢の価値にどのくらい従った反応をするのかにかかわる逆温度（β）パラメータも推定します。このように，認知モデリングでは，時点の異なる選択肢における個人の選択行動の背景にあるプロセスを推定します。</p>
+</div>
+<div class="section level2">
+<h2>データの準備</h2>
+<p>さて，遅延割引のHyperbolic modelについての理解が深まったところで，早速推定をしていきましょう！hBayesDMは，複雑なStanコードを書かなくても階層化されたベイジアン認知モデリングをやってくれるのですが，それはある程度，型にはまった形式のデータをセットを使うことで実現されています。</p>
+<p><a href="http://rpubs.com/CCSL/hBayesDM">「hBayesDM Getting Started」</a>の「How to use hBayesDM」の「1. Prepare the data」にある「here」というリンクをクリックするとサンプルデータセットを入手できます。今回は，そのサンプルデータセットの中の遅延割引に関するdd_exampleData.txtを用います。では，さっそく，読み込んでみましょう。</p>
+<pre class="r"><code>(data &lt;- read_tsv(&quot;dd_exampleData.txt&quot;))</code></pre>
+<pre><code>## # A tibble: 2,160 x 7
+##    subjID trial delay_later amount_later delay_sooner amount_sooner choice
+##     &lt;int&gt; &lt;int&gt;       &lt;int&gt;        &lt;dbl&gt;        &lt;int&gt;         &lt;int&gt;  &lt;int&gt;
+##  1      1     1           6         10.5            0            10      1
+##  2      1     2         170         38.3            0            10      1
+##  3      1     3          28         13.4            0            10      1
+##  4      1     4          28         31.4            0            10      1
+##  5      1     5          85         30.9            0            10      1
+##  6      1     6          28         21.1            0            10      1
+##  7      1     7          28         13.0            0            10      1
+##  8      1     8           1         21.3            0            10      1
+##  9      1     9          28         21.1            0            10      1
+## 10      1    10          15         30.1            0            10      1
+## # ... with 2,150 more rows</code></pre>
+<p>hBayesDMでは，データはテキストファイル(.txt)で保存したものを用います（タブ区切り）。hBayesDMは，簡単にベイジアン認知モデリングができる代わりに，データセットは決められた通りに作成しないといけません。例えば，遅延割引課題の場合，変数名はsubjID, delay_later, amount_later, delay_sooner, amount_sooner, choiceで作成します。このようにデータセットを作らないとパラメータ推定ができません。そういう意味では，hBayesDMを使う前のデータハンドリングが重要になるかもしれない。なお，データは，参加者ごとに試行数が異なっても良いのですが，欠測値(NAも）はデータに含めてはいけません。データハンドリングの段階で，欠測値は除外しておく必要があります。</p>
+</div>
+<div class="section level2">
+<h2>遅延割引課題のパラメータ推定</h2>
+<p>遅延割引課題データをhyperbolic modelを用いてパラメータ推定する場合は，dd_hyperbolic()を用います。dd_hyperbolic()の主な引数は以下の通りです。データを適切に作成して，以下の引数を設定するだけで，パラメータ推定できちゃいます。なお，以下では省略していますが，mail引数にメールアドレスを指定しておくと，推定が終了したらメールで通知してくれます。</p>
+<pre><code>dd_hyperbolic(data = &quot;データ名.txt&quot;, 
+  niter = 反復回数, 
+  nwarmup = ワームアップに指定する反復回数, 
+　nchain = 連鎖の数,
+　ncore = 並列化の際に使用するコア数, 
+　nthin = 間引き間隔, 
+　inits = 初期値(&quot;fixed&quot;, &quot;random&quot;, 指定), 
+　indPars = MCMCサンプルの要約方法(&quot;mean&quot;, &quot;median&quot;, &quot;mode&quot;),
+　以下略)</code></pre>
+<p>では，さっそく，サンプルデータで推定をしてみましょう！以下の１行のコードだけで，hyperbolic modelで階層ベイズモデリングをやってくれます。すごい簡単ですね！</p>
+<pre class="r"><code>output &lt;- dd_hyperbolic(data = &quot;dd_exampleData.txt&quot;, niter = 2000, nwarmup = 1000, 
+                        nchain = 4, ncore = 4, nthin = 2)</code></pre>
+<pre><code>## 
+## Model name =  dd_hyperbolic 
+## Data file  =  dd_exampleData.txt 
+## 
+## Details:
+##  # of chains                   =  4 
+##  # of cores used               =  4 
+##  # of MCMC samples (per chain) =  2000 
+##  # of burn-in samples          =  1000 
+##  # of subjects                 =  20 
+##  # of (max) trials per subject =  108 
+## 
+## ***********************************
+## **  Loading a precompiled model  **
+## ***********************************</code></pre>
+<pre><code>## trying deprecated constructor; please alert package maintainer</code></pre>
+<pre><code>## 
+## ************************************
+## **** Model fitting is complete! ****
+## ************************************</code></pre>
+</div>
+<div class="section level2">
+<h2>パラメータ推定の収束</h2>
+<p>推定できたので，早速，収束を確認します。hBayesDMのplot関数やrhat()を使って，簡単にトレースプロットや<span class="math inline">\(\hat{R}\)</span>が確認できます。収束は問題なさそうですね。</p>
+<pre class="r"><code>plot(output, type = &#39;trace&#39;)</code></pre>
+<p><img src="how-to-hBayesDM_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>rhat(output)</code></pre>
+<pre><code>## # A tibble: 65 x 1
+##         Rhat
+##  *     &lt;dbl&gt;
+##  1 1.0088983
+##  2 0.9994885
+##  3 1.0018222
+##  4 1.0000639
+##  5 1.0000058
+##  6 0.9995902
+##  7 1.0007815
+##  8 1.0030283
+##  9 0.9993483
+## 10 1.0000237
+## # ... with 55 more rows</code></pre>
+</div>
+<div class="section level2">
+<h2>推定されたパラメータ</h2>
+<p>hBayesDMのplot関数は，デフォルトの場合は，ハイパーパラメータの事後分布をプロットします。</p>
+<pre class="r"><code>plot(output)</code></pre>
+<p><img src="how-to-hBayesDM_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>もし，個人ごとのパラメータを見たい場合は，plotInd()が便利です。ここでは，参加者20名のkの事後分布を示します。</p>
+<pre class="r"><code>plotInd(output,&quot;k&quot;)</code></pre>
+<p><img src="how-to-hBayesDM_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div class="section level2">
+<h2>モデル適合</h2>
+<p>hBayesDMでは，printFitで情報量基準も出してくれます。デフォルトはLOOICで，指定すればWAICも出力してくれます。</p>
+<pre class="r"><code>printFit(output)</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##           Model    LOOIC
+## *         &lt;chr&gt;    &lt;dbl&gt;
+## 1 dd_hyperbolic 1882.178</code></pre>
+<pre class="r"><code>printFit(output, ic=&quot;waic&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##           Model    WAIC
+## *         &lt;chr&gt;   &lt;dbl&gt;
+## 1 dd_hyperbolic 1870.09</code></pre>
+</div>
+</div>
+<div class="section level1">
+<h1>最後に</h1>
+<p>いかがでしたか？思った以上に簡単にベイジアン認知モデリングが体験できたのではないでしょうか？hBayesDMで扱っている実験課題を研究で用いている人は，ぜひとも試してみてください！なお，hBayesDMパッケージを使った場合は，Ahn博士の論文<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>を引用ください。</p>
+<p><strong>Enjoy!</strong></p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>2011年くらいから，なんとなく認知モデリングで階層ベイズを使おうと思っていました。しかし，何のとっかかりがないので，ただボーっと過ごしていました。たまたま2013年に，Ahn博士の<a href="https://www.ncbi.nlm.nih.gov/pubmed/23795233">モデルベースfMRI解析における階層ベイズ論文</a>を読んで，「これだっ！」と思って直接メールをしました。そのメールのやりとりをしていたら，Ahn博士がStanの存在を教えてくれました。Stanにいち早く気づかせてくださったAhn博士に心から感謝しています。ただ，そこから，またぼーっとしてしまって，とてもゆっくりStanの勉強を進めています。ノロノロとやっているうちに詳しい人が周りに多くなってきました。ありがたいですね。<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Mazur, J. E. (1987). An adjustment procedure for studying delayed reinforcement.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>Ahn, W.-Y., Haines, N., &amp; Zhang, L. (2017). Revealing neuro-computational mechanisms of reinforcement learning and decision-making with the hBayesDM package. Computational Psychiatry. 1:1. <a href="https://doi.org/10.1101/064287" class="uri">https://doi.org/10.1101/064287</a><a href="#fnref3">↩</a></p></li>
+</ol>
+</div>
+
+<footer>
+  <p>Copyright &copy; 2017 Yoshihiko Kunisato. All rights reserved </p>
+</footer>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>hBayesDMで反応時間のモデリング!</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="site_style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Computational Clinical Psychology Lab</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="research.html">Research</a>
+</li>
+<li>
+  <a href="team.html">Team</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Publications
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="book.html">書籍</a>
+    </li>
+    <li>
+      <a href="articles.html">学術論文</a>
+    </li>
+    <li>
+      <a href="articles-japanese.html">学術論文（日本語）</a>
+    </li>
+    <li>
+      <a href="bulletin.html">紀要論文</a>
+    </li>
+    <li>
+      <a href="presentation.html">国際会議発表</a>
+    </li>
+    <li>
+      <a href="presentation-japanese.html">国内学会・研究会発表</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="code_tips.html">Code &amp; Tips</a>
+</li>
+<li>
+  <a href="education.html">Education</a>
+</li>
+<li>
+  <a href="news.html">News</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">hBayesDMで反応時間のモデリング!</h1>
+
+</div>
+
+
+<p><a href="https://kunisatolab.github.io/index.html">専修大学人間科学部心理学科　国里愛彦</a></p>
+<p>この記事は，<a href="https://qiita.com/advent-calendar/2017/stan">Stan Advent Calendar 2017</a>の23日目の記事です<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>。</p>
+<p><a href="https://kunisatolab.github.io/how-to-hBayesDM.html">Stan Advent Calendar 2017の16日目の記事</a>では，hBayesDMのインストールから遅延割引課題データの認知モデリングをやってみました（hBayesDMが初めての方は，リンク先の16日目の記事をご確認ください）。今回は，反応時間の認知モデリングを行ってみましょう。</p>
+<div id="linear-ballistic-accumulator-model" class="section level1">
+<h1>Linear Ballistic Accumulator model</h1>
+<p>反応時間のモデルとしては，Drift-Diffusion model (DDM)やLinear Ballistic Accumulator model (LBAモデル)があります。どちらのモデルも，刺激が呈示されてから反応が出力されるまでの情報（エビデンスという）の蓄積過程をモデル化しています。つまり，時間が経つにつれて脳に蓄積されていく情報がある閾値に到達した場合に，反応が出力されると考えます。なお，Drift-Diffusion modelについては，hBayesDMでは，choiceRT_ddm関数が用意されており，LBAモデルについては，hBayesDMではchoiceRT_lba関数が用意されています。今回は，hBayesDMで用意されているLBAモデルについて扱います。</p>
+<p>LBAモデルの詳細は，<a href="https://ykunisato.github.io/lbaStan/lbaStan.html">過去の記事</a>をご確認いただくとして，以下の図で簡単にLBAモデルを説明します。LBAモデルでは，Non Decision Time（非決定時間：情報の蓄積以外の刺激の読み込みや反応の出力などにかかる時間）とDecision Time（情報の蓄積過程にかかる時間）に分けて，情報の蓄積過程では，開始点から始まって，特定の傾きをもった直線で表現される情報の蓄積過程があり（この傾きをドリフト率という），それが閾値に到達した際に反応が出力されます。そして，このLBAモデルを用いて，反応時間のデータから，それぞれのパラメータを推定します。hBayesDMのLBAモデルの関数である，choiceRT_lbaでは，閾値(d)<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>，開始点の上限（A），ドリフト率（d），非決定時間(tau)が推定されます。</p>
+<div class="figure">
+<img src="fig1.png" />
+
+</div>
+</div>
+<div class="section level1">
+<h1>データの準備</h1>
+<div class="section level2">
+<h2>使用するパッケージ</h2>
+<p>ベイジアン認知モデリングのためにhBayesDM，データ整形のためにtidyverse，反応時間データの生成のためにrtdistsをロードします。</p>
+<pre class="r"><code>library(hBayesDM)
+library(tidyverse)
+library(rtdists)</code></pre>
+</div>
+<div class="section level2">
+<h2>反応時間データの生成のためのパラメータの準備</h2>
+<p>今回は，2条件からなる２選択肢の課題を，それぞれの条件で300試行反応したデータを作ってみます。本当は参加者を複数にして，階層ベイズにしたかったのですが，それだとかなり時間がかかってしまうので，今回は参加者１名のデータを作ります。今回は実データではなく，rtdistsのrLBA関数を使ってシミュレーション的にデータ生成を行います。まず，この反応時間データの生成のために，閾値(d)，開始点の上限（A），ドリフト率（v），非決定時間(tau)を以下のように設定しました。パラメータの値は，以前に私がおこなったシミュレーションデータから適当にもってきました。</p>
+<pre class="r"><code>set.seed(12345)
+numberTrials &lt;- 400　 #試行数
+numberConditions &lt;- 2 #条件数
+
+A = 0.3
+b = 1.0
+d = b-A
+tau = 0.30
+v1_c1 = 1.8
+v2_c1 = 3.0
+v1_c2 = 3.0
+v2_c2 = 1.8
+s = 1</code></pre>
+</div>
+<div class="section level2">
+<h2>反応時間データの生成</h2>
+<p>上記で決めたパラメータをもとに，rtdistsのrLBA関数を使って，反応時間と選択のデータを生成します。２条件あり，それぞれ400試行にしたので，合計800試行のデータになります。</p>
+<pre class="r"><code>subjID &lt;- rep(1,numberTrials*numberConditions) # subjIDを準備
+condition &lt;- rep(1:2, each=numberTrials) #  総試行数分条件を準備
+rt_data_c1 &lt;- rLBA(numberTrials, A=A, b=b, t0=tau, mean_v=c(v1_c1,v2_c1), sd_v=c(s,s)) #条件1における選択と反応時間データを生成
+rt_data_c2 &lt;- rLBA(numberTrials, A=A, b=b, t0=tau, mean_v=c(v1_c2,v2_c2), sd_v=c(s,s)) #条件1における選択と反応時間データを生成
+rt_data_c12 &lt;- rbind(rt_data_c1,rt_data_c2) #２つの条件の選択と反応時間データを結合
+rt_data &lt;- data.frame(subjID,choice=rt_data_c12$response,RT=rt_data_c12$rt,condition) #全てのデータをrt_dataに格納
+
+head(rt_data)</code></pre>
+<pre><code>## # A tibble: 6 x 4
+##   subjID choice        RT condition
+## *  &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;int&gt;
+## 1      1      2 0.5627358         1
+## 2      1      2 0.6020092         1
+## 3      1      1 0.6839106         1
+## 4      1      2 0.5896171         1
+## 5      1      2 0.6832914         1
+## 6      1      2 0.5049498         1</code></pre>
+</div>
+<div class="section level2 tabset">
+<h2>データの確認</h2>
+<p>各条件の各選択肢に対する反応時間の分布をプロットします。</p>
+<div class="section level3">
+<h3>条件１における選択肢１に対する反応時間の分布</h3>
+<pre class="r"><code>rt_data %&gt;% 
+  filter(condition==1,choice==1) %&gt;% 
+  ggplot(aes(x=RT))+
+  geom_histogram()</code></pre>
+<p><img src="how-to-hBayesDM-RT_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="2" class="section level3">
+<h3>条件１における選択肢2に対する反応時間の分布</h3>
+<pre class="r"><code>rt_data %&gt;% 
+  filter(condition==1,choice==2) %&gt;% 
+  ggplot(aes(x=RT))+
+  geom_histogram()</code></pre>
+<p><img src="how-to-hBayesDM-RT_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="2" class="section level3">
+<h3>条件2における選択肢１に対する反応時間の分布</h3>
+<pre class="r"><code>rt_data %&gt;% 
+  filter(condition==2,choice==1) %&gt;% 
+  ggplot(aes(x=RT))+
+  geom_histogram()</code></pre>
+<p><img src="how-to-hBayesDM-RT_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="22" class="section level3">
+<h3>条件2における選択肢2に対する反応時間の分布</h3>
+<pre class="r"><code>rt_data %&gt;% 
+  filter(condition==2,choice==2) %&gt;% 
+  ggplot(aes(x=RT))+
+  geom_histogram()</code></pre>
+<p><img src="how-to-hBayesDM-RT_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+</div>
+<div id="hbayesdm" class="section level2">
+<h2>hBayesDM用に反応時間データを保存する</h2>
+<p>hBayesDMでは，指定された変数名でデータセットを作成し，タブ区切り.txtファイルで保存したものを解析で用いる。hBayesDMでは，データセットの変数名を固定したりファイルの形式を整えることで，複雑な階層ベイズモデリングが簡単にできるようになっている。反応時間のモデルあるchoiceRT_lbaやchoiceRT_ddmでは，以下の変数を準備する。</p>
+<ul>
+<li>subjID: 参加者ID</li>
+<li>choice: 課題における選択データ（1や2みたいな整数値でコード化する）</li>
+<li>RT: 課題における反応時間データ（秒単位なので，700msは，0.7になる）</li>
+<li>condition: 条件（1や2みたいなす整数値でコード化する）</li>
+</ul>
+<p>これまで作成してきたデータセットのrt_dataは，hBayesDMで求められる変数名になるように整形してありますので，そのままタブ区切りテキストファイルとして保存します。</p>
+<pre class="r"><code>write.table(rt_data,file=&quot;rt_data.txt&quot;,sep=&quot;\t&quot;,col.names=T,row.names=F,quote=F)</code></pre>
+</div>
+<div id="lba" class="section level2">
+<h2>LBAモデルのパラメータ推定</h2>
+<p>データセットの準備ができましたので，早速ですがLBAモデルのパラメータ推定をしてみましょう。hBayesDMではLBAモデル用の関数として，choiceRT_lba_single()が用意されているので，これを使ってみます（もし複数の参加者がいて階層ベイズにしたい場合は，choiceRT_lba()を使う）。以下の引数を指定するだけで，簡単にパラメータ推定できちゃいます。</p>
+<pre><code>choiceRT_lba_single(data = &quot;データ名.txt&quot;, 
+  niter = 反復回数, 
+  nwarmup = ワームアップに指定する反復回数, 
+　nchain = 連鎖の数,
+　ncore = 並列化の際に使用するコア数, 
+　nthin = 間引き間隔, 
+　inits = 初期値(&quot;fixed&quot;, &quot;random&quot;, 指定), 
+　indPars = MCMCサンプルの要約方法(&quot;mean&quot;, &quot;median&quot;, &quot;mode&quot;),
+　以下略)</code></pre>
+<p>では，さっそく，サンプルデータで推定をしてみましょう！以下の１行のコードだけで，LBAモデルを用いたパラメータ推定をやってくれます。</p>
+<pre class="r"><code>output &lt;- choiceRT_lba_single(data = &quot;rt_data.txt&quot;, niter = 3000, nwarmup = 1000, 
+                        nchain = 4, ncore = 4, nthin = 2)</code></pre>
+<pre><code>## 
+## Model name =  choiceRT_lba_single 
+## Data file  =  rt_data.txt 
+## 
+## Details:
+##  # of chains                       =  4 
+##  # of cores used                   =  4 
+##  # of MCMC samples (per chain)     =  3000 
+##  # of burn-in samples              =  1000 
+##  # of subjects                     =  1 
+##  # of (max) trials of this subject =  800 
+## 
+## ***********************************
+## **  Loading a precompiled model  **
+## ***********************************</code></pre>
+<pre><code>## trying deprecated constructor; please alert package maintainer</code></pre>
+<pre><code>## 
+## ************************************
+## **** Model fitting is complete! ****
+## ************************************</code></pre>
+</div>
+<div class="section level2">
+<h2>パラメータ推定の収束</h2>
+<p>推定できたので，早速，収束を確認します。hBayesDMのplot関数やrhat()を使って，簡単にトレースプロットや<span class="math inline">\(\hat{R}\)</span>が確認できます。収束は問題なさそうですね。</p>
+<pre class="r"><code>plot(output, type = &#39;trace&#39;)</code></pre>
+<p><img src="how-to-hBayesDM-RT_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>rhat(output)</code></pre>
+<pre><code>## # A tibble: 9 x 1
+##        Rhat
+## *     &lt;dbl&gt;
+## 1 1.0022823
+## 2 1.0003688
+## 3 1.0000617
+## 4 0.9995727
+## 5 1.0004435
+## 6 1.0013399
+## 7 1.0048000
+## 8 1.0009129
+## 9 1.0044804</code></pre>
+</div>
+<div class="section level2">
+<h2>推定されたパラメータ</h2>
+<p>hBayesDMのplot関数を使うとパラメータの事後分布をプロットしてくれます。hBayesDMが出力するオブジェクトの中には，いろいろはいっているのですが，allIndParsには，推定したパラメータの要約統計量（推定時にmean,mode,medianが選択できる）が入っています。各パラメータのMCMCサンプルがはいっているparValsやStanの標準出力のfitなどもありますので，暇な時に確認すると便利かと思います。</p>
+<pre class="r"><code>output$allIndPars</code></pre>
+<pre><code>## # A tibble: 1 x 8
+##           d         A v_cd1_ch1 v_cd2_ch1 v_cd1_ch2 v_cd2_ch2       tau
+## *     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 0.7234558 0.6910057  1.858715  2.334138   3.26715  1.420857 0.3337769
+## # ... with 1 more variables: subjID &lt;int&gt;</code></pre>
+<pre class="r"><code>plot(output)</code></pre>
+<p><img src="how-to-hBayesDM-RT_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre><code>## Drift rates (v) are numbered as follows: v[condition-choice]. For example, v[1-2] refers to the drift rate estimate for when choice==2 and condition==1.</code></pre>
+</div>
+<div class="section level2">
+<h2>モデル適合</h2>
+<p>hBayesDMでは，printFitで情報量基準も出してくれます。デフォルトはLOOICで，指定すればWAICも出力してくれます。</p>
+<pre class="r"><code>printFit(output)</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##                 Model  LOOIC
+## *               &lt;chr&gt;  &lt;dbl&gt;
+## 1 choiceRT_lba_single -0.233</code></pre>
+<pre class="r"><code>printFit(output, ic=&quot;waic&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##                 Model   WAIC
+## *               &lt;chr&gt;  &lt;dbl&gt;
+## 1 choiceRT_lba_single -1.012</code></pre>
+</div>
+<div class="section level2">
+<h2>パラメータリカバリ</h2>
+<p>データ生成に用いた真値と推定値とでどのくらい異なるかをチェックするパラメータリカバリーをします。真値からデータ生成における誤差も結構あるので，完全には一致してないですが，一部のパラメータはそこそこ推定できているといえるかと思います。</p>
+<pre class="r"><code>true_parameter &lt;- data.frame(d = d,A = A,v_cd1_ch1 = v1_c1, v_cd2_ch1 = v1_c2 ,v_cd1_ch2 = v2_c1,v_cd2_ch2 = v2_c2 ,tau = tau, subjID = 1)
+check_parameter_recovery &lt;- rbind(output$allIndPars,true_parameter)
+rownames(check_parameter_recovery) &lt;- c(&quot;Estimate&quot;, &quot;True&quot;) 
+check_parameter_recovery</code></pre>
+<pre><code>## # A tibble: 2 x 8
+##           d         A v_cd1_ch1 v_cd2_ch1 v_cd1_ch2 v_cd2_ch2       tau
+## *     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 0.7234558 0.6910057  1.858715  2.334138   3.26715  1.420857 0.3337769
+## 2 0.7000000 0.3000000  1.800000  3.000000   3.00000  1.800000 0.3000000
+## # ... with 1 more variables: subjID &lt;dbl&gt;</code></pre>
+</div>
+<div id="choicert_lbastan" class="section level2">
+<h2>choiceRT_lbaの中身のStanコード</h2>
+<p>choiceRT_lba関数内で使われているStanコードをみると，Annis et al.(2016)<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>のStanコードが用いられています。ですので，前に私が書いた<a href="https://ykunisato.github.io/hlbaStan/hlbaStan.html">RStanによる反応時間の階層ベイズ解析</a>や<a href="https://ykunisato.github.io/lbaStan/lbaStan.html">RStanによる反応時間の解析</a>と同じことをしているのですが，hBayesDMはデータセットさえできれば１行で実施できるので，随分と楽ですね。</p>
+</div>
+</div>
+<div class="section level1">
+<h1>最後に</h1>
+<p>実験などで反応時間を計測している方は，ぜひとも試してみてください！ なお，hBayesDMパッケージを使った場合は，Ahn博士の論文<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>を引用ください。</p>
+<p><strong>Enjoy!</strong></p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>当初，<a href="https://www.frontiersin.org/articles/10.3389/fncom.2017.00029/full">反応時間のベイズモデル</a>を紹介する予定でしたが，尤度関数の定義でつまづいてしまいました。その後，階層ガウシアンフィルターをStanに実装することも考えましたが，変分ベイズ近似に基づく信念の更新の実装でつまづいてしましました。もうダメかと思いましたが，反応時間のモデリングつながりでhBayesDMの紹介をすることにしました・・・<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>一般的に閾値はbと表現されますが，hBayesDMのchoiceRT_lbaは，Annis et al.(2016)のStanコードを参考にしているので，bではなく相対閾値dを推定します（b = d + Aつまり，ここで推定されるdとAを足すと一般的なbが計算される）。データ生成に使うrtdistsでは，絶対閾値bを使うので，注意が必要です。<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>Annis, J., Miller, B. J., &amp; Palmeri, T. J. (2016). Bayesian inference with Stan: A tutorial on adding custom distributions. Behavior research methods, 1-24.<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>Ahn, W.-Y., Haines, N., &amp; Zhang, L. (2017). Revealing neuro-computational mechanisms of reinforcement learning and decision-making with the hBayesDM package. Computational Psychiatry. 1:1. <a href="https://doi.org/10.1101/064287" class="uri">https://doi.org/10.1101/064287</a><a href="#fnref4">↩</a></p></li>
+</ol>
+</div>
+
+<footer>
+  <p>Copyright &copy; 2017 Yoshihiko Kunisato. All rights reserved </p>
+</footer>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+h1 {
+  color: #000;
+  border-bottom: 1px solid #000;
+}
+h2 {
+  color: #000;
+  margin-top: 35px;
+  padding-top: 20px;
+}
+h3 {
+  color: #000;
+  margin-top: 20px;
+  padding-top: 15px;
+}
+
+.tocify .tocify-header {
+color: black;
+}
+
+.tocify .tocify-header .active {
+color: white;
+background: black;
+}
+
+footer {
+  margin-top: 20px;
+  border-top: 1px solid #006;
+}

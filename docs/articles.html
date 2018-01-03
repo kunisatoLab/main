@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>学術論文</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="site_style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Computational Clinical Psychology Lab</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="research.html">Research</a>
+</li>
+<li>
+  <a href="team.html">Team</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Publications
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="book.html">書籍</a>
+    </li>
+    <li>
+      <a href="articles.html">学術論文</a>
+    </li>
+    <li>
+      <a href="articles-japanese.html">学術論文（日本語）</a>
+    </li>
+    <li>
+      <a href="bulletin.html">紀要論文</a>
+    </li>
+    <li>
+      <a href="presentation.html">国際会議発表</a>
+    </li>
+    <li>
+      <a href="presentation-japanese.html">国内学会・研究会発表</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="code_tips.html">Code &amp; Tips</a>
+</li>
+<li>
+  <a href="education.html">Education</a>
+</li>
+<li>
+  <a href="news.html">News</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">学術論文</h1>
+
+</div>
+
+
+<div id="in-press" class="section level3">
+<h3>in press</h3>
+<ul>
+<li>Hasegawa, A., Kunisato, Y., Morimoto, H., Nishimura, H., &amp; Matsuda, Y. (in press). How do rumination and social problem solving intensify depression? A longitudinal study. Journal of Rational-Emotive &amp; Cognitive-Behavior Therapy</li>
+</ul>
+</div>
+<div id="section" class="section level3">
+<h3>2017</h3>
+<ul>
+<li><p>Moriguchi, Y., Noda, T., Nakayashiki, K., Takata, Y., Setoyama, S., Kawasaki, S., Kunisato, Y., Mishima, K., Nakagome, K., Hanakawa, T. (2017). Validation of brain-derived signals in near-infrared spectroscopy through multivoxel analysis of concurrent functional magnetic resonance imaging. Human Brain Mapping, 38(10), 5274–5291.</p></li>
+<li><p>Yoshimura, S., Okamoto, Y., Matsunaga, M., Onoda, K., Okada, G., Kunisato, Y., Yoshino, A., Ueda, K., Suzuki, S., &amp; Yamawaki, S. (2017). Cognitive behavioral therapy changes functional connectivity between medial prefrontal and anterior cingulate cortices, Journal of Affective Disorders, 15(208), 610-614.</p></li>
+</ul>
+</div>
+<div id="section-1" class="section level3">
+<h3>2016</h3>
+<ul>
+<li><p>Takagaki, K., Okamoto, Y., Jinnin, R., Mori, A., Nishiyama, Y., Yamamura, T., Yokoyama, S., Shiota, S., Okamoto, Y., Miyake, Y., Ogata, A., Kunisato, Y., Shimoda, H., Kawakami, N., Furukawa, A. T., &amp; Yamawaki. (2016). Behavioral activation for late adolescents with subthreshold depression: a randomized controlled trial. European Child &amp; Adolescent Psychiatry, 25(11), 1171-1182.</p></li>
+<li><p>Hasegawa, A., Nishimura, H., Matsuda, Y., Kunisato, Y., Morimoto, H., &amp; Adachi, M. (2016). Is trait rumination associated with the ability to generate effective problem solving strategies? Utilizing two versions of the Means-Ends Problem-Solving Test. Journal of Rational-Emotive &amp; Cognitive-Behavior Therapy, 34, 14-30.</p></li>
+</ul>
+</div>
+<div id="section-2" class="section level3">
+<h3>2015</h3>
+<ul>
+<li><p>Tsukue, R., Okamoto, Y., Yoshino, A., Kunisato, Y., Takagaki, K., Takebayashi, Y., Tanaka, K., Konuma, K., Tsukue, I., &amp; Yamawaki, S. (2015) Do Individuals with Alcohol Dependence Show Higher Unfairness Sensitivity? The Relationship Between Impulsivity and Unfairness Sensitivity in Alcohol-Dependent Adults. Alcoholism, clinical and experimental research, 39(10), 2016-2021.</p></li>
+<li><p>Nishiyama,Y., Okamoto, Y., Kunisato, Y., Okada, G., Yoshimura, S., Kanai, Y., Yamamura, T., Yoshino, A., Jinnin, R., Takagaki, K., Onoda, K., &amp; Yamawaki, S. (2015) fMRI Study of Social Anxiety during Social Ostracism with and without Emotional Support. PLoS ONE 10(5): e0127426.</p></li>
+</ul>
+</div>
+<div id="section-3" class="section level3">
+<h3>2014</h3>
+<ul>
+<li><p>Machino, A., Kunisato, Y., Matsumoto, T., Yoshimura, S., Ueda, K., Yamawaki, Y., Okada, G., Okamoto, Y., &amp; Yamawaki, S (2014) Possible involvement of rumination in gray matter abnormalities in persistent symptoms of major depression: an exploratory magnetic resonance imaging voxel-based morphometry study, Journal of Affective Disorders, 168, 229-235.</p></li>
+<li><p>Yoshino, A., Okamoto, Y., Kunisato, Y., Yoshimura, Y., Jinnin, R., Hayashi, Y., Kobayakawa, M., Doi, M., Oshita, K., Nakamura, R., Tanaka, K., Yamashita, H., Kawamoto, M., &amp; Yamawaki, S. (2014). Distinctive spontaneous regional neural activity in patients with somatoform pain disorder: A resting-state fMRI preliminary study, Psychiatry Research: Neuroimaging, 221(3), 246-248.</p></li>
+<li><p>Toki, S., Okamoto, Y., Onoda, K., Matsumoto, T., Yoshimura, S., Kunisato, Y., Okada, G., Shishida, K., Kobayakawa, M., Fukumoto, T., Machino, A., Inagaki, M., Yamawaki, S. (2014). Hippocampal activation during associative encoding of word pairs and its relation to symptomatic improvement in depression: A functional and volumetric MRI study. Journal of Affective Disorder, 152, 462-467.</p></li>
+</ul>
+</div>
+<div id="section-4" class="section level3">
+<h3>2013</h3>
+<ul>
+<li><p>Yoshimura, S., Okamoto, Y., Onoda, K., Matsunaga, M., Okada, G., Kunisato, Y., Yoshino, A., Ueda, K., Suzuki, S., &amp; Yamawaki, S. (2013). Cognitive behavioral therapy for depression changes medial prefrontal and ventral anterior cingulate cortex activity associated with self-referential processing. Social Cognitive and Affective Neuroscience, 9(4), 487-493.</p></li>
+<li><p>Takagaki, K., Okajima, I., Kunisato, Y., Nakajima, S., Kanai, Y., Ishikawa, S., &amp; Sakano, Y. (2013). Preliminary assessment of the behavioral activation model in Japanese undergraduate students. Psychological Reports, 112(1), 47-59.</p></li>
+<li><p>Koseki, S., Noda., T., Yokoyama, S., Kunisato, Y., Ito, D., Suyama, H., Matsuda, T., Sugimura, Y., Ishihara, N., Shimizu, Y., Nakazawa, K., Yoshida, S., Arima, K., Suzuki,S. (2013). The relationship between positive and negative automatic thought and activity in the prefrontal and temporal cortices: A multi-channel near-infrared spectroscopy (NIRS) study, Journal of Affective Disorders, 151(1), 352-359.</p></li>
+</ul>
+</div>
+<div id="section-5" class="section level3">
+<h3>2012</h3>
+<ul>
+<li><p>Kinoshita, A., Okamoto, Y., Okada, G., Demoto, Y., Kunisato, Y., Yoshimura, S., Onoda,K., Kamachi, M., Yamawaki, S. (2012) Sex differences in neural activation to ambiguous facial expression in happy and sad context, Perceptual and Motor Skills, 115(2), 349-359.</p></li>
+<li><p>Kunisato, Y., Okamoto, Y., Ueda, K., Onoda, K., Okada, G., Yoshimura, S., Suzuki, S., Samejima, K., Yamawaki, S. (2012) Effects of depression on reward based decision making and variability of action in probabilistic learning, Journal of Behavior Therapy and Experimental Psychiatry, 43, 1088-1094.</p></li>
+<li><p>Yoshino, A., Okamoto, Y., Onoda, K., Shishida, K., Yoshimura, S., Kunisato, Y., Demoto, Y., Okada, G., Toki, S., Yamashita, H., Yamawaki, S. (2012) Sadness enhances the experience of pain and affects pain-evoked cortical activities: An MEG study, The Journal of Pain,13, 628-635.</p></li>
+<li><p>Demoto, Y., Okada, G., Okamoto, Y., Kunisato, Y., Aoyama, S., Onoda, K., Munakata, A., Nomura, M., Tanaka, S. C., Schweighofer, N., Doya, K., Yamawaki, S. (2012) Neural And Personality Correlates of Individual Differences Related to the Effects of Acute Tryptophan Depletion on Future Reward Evaluation, Neuropsychobiology, 65, 55-64.</p></li>
+</ul>
+</div>
+<div id="section-6" class="section level3">
+<h3>2011</h3>
+<ul>
+<li><p>Okada, G., Okamoto, Y., Kunisato, Y., Aoyama, S., Nishiyama, Y., Yoshimura, S., Onoda, K., Toki, S., Yamashita, H., &amp; Yamawaki, S. (2011) The effect of negative and positive emotionality on associative memory: An fMRI study, PLoS ONE, 6(9),e24862.</p></li>
+<li><p>Onoda, K., Okamoto, Y., Kunisato, Y., Aoyama, S., Shishida, K., Okada, G., Tanaka, SC., Schweighofer, N., Yamaguchi, S., Doya, K., &amp; Yamawaki, S. (2011) Inter-individual discount factor differences in reward prediction are topographically associated with caudate activation, Experimental Brain Research, 212(4), 593-601.</p></li>
+<li><p>Kunisato, Y., Okamoto, Y., Okada, G., Aoyama, S., Nishiyama, Y., Onoda, K., Yamawaki, S. (2011)Personality traits and the amplitude of spontaneous low-frequency oscillations during resting state, Neuroscience Letters, 492(2), 109-113.</p></li>
+<li><p>Kunisato,Y., Okamoto, Y., Okada, G., Aoyama, S., Demoto, Y., Munakata, A., Nomura, M., Onoda, K., Yamawaki, S. (2011) Modulation of default - mode network activity by acute tryptophan depletion is associated with mood change：A resting state functional magnetic resonance imaging study. Neuroscience Research, 69, 129-134.</p></li>
+</ul>
+</div>
+<div id="section-7" class="section level3">
+<h3>2010</h3>
+<ul>
+<li><p>Matsunaga, M., Okamoto, Y., Suzuki, S., Kinoshita, A., Yoshimura, S., Yoshino, A., Kunisato, Y. &amp; Yamawaki, S. (2010). Psychosocial functioning in patients with treatment-resistant depression after group cognitive behavioral therapy. Bmc Psychiatry, 10(1), 22.</p></li>
+<li><p>Yoshino, A., Okamoto, Y., Onoda, K., Yoshimura, S., Kunisato, Y., Demoto, Y., Okada, G, &amp; Shigeto, Y. (2010). Sadness enhances the experience of pain via neural activation in the anterior cingulate cortex and amygdala: An fMRI study. Neuroimage, 50(3), 1194-1201.</p></li>
+</ul>
+</div>
+
+<footer>
+  <p>Copyright &copy; 2017 Yoshihiko Kunisato. All rights reserved </p>
+</footer>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

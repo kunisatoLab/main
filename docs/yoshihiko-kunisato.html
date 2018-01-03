@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>国里愛彦</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="site_style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Computational Clinical Psychology Lab</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="research.html">Research</a>
+</li>
+<li>
+  <a href="team.html">Team</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Publications
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="book.html">書籍</a>
+    </li>
+    <li>
+      <a href="articles.html">学術論文</a>
+    </li>
+    <li>
+      <a href="articles-japanese.html">学術論文（日本語）</a>
+    </li>
+    <li>
+      <a href="bulletin.html">紀要論文</a>
+    </li>
+    <li>
+      <a href="presentation.html">国際会議発表</a>
+    </li>
+    <li>
+      <a href="presentation-japanese.html">国内学会・研究会発表</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="code_tips.html">Code &amp; Tips</a>
+</li>
+<li>
+  <a href="education.html">Education</a>
+</li>
+<li>
+  <a href="news.html">News</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">国里愛彦</h1>
+
+</div>
+
+
+<p><img src="yoshihiko_kunisato.jpg" width="320px"></p>
+<div id="yoshihiko-kunisato-ph.d." class="section level4">
+<h4>YOSHIHIKO KUNISATO, Ph.D.</h4>
+</div>
+<div class="section level4">
+<h4>学位：博士(医学)</h4>
+</div>
+<div class="section level4">
+<h4>専修大学　人間科学部　心理学科　准教授</h4>
+</div>
+<div id="1111" class="section level4">
+<h4>1983年11月11日生まれ，兵庫県出身</h4>
+</div>
+<div class="section level4">
+<h4><a href="https://docs.google.com/forms/d/1OQ7pN-oQda1YwGvcTBga3oKkviI697uc9AQlGVhX2YI/viewform">メールフォーム</a></h4>
+</div>
+<div id="google-scholar" class="section level4">
+<h4><a href="http://scholar.google.com/citations?hl=en&amp;user=cIhFY1YAAAAJ&amp;view_op=list_works&amp;gmla=AJsN-F7XXdjEVvO0pY8lFA19xtBq863U6a1bfQ12xa94TeIywgyckyZZLTHy4w22BKWLQJNyO9poNHdBCbXOlOjBAtMt007KIQvJ3pw1eoK3M-H7cbPbOmyU5ERgq4Wflfy8ZAjESXzV">Google Scholar</a></h4>
+</div>
+<div id="researchgate" class="section level4">
+<h4><a href="https://www.researchgate.net/profile/Yoshihiko_Kunisato">Researchgate</a></h4>
+</div>
+<div class="section level1">
+<h1>学歴</h1>
+<div id="114" class="section level4">
+<h4>1999(平成11)年4月　　　兵庫県立八鹿高等学校　入学</h4>
+</div>
+<div id="143" class="section level4">
+<h4>2002(平成14)年3月　　　同上　卒業</h4>
+</div>
+<div id="1441-" class="section level4">
+<h4>2002(平成14)年4月1日 　群馬大学教育学部教育心理学専攻入学</h4>
+</div>
+<div id="18323" class="section level4">
+<h4>2006(平成18)年3月23日　同上　(山口陽弘研究室)卒業</h4>
+</div>
+<div id="1841-" class="section level4">
+<h4>2006(平成18)年4月1日 　広島大学大学院教育学研究科心理学専攻(鈴木伸一研究室)　入学</h4>
+</div>
+<div id="20323" class="section level4">
+<h4>2008(平成20)年3月23日　同上　(大塚泰正研究室)　修了</h4>
+</div>
+<div id="2041" class="section level4">
+<h4>2008(平成20)年4月1日　　広島大学大学院医歯薬学総合研究科創生医科学専攻先進医療開発科学講座精神神経医科学教室(山脇成人研究室)　入学</h4>
+</div>
+<div id="23323" class="section level4">
+<h4>2011(平成23)年3月23日　同上　修了</h4>
+</div>
+</div>
+<div class="section level1">
+<h1>学位</h1>
+<div id="183947" class="section level4">
+<h4>2006(平成18)年　学士（教育学）　群馬大学（第3947号)</h4>
+</div>
+<div id="2025520" class="section level4">
+<h4>2008(平成20)年　修士（心理学）　広島大学（第25520号）「報酬・罰に対する感受性と抑うつとの関連」</h4>
+</div>
+<div id="235540modulation-of-default-mode-network-activity-by-acute-tryptophan-depletion-is-associated-with-mood-change-a-resting-state-functional-magnetic-resonance-imaging-study" class="section level4">
+<h4>2011(平成23)年　博士（医学）　　広島大学（第5540号）　「Modulation of default-mode network activity by acute tryptophan depletion is associated with mood change: a resting state functional magnetic resonance imaging study」</h4>
+</div>
+</div>
+<div class="section level1">
+<h1>職歴・教育歴</h1>
+<div id="2072009213" class="section level4">
+<h4>2008(平成20)年7月～2009(平成21)年3月　医療法人社団更正会　草津病院　非常勤心理士</h4>
+</div>
+<div id="2142011233dc1" class="section level4">
+<h4>2009(平成21)年4月～2011(平成23)年3月　日本学術振興会　特別研究員(DC1)</h4>
+</div>
+<div id="2342013253" class="section level4">
+<h4>2011(平成23)年4月〜2013(平成25)年3月　早稲田大学人間科学学術院　助手(鈴木伸一研究室)</h4>
+</div>
+<div id="2542015273" class="section level4">
+<h4>2013(平成25)年4月〜2015(平成27)年3月　専修大学人間科学部心理学科　講師</h4>
+</div>
+<div id="2352016283" class="section level4">
+<h4>2011(平成23)年5月〜2016(平成28)年3月　独立行政法人　国立精神・神経医療研究センター　技術研究生</h4>
+</div>
+<div id="255" class="section level4">
+<h4>2013(平成25)年5月〜　早稲田大学重点領域研究機構応用脳科学研究所　招聘研究員</h4>
+</div>
+<div id="274" class="section level4">
+<h4>2015(平成27)年4月〜　専修大学人間科学部心理学科　准教授</h4>
+</div>
+</div>
+<div id="ta" class="section level1">
+<h1>非常勤講師(TA)</h1>
+<div class="section level3">
+<h3>現在担当中の講義</h3>
+<div id="25" class="section level4">
+<h4>2013(平成25)年〜　早稲田大学人間科学部　非常勤講師（講義：「学習心理学」）</h4>
+</div>
+<div id="25" class="section level4">
+<h4>2013(平成25)年〜　早稲田大学大学院人間科学研究科　非常勤講師（講義：「学習心理学特論」）</h4>
+</div>
+<div id="29ii" class="section level4">
+<h4>2017(平成29年)　　早稲田大学大学院人間科学研究科　非常勤講師（講義：「臨床心理面接法特論II」）</h4>
+</div>
+<div id="291a-1b-2a-2b" class="section level4">
+<h4>2017(平成29年)　　早稲田大学大学院人間科学研究科　非常勤講師（講義：「医療心理学・職場メンタルヘルス学ゼミ(1)A, (1)B, (2)A, (2)B」）</h4>
+</div>
+<div id="26" class="section level4">
+<h4>2014(平成26)年〜　順天堂大学医学部　非常勤講師（講義：「健康の行動科学」の「行動とは何か」担当）</h4>
+</div>
+<div id="27" class="section level4">
+<h4>2015(平成27)年〜　北里大学大学院看護学研究科　非常勤講師（講義：「看護研究論演習」）</h4>
+</div>
+</div>
+<div class="section level3">
+<h3>過去に担当した講義</h3>
+<div id="20" class="section level4">
+<h4>2008(平成20)年　広島大学医学部　ティーチング・アシスタント　（講義：精神科学）</h4>
+</div>
+<div id="22--" class="section level4">
+<h4>2010(平成22)年　早稲田大学人間科学部通信教育課程　教育コーチ (講義： 産業カウンセリング)</h4>
+</div>
+<div id="24" class="section level4">
+<h4>2012(平成24)年　東京都立北多摩看護専門学校　非常勤講師（講義：心理学）</h4>
+</div>
+<div id="23201224" class="section level4">
+<h4>2011(平成23)年〜2012(平成24)年　聖徳大学心理福祉学部心理学科　非常勤講師（講義：神経心理学）</h4>
+</div>
+<div id="25" class="section level4">
+<h4>2013(平成25)年　お茶の水女子大学　非常勤講師　（講義：大脳生理学（と心理・行動））</h4>
+</div>
+<div id="26" class="section level4">
+<h4>2014(平成26)年　聖徳大学心理福祉学部心理学科　非常勤講師（講義：神経心理学）</h4>
+</div>
+<div id="26201628" class="section level4">
+<h4>2014(平成26)年・2016(平成28)年　東京大学教養学部統合自然科学科　非常勤講師（講義：認知行動障害論）</h4>
+</div>
+<div id="26201628" class="section level4">
+<h4>2014(平成26)年〜2016(平成28)年　早稲田大学大学院人間科学研究科　非常勤講師（講義：「臨床心理学研究の最前線」の「医療臨床心理学研究の最前線」担当）</h4>
+</div>
+<div id="282" class="section level4">
+<h4>2016(平成28)年　早稲田大学大学院文学研究科　非常勤講師（講義：「心理学特論2」）</h4>
+</div>
+</div>
+</div>
+<div class="section level1">
+<h1>研究キーワード</h1>
+<div class="section level4">
+<h4>計算論的臨床心理学，計算論的精神医学，脳機能画像研究，認知行動療法，気分・不安障害，意思決定，恐怖条件づけ</h4>
+</div>
+</div>
+<div class="section level1">
+<h1>外部資金</h1>
+<div id="-2010" class="section level4">
+<h4>2009年-2010年度</h4>
+</div>
+<div class="section level4">
+<h4>日本学術振興会　特別研究員研究奨励費　研究代表者</h4>
+</div>
+<div class="section level4">
+<h4>「うつ病の報酬・罰に対する感受性と治療効果に関する認知神経科学的検討」</h4>
+</div>
+<div id="-2012" class="section level4">
+<h4>2011年-2012年度</h4>
+</div>
+<div class="section level4">
+<h4>日本学術振興会　研究スタート支援　研究代表者</h4>
+</div>
+<div class="section level4">
+<h4>「うつ病の将来予測障害に関わる神経メカニズムの研究」</h4>
+</div>
+<div id="-2015" class="section level4">
+<h4>2013年-2015年度</h4>
+</div>
+<div id="b" class="section level4">
+<h4>日本学術振興会　若手研究(B)　研究代表者</h4>
+</div>
+<div class="section level4">
+<h4>「気分障害患者の認知的情動制御不全にかかわる認知神経メカニズムの検討」</h4>
+</div>
+<div class="section level4">
+<h4>2013年度</h4>
+</div>
+<div id="b" class="section level4">
+<h4>日本学術振興会　基盤研究(B)　研究分担者</h4>
+</div>
+<div class="section level4">
+<h4>「温熱的快適性の形成メカニズムの解析と衣服内環境評価への応用」</h4>
+</div>
+<div id="-2019" class="section level4">
+<h4>2015年-2019年度</h4>
+</div>
+<div id="a" class="section level4">
+<h4>日本学術振興会　若手研究(A)　研究代表者</h4>
+</div>
+<div class="section level4">
+<h4>「恐怖条件づけの獲得・消去・再発の個人差に関わる認知機能と神経基盤」</h4>
+</div>
+</div>
+<div class="section level1">
+<h1>学会委員</h1>
+<div id="-2013-2018--" class="section level4">
+<h4>日本認知・行動療法学会 2013-2018 編集委員会 編集委員</h4>
+</div>
+<div id="-2016-2018-" class="section level4">
+<h4>日本認知・行動療法学会 2016-2018 企画委員会　委員</h4>
+</div>
+</div>
+<div class="section level1">
+<h1>資格・免許</h1>
+<div id="-" class="section level4">
+<h4>普通自動車一種運転免許 小学校教諭免許（１種）</h4>
+</div>
+<div id="2" class="section level4">
+<h4>中学校教諭免許（2種・国語）</h4>
+</div>
+<div id="-1" class="section level4">
+<h4>臨床心理士 心理学検定1級</h4>
+</div>
+</div>
+<div class="section level1">
+<h1>所属学会</h1>
+<div id="20062" class="section level4">
+<h4>日本心理学会　(2006年2月〜)</h4>
+</div>
+<div id="20066" class="section level4">
+<h4>日本認知・行動療法学会　（2006年6月〜）</h4>
+</div>
+<div id="20083" class="section level4">
+<h4>日本ストレス学会　（2008年3月〜）</h4>
+</div>
+<div id="20091" class="section level4">
+<h4>日本不安障害学会　（2009年1月〜）</h4>
+</div>
+<div id="20091" class="section level4">
+<h4>日本うつ病学会　（2009年1月〜）</h4>
+</div>
+</div>
+
+<footer>
+  <p>Copyright &copy; 2017 Yoshihiko Kunisato. All rights reserved </p>
+</footer>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+name: Computational Clinical Psychology Lab
+navbar:
+  title: Computational Clinical Psychology Lab
+  left:
+  - text: Home
+    href: index.html
+  - text: Research
+    href: research.html
+  - text: Team
+    href: team.html
+  - text: Publications
+    menu:
+    - text: 書籍
+      href: book.html
+    - text: 学術論文
+      href: articles.html
+    - text: 学術論文（日本語）
+      href: articles-japanese.html
+    - text: 紀要論文
+      href: bulletin.html
+    - text: 国際会議発表
+      href: presentation.html
+    - text: 国内学会・研究会発表
+      href: presentation-japanese.html
+  - text: Code & Tips
+    href: code_tips.html
+  - text: Education
+    href: education.html
+  - text: News
+    href: news.html
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate
+    toc: yes
+    toc_float: yes
+    df_print: tibble
+    include:
+      after_body: footer.html
+    css: site_style.css
+    lib_dir: site_libs
+    self_contained: no
+output_dir: docs
+

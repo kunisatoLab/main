@@ -1,0 +1,267 @@
+---
+title: "Rで認知課題の解析データセットを作成しよう！"
+---
+
+
+## 統計解析よりも解析データセット作成が重要！
+
+統計解析よりも，その解析データセットの作成において間違いを犯すことの方が多いです。また，その間違いに気づきにくいことがあります。例えば，PsychoPyを用いた認知課題では（詳しくは[こちら](https://kunisatolab.github.io/how-to-psychopy.html)），結果がcsvファイルで出力されます。もしsub01からsub04まで個別のcsvファイルがある場合，多くの人は，(1)それぞれのcsvファイルをダブルクリックしてExcelで開いて，(2)必要箇所をコピーし，(3)別のExcelファイルにペーストすることで解析用データセットを作ると思います。このように作られた解析データセットに誤りがないかどうかは，みなさんのマウス操作に委ねられます。もしかすると，sub02のデータをコピーしたつもりが，上手くいっておらず，sub02の部分にsub01のデータを貼り付けてしまうこともあるかもしれません。コピペには，こういう危険性があります。さらに，もし間違っていても，その間違いに気づけないことも多いです。また，なんらかの操作ミスでオリジナルのcsvファイルやエクセルファイルを変更してしまうと取り返しがつかないこともあります（そのためにも，解析に使うデータとは別にオリジナルのデータをバックアップしておきましょう）。
+
+参加者ごとにファイルが出力される認知課題解析用データセットの作成には以下の条件が必要です。そして，その条件を満たしてくれるのがRによるデータハンドリングです。
+
+1. オリジナルの生データを直接操作しない
+1. オリジナルの生データから必要な情報を人力ではない形で抽出する
+1. オリジナルの生データを１つのファイルにまとめて，解析可能なフォーマットに変更する
+1. 上記の操作について作業ログが残り，何度でもやり直せる
+
+
+
+
+## RとRstudioの準備
+
+Rを[R Projectのサイト](https://www.r-project.org/)からダウンロードしてインストールしてください。Windowsユーザーは，"Windows　R　インストール"，Macユーザーは，"Mac　R　インストール"などでGoogle検索して，インストール方法を調べて下さい。次に，Rstudioを[Rstudioのサイト](https://www.rstudio.com/)からダウンロードしてインストールしてください。Windowsユーザーは，"Windows　Rstudio　インストール"，Macユーザーは，"Mac　Rstudio　インストール"などでGoogle検索して，インストール方法を調べて下さい。
+
+## 使用パッケージの準備
+
+データの前処理では，tidyverseパッケージを用います。以下のようにコンソールに打ち込んで，tidyverseをインストールしましょう。
+
+```
+install.packages("tidyverse", dependencies = TRUE)
+```
+
+インストールができたら，使う前にlibrary()関数を使って，tidyverseパッケージを読み込んでおきます。
+
+```{r}
+library(tidyverse)
+```
+
+## データとフォルダの準備
+
+[サンプルデータ](materials/Analysis.zip)をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。"Analysis"フォルダ内に"Data"フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。
+
+今回は，すでにフォルダに名前がついていましたが，自分でフォルダ名を付ける場合は，日本語を使用するのは推奨しません。フォルダとファイルと変数名には，英語（日本語のローマ字化でけっこう）を使用してください。
+
+## Rstudioの作業ディレクトリーの設定
+　
+なお，パソコンで解析などの作業をする場合に，パソコンに，パソコン上のどこで作業をするのか，その場所を知らせる必要があります。そのような作業場所を作業ディレクトリーと言います。Rstudio上で，作業ディレクトリーを先程のAnalysisフォルダに設定します。具体的な操作は，　RStudioのメニューバーから、「Session」->「Set Working Directory」->「Choose Directory」で，先程のAnalysisフォルダを選択してください。
+
+
+## カレントディレクトリーの移動
+
+基本的には，Analysisフォルダで解析の前処理や解析は行いますが，一時的にフォルダ移動する必要があります。その時に便利なのが，getwd()とsetwd()です。wdは，作業ディレクトリ(working directory)を意味し，getwdで現在の作業ディレクトリの情報を取得し，setwdで作業ディレクトリを設定します。
+
+以下をRstudioのConsoleにタイプしてみましょう！
+
+```
+getwd()
+```
+
+おそらく，さきほど設定したAnalysisフォルダまでのパスが出力されたかと思います（そうじゃない人は，"Rstudioの作業ディレクトリーの設定"に戻って下さい）。
+
+
+次に，Analysisフォルダの１つ下の階層にあるDataフォルダに移動してみましょう。以下をRstudioのConsoleにタイプしてみましょう！
+
+```
+workDir <- getwd()
+setwd(paste(workDir, "Data", sep = "/"))
+```
+
+上記のコードでは，まず１行目で，getwd()で取得した作業ディレクトリのパスをworkDirに入れます。ここで，<-という矢印は，右側のものを左側のものにいれる（代入する）ということを意味します。次に，setwdを使って，workDir（作業ディレクトリのパス）とDataをpasteで結合し（sep="/"で/で区切るように設定），Analysis下のDataフォルダに作業ディレクトリを変更しています。上記を打ち込んだら，getwd()をタイプして，ちゃんとDataフォルダが作業ディレクトリになっているか確認しましょう！
+
+なお，DataフォルダからAnalysisフォルダに戻るには，以下のsetwd("..")が便利です（".."で１つ上の階層に移動します）。
+
+```
+setwd("..")
+```
+
+上記のsetwd("..")をRstudioのConsoleに打ちこんでから，getwd()でAnalysisフォルダに戻ってきているか確認をしてみましょう。
+
+## Dataフォルダ内のファイル名を取得
+
+もう一度，Dataフォルダに移動します。その上で，list.filse()を使って，フォルダ内のファイル名をリスト化します（そしてfileNamesに入れる）。
+
+```{r}
+workDir <- getwd()
+```
+
+```{r, include=FALSE}
+workDir <- paste(workDir, "materials/Analysis", sep = "/")
+```
+
+
+```{r}
+setwd(paste(workDir, "Data", sep = "/"))
+fileNames <- list.files()
+```
+
+Analysisフォルダに".."で戻ります。
+
+```
+setwd("..")
+```
+
+fileNamseの中身を確認します。フォルダに入っているファイル名がfileNamesに格納されているかと思います。
+
+```{r}
+print(fileNames)
+```
+
+## Dataフォルダ内のファイル数を確認
+
+fileNamesに格納されているファイルの数から参加者数を確認します。lengthでデータの長さ（ここでは，fileNamesに含まれるデータの個数）がわかります。今回は，４個のデータが入っています。
+
+```{r}
+numberSubject <- length(fileNames)
+print(numberSubject)
+```
+
+## sub01のデータを読み込んでみる
+
+では，早速，sub01.csvを読み込んでみましょう！tidyverseに入っているreadrパッケージのread_csv()でcsvファイルが読み込めます。そして，読み込むファイル名は，fileNamesに格納されているのものの１つ目（つまり，sub01）です。
+
+```{r, message=FALSE}
+sub01 <- read_csv(paste(workDir, "Data",fileNames[1], sep = "/"))
+sub01
+```
+
+
+## sub01のデータで必要な部分を抽出
+
+上記のsub01のデータの解析で必要なのは，rt（反応時間）, key_press（押したキー），trial_index(試行番号)，correct（正誤）になります。また，trial_typeでは，categorizeのデータだけが欲しい（textは教示なので，いらない）。このようなデータの整理では，tidyverseのdplyrパッケージを使います。ここで，%>%というパイプ演算子というものがでてきます。これは，%>%の左(or前)のものが，次にくる関数の第一引数に入ることを意味します（例えば，上のlength(fileNames)の場合，length()関数の第一引数は，ファイル名リストのfileNamesになります）。
+
+
+具体的な操作は以下になります。(1)まず，filterで，trial_typeが"categorize"なものにしぼります。(2)key_pressは，90だと紫の選択，77だと緑の選択になります。90と77だと扱いにくいので，90は1，77は0に変換します。ifelse(key_press == 90, 1,0)を使って，90なら1，それ以外は0になるようにして，mutateの新しい変数rewardを作成します（mutateは，新しい変数を作成する関数です）。(3)correctは，true,falseになるのですが，これも扱いにくいので，trueは1,falseは0にします。as.numeric(as.logical(correct))を使って，論理値にした上で，数値型に変換します。これもmutateを使って新たにrewardという名前を付けます。(4)この段階で，key_press, trial_type, time_elapsed, internal_node_id, correct, stimulusが要らなくなりました。selectを使って，不要な変数にマイナスをつけて除外します。(5)最後に，renameを使ってtrial_indexをnoに変更します。
+
+```{r}
+# データの整理
+sub01 <- sub01 %>% 
+  filter(trial_type=="categorize") %>% 
+  mutate(choice = ifelse(key_press == 90, 1,0)) %>%
+  mutate(reward = as.numeric(as.logical(correct))) %>% 
+  select(-key_press, -trial_type, -time_elapsed, -internal_node_id, -correct, -stimulus) %>% 
+  rename(no = trial_index) 
+# データの確認
+sub01
+```
+
+これで，必要な部分だけきれいに抽出できました。
+
+## ４名のデータの読み込みと保存
+### データの読み込み
+
+さて，今度は４名分のデータ（フォルダ内のすべてのデータ）を読み込んで，整理してみましょう。フォルダ内のデータ数分（今回は４）だけ，上記の操作を繰り返します。繰り返す場合は，for文を使います。for文は以下のように書きます。1から"繰り返す回数"までを順番にiに代入しつつ，"繰り返したい操作"を繰り返します。
+
+```
+for(i in 1:繰り返す回数){
+    繰り返したい操作
+}
+```
+
+csvファイルを繰り返し読み込むだけでは，それぞれをバラバラに読み込むだけになります。そこで，analysisDataという変数を作って，新たにデータを読み込んで・整理したら，rbind()を使って結合するとう作業をしてみましょう。
+
+```{r, message=FALSE}
+# analysisDataの準備
+analysisData <- NULL
+# 1からnumberSubject分（4回），操作を繰り返す
+for(i in 1:numberSubject){
+  # 読み込んだcsvファイルのデータをtempDataに保存（tempは一時的を意味するtemporaryの省略です）。
+  tempData <- read_csv(paste(workDir, "Data",fileNames[i], sep = "/"))
+  # 上記とほぼ同じ操作をする（最後にデータ数分id番号を追加しています）
+  tempData <- tempData %>%
+    filter(trial_type=="categorize") %>% 
+    mutate(choice = ifelse(key_press == 90, 1,0)) %>%
+    mutate(reward = as.numeric(as.logical(correct))) %>% 
+    select(-key_press, -trial_type, -time_elapsed, -internal_node_id, -correct, -stimulus) %>% 
+    rename(no = trial_index) %>% 
+    mutate(id = rep(i,length(rt)))
+  #データの結合
+  analysisData = rbind(analysisData, tempData)
+}
+# データの確認
+analysisData
+```
+
+
+### データの保存
+
+これで，４名分の生データを読み込んだので，今度は，これをcsvファイルとして保存します。csvファイルは，write.csv()を使って，保存できます。
+
+```
+write.csv(analysisData, "analysisData.csv")
+```
+
+### IDの対応表
+
+上記の作業では，for文でのiをIDとしているが，それが実際のどのファイルに対応するのか対応づけできてない。そこで，以下では，上記と同じようなfor文を使って，iとフォルダのファイル名との対応づけをした対応表(idTable)を作成する。また，tidyverseのstringrパッケージを用いると（stringrパッケージはtidyverseを読み込むだけでは読み込まれないので，別途libraryで読み込む），文字列の一部を抽出することもできる。今回は，参加者ID番号にかかわる4~5番目の文字を抽出してみて，それをidTableにいれる。
+
+```{r}
+library(stringr)
+idTable <- NULL
+for(i in 1:numberSubject){
+  idTable$csvName[i] <- fileNames[i]
+  # csvのファイル名の4~5文字目を抽出（つまりsubと.csvの間のID番号の部分）
+  idTable$csvId[i] <- str_sub(fileNames[i],4,5)
+  idTable$dataId[i] <- i
+}
+idTable <- as.data.frame(idTable)
+print(idTable)
+```
+
+## もう少し処理をしたデータの読み込みと保存
+### データの読み込み
+
+上記では，フォルダ内のすべてのcsvファイルを読み込んで，その生データを結合して，１つのcsvファイルで保存しました。私個人としては，このように各試行ごとのデータを使って解析した方が良いと考えますが，目的によっては，各試行ごとのデータではなく，全試行における正答率などを参加者ごとに計算した場合もあるかと思います。今回は，各参加者のデータを読み込んで，紫を選んだ比率（1が紫，緑は0）と正答率(correctでは1が正答，0が誤答)を各参加者ごとにsummaryDataに保存してみます。先程ののanalysiDataを作成したコードにちょっとだけ追加をしてみます。
+
+```{r, message=FALSE}
+# analysisDataの準備
+analysisData <- NULL
+# summaryDataの準備
+summaryData <- NULL
+# 1からnumberSubject分（4回），操作を繰り返す
+for(i in 1:numberSubject){
+  # 読み込んだcsvファイルのデータをtempDataに保存（tempは一時的を意味するtemporaryの省略です）。
+  tempData <- read_csv(paste(workDir, "Data",fileNames[i], sep = "/"))
+  # 上記とほぼ同じ操作をする（最後にデータ数分id番号を追加しています）
+  tempData <- tempData %>%
+    filter(trial_type=="categorize") %>% 
+    mutate(choice = ifelse(key_press == 90, 1,0)) %>%
+    mutate(reward = as.numeric(as.logical(correct))) %>% 
+    select(-key_press, -trial_type, -time_elapsed, -internal_node_id, -correct, -stimulus) %>% 
+    rename(no = trial_index) %>% 
+    mutate(id = rep(i,length(rt)))
+  #データの結合
+  analysisData = rbind(analysisData, tempData)
+  
+  # ここまで一緒。ここから，summaryDataの追加作業
+  summaryData$id[i] <- i
+  # 紫の選択率
+  summaryData$purpleRate[i] <- sum(tempData$reward)/length(tempData$reward)
+  # 正答率
+  summaryData$correctRate[i] <- sum(tempData$choice)/length(tempData$choice)
+}
+#データフレーム化と結果の表示
+summaryData <- as_data_frame(summaryData)
+summaryData
+```
+
+### データの保存
+
+summaryDataをcsv形式で保存する。
+
+```
+write.csv(summaryData, "summaryData.csv")
+```
+
+## おわりに
+
+これで，解析用のデータセットを作ることができました。あとは，Rで解析してもよし，SPSSやHADで解析しても良いです（個人的にはRを薦めます・・・）。Rの入門資料については，以下にスライドをアップしていますので，読んでみてください。
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/bdxbQ58hm1Bu5O" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/r-74207682" title="臨床心理学におけるR入門: データハンドリングから統計解析まで" target="_blank">臨床心理学におけるR入門: データハンドリングから統計解析まで</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+また，研究室においてあるRの書籍や以下のサイトを参考にしつつRでデータハンドリング・視覚化・統計解析（モデリング）をしてみましょう！
+
+- [「R for Data Science: Import, Tidy, Transform, Visualize, and Model Data」](http://amzn.asia/1BxQP81)（研究室の本棚においてあります）
+- [Rで表の作成(Mr.Unadon氏のブログ)](https://mrunadon.github.io/TableWithR/)
+- [Rで色々な図の作成(Mr.Unadon氏のブログ)]((https://mrunadon.github.io/ggplot2/))
+- [Rで論文用の図の作成（Mr.Unadon氏のブログ）](https://mrunadon.github.io/ThesisPlot/)
+- [Rチュートリアルセミナー特別テキスト（山口大学小杉先生・押江先生のPDF資料）](http://kosugitti.sakura.ne.jp/wp/wp-content/uploads/2014/01/R_tutorial2013.pdf)
