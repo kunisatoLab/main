@@ -588,16 +588,16 @@ V(D) = \frac{1}{1 + kD}
 <pre><code>## # A tibble: 65 x 1
 ##         Rhat
 ##  *     &lt;dbl&gt;
-##  1 1.0088983
-##  2 0.9994885
-##  3 1.0018222
-##  4 1.0000639
-##  5 1.0000058
-##  6 0.9995902
-##  7 1.0007815
-##  8 1.0030283
-##  9 0.9993483
-## 10 1.0000237
+##  1 1.0047494
+##  2 1.0002733
+##  3 1.0011410
+##  4 1.0007227
+##  5 0.9994303
+##  6 0.9999657
+##  7 1.0002258
+##  8 1.0003778
+##  9 0.9985601
+## 10 1.0008535
 ## # ... with 55 more rows</code></pre>
 </div>
 <div class="section level2">
@@ -614,14 +614,14 @@ V(D) = \frac{1}{1 + kD}
 <p>hBayesDMでは，printFitで情報量基準も出してくれます。デフォルトはLOOICで，指定すればWAICも出力してくれます。</p>
 <pre class="r"><code>printFit(output)</code></pre>
 <pre><code>## # A tibble: 1 x 2
-##           Model    LOOIC
-## *         &lt;chr&gt;    &lt;dbl&gt;
-## 1 dd_hyperbolic 1882.178</code></pre>
+##           Model  LOOIC
+## *         &lt;chr&gt;  &lt;dbl&gt;
+## 1 dd_hyperbolic 1883.6</code></pre>
 <pre class="r"><code>printFit(output, ic=&quot;waic&quot;)</code></pre>
 <pre><code>## # A tibble: 1 x 2
-##           Model    WAIC
-## *         &lt;chr&gt;   &lt;dbl&gt;
-## 1 dd_hyperbolic 1870.09</code></pre>
+##           Model     WAIC
+## *         &lt;chr&gt;    &lt;dbl&gt;
+## 1 dd_hyperbolic 1869.905</code></pre>
 </div>
 </div>
 <div class="section level1">
