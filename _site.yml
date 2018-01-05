@@ -28,6 +28,8 @@ navbar:
     href: education.html
   - text: News
     href: news.html
+  - text: English
+    href: https://kunisatolab.github.io/english/code.html
 output:
   html_document:
     theme: cosmo

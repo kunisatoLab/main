@@ -321,6 +321,9 @@ div.tocify {
 <li>
   <a href="news.html">News</a>
 </li>
+<li>
+  <a href="https://kunisatolab.github.io/english/code.html">English</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -490,15 +493,15 @@ head(rt_data)</code></pre>
 <pre><code>## # A tibble: 9 x 1
 ##        Rhat
 ## *     &lt;dbl&gt;
-## 1 1.0017903
-## 2 1.0003424
-## 3 1.0007951
-## 4 1.0008720
-## 5 0.9994245
-## 6 0.9999890
-## 7 1.0016091
-## 8 0.9997998
-## 9 1.0018322</code></pre>
+## 1 1.0022823
+## 2 1.0003688
+## 3 1.0000617
+## 4 0.9995727
+## 5 1.0004435
+## 6 1.0013399
+## 7 1.0048000
+## 8 1.0009129
+## 9 1.0044804</code></pre>
 </div>
 <div class="section level2">
 <h2>推定されたパラメータ</h2>
@@ -507,7 +510,7 @@ head(rt_data)</code></pre>
 <pre><code>## # A tibble: 1 x 8
 ##           d         A v_cd1_ch1 v_cd2_ch1 v_cd1_ch2 v_cd2_ch2       tau
 ## *     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 0.6974413 0.7038944  1.882791   2.35575  3.253293  1.441074 0.3395874
+## 1 0.7234558 0.6910057  1.858715  2.334138   3.26715  1.420857 0.3337769
 ## # ... with 1 more variables: subjID &lt;int&gt;</code></pre>
 <pre class="r"><code>plot(output)</code></pre>
 <p><img src="how-to-hBayesDM-RT_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
@@ -520,12 +523,12 @@ head(rt_data)</code></pre>
 <pre><code>## # A tibble: 1 x 2
 ##                 Model  LOOIC
 ## *               &lt;chr&gt;  &lt;dbl&gt;
-## 1 choiceRT_lba_single -0.244</code></pre>
+## 1 choiceRT_lba_single -0.233</code></pre>
 <pre class="r"><code>printFit(output, ic=&quot;waic&quot;)</code></pre>
 <pre><code>## # A tibble: 1 x 2
-##                 Model  WAIC
-## *               &lt;chr&gt; &lt;dbl&gt;
-## 1 choiceRT_lba_single -0.75</code></pre>
+##                 Model   WAIC
+## *               &lt;chr&gt;  &lt;dbl&gt;
+## 1 choiceRT_lba_single -1.012</code></pre>
 </div>
 <div class="section level2">
 <h2>パラメータリカバリ</h2>
@@ -537,8 +540,8 @@ check_parameter_recovery</code></pre>
 <pre><code>## # A tibble: 2 x 8
 ##           d         A v_cd1_ch1 v_cd2_ch1 v_cd1_ch2 v_cd2_ch2       tau
 ## *     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 0.6974413 0.7038944  1.882791   2.35575  3.253293  1.441074 0.3395874
-## 2 0.7000000 0.3000000  1.800000   3.00000  3.000000  1.800000 0.3000000
+## 1 0.7234558 0.6910057  1.858715  2.334138   3.26715  1.420857 0.3337769
+## 2 0.7000000 0.3000000  1.800000  3.000000   3.00000  1.800000 0.3000000
 ## # ... with 1 more variables: subjID &lt;dbl&gt;</code></pre>
 </div>
 <div id="choicert_lbastan" class="section level2">
