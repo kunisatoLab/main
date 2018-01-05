@@ -326,7 +326,7 @@ div.tocify {
   <a href="news.html">News</a>
 </li>
 <li>
-  <a href="https://kunisatolab.github.io/english/code.html">English</a>
+  <a href="https://kunisatolab.github.io/english/index.html">English</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -379,8 +379,8 @@ div.tocify {
         theta -&gt; k
         n -&gt; k
     }&quot;,engine = &quot;dot&quot;)</code></pre>
-<div id="htmlwidget-2a0798fe55bdefe6df2b" style="width:672px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2a0798fe55bdefe6df2b">{"x":{"diagram":"\n  digraph dot {\n    graph [compound = true, nodesep = .5, ranksep = .25,\n           color = black, label=\"Fig2.1 in Bayesian Cognitive Modeling: A practical Course\"]\n\n      node [shape = circle,style = filled,fillcolor = white,color = black,label = \"&theta;\"] theta\n      node [shape = square,style = filled,fillcolor = grey,color = black,label = \"k\"] k\n      node [shape = square,style = filled,fillcolor = grey,color = black,label = \"n\"] n\n    \n      edge [color = black]\n        theta -> k\n        n -> k\n    }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-d1d7d6775e04afdcfc58" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d1d7d6775e04afdcfc58">{"x":{"diagram":"\n  digraph dot {\n    graph [compound = true, nodesep = .5, ranksep = .25,\n           color = black, label=\"Fig2.1 in Bayesian Cognitive Modeling: A practical Course\"]\n\n      node [shape = circle,style = filled,fillcolor = white,color = black,label = \"&theta;\"] theta\n      node [shape = square,style = filled,fillcolor = grey,color = black,label = \"k\"] k\n      node [shape = square,style = filled,fillcolor = grey,color = black,label = \"n\"] n\n    \n      edge [color = black]\n        theta -> k\n        n -> k\n    }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>Rmarkdownを使っている場合，LaTeX記法が使えますので，以下のように書くときれいに数式も書けます。</p>
 <pre><code>$$ 
 \theta \sim Beta(1, 1)\\
@@ -421,8 +421,8 @@ k \sim Binomial(\theta,n)\\
         t -&gt; lba
         s -&gt; lba [taolport=s,headport=e]
   }&quot;,engine = &quot;dot&quot;)</code></pre>
-<div id="htmlwidget-e1015427a2e0608b1b41" style="width:672px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e1015427a2e0608b1b41">{"x":{"diagram":"\n  digraph dot {\n    graph [splines = line,compound = true, nodesep = .5, ranksep = .25,\n           color = black, label=\"Linear Ballistic Accumulator Model for single participant\"]\n      node [shape = circle,style = filled,fillcolor = white,color = black,label = \"k\"] k\n      node [label = \"A\"] A\n      node [label = \"&tau;\"] t\n      node [label = \"v[1]\"] v1\n      node [label = \"v[2]\"] v2\n      node [label = \"S\"] s\n      node [label = <LBA<FONT POINT-SIZE=\"8\"><SUB>t<\/SUB><\/FONT>>] lba\n      node [fillcolor = grey,label = <RT<FONT POINT-SIZE=\"8\"><SUB>t<\/SUB><\/FONT>>] rt\n        subgraph cluster1 {\n          labelloc=b\n          label = \"Trials t = 1...T\"\n            edge [color = black]\n              lba -> rt\n        }\n      edge [color = black]\n        A -> lba\n        v1 -> lba\n        v2 -> lba\n        k -> lba\n        t -> lba\n        s -> lba [taolport=s,headport=e]\n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-73b5e4fbf14e472c4a69" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-73b5e4fbf14e472c4a69">{"x":{"diagram":"\n  digraph dot {\n    graph [splines = line,compound = true, nodesep = .5, ranksep = .25,\n           color = black, label=\"Linear Ballistic Accumulator Model for single participant\"]\n      node [shape = circle,style = filled,fillcolor = white,color = black,label = \"k\"] k\n      node [label = \"A\"] A\n      node [label = \"&tau;\"] t\n      node [label = \"v[1]\"] v1\n      node [label = \"v[2]\"] v2\n      node [label = \"S\"] s\n      node [label = <LBA<FONT POINT-SIZE=\"8\"><SUB>t<\/SUB><\/FONT>>] lba\n      node [fillcolor = grey,label = <RT<FONT POINT-SIZE=\"8\"><SUB>t<\/SUB><\/FONT>>] rt\n        subgraph cluster1 {\n          labelloc=b\n          label = \"Trials t = 1...T\"\n            edge [color = black]\n              lba -> rt\n        }\n      edge [color = black]\n        A -> lba\n        v1 -> lba\n        v2 -> lba\n        k -> lba\n        t -> lba\n        s -> lba [taolport=s,headport=e]\n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>数式は以下になります。今度もLaTeX記法で記載します。</p>
 <pre><code>$$ 
 k \sim Normal(.5,1)T[0,]\\

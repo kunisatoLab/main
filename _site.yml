@@ -29,7 +29,7 @@ navbar:
   - text: News
     href: news.html
   - text: English
-    href: https://kunisatolab.github.io/english/code.html
+    href: https://kunisatolab.github.io/english/index.html
 output:
   html_document:
     theme: cosmo
