@@ -20,9 +20,9 @@ title: "研究室のメンバー"
 
 ### 大学院生（修士２年）
 
-- 金子美帆
-- 菊池羽音
-- 土谷美月
+- 金子美帆 [参加者用研究FB](materials/FB/2018_kaneko.pdf)
+- 菊池羽音 [参加者用研究FB](materials/FB/2018_kikuchi.pdf)
+- 土谷美月 [参加者用研究FB](materials/FB/2018_tsuchiya.pdf)
 
 
 ### 大学院生（修士１年）
