@@ -391,14 +391,14 @@ rt_data &lt;- data.frame(subjID,choice=rt_data_c12$response,RT=rt_data_c12$rt,co
 
 head(rt_data)</code></pre>
 <pre><code>## # A tibble: 6 x 4
-##   subjID choice        RT condition
-## *  &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;int&gt;
-## 1      1      2 0.5627358         1
-## 2      1      2 0.6020092         1
-## 3      1      1 0.6839106         1
-## 4      1      2 0.5896171         1
-## 5      1      2 0.6832914         1
-## 6      1      2 0.5049498         1</code></pre>
+##   subjID choice    RT condition
+## *  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+## 1   1.00   2.00 0.563         1
+## 2   1.00   2.00 0.602         1
+## 3   1.00   1.00 0.684         1
+## 4   1.00   2.00 0.590         1
+## 5   1.00   2.00 0.683         1
+## 6   1.00   2.00 0.505         1</code></pre>
 </div>
 <div class="section level2 tabset">
 <h2>データの確認</h2>
@@ -491,27 +491,26 @@ head(rt_data)</code></pre>
 <p><img src="how-to-hBayesDM-RT_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code>rhat(output)</code></pre>
 <pre><code>## # A tibble: 9 x 1
-##        Rhat
-## *     &lt;dbl&gt;
-## 1 1.0017903
-## 2 1.0003424
-## 3 1.0007951
-## 4 1.0008720
-## 5 0.9994245
-## 6 0.9999890
-## 7 1.0016091
-## 8 0.9997998
-## 9 1.0018322</code></pre>
+##    Rhat
+## * &lt;dbl&gt;
+## 1 1.00 
+## 2 1.00 
+## 3 1.00 
+## 4 1.000
+## 5 1.00 
+## 6 1.00 
+## 7 1.00 
+## 8 1.00 
+## 9 1.00</code></pre>
 </div>
 <div class="section level2">
 <h2>推定されたパラメータ</h2>
 <p>hBayesDMのplot関数を使うとパラメータの事後分布をプロットしてくれます。hBayesDMが出力するオブジェクトの中には，いろいろはいっているのですが，allIndParsには，推定したパラメータの要約統計量（推定時にmean,mode,medianが選択できる）が入っています。各パラメータのMCMCサンプルがはいっているparValsやStanの標準出力のfitなどもありますので，暇な時に確認すると便利かと思います。</p>
 <pre class="r"><code>output$allIndPars</code></pre>
 <pre><code>## # A tibble: 1 x 8
-##           d         A v_cd1_ch1 v_cd2_ch1 v_cd1_ch2 v_cd2_ch2       tau
-## *     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 0.6974413 0.7038944  1.882791   2.35575  3.253293  1.441074 0.3395874
-## # ... with 1 more variables: subjID &lt;int&gt;</code></pre>
+##       d     A v_cd1_ch1 v_cd2_ch1 v_cd1_ch2 v_cd2_ch2   tau subjID
+## * &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt;
+## 1 0.723 0.691      1.86      2.33      3.27      1.42 0.334      1</code></pre>
 <pre class="r"><code>plot(output)</code></pre>
 <p><img src="how-to-hBayesDM-RT_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <pre><code>## Drift rates (v) are numbered as follows: v[condition-choice]. For example, v[1-2] refers to the drift rate estimate for when choice==2 and condition==1.</code></pre>
@@ -521,14 +520,14 @@ head(rt_data)</code></pre>
 <p>hBayesDMでは，printFitで情報量基準も出してくれます。デフォルトはLOOICで，指定すればWAICも出力してくれます。</p>
 <pre class="r"><code>printFit(output)</code></pre>
 <pre><code>## # A tibble: 1 x 2
-##                 Model  LOOIC
-## *               &lt;chr&gt;  &lt;dbl&gt;
-## 1 choiceRT_lba_single -0.244</code></pre>
+##   Model                LOOIC
+## * &lt;chr&gt;                &lt;dbl&gt;
+## 1 choiceRT_lba_single -0.233</code></pre>
 <pre class="r"><code>printFit(output, ic=&quot;waic&quot;)</code></pre>
 <pre><code>## # A tibble: 1 x 2
-##                 Model  WAIC
-## *               &lt;chr&gt; &lt;dbl&gt;
-## 1 choiceRT_lba_single -0.75</code></pre>
+##   Model                WAIC
+## * &lt;chr&gt;               &lt;dbl&gt;
+## 1 choiceRT_lba_single -1.01</code></pre>
 </div>
 <div class="section level2">
 <h2>パラメータリカバリ</h2>
@@ -538,11 +537,10 @@ check_parameter_recovery &lt;- rbind(output$allIndPars,true_parameter)
 rownames(check_parameter_recovery) &lt;- c(&quot;Estimate&quot;, &quot;True&quot;) 
 check_parameter_recovery</code></pre>
 <pre><code>## # A tibble: 2 x 8
-##           d         A v_cd1_ch1 v_cd2_ch1 v_cd1_ch2 v_cd2_ch2       tau
-## *     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 0.6974413 0.7038944  1.882791   2.35575  3.253293  1.441074 0.3395874
-## 2 0.7000000 0.3000000  1.800000   3.00000  3.000000  1.800000 0.3000000
-## # ... with 1 more variables: subjID &lt;dbl&gt;</code></pre>
+##       d     A v_cd1_ch1 v_cd2_ch1 v_cd1_ch2 v_cd2_ch2   tau subjID
+## * &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1 0.723 0.691      1.86      2.33      3.27      1.42 0.334   1.00
+## 2 0.700 0.300      1.80      3.00      3.00      1.80 0.300   1.00</code></pre>
 </div>
 <div id="choicert_lbastan" class="section level2">
 <h2>choiceRT_lbaの中身のStanコード</h2>

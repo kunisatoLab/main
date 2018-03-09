@@ -25,10 +25,10 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="site_libs/htmlwidgets-1.0/htmlwidgets.js"></script>
 <script src="site_libs/viz-0.3/viz.js"></script>
 <link href="site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="site_libs/grViz-binding-0.8.4/grViz.js"></script>
+<script src="site_libs/grViz-binding-0.9.2/grViz.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -379,8 +379,8 @@ div.tocify {
         theta -&gt; k
         n -&gt; k
     }&quot;,engine = &quot;dot&quot;)</code></pre>
-<div id="htmlwidget-38002a53dcd92635119f" style="width:672px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-38002a53dcd92635119f">{"x":{"diagram":"\n  digraph dot {\n    graph [compound = true, nodesep = .5, ranksep = .25,\n           color = black, label=\"Fig2.1 in Bayesian Cognitive Modeling: A practical Course\"]\n\n      node [shape = circle,style = filled,fillcolor = white,color = black,label = \"&theta;\"] theta\n      node [shape = square,style = filled,fillcolor = grey,color = black,label = \"k\"] k\n      node [shape = square,style = filled,fillcolor = grey,color = black,label = \"n\"] n\n    \n      edge [color = black]\n        theta -> k\n        n -> k\n    }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-d5f2c06e9324a46c865b" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d5f2c06e9324a46c865b">{"x":{"diagram":"\n  digraph dot {\n    graph [compound = true, nodesep = .5, ranksep = .25,\n           color = black, label=\"Fig2.1 in Bayesian Cognitive Modeling: A practical Course\"]\n\n      node [shape = circle,style = filled,fillcolor = white,color = black,label = \"&theta;\"] theta\n      node [shape = square,style = filled,fillcolor = grey,color = black,label = \"k\"] k\n      node [shape = square,style = filled,fillcolor = grey,color = black,label = \"n\"] n\n    \n      edge [color = black]\n        theta -> k\n        n -> k\n    }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>Rmarkdownを使っている場合，LaTeX記法が使えますので，以下のように書くときれいに数式も書けます。</p>
 <pre><code>$$ 
 \theta \sim Beta(1, 1)\\
@@ -421,8 +421,8 @@ k \sim Binomial(\theta,n)\\
         t -&gt; lba
         s -&gt; lba [taolport=s,headport=e]
   }&quot;,engine = &quot;dot&quot;)</code></pre>
-<div id="htmlwidget-7c858e1d6fc0b21fe11e" style="width:672px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7c858e1d6fc0b21fe11e">{"x":{"diagram":"\n  digraph dot {\n    graph [splines = line,compound = true, nodesep = .5, ranksep = .25,\n           color = black, label=\"Linear Ballistic Accumulator Model for single participant\"]\n      node [shape = circle,style = filled,fillcolor = white,color = black,label = \"k\"] k\n      node [label = \"A\"] A\n      node [label = \"&tau;\"] t\n      node [label = \"v[1]\"] v1\n      node [label = \"v[2]\"] v2\n      node [label = \"S\"] s\n      node [label = <LBA<FONT POINT-SIZE=\"8\"><SUB>t<\/SUB><\/FONT>>] lba\n      node [fillcolor = grey,label = <RT<FONT POINT-SIZE=\"8\"><SUB>t<\/SUB><\/FONT>>] rt\n        subgraph cluster1 {\n          labelloc=b\n          label = \"Trials t = 1...T\"\n            edge [color = black]\n              lba -> rt\n        }\n      edge [color = black]\n        A -> lba\n        v1 -> lba\n        v2 -> lba\n        k -> lba\n        t -> lba\n        s -> lba [taolport=s,headport=e]\n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5fd4dbc36d37cbf02e2e" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5fd4dbc36d37cbf02e2e">{"x":{"diagram":"\n  digraph dot {\n    graph [splines = line,compound = true, nodesep = .5, ranksep = .25,\n           color = black, label=\"Linear Ballistic Accumulator Model for single participant\"]\n      node [shape = circle,style = filled,fillcolor = white,color = black,label = \"k\"] k\n      node [label = \"A\"] A\n      node [label = \"&tau;\"] t\n      node [label = \"v[1]\"] v1\n      node [label = \"v[2]\"] v2\n      node [label = \"S\"] s\n      node [label = <LBA<FONT POINT-SIZE=\"8\"><SUB>t<\/SUB><\/FONT>>] lba\n      node [fillcolor = grey,label = <RT<FONT POINT-SIZE=\"8\"><SUB>t<\/SUB><\/FONT>>] rt\n        subgraph cluster1 {\n          labelloc=b\n          label = \"Trials t = 1...T\"\n            edge [color = black]\n              lba -> rt\n        }\n      edge [color = black]\n        A -> lba\n        v1 -> lba\n        v2 -> lba\n        k -> lba\n        t -> lba\n        s -> lba [taolport=s,headport=e]\n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>数式は以下になります。今度もLaTeX記法で記載します。</p>
 <pre><code>$$ 
 k \sim Normal(.5,1)T[0,]\\
