@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Rで認知課題の解析データセットを作成しよう！</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="site_style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Computational Clinical Psychology Lab</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="research.html">Research</a>
+</li>
+<li>
+  <a href="team.html">Team</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Publications
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="book.html">書籍</a>
+    </li>
+    <li>
+      <a href="articles.html">学術論文</a>
+    </li>
+    <li>
+      <a href="articles-japanese.html">学術論文（日本語）</a>
+    </li>
+    <li>
+      <a href="bulletin.html">紀要論文</a>
+    </li>
+    <li>
+      <a href="presentation.html">国際会議発表</a>
+    </li>
+    <li>
+      <a href="presentation-japanese.html">国内学会・研究会発表</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="code_tips.html">Code &amp; Tips</a>
+</li>
+<li>
+  <a href="education.html">Education</a>
+</li>
+<li>
+  <a href="news.html">News</a>
+</li>
+<li>
+  <a href="https://kunisatolab.github.io/english/index.html">English</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Rで認知課題の解析データセットを作成しよう！</h1>
+
+</div>
+
+
+<div class="section level2">
+<h2>統計解析よりも解析データセット作成が重要！</h2>
+<p>統計解析よりも，その解析データセットの作成において間違いを犯すことの方が多いです。また，その間違いに気づきにくいことがあります。例えば，PsychoPyを用いた認知課題では（詳しくは<a href="https://kunisatolab.github.io/how-to-psychopy.html">こちら</a>），結果がcsvファイルで出力されます。もしsub01からsub04まで個別のcsvファイルがある場合，多くの人は，(1)それぞれのcsvファイルをダブルクリックしてExcelで開いて，(2)必要箇所をコピーし，(3)別のExcelファイルにペーストすることで解析用データセットを作ると思います。このように作られた解析データセットに誤りがないかどうかは，みなさんのマウス操作に委ねられます。もしかすると，sub02のデータをコピーしたつもりが，上手くいっておらず，sub02の部分にsub01のデータを貼り付けてしまうこともあるかもしれません。コピペには，こういう危険性があります。さらに，もし間違っていても，その間違いに気づけないことも多いです。また，なんらかの操作ミスでオリジナルのcsvファイルやエクセルファイルを変更してしまうと取り返しがつかないこともあります（そのためにも，解析に使うデータとは別にオリジナルのデータをバックアップしておきましょう）。</p>
+<p>参加者ごとにファイルが出力される認知課題解析用データセットの作成には以下の条件が必要です。そして，その条件を満たしてくれるのがRによるデータハンドリングです。</p>
+<ol style="list-style-type: decimal">
+<li>オリジナルの生データを直接操作しない</li>
+<li>オリジナルの生データから必要な情報を人力ではない形で抽出する</li>
+<li>オリジナルの生データを１つのファイルにまとめて，解析可能なフォーマットに変更する</li>
+<li>上記の操作について作業ログが残り，何度でもやり直せる</li>
+</ol>
+</div>
+<div id="rrstudio" class="section level2">
+<h2>RとRstudioの準備</h2>
+<p>Rを<a href="https://www.r-project.org/">R Projectのサイト</a>からダウンロードしてインストールしてください。Windowsユーザーは，“Windows　R　インストール”，Macユーザーは，“Mac　R　インストール”などでGoogle検索して，インストール方法を調べて下さい。次に，Rstudioを<a href="https://www.rstudio.com/">Rstudioのサイト</a>からダウンロードしてインストールしてください。Windowsユーザーは，“Windows　Rstudio　インストール”，Macユーザーは，“Mac　Rstudio　インストール”などでGoogle検索して，インストール方法を調べて下さい。</p>
+</div>
+<div class="section level2">
+<h2>使用パッケージの準備</h2>
+<p>データの前処理では，tidyverseパッケージを用います。以下のようにコンソールに打ち込んで，tidyverseをインストールしましょう。</p>
+<pre><code>install.packages(&quot;tidyverse&quot;, dependencies = TRUE)</code></pre>
+<p>インストールができたら，使う前にlibrary()関数を使って，tidyverseパッケージを読み込んでおきます。</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## Loading tidyverse: ggplot2
+## Loading tidyverse: tibble
+## Loading tidyverse: tidyr
+## Loading tidyverse: readr
+## Loading tidyverse: purrr
+## Loading tidyverse: dplyr</code></pre>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.4.2</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.4.2</code></pre>
+<pre><code>## Conflicts with tidy packages ----------------------------------------------</code></pre>
+<pre><code>## filter(): dplyr, stats
+## lag():    dplyr, stats</code></pre>
+</div>
+<div class="section level2">
+<h2>データとフォルダの準備</h2>
+<p><a href="materials/Analysis.zip">サンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。“Analysis”フォルダ内に“Data”フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。</p>
+<p>今回は，すでにフォルダに名前がついていましたが，自分でフォルダ名を付ける場合は，日本語を使用するのは推奨しません。フォルダとファイルと変数名には，英語（日本語のローマ字化でけっこう）を使用してください。</p>
+</div>
+<div id="rstudio" class="section level2">
+<h2>Rstudioの作業ディレクトリーの設定</h2>
+<p>　 なお，パソコンで解析などの作業をする場合に，パソコンに，パソコン上のどこで作業をするのか，その場所を知らせる必要があります。そのような作業場所を作業ディレクトリーと言います。Rstudio上で，作業ディレクトリーを先程のAnalysisフォルダに設定します。具体的な操作は，　RStudioのメニューバーから、「Session」-&gt;「Set Working Directory」-&gt;「Choose Directory」で，先程のAnalysisフォルダを選択してください。</p>
+</div>
+<div class="section level2">
+<h2>カレントディレクトリーの移動</h2>
+<p>基本的には，Analysisフォルダで解析の前処理や解析は行いますが，一時的にフォルダ移動する必要があります。その時に便利なのが，getwd()とsetwd()です。wdは，作業ディレクトリ(working directory)を意味し，getwdで現在の作業ディレクトリの情報を取得し，setwdで作業ディレクトリを設定します。</p>
+<p>以下をRstudioのConsoleにタイプしてみましょう！</p>
+<pre><code>getwd()</code></pre>
+<p>おそらく，さきほど設定したAnalysisフォルダまでのパスが出力されたかと思います（そうじゃない人は，“Rstudioの作業ディレクトリーの設定”に戻って下さい）。</p>
+<p>次に，Analysisフォルダの１つ下の階層にあるDataフォルダに移動してみましょう。以下をRstudioのConsoleにタイプしてみましょう！</p>
+<pre><code>workDir &lt;- getwd()
+setwd(paste(workDir, &quot;Data&quot;, sep = &quot;/&quot;))</code></pre>
+<p>上記のコードでは，まず１行目で，getwd()で取得した作業ディレクトリのパスをworkDirに入れます。ここで，&lt;-という矢印は，右側のものを左側のものにいれる（代入する）ということを意味します。次に，setwdを使って，workDir（作業ディレクトリのパス）とDataをpasteで結合し（sep=“/”で/で区切るように設定），Analysis下のDataフォルダに作業ディレクトリを変更しています。上記を打ち込んだら，getwd()をタイプして，ちゃんとDataフォルダが作業ディレクトリになっているか確認しましょう！</p>
+<p>なお，DataフォルダからAnalysisフォルダに戻るには，以下のsetwd(“..”)が便利です（“..”で１つ上の階層に移動します）。</p>
+<pre><code>setwd(&quot;..&quot;)</code></pre>
+<p>上記のsetwd(“..”)をRstudioのConsoleに打ちこんでから，getwd()でAnalysisフォルダに戻ってきているか確認をしてみましょう。</p>
+</div>
+<div id="data" class="section level2">
+<h2>Dataフォルダ内のファイル名を取得</h2>
+<p>もう一度，Dataフォルダに移動します。その上で，list.filse()を使って，フォルダ内のファイル名をリスト化します（そしてfileNamesに入れる）。</p>
+<pre class="r"><code>workDir &lt;- getwd()</code></pre>
+<pre class="r"><code>setwd(paste(workDir, &quot;Data&quot;, sep = &quot;/&quot;))
+fileNames &lt;- list.files()</code></pre>
+<p>Analysisフォルダに“..”で戻ります。</p>
+<pre><code>setwd(&quot;..&quot;)</code></pre>
+<p>fileNamseの中身を確認します。フォルダに入っているファイル名がfileNamesに格納されているかと思います。</p>
+<pre class="r"><code>print(fileNames)</code></pre>
+<pre><code>## [1] &quot;sub01.csv&quot; &quot;sub02.csv&quot; &quot;sub03.csv&quot; &quot;sub04.csv&quot;</code></pre>
+</div>
+<div id="data" class="section level2">
+<h2>Dataフォルダ内のファイル数を確認</h2>
+<p>fileNamesに格納されているファイルの数から参加者数を確認します。lengthでデータの長さ（ここでは，fileNamesに含まれるデータの個数）がわかります。今回は，４個のデータが入っています。</p>
+<pre class="r"><code>numberSubject &lt;- length(fileNames)
+print(numberSubject)</code></pre>
+<pre><code>## [1] 4</code></pre>
+</div>
+<div id="sub01" class="section level2">
+<h2>sub01のデータを読み込んでみる</h2>
+<p>では，早速，sub01.csvを読み込んでみましょう！tidyverseに入っているreadrパッケージのread_csv()でcsvファイルが読み込めます。そして，読み込むファイル名は，fileNamesに格納されているのものの１つ目（つまり，sub01）です。</p>
+<pre class="r"><code>sub01 &lt;- read_csv(paste(workDir, &quot;Data&quot;,fileNames[1], sep = &quot;/&quot;))
+sub01</code></pre>
+<pre><code>## # A tibble: 122 x 8
+##       rt key_press trial_type trial_index time_elapsed internal_node_id
+##    &lt;int&gt;     &lt;int&gt; &lt;chr&gt;            &lt;int&gt;        &lt;int&gt; &lt;chr&gt;           
+##  1  8693        32 text                 0         8697 0.0-0.0         
+##  2  1194        90 categorize           1        12904 0.0-1.0-0.0     
+##  3   316        90 categorize           2        16231 0.0-1.0-1.0     
+##  4   313        90 categorize           3        19552 0.0-1.0-2.0     
+##  5   352        77 categorize           4        22911 0.0-1.0-3.0     
+##  6   450        90 categorize           5        26367 0.0-1.0-4.0     
+##  7   298        90 categorize           6        29672 0.0-1.0-5.0     
+##  8   305        90 categorize           7        32985 0.0-1.0-6.0     
+##  9   197        90 categorize           8        36193 0.0-1.0-7.0     
+## 10   296        90 categorize           9        39495 0.0-1.0-8.0     
+## # ... with 112 more rows, and 2 more variables: correct &lt;chr&gt;,
+## #   stimulus &lt;chr&gt;</code></pre>
+</div>
+<div id="sub01" class="section level2">
+<h2>sub01のデータで必要な部分を抽出</h2>
+<p>上記のsub01のデータの解析で必要なのは，rt（反応時間）, key_press（押したキー），trial_index(試行番号)，correct（正誤）になります。また，trial_typeでは，categorizeのデータだけが欲しい（textは教示なので，いらない）。このようなデータの整理では，tidyverseのdplyrパッケージを使います。ここで，%&gt;%というパイプ演算子というものがでてきます。これは，%&gt;%の左(or前)のものが，次にくる関数の第一引数に入ることを意味します（例えば，上のlength(fileNames)の場合，length()関数の第一引数は，ファイル名リストのfileNamesになります）。</p>
+<p>具体的な操作は以下になります。(1)まず，filterで，trial_typeが“categorize”なものにしぼります。(2)key_pressは，90だと紫の選択，77だと緑の選択になります。90と77だと扱いにくいので，90は1，77は0に変換します。ifelse(key_press == 90, 1,0)を使って，90なら1，それ以外は0になるようにして，mutateの新しい変数rewardを作成します（mutateは，新しい変数を作成する関数です）。(3)correctは，true,falseになるのですが，これも扱いにくいので，trueは1,falseは0にします。as.numeric(as.logical(correct))を使って，論理値にした上で，数値型に変換します。これもmutateを使って新たにrewardという名前を付けます。(4)この段階で，key_press, trial_type, time_elapsed, internal_node_id, correct, stimulusが要らなくなりました。selectを使って，不要な変数にマイナスをつけて除外します。(5)最後に，renameを使ってtrial_indexをnoに変更します。</p>
+<pre class="r"><code># データの整理
+sub01 &lt;- sub01 %&gt;% 
+  filter(trial_type==&quot;categorize&quot;) %&gt;% 
+  mutate(choice = ifelse(key_press == 90, 1,0)) %&gt;%
+  mutate(reward = as.numeric(as.logical(correct))) %&gt;% 
+  select(-key_press, -trial_type, -time_elapsed, -internal_node_id, -correct, -stimulus) %&gt;% 
+  rename(no = trial_index) 
+# データの確認
+sub01</code></pre>
+<pre><code>## # A tibble: 120 x 4
+##       rt    no choice reward
+##    &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1  1194     1   1.00   1.00
+##  2   316     2   1.00   1.00
+##  3   313     3   1.00   0   
+##  4   352     4   0      0   
+##  5   450     5   1.00   1.00
+##  6   298     6   1.00   1.00
+##  7   305     7   1.00   1.00
+##  8   197     8   1.00   1.00
+##  9   296     9   1.00   0   
+## 10   346    10   0      1.00
+## # ... with 110 more rows</code></pre>
+<p>これで，必要な部分だけきれいに抽出できました。</p>
+</div>
+<div class="section level2">
+<h2>４名のデータの読み込みと保存</h2>
+<div class="section level3">
+<h3>データの読み込み</h3>
+<p>さて，今度は４名分のデータ（フォルダ内のすべてのデータ）を読み込んで，整理してみましょう。フォルダ内のデータ数分（今回は４）だけ，上記の操作を繰り返します。繰り返す場合は，for文を使います。for文は以下のように書きます。1から“繰り返す回数”までを順番にiに代入しつつ，“繰り返したい操作”を繰り返します。</p>
+<pre><code>for(i in 1:繰り返す回数){
+    繰り返したい操作
+}</code></pre>
+<p>csvファイルを繰り返し読み込むだけでは，それぞれをバラバラに読み込むだけになります。そこで，analysisDataという変数を作って，新たにデータを読み込んで・整理したら，rbind()を使って結合するとう作業をしてみましょう。</p>
+<pre class="r"><code># analysisDataの準備
+analysisData &lt;- NULL
+# 1からnumberSubject分（4回），操作を繰り返す
+for(i in 1:numberSubject){
+  # 読み込んだcsvファイルのデータをtempDataに保存（tempは一時的を意味するtemporaryの省略です）。
+  tempData &lt;- read_csv(paste(workDir, &quot;Data&quot;,fileNames[i], sep = &quot;/&quot;))
+  # 上記とほぼ同じ操作をする（最後にデータ数分id番号を追加しています）
+  tempData &lt;- tempData %&gt;%
+    filter(trial_type==&quot;categorize&quot;) %&gt;% 
+    mutate(choice = ifelse(key_press == 90, 1,0)) %&gt;%
+    mutate(reward = as.numeric(as.logical(correct))) %&gt;% 
+    select(-key_press, -trial_type, -time_elapsed, -internal_node_id, -correct, -stimulus) %&gt;% 
+    rename(no = trial_index) %&gt;% 
+    mutate(id = rep(i,length(rt)))
+  #データの結合
+  analysisData = rbind(analysisData, tempData)
+}
+# データの確認
+analysisData</code></pre>
+<pre><code>## # A tibble: 480 x 5
+##       rt    no choice reward    id
+##    &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;
+##  1  1194     1   1.00   1.00     1
+##  2   316     2   1.00   1.00     1
+##  3   313     3   1.00   0        1
+##  4   352     4   0      0        1
+##  5   450     5   1.00   1.00     1
+##  6   298     6   1.00   1.00     1
+##  7   305     7   1.00   1.00     1
+##  8   197     8   1.00   1.00     1
+##  9   296     9   1.00   0        1
+## 10   346    10   0      1.00     1
+## # ... with 470 more rows</code></pre>
+</div>
+<div class="section level3">
+<h3>データの保存</h3>
+<p>これで，４名分の生データを読み込んだので，今度は，これをcsvファイルとして保存します。csvファイルは，write.csv()を使って，保存できます。</p>
+<pre><code>write.csv(analysisData, &quot;analysisData.csv&quot;)</code></pre>
+</div>
+<div id="id" class="section level3">
+<h3>IDの対応表</h3>
+<p>上記の作業では，for文でのiをIDとしているが，それが実際のどのファイルに対応するのか対応づけできてない。そこで，以下では，上記と同じようなfor文を使って，iとフォルダのファイル名との対応づけをした対応表(idTable)を作成する。また，tidyverseのstringrパッケージを用いると（stringrパッケージはtidyverseを読み込むだけでは読み込まれないので，別途libraryで読み込む），文字列の一部を抽出することもできる。今回は，参加者ID番号にかかわる4~5番目の文字を抽出してみて，それをidTableにいれる。</p>
+<pre class="r"><code>library(stringr)
+idTable &lt;- NULL
+for(i in 1:numberSubject){
+  idTable$csvName[i] &lt;- fileNames[i]
+  # csvのファイル名の4~5文字目を抽出（つまりsubと.csvの間のID番号の部分）
+  idTable$csvId[i] &lt;- str_sub(fileNames[i],4,5)
+  idTable$dataId[i] &lt;- i
+}
+idTable &lt;- as.data.frame(idTable)
+print(idTable)</code></pre>
+<pre><code>##     csvName csvId dataId
+## 1 sub01.csv    01      1
+## 2 sub02.csv    02      2
+## 3 sub03.csv    03      3
+## 4 sub04.csv    04      4</code></pre>
+</div>
+</div>
+<div class="section level2">
+<h2>もう少し処理をしたデータの読み込みと保存</h2>
+<div id="-1" class="section level3">
+<h3>データの読み込み</h3>
+<p>上記では，フォルダ内のすべてのcsvファイルを読み込んで，その生データを結合して，１つのcsvファイルで保存しました。私個人としては，このように各試行ごとのデータを使って解析した方が良いと考えますが，目的によっては，各試行ごとのデータではなく，全試行における正答率などを参加者ごとに計算した場合もあるかと思います。今回は，各参加者のデータを読み込んで，紫を選んだ比率（1が紫，緑は0）と正答率(correctでは1が正答，0が誤答)を各参加者ごとにsummaryDataに保存してみます。先程ののanalysiDataを作成したコードにちょっとだけ追加をしてみます。</p>
+<pre class="r"><code># analysisDataの準備
+analysisData &lt;- NULL
+# summaryDataの準備
+summaryData &lt;- NULL
+# 1からnumberSubject分（4回），操作を繰り返す
+for(i in 1:numberSubject){
+  # 読み込んだcsvファイルのデータをtempDataに保存（tempは一時的を意味するtemporaryの省略です）。
+  tempData &lt;- read_csv(paste(workDir, &quot;Data&quot;,fileNames[i], sep = &quot;/&quot;))
+  # 上記とほぼ同じ操作をする（最後にデータ数分id番号を追加しています）
+  tempData &lt;- tempData %&gt;%
+    filter(trial_type==&quot;categorize&quot;) %&gt;% 
+    mutate(choice = ifelse(key_press == 90, 1,0)) %&gt;%
+    mutate(reward = as.numeric(as.logical(correct))) %&gt;% 
+    select(-key_press, -trial_type, -time_elapsed, -internal_node_id, -correct, -stimulus) %&gt;% 
+    rename(no = trial_index) %&gt;% 
+    mutate(id = rep(i,length(rt)))
+  #データの結合
+  analysisData = rbind(analysisData, tempData)
+  
+  # ここまで一緒。ここから，summaryDataの追加作業
+  summaryData$id[i] &lt;- i
+  # 紫の選択率
+  summaryData$purpleRate[i] &lt;- sum(tempData$reward)/length(tempData$reward)
+  # 正答率
+  summaryData$correctRate[i] &lt;- sum(tempData$choice)/length(tempData$choice)
+}
+#データフレーム化と結果の表示
+summaryData &lt;- as_data_frame(summaryData)
+summaryData</code></pre>
+<pre><code>## # A tibble: 4 x 3
+##      id purpleRate correctRate
+##   &lt;int&gt;      &lt;dbl&gt;       &lt;dbl&gt;
+## 1     1      0.633       0.583
+## 2     2      0.483       0.550
+## 3     3      0.483       0.567
+## 4     4      0.575       0.625</code></pre>
+</div>
+<div id="-1" class="section level3">
+<h3>データの保存</h3>
+<p>summaryDataをcsv形式で保存する。</p>
+<pre><code>write.csv(summaryData, &quot;summaryData.csv&quot;)</code></pre>
+</div>
+</div>
+<div class="section level2">
+<h2>おわりに</h2>
+<p>これで，解析用のデータセットを作ることができました。あとは，Rで解析してもよし，SPSSやHADで解析しても良いです（個人的にはRを薦めます・・・）。Rの入門資料については，以下にスライドをアップしていますので，読んでみてください。</p>
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/bdxbQ58hm1Bu5O" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
+</iframe>
+<div style="margin-bottom:5px">
+<strong> <a href="//www.slideshare.net/YoshihikoKunisato/r-74207682" title="臨床心理学におけるR入門: データハンドリングから統計解析まで" target="_blank">臨床心理学におけるR入門: データハンドリングから統計解析まで</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
+</div>
+<p>また，研究室においてあるRの書籍や以下のサイトを参考にしつつRでデータハンドリング・視覚化・統計解析（モデリング）をしてみましょう！</p>
+<ul>
+<li><a href="http://amzn.asia/1BxQP81">「R for Data Science: Import, Tidy, Transform, Visualize, and Model Data」</a>（研究室の本棚においてあります）</li>
+<li><a href="https://mrunadon.github.io/TableWithR/">Rで表の作成(Mr.Unadon氏のブログ)</a></li>
+<li><a href="(https://mrunadon.github.io/ggplot2/)">Rで色々な図の作成(Mr.Unadon氏のブログ)</a></li>
+<li><a href="https://mrunadon.github.io/ThesisPlot/">Rで論文用の図の作成（Mr.Unadon氏のブログ）</a></li>
+<li><a href="http://kosugitti.sakura.ne.jp/wp/wp-content/uploads/2014/01/R_tutorial2013.pdf">Rチュートリアルセミナー特別テキスト（山口大学小杉先生・押江先生のPDF資料）</a></li>
+</ul>
+</div>
+
+<footer>
+  <p>Copyright &copy; 2018 Yoshihiko Kunisato. All rights reserved </p>
+</footer>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -14,7 +14,7 @@ title: "Code & Tips"
 ## 統計解析用プログラム言語
 - [Rを用いた認知課題の解析データセット作成](how-to-dataHandling.html)
 - [hBayesDMでベイジアン認知モデリング](how-to-hBayesDM.html)
-- [hBayesDMで反応時間のモデリング](https://kunisatolab.github.io/how-to-hBayesDM-RT.html)
+- [hBayesDMで反応時間のモデリング](how-to-hBayesDM-RT.html)
 - [Rを用いたグラフィカルモデルの作成](how-to-graphicalModel.html)
 - [ベイズ統計とRstanの最初の一歩](how-to-start-rstan.html)
 - [LBAモデルを用いた反応時間の解析](https://ykunisato.github.io/lbaStan/lbaStan.html)

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Googleドキュメントによる自動執筆量記録・報告システム</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="site_style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Computational Clinical Psychology Lab</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="research.html">Research</a>
+</li>
+<li>
+  <a href="team.html">Team</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Publications
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="book.html">書籍</a>
+    </li>
+    <li>
+      <a href="articles.html">学術論文</a>
+    </li>
+    <li>
+      <a href="articles-japanese.html">学術論文（日本語）</a>
+    </li>
+    <li>
+      <a href="bulletin.html">紀要論文</a>
+    </li>
+    <li>
+      <a href="presentation.html">国際会議発表</a>
+    </li>
+    <li>
+      <a href="presentation-japanese.html">国内学会・研究会発表</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="code_tips.html">Code &amp; Tips</a>
+</li>
+<li>
+  <a href="education.html">Education</a>
+</li>
+<li>
+  <a href="news.html">News</a>
+</li>
+<li>
+  <a href="https://kunisatolab.github.io/english/index.html">English</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Googleドキュメントによる自動執筆量記録・報告システム</h1>
+
+</div>
+
+
+<div class="section level2">
+<h2>はじめに</h2>
+<p>卒論，修論，投稿論文，依頼論文，書籍などの執筆は，基本的には苦しいし，大変なものだと思います。そのような執筆を進めるコツは，以下の２点になります。</p>
+<ol style="list-style-type: decimal">
+<li>一日の中で論文を書く時間を決める（その時間は執筆以外をしない）</li>
+<li>目標を設定し，日々の執筆量を記録する</li>
+</ol>
+<p>このTipsは，２つ目の内容について扱います。想像すると気づくとおもうのですが，執筆した文字数や語数を毎日カウントして記録するという作業はかなり手がかかります（よほど忍耐のある人しか続かない）。そこで，このTipsでは，２つ目の作業に関して，ほぼ自動化したシステムの構築方法について説明します。</p>
+</div>
+<div id="google" class="section level2">
+<h2>Googleドキュメントで論文を執筆する</h2>
+<p>今回説明する自動執筆量記録・報告システムは，Googleドキュメントを使用していることが前提になります。 原稿を書く時にGoogleドキュメントを使わない方もおられるかもしれませんが，Googleドキュメントを使うことで，以下のようなメリットがあります。</p>
+<ul>
+<li>ネットに接続できればどこでも執筆できる</li>
+<li>スマートフォンやタブレットなどでも執筆できる</li>
+<li>機能がシンプルで執筆に集中できる</li>
+<li>簡単にWordファイルとして出力できる</li>
+<li>共著者との共有が簡単</li>
+<li>共著者と共同執筆が可能</li>
+</ul>
+<p>また，以下のアドオンを追加することで，かなり論文執筆が便利になります。是非ともGoogleドキュメントを使って原稿執筆に励みましょう！</p>
+<ul>
+<li><p><a href="https://chrome.google.com/webstore/detail/table-of-contents/ickpeaanccmmabadbfiknbobkmkdnnaj?hl=ja">Table of contents</a>: アウトライン機能を追加するアドインです。論文などの長い文章を書く場合は，かならずアウトラインをしっかりつくって書きましょう。</p></li>
+<li><p><a href="https://chrome.google.com/webstore/detail/paperpile/imanmdcibgaflfaibbcmmkifdgllfopm">Paperpile</a>: 文献の引用に使える。いろんな使い方ができるが，私は，Mendeleyで文献を管理しているので，Mendeleyからbibtex形式で文献情報を出力して，Paperpileで読み込んで使っている。APAを始めとする様々なフォーマットに対応しているので，とても便利です。</p></li>
+<li><p><a href="https://chrome.google.com/webstore/detail/translate/nejfnokhglmkjgpkjooijcddfecjggan">Translate</a>: GoogleドキュメントのサイドバーでGoogle翻訳が使える。英文執筆に便利です。</p></li>
+</ul>
+</div>
+<div class="section level2">
+<h2>自動執筆量記録・報告システムの概要</h2>
+<p>Googleドキュメントを使った自動執筆量記録・報告システムの概要は以下の図のようになります。一度設定をしておけば，ユーザーはただGoogleドキュメントで執筆をするだけで，１日の執筆量の記録とその日の進捗の報告（+リマインドメール）を受け取ることができます。</p>
+<div class="figure">
+<img src="materials/googleDoc/s1.png" />
+
+</div>
+</div>
+<div class="section level2">
+<h2>自動執筆量記録・報告システムの設定</h2>
+<div id="google" class="section level3">
+<h3>1. 各原稿用のGoogleドキュメントファイルの準備</h3>
+<p>まずは，各原稿用のGoogleドキュメントファイルを準備します。</p>
+</div>
+<div id="google" class="section level3">
+<h3>2. Googleスプレッドシートを準備する</h3>
+<div class="figure">
+<img src="materials/googleDoc/s2.png" />
+
+</div>
+<div class="figure">
+<img src="materials/googleDoc/s3.png" />
+
+</div>
+<div class="figure">
+<img src="materials/googleDoc/s4.png" />
+
+</div>
+</div>
+<div id="google-apps-script" class="section level3">
+<h3>3.スプレッドシートにGoogle Apps Scriptを仕込む</h3>
+<div class="figure">
+<img src="materials/googleDoc/s5.png" />
+
+</div>
+<div class="figure">
+<img src="materials/googleDoc/s6.png" />
+
+</div>
+<pre><code>function autoDocRep() { 
+  // スプレッドシートの読み込み
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(&quot;シート1&quot;);
+  var lastRow = sheet.getDataRange().getLastRow(); //記録の最終行を取得
+  var numDoc = sheet.getDataRange().getLastColumn()-1; //目標の最終列を取得して１引く（ドキュメントの数に対応）
+  // 本日の記録をシートに書き込み
+  var dateToday = new Date(); //今日の日付けを取得
+  sheet.getRange(lastRow+1, 1).setValue(dateToday); //今日の日付を入力
+  // テキストを抽出して，ワード数と文字数（スペース含む）をカウントし，シートに書き込み
+  for (var i=0; i&lt;numDoc; i++){
+    var text = DocumentApp.openById(sheet.getRange(5,i+2).getValues()).getBody().getText(); //ドキュメントを読み込む
+    // 目標シートの単位のところから単語数を記録するか文字数を記録するか分岐
+    if (sheet.getRange(4,i+2).getValues() == 1) {
+      var chars = text.length;　//文字数をカウント
+      sheet.getRange(lastRow+1, i+2).setValue(chars);
+    }
+    else {
+      var words = text.match(/\S+/g).length;　//単語数をカウント
+      sheet.getRange(lastRow+1, i+2).setValue(words);
+    }
+  } 
+  // メールの報告文の作成と送信
+  var bodyText = &#39;昨日の執筆の進捗は，以下になります！\n今日も頑張って執筆しましょう！　\n\n&#39;
+  for (var i=0; i&lt;numDoc; i++){
+    var repDiff = sheet.getRange(lastRow+1,i+2).getValues() - sheet.getRange(lastRow,i+2).getValues();
+    var repProp = Math.floor(sheet.getRange(lastRow+1,i+2).getValues() / sheet.getRange(2,i+2).getValues()*100);
+    var deadline = new Date(sheet.getRange(3,i+2).getValues());
+    var repDay = Math.floor((deadline.getTime() - dateToday.getTime()) / (1000 * 60 * 60 * 24));
+    if (sheet.getRange(4,i+2).getValues() == 1) {
+      bodyText = bodyText + sheet.getRange(1,i+2).getValues() + &#39;： 昨日は&#39; + repDiff + &#39;字書いて，全体の&#39;+ repProp + &#39;%まで進みました。締切まであと&#39; + repDay + &#39;日です。\n&#39;
+     }
+    else {
+      bodyText = bodyText + sheet.getRange(1,i+2).getValues() + &#39;： 昨日は&#39; + repDiff + &#39;語書いて，全体の&#39;+ repProp + &#39;%まで進みました。締切まであと&#39; + repDay + &#39;日です。\n&#39;
+    }
+  }  
+  GmailApp.sendEmail(sheet.getRange(1,1).getValues(),&quot;昨日の執筆進捗の報告&quot;,bodyText);  //メールの送信
+}
+
+function remindMail() {
+  // スプレッドシートの読み込み
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(&quot;シート1&quot;);
+  var lastRow = sheet.getDataRange().getLastRow(); //記録の最終行を取得
+  var numDoc = sheet.getDataRange().getLastColumn()-1; //目標の最終列を取得して１引く（ドキュメントの数に対応）
+  // テキストを抽出して，ワード数と文字数（スペース含む）をカウントし，シートに書き込み
+  var bodyText = &#39;今日の進捗です。少しでも執筆を進めましょう！　\n\n&#39;
+  for (var i=0; i&lt;numDoc; i++){
+    var text = DocumentApp.openById(sheet.getRange(5,i+2).getValues()).getBody().getText(); //ドキュメントを読み込む
+    // 目標シートの単位のところから単語数を記録するか文字数を記録するか分岐
+    if (sheet.getRange(4,i+2).getValues() == 1) {
+      var textCount = text.length;　//文字数をカウント
+      var repDiff = textCount - sheet.getRange(lastRow,i+2).getValues();
+      if (repDiff &gt; 100) {
+        bodyText = bodyText + &quot;ヾ(*´∀`*)ﾉ　&quot; + sheet.getRange(1,i+2).getValues() + &#39;：　&#39; + repDiff + &#39;字執筆\n&#39;
+      }
+      else{
+        bodyText = bodyText + &quot;(;´༎ຶД༎ຶ`)　&quot; + sheet.getRange(1,i+2).getValues() + &#39;：　&#39; + repDiff + &#39;字執筆\n&#39;
+      }
+    }
+    else {
+      var textCount = text.match(/\S+/g).length;　//単語数をカウント
+      var repDiff = textCount - sheet.getRange(lastRow,i+2).getValues();
+      if (repDiff &gt; 50) {
+        bodyText = bodyText + &quot;ヾ(*´∀`*)ﾉ　&quot; + sheet.getRange(1,i+2).getValues() + &#39;：　&#39; + repDiff + &#39;字執筆\n&#39;
+      }
+      else{
+        bodyText = bodyText + &quot;(;´༎ຶД༎ຶ`)　&quot; + sheet.getRange(1,i+2).getValues() + &#39;：　&#39; + repDiff + &#39;字執筆\n&#39;
+      }
+    }
+  }
+  GmailApp.sendEmail(sheet.getRange(1,1).getValues(),&quot;今日の執筆状況&quot;,bodyText);  //メールの送信
+}</code></pre>
+<div class="figure">
+<img src="materials/googleDoc/s7.png" />
+
+</div>
+<div class="figure">
+<img src="materials/googleDoc/s8.png" />
+
+</div>
+<div class="figure">
+<img src="materials/googleDoc/s9.png" />
+
+</div>
+<div class="figure">
+<img src="materials/googleDoc/s10.png" />
+
+</div>
+<div class="figure">
+<img src="materials/googleDoc/s11.png" />
+
+</div>
+<div class="figure">
+<img src="materials/googleDoc/s12.png" />
+
+</div>
+</div>
+<div class="section level3">
+<h3>おまけのバックアップ機能</h3>
+<p>上記の作業で自動執筆量管理はできるのですが，以下のスクリプトをコピペすれば，バックアップ機能もつけることができます。関数名は，fileBackUp() になります（こちらをコピペする場合は，fileBackUp() に対してもトリガーを設定ください）。fileBackUp() は，Googleドライブ内にBackUpWritingFileというフォルダを作成し，それにファイル名に日付時間を追加して保存します。なお，fileBackUp() は，こちらの<a href="http://rasuka-labo.blogspot.jp/2015/01/blog-post.html">ラスカの実験室</a>を参考に作成しました。</p>
+<pre><code>function autoDocRep() { 
+  // スプレッドシートの読み込み
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(&quot;シート1&quot;);
+  var lastRow = sheet.getDataRange().getLastRow(); //記録の最終行を取得
+  var numDoc = sheet.getDataRange().getLastColumn()-1; //目標の最終列を取得して１引く（ドキュメントの数に対応）
+  // 本日の記録をシートに書き込み
+  var dateToday = new Date(); //今日の日付けを取得
+  sheet.getRange(lastRow+1, 1).setValue(dateToday); //今日の日付を入力
+  // テキストを抽出して，ワード数と文字数（スペース含む）をカウントし，シートに書き込み
+  for (var i=0; i&lt;numDoc; i++){
+    var text = DocumentApp.openById(sheet.getRange(5,i+2).getValues()).getBody().getText(); //ドキュメントを読み込む
+    // 目標シートの単位のところから単語数を記録するか文字数を記録するか分岐
+    if (sheet.getRange(4,i+2).getValues() == 1) {
+      var chars = text.length;　//文字数をカウント
+      sheet.getRange(lastRow+1, i+2).setValue(chars);
+    }
+    else {
+      var words = text.match(/\S+/g).length;　//単語数をカウント
+      sheet.getRange(lastRow+1, i+2).setValue(words);
+    }
+  } 
+  // メールの報告文の作成と送信
+  var bodyText = &#39;昨日の執筆の進捗は，以下になります！\n今日も頑張って執筆しましょう！　\n\n&#39;
+  for (var i=0; i&lt;numDoc; i++){
+    var repDiff = sheet.getRange(lastRow+1,i+2).getValues() - sheet.getRange(lastRow,i+2).getValues();
+    var repProp = Math.floor(sheet.getRange(lastRow+1,i+2).getValues() / sheet.getRange(2,i+2).getValues()*100);
+    var deadline = new Date(sheet.getRange(3,i+2).getValues());
+    var repDay = Math.floor((deadline.getTime() - dateToday.getTime()) / (1000 * 60 * 60 * 24));
+    if (sheet.getRange(4,i+2).getValues() == 1) {
+      bodyText = bodyText + sheet.getRange(1,i+2).getValues() + &#39;： 昨日は&#39; + repDiff + &#39;字書いて，全体の&#39;+ repProp + &#39;%まで進みました。締切まであと&#39; + repDay + &#39;日です。\n&#39;
+     }
+    else {
+      bodyText = bodyText + sheet.getRange(1,i+2).getValues() + &#39;： 昨日は&#39; + repDiff + &#39;語書いて，全体の&#39;+ repProp + &#39;%まで進みました。締切まであと&#39; + repDay + &#39;日です。\n&#39;
+    }
+  }  
+  GmailApp.sendEmail(sheet.getRange(1,1).getValues(),&quot;昨日の執筆進捗の報告&quot;,bodyText);  //メールの送信
+}
+
+function remindMail() {
+  // スプレッドシートの読み込み
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(&quot;シート1&quot;);
+  var lastRow = sheet.getDataRange().getLastRow(); //記録の最終行を取得
+  var numDoc = sheet.getDataRange().getLastColumn()-1; //目標の最終列を取得して１引く（ドキュメントの数に対応）
+  // テキストを抽出して，ワード数と文字数（スペース含む）をカウントし，シートに書き込み
+  var bodyText = &#39;今日の進捗です。少しでも執筆を進めましょう！　\n\n&#39;
+  for (var i=0; i&lt;numDoc; i++){
+    var text = DocumentApp.openById(sheet.getRange(5,i+2).getValues()).getBody().getText(); //ドキュメントを読み込む
+    // 目標シートの単位のところから単語数を記録するか文字数を記録するか分岐
+    if (sheet.getRange(4,i+2).getValues() == 1) {
+      var textCount = text.length;　//文字数をカウント
+      var repDiff = textCount - sheet.getRange(lastRow,i+2).getValues();
+      if (repDiff &gt; 100) {
+        bodyText = bodyText + &quot;ヾ(*´∀`*)ﾉ　&quot; + sheet.getRange(1,i+2).getValues() + &#39;：　&#39; + repDiff + &#39;字執筆\n&#39;
+      }
+      else{
+        bodyText = bodyText + &quot;(;´༎ຶД༎ຶ`)　&quot; + sheet.getRange(1,i+2).getValues() + &#39;：　&#39; + repDiff + &#39;字執筆\n&#39;
+      }
+    }
+    else {
+      var textCount = text.match(/\S+/g).length;　//単語数をカウント
+      var repDiff = textCount - sheet.getRange(lastRow,i+2).getValues();
+      if (repDiff &gt; 50) {
+        bodyText = bodyText + &quot;ヾ(*´∀`*)ﾉ　&quot; + sheet.getRange(1,i+2).getValues() + &#39;：　&#39; + repDiff + &#39;字執筆\n&#39;
+      }
+      else{
+        bodyText = bodyText + &quot;(;´༎ຶД༎ຶ`)　&quot; + sheet.getRange(1,i+2).getValues() + &#39;：　&#39; + repDiff + &#39;字執筆\n&#39;
+      }
+    }
+  }
+  GmailApp.sendEmail(sheet.getRange(1,1).getValues(),&quot;今日の執筆状況&quot;,bodyText);  //メールの送信
+}
+
+function fileBackUp() {
+  // スプレッドシートの読み込み
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(&quot;シート1&quot;);
+  var lastRow = sheet.getDataRange().getLastRow(); //記録の最終行を取得
+  var numDoc = sheet.getDataRange().getLastColumn()-1; //目標の最終列を取得して１引く（ドキュメントの数に対応）
+  //バックアップフォルダーの設定
+  var backUpFolder = &quot;BackUpWritingFile&quot;
+  
+  // バックアップフォルダをゲットするor作る
+  var folders = DriveApp.getFoldersByName(backUpFolder);
+  var folder;
+  if (folders.hasNext())
+    folder = folders.next();
+  else
+    folder = DriveApp.createFolder(backUpFolder);
+  // ファイルの保存
+  for ( var i = 0; i &lt; numDoc; i++ ) {
+    var file = DriveApp.getFileById(sheet.getRange(5,i+2).getValues());
+    //Backupの日付時間をつけてファイルをコピーする
+    var d = new Date();
+    var s = Utilities.formatDate(d, &quot;JST&quot;, &quot;yyyyMMdd_HHmmss&quot;);
+    s = &quot;(&quot; + s + &quot;)&quot;;
+    file.makeCopy(file.getName() + s, folder );
+  }   
+}</code></pre>
+</div>
+<div class="section level3">
+<h3>おわりに</h3>
+<p>これで，Googleドキュメントによる自動執筆量記録・報告システムの設定が終了しました。日々の雑務でついつい後回しにしてしまう執筆について，リマインドメールと進捗報告メールなどをもとにどんどん取り組むようにしましょう！</p>
+<div id="enjoy-writing" class="section level4">
+<h4>Enjoy writing!</h4>
+</div>
+</div>
+</div>
+
+<footer>
+  <p>Copyright &copy; 2018 Yoshihiko Kunisato. All rights reserved </p>
+</footer>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
