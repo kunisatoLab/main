@@ -362,19 +362,19 @@ div.tocify {
 <pre><code>install.packages(&quot;tidyverse&quot;, dependencies = TRUE)</code></pre>
 <p>インストールができたら，使う前にlibrary()関数を使って，tidyverseパッケージを読み込んでおきます。</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## Loading tidyverse: ggplot2
-## Loading tidyverse: tibble
-## Loading tidyverse: tidyr
-## Loading tidyverse: readr
-## Loading tidyverse: purrr
-## Loading tidyverse: dplyr</code></pre>
+<pre><code>## Warning: package &#39;tidyverse&#39; was built under R version 3.4.2</code></pre>
+<pre><code>## ─ Attaching packages ─────────────────────── tidyverse 1.2.1 ─</code></pre>
+<pre><code>## ✔ ggplot2 2.2.1     ✔ purrr   0.2.4
+## ✔ tibble  1.4.2     ✔ dplyr   0.7.4
+## ✔ tidyr   0.8.0     ✔ stringr 1.2.0
+## ✔ readr   1.1.1     ✔ forcats 0.2.0</code></pre>
 <pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.4.3</code></pre>
 <pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.4.3</code></pre>
 <pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.4.2</code></pre>
 <pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.4.2</code></pre>
-<pre><code>## Conflicts with tidy packages ----------------------------------------------</code></pre>
-<pre><code>## filter(): dplyr, stats
-## lag():    dplyr, stats</code></pre>
+<pre><code>## ─ Conflicts ───────────────────────── tidyverse_conflicts() ─
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
 <div class="section level2">
 <h2>データとフォルダの準備</h2>
