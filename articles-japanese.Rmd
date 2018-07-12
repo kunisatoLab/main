@@ -4,11 +4,9 @@ title: "学術論文（日本語）"
 
 ### 印刷中
 
-- 国里愛彦 (2018) 臨床心理学と認知モデリング　心理学評, 61(1), 55-66.　[特集ページ](http://team1mile.com/sjpr61-1/)と[Researchgatでの論文PDF公開](https://www.researchgate.net/publication/326347415_Clinical_psychology_and_cognitive_modeling)
-
-
-
 ### 2018
+
+- 国里愛彦 (2018) 臨床心理学と認知モデリング　心理学評論, 61(1), 55-66.　[特集ページ](http://team1mile.com/sjpr61-1/)と[Researchgatでの論文PDF公開](https://www.researchgate.net/publication/326347415_Clinical_psychology_and_cognitive_modeling)
 
 - 国里愛彦 (2018) 計算論的臨床心理学からみた認知行動療法　認知療法研究, 11(1), 2-12.
 
