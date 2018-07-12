@@ -4,7 +4,7 @@ title: "お知らせ"
 
 ### 2018
 
-- 心理学評論に「臨床心理学と認知モデリング」についての論文が掲載されました。論文PDFなどは[こちら](https://kunisatolab.github.io/main/articles-japanese.html)
+- 心理学評論に「臨床心理学と認知モデリング」についての論文が掲載されました。論文PDFなどは[こちら](https://kunisatolab.github.io/main/articles-japanese.html)から。
 
 - 2018/1/3 HPを少しだけ更新しました。RStudioでの管理をしやすくするために少しだけURLが変わりました。
 
