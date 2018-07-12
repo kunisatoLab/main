@@ -6,7 +6,7 @@ title: "学術論文（日本語）"
 
 ### 2018
 
-- [国里愛彦 (2018) 臨床心理学と認知モデリング　心理学評論, 61(1), 55-66.](materials/papers/Kunisato_2018_Clinical psychology and cognitive modeling.pdf)
+- [国里愛彦 (2018) 臨床心理学と認知モデリング　心理学評論, 61(1), 55-66.](materials/papers/Kunisato_2018_Clinical_psychology_and_cognitive_modeling.pdf)
 
 - 国里愛彦 (2018) 計算論的臨床心理学からみた認知行動療法　認知療法研究, 11(1), 2-12.
 
