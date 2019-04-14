@@ -15,6 +15,10 @@ title: "国際会議発表"
 - Somatori, K., Shimotomai, A., & Kunisato, Y. (2016). Does the Propositional Approach Co-exist Rescorla-Wagner model: the prediction of extinction form acquisition. The 46th annual Congress of the European Association for Behavioural and Cognitive Therapies, September 1, Stockholm, Sweden.
  
 - Sakamoto, J., Okubo, M., & Kunisato, Y. (2016). How depression affects future pain and decision-making: Computational approach with Bayesiancognitive modeling. Poster session presented at the 8th World Congress of Behavioural and Cognitive Therapies, June 25, Merboulne, VIC, Australia.
+
+- Ito R, Kaneko Y, Suyama H, Sato H, Yokoyama S, Kunisato Y, Suzuki S (2016).  Judicious Use of Safety Behaviors in Undergraduates with Specific Phobia Symptoms during Exposure Therapy. 8th World Congress of Behavioural and Cognitive Therapies, June 23, Merboulne, VIC, Australia.
+
+- Namiki N, Yada S, Shimizu K, Tanoue A, Suyama H, Takeda Y, Kaneko Y, Sato H, Ito R, Higami K, Matsumoto S, Kunisato Y Suzuki S (2016). Relationship between behavioral signs evaluated by others in the workplace and depressive symptoms: A cross-sectional study, 8th World Congress of Behavioral and Cognitive Therapies congress, June, Merboulne, VIC, Australia.
  
 - Hasegawa, A., & Kunisato, Y., Morimoto, H., Nishimura, H., Matsuda, Y. (2016) How do depression, rumination and social problem solving interact with each other? A three-wave longitudinal study. Poster session presented at the 31st International Congress of Psychology, July 26, Yokohama, Japan.
  
@@ -27,6 +31,8 @@ title: "国際会議発表"
 - Kaneko, M. & Kunisato, Y. (2016). Developing a behavioral task to measure procrastination using the delay-discounting paradigm. Poster session presented at the 31st International Congress of Psychology, July 28, Yokohama, Japan.
  
 - Sakamoto, J., Somatori, K., & Kunisato, Y. (2016). Bayesian liner model for partial missing experience sampling method data: pain variability in healthy university students. Poster session presented at the 31st International Congress of Psychology, July 29, Yokohama, Japan.
+
+
  
 ### 2015
 
