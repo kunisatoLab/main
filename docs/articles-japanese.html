@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,6 +98,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -114,7 +115,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +134,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,18 +192,75 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -254,6 +348,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -347,12 +451,19 @@ div.tocify {
 <div class="section level3">
 <h3>印刷中</h3>
 <ul>
+<li><p>国里愛彦・片平健太郎・沖村 宰・山下祐一　うつに対する計算論的アプローチ：強化学習モデルの観点から　心理学評論</p></li>
+<li><p>杣取恵太・国里愛彦　メタ認知における２側面 -絶対的感度と相対的感度-　行動科学</p></li>
 <li><p>畑琴音・小野はるか・小川祐子・竹下若那・国里愛彦・鈴木伸一　がん患者用活動抑制尺度（SIP-C）の作成と信頼性・妥当性の検討　総合病院精神医学</p></li>
 <li><p>佐藤秀樹・国里愛彦・小関俊祐・鈴木伸一　Rumination about an Interpersonal Offense Scale（RIO）日本語版の作成と信頼性・妥当性の検討　認知療法研究</p></li>
-<li><p>伊藤理紗・矢島涼・佐藤秀樹・樋上巧洋・松元智美・並木伸賢・国里愛彦・鈴木伸一　恐怖の高まりを伴う安全確保行動がエクスポージャーの治療効果に与える影響　認知行動療法研究</p></li>
 </ul>
 </div>
 <div id="section" class="section level3">
+<h3>2019</h3>
+<ul>
+<li>伊藤理紗・矢島　涼・佐藤秀樹・樋上巧洋・松元智美・並木伸賢・国里愛彦・鈴木伸一 (2019). 恐怖の高まりを伴う安全確保行動がエクスポージャーの治療効果に与える影響　認知行動療法研究, 45(1)，13-22．</li>
+</ul>
+</div>
+<div id="section-1" class="section level3">
 <h3>2018</h3>
 <ul>
 <li><p><a href="materials/papers/Kunisato_2018_Clinical_psychology_and_cognitive_modeling.pdf">国里愛彦 (2018) 臨床心理学と認知モデリング　心理学評論, 61(1), 55-66.</a></p></li>
@@ -361,20 +472,20 @@ div.tocify {
 <li><p>小関俊祐・小関真実・中村元美・大谷哲弘・国里愛彦 (2018) 日本語版児童用Behavioral Inhibition System and Behavioral Activation System Scale(児童用BIS/BAS尺度)の作成と信頼性・妥当性の検討　認知行動療法研究, 44(1), 1-11.</p></li>
 </ul>
 </div>
-<div id="section-1" class="section level3">
+<div id="section-2" class="section level3">
 <h3>2016</h3>
 <ul>
 <li>伊藤理紗・兼子唯・巣山晴菜・佐藤秀樹・横山仁史・国里愛彦・鈴木伸一 (2016) 単一恐怖症状の高い大学生における，エクスポージャー中の安全確保行動の効果　行動療法研究, 42(2), 237 -246.</li>
 </ul>
 </div>
-<div id="section-2" class="section level3">
+<div id="section-3" class="section level3">
 <h3>2015</h3>
 <ul>
 <li><p>小川祐子・武井優子・古賀晴美・島田真衣・長尾愛美・佐々木美保・国里愛彦・谷川啓司・鈴木伸一(2015) 補完代替療法をうける外来がん患者を対象とした主治医と話すことへのためらいの構成概念の検討　心身医学 55(7), 873-883</p></li>
 <li><p>国里愛彦 (2015) 系統的展望とメタアナリシスの必須事項　行動療法研究, 41(1), 3-12.</p></li>
 </ul>
 </div>
-<div id="section-3" class="section level3">
+<div id="section-4" class="section level3">
 <h3>2014</h3>
 <ul>
 <li><p>岡田剛・岡本泰昌・志々田一宏・上田一貴・小野田慶一・国里愛彦・田中沙織・銅谷賢治・山脇成人 (2014) うつ病の脳内メカニズム:Functional MRIを用いた検討　精神神経学雑誌 116(10), 825-831.</p></li>
@@ -384,7 +495,7 @@ div.tocify {
 <li><p>国里愛彦・岡本泰昌・吉村晋平・松永美希・岡田剛・吉野敦雄・小野田慶一・上田一貴・鈴木伸一・山脇成人（2014）うつ病における認知行動療法の神経作用メカニズム　ストレス科学, 29(1), 45-54.</p></li>
 </ul>
 </div>
-<div id="section-4" class="section level3">
+<div id="section-5" class="section level3">
 <h3>2013</h3>
 <ul>
 <li><p>髙垣耕企・岡島　義・国里愛彦・中島　俊・金井嘉宏・石川信一・坂野雄二 （2013）Behavioral Activation for Depression Scale (BADS) 日本語版の作成　精神科診断学, 6(1)，76- 85.</p></li>
@@ -394,7 +505,7 @@ div.tocify {
 <li><p>国里愛彦（2013）うつとストレスに対する計算論的アプローチ: 計算論的精神医学入門　ストレス科学, 28(2), 101-107.</p></li>
 </ul>
 </div>
-<div id="section-5" class="section level3">
+<div id="section-6" class="section level3">
 <h3>2012</h3>
 <ul>
 <li><p>松永美希・鈴木伸一・岡本泰昌・吉村晋平・国里愛彦・神人　蘭・吉野敦雄・西山佳子・山脇成人(2012)　心理士が中心に実施したうつ病の集団認知行動療法-大学病院における取り組みから-　行動療法研究, 38 (3), 181-191.</p></li>
@@ -402,7 +513,7 @@ div.tocify {
 <li><p>吉野敦雄・岡本泰昌・小野田慶一・吉村晋平・国里愛彦・岡田剛・高橋輝道・山脇成人 (2012) 悲しみによる主観的な痛みの増強と脳機能の変化　PAIN RESEARCH, 27(1): 7 -15.</p></li>
 </ul>
 </div>
-<div id="section-6" class="section level3">
+<div id="section-7" class="section level3">
 <h3>2011</h3>
 <ul>
 <li><p>岡島　義・国里愛彦・中島　俊・髙垣耕企（2011）　うつ病に対する行動活性化療法―歴史的展望とメタ分析―　心理学評論, 54(4), 473-488.</p></li>
@@ -410,7 +521,7 @@ div.tocify {
 <li><p>国里愛彦・髙垣耕企・岡島義・中島俊・石川信一・金井嘉宏・岡本泰昌・坂野雄二・山脇成人　(2011)　日本語版Environmental Reward Observation Scale (EROS)の作成と信頼性・妥当性の検討　行動療法研究, 37(1), 21-31.</p></li>
 </ul>
 </div>
-<div id="section-7" class="section level3">
+<div id="section-8" class="section level3">
 <h3>2010</h3>
 <ul>
 <li><p>岡本泰昌・岡田剛・吉村晋平・国里愛彦・西山佳子・土岐茂・小野田慶一・山脇成人 (2010) うつ病の認知に関わる神経生理学的基盤　認知神経科学, 12(3), 140-148.</p></li>
@@ -419,7 +530,7 @@ div.tocify {
 <li><p>浅本有美・国里愛彦・村岡洋子・在原理沙・堂谷智香子・田所健児・伊藤大輔・伊藤有里・佐々木美保・尾形明子・ 鈴木伸一 (2010).　小学1年生に対する集団社会的スキル訓練の試み　-取り組みやすく，動機づけを高める集団SSTプログラム-　行動療法研究, 36(1), 57-68.</p></li>
 </ul>
 </div>
-<div id="section-8" class="section level3">
+<div id="section-9" class="section level3">
 <h3>2009</h3>
 <ul>
 <li><p>岡本泰昌・小野田慶一・吉村晋平・吉野敦雄・国里愛彦・出本吉彦・岡田剛・山下英尚・山脇成人 (2009).　ストレス適応破綻の神経生理学的基盤　皮膚の科学, 8, 603-609.</p></li>
@@ -428,7 +539,7 @@ div.tocify {
 <li><p>国里愛彦・岡田 剛・岡本泰昌(2009). 線条体の強化学習機能 BRAIN &amp; NERVE,61(4),405-411.</p></li>
 </ul>
 </div>
-<div id="section-9" class="section level3">
+<div id="section-10" class="section level3">
 <h3>2008</h3>
 <ul>
 <li><p>小野田慶一・岡本泰昌・国里愛彦・山脇成人 (2008). 情動予期の神経基盤に関するfMRI研究 生理心理学と精神生理学,26,229-235.</p></li>
