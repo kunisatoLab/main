@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -94,8 +92,14 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -111,7 +115,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -131,6 +134,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -152,18 +192,75 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -241,8 +338,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -251,6 +346,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -347,39 +452,20 @@ div.tocify {
 <li><a href="yoshihiko-kunisato.html">国里愛彦</a></li>
 </ul>
 </div>
-<div id="3" class="section level3">
-<h3>大学院生（博士3年）</h3>
+<div class="section level3">
+<h3>大学院生（博士過程）</h3>
 <ul>
-<li><a href="https://ksomatori.github.io/homepage/index.html">杣取恵太</a>　(日本学術振興会 特別研究員DC1) <a href="materials/FB/2018_somatori.pdf">参加者用研究FB</a></li>
+<li><a href="https://ksomatori.github.io/homepage/index.html">杣取恵太</a>(休学中) <a href="materials/FB/2018_somatori.pdf">参加者用研究FB</a></li>
 </ul>
 </div>
 <div class="section level3">
 <h3>大学院生（修士２年）</h3>
-<ul>
-<li>井口聖香</li>
-<li>土原浩平</li>
-</ul>
 </div>
 <div id="-1" class="section level3">
 <h3>大学院生（修士１年）</h3>
-<ul>
-<li>中川卓知</li>
-</ul>
 </div>
 <div class="section level3">
 <h3>学部生（４年）</h3>
-<ul>
-<li>阿久津裕史</li>
-<li>広瀬友彩</li>
-<li>小嶋那奈</li>
-<li>アン ミョンヒ</li>
-<li>井上圭右</li>
-<li>小澤千尋</li>
-<li>西田千夏</li>
-</ul>
-</div>
-<div id="-1" class="section level3">
-<h3>学部生（３年）</h3>
 <ul>
 <li>菊池流那</li>
 <li>柴田真衣</li>
@@ -390,28 +476,53 @@ div.tocify {
 <li>鈴木海渡</li>
 </ul>
 </div>
+<div id="-1" class="section level3">
+<h3>学部生（３年）</h3>
+</div>
 <div id="obog" class="section level3">
 <h3>OB・OG</h3>
 </div>
 <div class="section level3">
-<h3>2017年度</h3>
+<h3>2018年度</h3>
 <div class="section level4">
 <h4>学部</h4>
 <ul>
-<li>福地友輔(卒業論文題目「重要他者に対する再確認傾向と表情認知及び不安の関連」） <a href="materials/FB/2018_fukuchi.pdf">参加者用研究FB</a></li>
-<li>関 海真(卒業論文題目「曖昧さへの態度と思考抑制が強迫傾向に与える影響について」） <a href="materials/FB/2018_seki.pdf">参加者用研究FB</a></li>
-<li>中川卓知(卒業論文題目「抑うつとリスクテイキング行動との関連: Automatic BARTにおけるベイジアン認知モデリングの適応」） <a href="materials/FB/2018_nakagawa.pdf">参加者用研究FB</a></li>
-<li>中西由紀奈(卒業論文題目「社交不安症と対人恐怖症の比較: 自己主体感と友人関係への動機づけとの関連の検討」） <a href="materials/FB/2018_nakanishi.pdf">参加者用研究FB</a></li>
-<li>長尾雅春(卒業論文題目「アプリ課金依存の類型と実体」） <a href="materials/FB/2018_nagao.pdf">参加者用研究FB</a></li>
-<li>関谷朋志</li>
+<li>阿久津裕史(卒業論文題目「感情への恐れがマインドフルネス特性及びひきこもり親和性に与える影響について」）</li>
+<li>広瀬友彩(卒業論文題目「妬みのサブタイプとセルフ・コンパッション及びネガティブ感情の関連」) <a href="materials/FB/2018_hirose.pdf">参加者用研究FB</a></li>
+<li>小嶋那奈(卒業論文題目「課題解決場面における防衛的悲観主義者の他者サポートについての検討」) <a href="materials/FB/2018_kojima.pdf">参加者用研究FB</a></li>
+<li>アン ミョンヒ(卒業論文題目「日韓比較を通した養育態度が強迫傾向に影響するプロセスの検討:パーソナリティの媒介効果の検討」) <a href="materials/FB/2018_Ahn.pdf">参加者用研究FB</a></li>
+<li>井上圭右(卒業論文題目「社交不安と心的イメージとの関連: 認知課題を用いた検討」) <a href="materials/FB/2018_inoue.pdf">参加者用研究FB</a></li>
+<li>小澤千尋(卒業論文題目「感情価を伴う写真刺激の呈示による課題価値割引における先延ばしの変化」) <a href="materials/FB/2018_ozawa.pdf">参加者用研究FB</a></li>
+<li>西田千夏(卒業論文題目「メランコリー親和型性格とコーピング及びサポート模索の関連」) <a href="materials/FB/2018_nishida.pdf">参加者用研究FB</a></li>
 </ul>
 </div>
 <div class="section level4">
 <h4>修士</h4>
 <ul>
-<li>金子美帆 (修士論文題目「反実仮想思考を用いた先延ばし行動低減プログラムの効果の検討」） <a href="materials/FB/2018_kaneko.pdf">参加者用研究FB</a></li>
-<li>菊池羽音 (修士論文題目「外傷後認知の時系列的変化と症状・個人差要因との関連―トラウマフィルムパラダイムと経験サンプリング法による測定―」） <a href="materials/FB/2018_kikuchi.pdf">参加者用研究FB</a></li>
-<li>土谷美月 (修士論文題目「不確実さ不耐性と条件づけ場所嗜好性の関連-強化率の操作とvirtual realityを用いた検討-」） <a href="materials/FB/2018_tsuchiya.pdf">参加者用研究FB</a></li>
+<li>井口聖香(修士論文題目「過剰適応者の感情抑制」)</li>
+<li>土原浩平(修士論文題目「マインドフルネス特性と痛みの関連」)</li>
+</ul>
+</div>
+</div>
+<div id="-1" class="section level3">
+<h3>2017年度</h3>
+<div id="-1" class="section level4">
+<h4>学部</h4>
+<ul>
+<li>福地友輔(卒業論文題目「重要他者に対する再確認傾向と表情認知及び不安の関連」）</li>
+<li>関 海真(卒業論文題目「曖昧さへの態度と思考抑制が強迫傾向に与える影響について」）</li>
+<li>中川卓知(卒業論文題目「抑うつとリスクテイキング行動との関連: Automatic BARTにおけるベイジアン認知モデリングの適応」）</li>
+<li>中西由紀奈(卒業論文題目「社交不安症と対人恐怖症の比較: 自己主体感と友人関係への動機づけとの関連の検討」）</li>
+<li>長尾雅春(卒業論文題目「アプリ課金依存の類型と実体」）</li>
+<li>関谷朋志</li>
+</ul>
+</div>
+<div id="-1" class="section level4">
+<h4>修士</h4>
+<ul>
+<li>金子美帆 (修士論文題目「反実仮想思考を用いた先延ばし行動低減プログラムの効果の検討」）</li>
+<li>菊池羽音 (修士論文題目「外傷後認知の時系列的変化と症状・個人差要因との関連―トラウマフィルムパラダイムと経験サンプリング法による測定―」）</li>
+<li>土谷美月 (修士論文題目「不確実さ不耐性と条件づけ場所嗜好性の関連-強化率の操作とvirtual realityを用いた検討-」）</li>
 </ul>
 </div>
 <div id="2" class="section level4">
@@ -427,9 +538,9 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="-1" class="section level3">
+<div id="-2" class="section level3">
 <h3>2016年度</h3>
-<div id="-1" class="section level4">
+<div id="-2" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>山本由佳(卒業論文題目「対人場面における認知的方略の違いと抑うつの関連」）</li>
@@ -441,16 +552,16 @@ div.tocify {
 <li>上田直人(卒業論文題目「サイコパシー傾向者の罰行動に伴うコストに対する飲酒の習慣の影響について」）</li>
 </ul>
 </div>
-<div id="-1" class="section level4">
+<div id="-2" class="section level4">
 <h4>修士</h4>
 <ul>
 <li>小田島裕佳(修士論文題目「社交不安傾向と空間周波数の低い表情画像に対する回避との関連」）</li>
 </ul>
 </div>
 </div>
-<div id="-2" class="section level3">
+<div id="-3" class="section level3">
 <h3>2015年度</h3>
-<div id="-2" class="section level4">
+<div id="-3" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>仁添未亜(卒業論文題目「イメージの視点と対人不安・抑うつの関連: 公的自己意識と不快情動喚起状況におけるイメージの内的・外的視点の観点から」）</li>
@@ -461,7 +572,7 @@ div.tocify {
 <li>土舘佳子(卒業論文題目「肯定的・否定的自己複雑性と自己受容、問題解決能力との関連」）</li>
 </ul>
 </div>
-<div id="-2" class="section level4">
+<div id="-3" class="section level4">
 <h4>修士</h4>
 <ul>
 <li>坂本次郎(修士論文題目「抑うつと痛みの将来予測: 階層ベイズモデルによる意思決定の検討」）</li>
@@ -470,9 +581,9 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="-3" class="section level3">
+<div id="-4" class="section level3">
 <h3>2014年度</h3>
-<div id="-3" class="section level4">
+<div id="-4" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>古川颯人(卒業論文題目「マインドワンダリングと創造性の研究」)</li>
@@ -480,16 +591,16 @@ div.tocify {
 <li>畑中勇人(卒業論文題目「マインドワンダリングとマインドフルネス特性の関係性」)</li>
 </ul>
 </div>
-<div id="-3" class="section level4">
+<div id="-4" class="section level4">
 <h4>修士</h4>
 <ul>
 <li>鈴木彩夏(修士論文題目「妬み感情と情動制御方略の関連 −Grossの情動制御プロセスモデルを用いて−」)</li>
 </ul>
 </div>
 </div>
-<div id="-4" class="section level3">
+<div id="-5" class="section level3">
 <h3>2013年度</h3>
-<div id="-4" class="section level4">
+<div id="-5" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>上野駿介(卒業論文題目「火のある風景描画法による攻撃性へのカタルシス効果の検討」)</li>
