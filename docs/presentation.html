@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,6 +98,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -114,7 +115,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +134,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,18 +192,75 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -244,8 +338,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -254,6 +346,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -345,13 +447,20 @@ div.tocify {
 
 
 <div id="section" class="section level3">
+<h3>2019</h3>
+<ul>
+<li><p>Kunisato, Y. &amp; Sawa, K.(2019). Obsessive-compulsive tendency attenuates the recovery from overshadowing in associative learning. The 52nd Annual Meeting of the Society for Mathematical Psychology, July 20, Montreal, Canada.</p></li>
+<li><p>Hata, K., Ono, H., Ogawa, Y., Takeshita, W., Kunisato, Y., &amp; Suzuki, S. (2019). Development and validation of the activity restriction scale for cancer patients (Sickness Impact Profile for Cancer Patients: SIP-C). The 9th World Congress of Behavioural and Cognitive Therapies, July 20, Berlin, Germany.</p></li>
+</ul>
+</div>
+<div id="section-1" class="section level3">
 <h3>2017</h3>
 <ul>
 <li><p>Sakamoto, J., Nagai, T., Kunisato, Y., Sawa, K., Takata, N.(2017). Bayesian modeling of human activity data based on the gamma family of dynamic models. Presented at the 50th Annual Meeting of the Society for Mathematical Psychology, July 23, Warwick, Coventry, UK.</p></li>
 <li><p>Somatori, K., Kunisato, Y(2017). Do depressive symptoms influence randomness in decision making in the reversal learning task? – A hierarchical Bayesian modeling approach - The 50th Annual Meeting of the Society for Mathematical Psychology, July 23, Coventry, England.</p></li>
 </ul>
 </div>
-<div id="section-1" class="section level3">
+<div id="section-2" class="section level3">
 <h3>2016</h3>
 <ul>
 <li><p>Sakamoto, J., Somatori, K., &amp; Kunisato, Y. (2016). Healthy university sutudents’ day-to-day pain variability , depression, and pain-catastrophising: using the experience sampling method and Bayesian linear model. Poster session presented at the 46th annual Congress of the European Association for Behavioural and Cognitive Therapies, September 1, Stockholm, Sweden.</p></li>
@@ -367,7 +476,7 @@ div.tocify {
 <li><p>Sakamoto, J., Somatori, K., &amp; Kunisato, Y. (2016). Bayesian liner model for partial missing experience sampling method data: pain variability in healthy university students. Poster session presented at the 31st International Congress of Psychology, July 29, Yokohama, Japan.</p></li>
 </ul>
 </div>
-<div id="section-2" class="section level3">
+<div id="section-3" class="section level3">
 <h3>2015</h3>
 <ul>
 <li><p>Sakamoto, J., Somatori, K., Okubo, M., &amp; Kunisato, Y. (2015). Depression and Intertemporal Choice of Pain: Maximum Likelihood Estimation vs. Hierarchical Bayesian Analysis. The 48th Annual Meeting of the Society for Mathematical Psychology, July 18, Newport Beach, California, USA.</p></li>
@@ -375,7 +484,7 @@ div.tocify {
 <li><p>Tanaka, T., Kunisato, Y., Okada, K., &amp; Okubo, M. (2015). Why people frequently commit the base-rate fallacy. The 48th Annual Meeting of the Society for Mathematical Psychology, July 18, Newport Beach, California, USA.</p></li>
 </ul>
 </div>
-<div id="section-3" class="section level3">
+<div id="section-4" class="section level3">
 <h3>2014</h3>
 <ul>
 <li><p>Kunisato, Y., Okamoto Y., Yoshimura S., Ueda K., Matsunaga M., Okada G., Nishiyama Y., Katsuragawa T., Suzuki S., Yamawaki S. (2014) The Volume of Right Superior Temporal Gyrus Mediated the Affect of Rumination to Treatment Response to CBT in Patients with Depression The European Association for Behavioural and Cognitive Therapies, September 10 - 13 , Hague, Netherlands.</p></li>
@@ -383,7 +492,7 @@ div.tocify {
 <li><p>Ogawa, Y., Koga, H., Takei, Y., Shimada, M., Nagao, A., Sasaki, M., Kunisato, Y., Suyama, H., Ito, D., Koseki, M., Koseki, S., Tanigawa, K., &amp; Suzuki,S. 2014 Communication behaviors of cancer patients who hesitate when talking to their doctors. 28th International Congress of Applied Psychology, July 8-13, Paris, French(EP-080029)</p></li>
 </ul>
 </div>
-<div id="section-4" class="section level3">
+<div id="section-5" class="section level3">
 <h3>2013</h3>
 <ul>
 <li><p>Ogawa, Y., Takei, Y., Koga, H., Shimada, M., Nagao, A., Sasaki, M., Kunisato, Y., Tanigawa, K., Suzuki, S. (2013). Characteristics of Cancer Outpatients who Hesitate to Speak with their Doctors During Medical Consultations, The 4th Asian Cognitive Behavior Therapy (CBT) Conference, August 23 - 25, Tokyo, Japan.</p></li>
@@ -391,7 +500,7 @@ div.tocify {
 <li><p>Yada, S., Machida, Y., Son, S., Shimizu, K., Kunisato, Y., Kaneko, Y., Suyama, H., Shirai, M., Suzuki, S. (2013). The Relationship between Periods of Sick Leave and Automatic Thoughts among Employees with Depression, The 4th Asian Cognitive Behavior Therapy (CBT) Conference, August 23 - 25, Tokyo, Japan.</p></li>
 </ul>
 </div>
-<div id="section-5" class="section level3">
+<div id="section-6" class="section level3">
 <h3>2012</h3>
 <ul>
 <li><p>Kunisato,Y., Okamoto, Y., Okada, G., Nishiyama, Y., Kanai, Y., Sasaki-Aoki, S., Iwanaga, M., Yamawaki, S. (2012). DELAY DISCOUNTING CORRELATED WITH ACC AND PFC: A VBM STUDY, The 16th Congress of International Society for Biomedical Research on Alcoholism (ISBRA), September 10-11, Sapporo, Japan. (Abstbook of The 16th Congress of ISBRA, P99, 2012).</p></li>
@@ -402,7 +511,7 @@ div.tocify {
 <li><p>Kunisato, Y., Okamoto, Y., Okada, G., Nishiyama, Y., Kanai, Y., Sasaki- Aoki, S., Yoshimura, S., Katsuragawa, T., Suzuki, S., &amp; Yamawaki, S.(2012).The Association between Brain’s Default Mode Network and Anhedonia: a Resting State FMRI Study, The 12th International Congress of Behavioral Medicine (ICBM), August 29, Budapest, Hungary.(International Journal of Behavioral Medicine, 19 (Suppl 1), s258, 2012)</p></li>
 </ul>
 </div>
-<div id="section-6" class="section level3">
+<div id="section-7" class="section level3">
 <h3>2011</h3>
 <ul>
 <li><p>Toki, S., Okamoto, Y., Onoda, K., Yoshimura, S., Kunisato, Y., Okada, G., Yamawaki, S. (2011). Hippocampal Activation predicts Treatment Response to Antidepressant for Depression, The 50 th annual meeting of American College of Neuropsychopharmacology (ACNP), December 7, Hawaii, USA. (Abstbook of The 50 th annual meeting of American College of Neuropsychopharmacology, p324, 2011).</p></li>
@@ -413,7 +522,7 @@ div.tocify {
 <li><p>Son, S., Ishihara, N., Suyama, H., Tanoue, A., Shimizu, K., Kunisato, Y., &amp; Suzuki, S.(2011). The relations between cognitive coping strategies for work-stress, and positive-negative stress response. the 3rd Asian Cognitive Behavior Therapy Conference, July 15, Seoul, Korea.(Abstbook of 3rd Asian Cognitive Behavioral Therapy Conference: Searching for Asian CBT Model of Therapy and Practice, p95, 2011.)</p></li>
 </ul>
 </div>
-<div id="section-7" class="section level3">
+<div id="section-8" class="section level3">
 <h3>2010</h3>
 <ul>
 <li><p>Demoto, Y., Okamoto, Y., Okada, G., Kunisato, Y., Aoyama, S., Onoda, K., Munakata, A., Nomura, M., Yamawaki, S. (2010). The effects of acute tryptophan depletion and personality trait on future reward prediction. XXVII Congress of the CINP(Collegium Internationale Neuro-Psychopharmacologicum), Jun6-Jun10, Hong Kong, China. (Abstruct in The International Journal of Neuropsychopharmacology,13, p145-146, 2010.)</p></li>
@@ -422,13 +531,13 @@ div.tocify {
 <li><p>Kunisato, Y., Takagaki, K., Okajima, I., Nakajima, S., Ishikawa, S., Kanai, Y., Sakano, Y., Okamoto, Y., Yamawaki, S. (2010). Development and validity of the Japanese version of Environmental Reward Observation Scale (EROS). 6th World Congress of behavioral and cognitive therapies, Jun2 - Jun 5, Boston, USA. (Abstbook of 6th WORLD CONGRESS OF BEHAVIORAL AND COGNITIVE THERAPIES Translating Science into Practice ,p114)</p></li>
 </ul>
 </div>
-<div id="section-8" class="section level3">
+<div id="section-9" class="section level3">
 <h3>2009</h3>
 <ul>
 <li>Onoda, K., Okamoto, Y., Kunisato, Y., Okada, G., Yamaguchi, S., &amp; Yamawaki, S. (2009). High/low discounting rates in reward prediction are differentially involved in dorsal/ventral striatum. 18th The International Society for Brain Electromagnetic Topography (ISBET2009), September 29 -October 2, Kyoto, Japan.(Abstruct in the abstbook of 18th The International Society for Brain Electromagnetic Topography, p63)</li>
 </ul>
 </div>
-<div id="section-9" class="section level3">
+<div id="section-10" class="section level3">
 <h3>2008</h3>
 <ul>
 <li>Kunisato, Y., Ueda, K., &amp; Suzuki, S. (2008). Relation between the depression and the sensitivity to reward and punishment. 10th International Congress of Behavioral Medicine, August 27-30, Tokyo, Japan.(Abstbook of 10th International Congress of Behavioral Medicine,p199)</li>

@@ -2,6 +2,12 @@
 title: "国際会議発表"
 ---
 
+### 2019
+
+- Kunisato, Y. & Sawa, K.(2019). Obsessive-compulsive tendency attenuates the recovery from overshadowing in associative learning. The 52nd Annual Meeting of the Society for Mathematical Psychology, July 20, Montreal, Canada.
+
+- Hata, K., Ono, H., Ogawa, Y., Takeshita, W., Kunisato, Y., & Suzuki, S. (2019). Development and validation of the activity restriction scale for cancer patients (Sickness Impact Profile for Cancer Patients: SIP-C). The 9th World Congress of Behavioural and Cognitive Therapies, July 20, Berlin, Germany.
+
 ### 2017
 
 - Sakamoto, J., Nagai, T., Kunisato, Y., Sawa, K., Takata, N.(2017).  Bayesian modeling of human activity data based on the gamma family of dynamic models. Presented at the 50th Annual Meeting of the Society for Mathematical Psychology, July 23, Warwick, Coventry, UK.
