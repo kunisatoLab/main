@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -73,9 +74,7 @@ h6 {
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,6 +99,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -114,7 +116,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +135,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,47 +193,65 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -244,8 +300,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -254,6 +308,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -344,25 +408,29 @@ div.tocify {
 </div>
 
 
+<p>☆は，学部ゼミでの必修事項</p>
 <div class="section level2">
 <h2>認知課題・調査用プログラミング</h2>
 <ul>
-<li><a href="how-to-presentation.html">Presentationを用いた認知課題の作成</a></li>
-<li><a href="how-to-psychopy.html">PsychoPyを用いた認知課題の作成</a></li>
-<li><a href="https://mrunadon.github.io/%E7%B0%A1%E5%8D%984%E3%82%B9%E3%83%86%E3%83%83%E3%83%97%E3%81%A7%E7%B5%8C%E9%A8%93%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AA%E3%83%B3%E3%82%B0%E8%87%AA%E5%8B%95%E8%AA%BF%E6%9F%BB%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%81%AE%E6%A7%8B%E7%AF%89/">GoogleFormsとGoogleAppsScriptによる 経験サンプリング自動調査システム(Mr. Unadonブログ)</a></li>
+<li><p>jsPsychを用いた認知課題の作成(準備中)　☆</p></li>
+<li><p><a href="how-to-psychopy.html">PsychoPyを用いた認知課題の作成 (PsychoPy3未対応,2020年3月には対応します・・・)</a></p></li>
+<li><p><a href="https://mrunadon.github.io/%E7%B0%A1%E5%8D%984%E3%82%B9%E3%83%86%E3%83%83%E3%83%97%E3%81%A7%E7%B5%8C%E9%A8%93%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AA%E3%83%B3%E3%82%B0%E8%87%AA%E5%8B%95%E8%AA%BF%E6%9F%BB%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%81%AE%E6%A7%8B%E7%AF%89/">GoogleFormsとGoogleAppsScriptによる 経験サンプリング自動調査システム(Mr. Unadonブログ)</a></p></li>
+<li><p><a href="how-to-presentation.html">Presentationを用いた認知課題の作成</a></p></li>
 </ul>
 <p><br /></p>
 </div>
 <div class="section level2">
 <h2>統計解析用プログラム言語</h2>
 <ul>
-<li><a href="how-to-dataHandling.html">Rを用いた認知課題の解析データセット作成</a></li>
-<li><a href="how-to-hBayesDM.html">hBayesDMでベイジアン認知モデリング</a></li>
-<li><a href="how-to-hBayesDM-RT.html">hBayesDMで反応時間のモデリング</a></li>
-<li><a href="how-to-graphicalModel.html">Rを用いたグラフィカルモデルの作成</a></li>
-<li><a href="how-to-start-rstan.html">ベイズ統計とRstanの最初の一歩</a></li>
-<li><a href="https://ykunisato.github.io/lbaStan/lbaStan.html">LBAモデルを用いた反応時間の解析</a></li>
-<li><a href="https://ykunisato.github.io/hlbaStan/hlbaStan.html">LBAモデルを用いた反応時間の解析:階層ベイズ編</a></li>
+<li><p><a href="how-to-dataHandling.html">認知課題の解析データセット作成(修正予定)</a>　☆</p></li>
+<li><p>強化学習モデルを用いた認知モデリング入門　☆</p></li>
+<li><p>逐次サンプリングモデルを用いた認知モデリング入門　☆</p></li>
+<li><p><a href="how-to-hBayesDM.html">hBayesDMでベイジアン認知モデリング</a></p></li>
+<li><p><a href="how-to-hBayesDM-RT.html">hBayesDMで反応時間のモデリング</a></p></li>
+<li><p><a href="how-to-graphicalModel.html">Rを用いたグラフィカルモデルの作成</a></p></li>
+<li><p><a href="how-to-start-rstan.html">ベイズ統計とRstanの最初の一歩</a></p></li>
+<li><p><a href="https://ykunisato.github.io/lbaStan/lbaStan.html">LBAモデルを用いた反応時間の解析</a></p></li>
+<li><p><a href="https://ykunisato.github.io/hlbaStan/hlbaStan.html">LBAモデルを用いた反応時間の解析:階層ベイズ編</a></p></li>
 </ul>
 <p><br /></p>
 </div>
@@ -394,6 +462,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

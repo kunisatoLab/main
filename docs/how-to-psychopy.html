@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -73,9 +74,7 @@ h6 {
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -94,8 +93,14 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -111,7 +116,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -131,6 +135,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -152,47 +193,65 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -241,8 +300,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -251,6 +308,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -345,6 +412,10 @@ div.tocify {
 <h2>はじめに</h2>
 <p>本資料は，専修大学人間科学部の国里ゼミで使用するPsychoPyに関するトレーニング資料になります。 本資料は，まだ完成版には程遠く，間違いも存在する可能性があります。もし誤りなどがございましたら， <a href="https://docs.google.com/forms/d/1OQ7pN-oQda1YwGvcTBga3oKkviI697uc9AQlGVhX2YI/viewform">メールフォーム</a>にて ご連絡いただけましたら幸いです。</p>
 </div>
+<div class="section level2">
+<h2>注意事項</h2>
+<p>本ページの内容は，まだPsychoPy3に対応していません。PsychoPy3のCoderについては，<a href="https://qiita.com/snishym/items/8b52db0d901cf5744463">Qiitaのsnishymさんの記事</a>をおすすめします。なお本ページも2020年３月までにはPsychoPy3に対応予定です（サバティカル後の授業開始までに対応します・・・）。</p>
+</div>
 <div id="psychopy" class="section level2">
 <h2>PsychoPyとは？</h2>
 <p>python上で動作する刺激呈示ソフトです。フリーソフトになりますが，高機能で，基本的な使用法を理解できれば，心理学・神経科学で行う認知課題のほとんどが作成可能です。以下のサイトや書籍が参考になります。</p>
@@ -358,16 +429,13 @@ div.tocify {
 <h2>課題0</h2>
 <div id="01" class="section level3">
 <h3>課題0の1</h3>
-<div id="psychopy" class="section level4">
-<h4>「PsychoPyのダウンロードとインストールをしよう！」</h4>
+<p>####「PsychoPyのダウンロードとインストールをしよう！」</p>
 <p>PsychoPyのサイト(<a href="http://www.psychopy.org/" class="uri">http://www.psychopy.org/</a>) からダウンロード&amp; インストールしましょう。 サイトからダウンロードしたものをダブルクリックとかすればインスールが開始されるかと思います。細かい設定とかもあるけど，まずは，気にしない。</p>
 <p><img src="materials/psychopy/fig1.png" /> <br /> <br /> <br /></p>
 </div>
-</div>
 <div id="02" class="section level3">
 <h3>課題0の2</h3>
-<div id="psychopycoder" class="section level4">
-<h4>「PsychoPyのCoder画面を開こう！」</h4>
+<p>####「PsychoPyのCoder画面を開こう！」</p>
 <p>PsychoPyはGUIでも実験課題を作ることができる(Builderと呼ぶ)。 最初は，Builderの方が簡単なので良いかなと思うかもしれないですが， 複雑な実験課題を作る時にCoderでないと難しい時がある。 Coderは，プログラミングになる。プログラミングは，将来それを仕事に しない人も一度勉強しておくとよい。パソコンのスキルが上がるし， 複雑な作業をできるだけ単純にして，効率的に処理することができるようになる。</p>
 <p>「Coderだったら，この面白そうな実験課題が使えるのに…でもプログラミングは 勉強してないから，別のやつにしよう」となってはツマラナイ。 やりたい研究を自由にできるように勉強したい。</p>
 <p><img src="materials/psychopy/fig2.png" /> <br /> <br /> <br /></p>
@@ -376,11 +444,9 @@ div.tocify {
 <p>コードがかけたら，緑色のアイコン（赤い矢印で指している）をクリックするとコードが実行できます。 実行すると，下のOutput(出力)タブにその結果がでます。shell（シェル）では，Pythonコードを 確認することができます（このコードはどういう動きをするのか確認したい時に便利です）。</p>
 <p><img src="materials/psychopy/fig4.png" /> <br /> <br /> <br /></p>
 </div>
-</div>
 <div id="03" class="section level3">
 <h3>課題0の3</h3>
-<div id="shell" class="section level4">
-<h4>「Shellでプログラミング入門をしよう！」</h4>
+<p>####「Shellでプログラミング入門をしよう！」</p>
 <p>なぜかわからないけど，プログラミグの最初の一歩では，”Hello World”って画面に 表示させることが多い。「シェル」タブにコードを打ち込んで”Hello, Python!”と画面に表示させてみよう！</p>
 <p><img src="materials/psychopy/fig5.png" /> <br /> <br /> <br /></p>
 <p>「シェル」タブに以下のコードを打ち込もう。</p>
@@ -390,11 +456,9 @@ print a</code></pre>
 <p><img src="materials/psychopy/fig6.png" /> <br /> <br /> <br /></p>
 </div>
 </div>
-</div>
 <div class="section level2">
 <h2>課題１</h2>
-<div id="hello-python" class="section level4">
-<h4>「灰色の画面上に黒字で”Hello, Python!”と３秒間表示させよう！」</h4>
+<p>####「灰色の画面上に黒字で”Hello, Python!”と３秒間表示させよう！」</p>
 <p>パソコンに強い人はPsychoPyとかでネット検索してやると力がつくと思いますが， 以下のヒントも活用ください。模範解答(task1.py)もありますが，まずはヒントをみつつ， 自分で作成しましょう。</p>
 <p><strong>ヒント</strong> coderのエディタを新規作成して，以下を打ち込みます （コーディングをUTF-8に指定する。PsychoPyを日本語で使う場合に必要）。</p>
 <pre class="python"><code># -*- coding: utf-8 -*-</code></pre>
@@ -434,26 +498,20 @@ core.wait(2)</code></pre>
 <p><strong>ヒント</strong> PsychoPyはフリーズすることがあるので，こまめに保存をする。 また，psychoPyのエディタ上では，日本語入力がやりにくい。 そのため，PsychoPy上でコードを修正するよりも，なんらかのテキストエディタで作成や修正をしたほうが早い （〜.pyという名前のファイルをテキストエディタで開いて編集，PsychoPyで動作確認とすると早いです）。 エディタは，なんでも良いのだけど，<a href="https://github.com/atom/atom">Atom</a>が色々なOSで使えるし便利です。</p>
 <p><img src="materials/psychopy/fig7.png" /> <br /> <br /> <br /></p>
 </div>
-</div>
 <div id="2" class="section level2">
 <h2>課題2</h2>
-<div class="section level4">
-<h4>「“1”，“2”，“3”，“4”，“5”の数字を１秒間ずつ画面に提示してみよう！」</h4>
+<p>####「“1”，“2”，“3”，“4”，“5”の数字を１秒間ずつ画面に提示してみよう！」</p>
 <p><strong>ヒント</strong>　刺激の準備(visual.TextStim)からcore.wait(1)を繰り返します。</p>
 <p><strong>ヒント</strong>　#を使うとその部分は実行されません。プログラミングでは， かならず#などを使って，自分が行っている処理について説明を加えてください。</p>
 </div>
-</div>
 <div id="-1" class="section level2">
 <h2>課題３</h2>
-<div class="section level4">
-<h4>「“あ”，“い”，“う”，“え”，“お”を１秒間ずつ画面に提示してみよう！」</h4>
+<p>####「“あ”，“い”，“う”，“え”，“お”を１秒間ずつ画面に提示してみよう！」</p>
 <p><strong>ヒント</strong> 日本語の場合は，TextStimでtext = ‘あ’とするところを， text = u‘あ’と文字の前にuをいれてみましょう。日本語として処理してくれます。</p>
-</div>
 </div>
 <div id="-2" class="section level2">
 <h2>課題４</h2>
-<div class="section level4">
-<h4>「“1”，“2”，“3”，“4”，“5”を１秒間ずつ画面に提示することを，５回繰り返してみよう！」</h4>
+<p>####「“1”，“2”，“3”，“4”，“5”を１秒間ずつ画面に提示することを，５回繰り返してみよう！」</p>
 <p>「１」，「２」，「３」，「４」，「５」，「１」，「２」，「３」，「４」，「５」， 「１」，「２」，「３」，「４」，「５」と刺激の準備(visual.TextStim)から１秒間待つ (core.wait)を15回繰り返しても良いけど，効率がわるい。単純に繰り返すのではない方法を選びましょう。</p>
 <p><strong>ヒント</strong> 刺激を毎回指定するのではなくて，あらかじめリストを作っておいて， そのリストから刺激を指定するとスムーズです。リストは以下のように，要素を[]でくくります （以下の場合は，list1に格納）。</p>
 <pre class="python"><code>list1 = [1,2,3,4,5]
@@ -473,26 +531,20 @@ list2 = [u‘あ’,u‘い’,u‘う’,u‘え’,u‘お’]</code></pre>
     print m</code></pre>
 <p>なお，リストは，for文の前で設定をするようにしてください。</p>
 </div>
-</div>
 <div id="5" class="section level2">
 <h2>課題5</h2>
-<div class="section level4">
-<h4>「課題４を応用して，漢字で“壱”，“弐”，“三”，“四”，“五”を１秒ずつ提示することを，５回繰り返してみよう！」</h4>
-</div>
+<p>####「課題４を応用して，漢字で“壱”，“弐”，“三”，“四”，“五”を１秒ずつ提示することを，５回繰り返してみよう！」</p>
 </div>
 <div id="6" class="section level2">
 <h2>課題6</h2>
-<div id="190.5" class="section level4">
-<h4>「1から９の数字をランダムにだしてみよう(1から9の数字は0.5秒間ずつ２回提示する)！」</h4>
+<p>####「1から９の数字をランダムにだしてみよう(1から9の数字は0.5秒間ずつ２回提示する)！」</p>
 <p><strong>ヒント</strong> numpy.random.shuffle(リスト)という関数を使います。 これを使うと，リストの中身がシャッフルされます。</p>
-</div>
 </div>
 <div id="7" class="section level2">
 <h2>課題7</h2>
 <div id="7" class="section level3">
 <h3>課題7の１</h3>
-<div id="10.5" class="section level4">
-<h4>「課題６を使って，1から９の数字をランダムに0.5秒ずつだす（２回繰り返し）時に，色を変えて提示してみよう！」</h4>
+<p>####「課題６を使って，1から９の数字をランダムに0.5秒ずつだす（２回繰り返し）時に，色を変えて提示してみよう！」</p>
 <p><strong>ヒント</strong> 課題1でも簡単に触れましたが，visual.TextStim内のcolorとcolorSpaceで色を設定できます。</p>
 <ul>
 <li>白：　color = ( 1,1,1)</li>
@@ -506,14 +558,11 @@ list2 = [u‘あ’,u‘い’,u‘う’,u‘え’,u‘お’]</code></pre>
 </ul>
 <pre class="python"><code>myText = visual.TextStim(myWin,text = str(numList[i]),color = (-1,-1,-1),colorSpace=&#39;rgb&#39;)</code></pre>
 </div>
-</div>
 <div id="7-1" class="section level3">
 <h3>課題7の２</h3>
-<div id="10.5" class="section level4">
-<h4>「課題６を使って，1から９の数字をランダムに0.5秒ずつだす（２回繰り返し）時に，文字の大きさを変えて提示してみよう！」</h4>
+<p>####「課題６を使って，1から９の数字をランダムに0.5秒ずつだす（２回繰り返し）時に，文字の大きさを変えて提示してみよう！」</p>
 <p><strong>ヒント</strong> 以下のheightを変更すると，大きさが変わります。1だと大きいです。 色々と試してみましょう。</p>
 <pre class="python"><code>myText = visual.TextStim(myWin,text = str(numList[i]),color = (1,0.6,-0.6),height=1)</code></pre>
-</div>
 </div>
 <div id="7-2" class="section level3">
 <h3>課題7の３</h3>
@@ -885,6 +934,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

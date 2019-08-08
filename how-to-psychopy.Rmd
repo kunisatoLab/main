@@ -9,6 +9,10 @@ title: "PsychoPyを使って認知課題を作ってみよう！"
 [メールフォーム](https://docs.google.com/forms/d/1OQ7pN-oQda1YwGvcTBga3oKkviI697uc9AQlGVhX2YI/viewform)にて
 ご連絡いただけましたら幸いです。
 
+## 注意事項
+
+本ページの内容は，まだPsychoPy3に対応していません。PsychoPy3のCoderについては，[Qiitaのsnishymさんの記事](https://qiita.com/snishym/items/8b52db0d901cf5744463)をおすすめします。なお本ページも2020年３月までにはPsychoPy3に対応予定です（サバティカル後の授業開始までに対応します・・・）。
+
 ## PsychoPyとは？
 
 python上で動作する刺激呈示ソフトです。フリーソフトになりますが，高機能で，基本的な使用法を理解できれば，心理学・神経科学で行う認知課題のほとんどが作成可能です。以下のサイトや書籍が参考になります。
