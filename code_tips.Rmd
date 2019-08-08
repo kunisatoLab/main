@@ -26,6 +26,8 @@ title: "Code & Tips"
 
 - 逐次サンプリングモデルを用いた認知モデリング入門　☆
 
+- 心理学的ネットワーク分析入門　☆
+
 - [hBayesDMでベイジアン認知モデリング](how-to-hBayesDM.html)
 
 - [hBayesDMで反応時間のモデリング](how-to-hBayesDM-RT.html)
