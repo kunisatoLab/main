@@ -21,7 +21,7 @@ python上で動作する刺激呈示ソフトです。フリーソフトにな�
 
 - [PychoPyも含めたpythonで心理実験をする時に便利な愛媛大学の十河先生のHP](http://www.s12600.net/psy/python/index.html)
 
-- 十河著(2017/4/20)『心理学実験プログラミング: ―Python/PsychoPyによる実験作成・データ処理―』[Amazon.co.jp](http://amzn.asia/1JyEKlg)（まだ出版されてないが，是非ともこちらも参考にして欲しい）
+- 十河著(2017/4/20)『心理学実験プログラミング: ―Python/PsychoPyによる実験作成・データ処理―』[Amazon.co.jp](http://amzn.asia/1JyEKlg)
 
 
 
