@@ -4,7 +4,7 @@ title: "Code & Tips"
 
 ☆は，学部ゼミでの必修事項
 
-## 認知課題・調査用プログラミング
+## 認知課題・調査
 
 - jsPsychを用いた認知課題の作成(準備中)　☆
 
@@ -19,14 +19,24 @@ title: "Code & Tips"
 
 
 
-## 統計解析用プログラム言語
+## 統計解析
 - [認知課題の解析データセット作成(修正予定)](how-to-dataHandling.html)　☆
 
-- 強化学習モデルを用いた認知モデリング入門　☆
+- 強化学習モデルを用いた認知モデリング入門(準備中)　☆
 
-- 逐次サンプリングモデルを用いた認知モデリング入門　☆
+- 逐次サンプリングモデルを用いた認知モデリング入門(準備中)　☆
 
-- 心理学的ネットワーク分析入門　☆
+- 心理学的ネットワーク分析入門(準備中)　☆
+
+- [心理学で使うRパッケージの入ったRStudio Docker](https://hub.docker.com/r/ykunisato/paper-r) (日本語環境対応版は，[こちら](https://hub.docker.com/r/ykunisato/paper-r-jp))
+
+- [認知モデリング用RStudio Docker](https://hub.docker.com/r/ykunisato/cog-model-r)
+
+- [心理学的ネットワークモデリング用RStudio Docker](https://hub.docker.com/r/ykunisato/psynet-r)
+
+- [ネットワークメタ分析用RStudio Docker](https://hub.docker.com/r/ykunisato/netmeta-r)
+
+- [上記が全部入ったラボ用RStudio Docker](https://hub.docker.com/r/ykunisato/ccp-lab-r)(上記のDockerは大きな変更はないですが，こちらは，クラウドコンピューティングに対応するための更新をする予定です)
 
 - [hBayesDMでベイジアン認知モデリング](how-to-hBayesDM.html)
 
