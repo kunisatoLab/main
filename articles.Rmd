@@ -5,7 +5,10 @@ title: "学術論文"
 
 ### in press
 
-- Hasegawa, A., Somatori, K., Nishimura, H., Hattori, Y., & Kunisato, Y. (in press). Associations between self-reported impulsivity and a latent variable of impulsive action constructed from three laboratory tasks. Journal of Experimental Psychopathology.
+
+### 2019
+
+- Hasegawa, A., Somatori, K., Nishimura, H., Hattori, Y., & Kunisato, Y. (2019). Associations between self-reported impulsivity and a latent variable of impulsive action constructed from three laboratory tasks. Journal of Experimental Psychopathology, 10, 3. doi: 10.1177/2043808719861894
 
 
 ### 2018
