@@ -4,28 +4,71 @@ title: "再生可能なデータ解析入門"
 
 ## 再生可能性とは？
 
-研究における再現性を考える上で，Clarerbout, Jが提案したReproducibilityとReplicabilityの区分はとても便利です。Clarerbout, Jによると，
+研究における再現性を考える上で，Clarerbout, Jが提案したReplicabilityとReproducibilityの区分はとても便利です。Clarerbout, Jによると，
 
-- Reproducibility(再生可能性) = 既存データに同じ解析をして同じ結果が得られること
 - Replicability(再現可能性) = 新規に取得したデータに同じ解析をして同じ結果が得られること
+- Reproducibility(再生可能性) = 既存データに同じ解析をして同じ結果が得られること[^1]
 
-とされます[^1]。
+とされます[^2]。Replicability(再現可能性) は，簡単に言うと新たに追試をして同じ結果が得られることです。これについては，これ以上このページでは扱いません。
 
+　一方，Reproducibility(再生可能性)は，既に収集されたデータに対して，論文などで記載されている同じ解析を行った場合に，同じ結果が得られることです。再生が不可能な研究は，再現もしないと思われるので，まずは再生可能な研究ができることが前提になります。本ページの以降では，この再生可能なデータ解析について詳しく解説します。
 
+## 再生可能なデータ解析のためにRを使おう！
 
+　再生可能なデータ解析をする際の原則は，「データに対して行った操作をすべて記録する」です。これが可能なら，ExcelやSPSSなどを使っても全く問題はありません。つまり，これらのソフトの操作をするたびに，テキストエディタなどにすべての作業を記入し，それを第三者にもわかるようにしておけば良いです。ただ，これはかなり骨が折れます[^3]。なんで骨が折れるかというと，Excelなどでマウスを動かしてポチポチやった作業を記録するのですが，これが面倒です。面倒ですが，その記録がないと，生データから解析結果を得ることができなくなります（例えば，逆点処理・変数変換・データの除外をしたのに記録してないと結果は変わってきます）。
 
-R Markdownや
+　そこで便利なのがRやPythonなどのオープンソースなプログラミング言語です[^4]。プログラムコードを書くのが面倒くさいなあと思われるかもしれませんが，インターネットで検索すれば，必ず優れた例や解説もあるので，すぐに慣れると思います。生データを読み込んで，それ以降Rなどで処理をすれば，その行った処理がすべて記録されます。ただ，Rのコンソールにそのまま書き込むと行った処理の記録になりませんので，R Markdownを使用することを強くおすすめします。
 
+　Rでのコードの書き方やR Markdownの使い方などは，以下のスライドで詳しく解説しているので，参照してください。R Markdonwについては，[kazutanのサイト](https://kazutan.github.io/kazutanR/index.html)や[中京大学の高橋康介先生による「再現可能性のすゝめ 」]( https://www.amazon.co.jp/dp/4320112431/ref=cm_sw_em_r_mt_dp_U_wo9vDb0EMTZK9)を参照することを強くおすすめします。最近は，[github](https://github.com/)や[OSF](https://osf.io/dashboard)などで，データとコードが配布されていることも多くなりました。興味のある研究のデータやコードをダウンロードして，解析やRコードの書き方を学ぶのも実践的で良いかと思います。
 
 <iframe src="//www.slideshare.net/slideshow/embed_code/key/wNlFMYILtIJT0X" width="510" height="420" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-77835559" title="統計解析の再現可能性を高める取り組み" target="_blank">統計解析の再現可能性を高める取り組み</a> </strong> from <strong><a href="//www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong> </div>
 
+## 再生可能なデータ解析<環境>を記録・準備しよう！
 
-Epskamp(2019)によると [^2]
+　RやR Markdownを使っていれば大丈夫かというとそうではなくて，Rなどのオープンソースソフトウェアは，急速に発展しており，どんどん新しいパッケージが発表されたり変更が加えられています。そのような状況を踏まえて，Epskamp(2019)は[^5]，再生可能性を低める脅威として以下のようなものを指摘しています。
+　
+- β版の存在：(よく0.x.xなどで表現される）
 
 
-引用文献
 
-[^1]:Goodman, S. N. et al. 2016 What does research reproducibility mean? Science Translational Medicine, 8(341), 341ps12.[link](https://stm.sciencemag.org/content/8/341/341ps12.full)
-[^2]:Epskamp, S. (2019). Reproducibility and Replicability in a Fast-Paced Methodological World. Advances in Methods and Practices in Psychological Science, 2(2), 145-155. [link](https://journals.sagepub.com/doi/full/10.1177/2515245919847421), [preprint](https://psyarxiv.com/cnq4d/)
+### Rのパッケージ管理
+
+
+[renvの日本語解説資料](https://qiita.com/okiyuki99/items/688a00ca9a58e42e3bfa)
+[Packratの日本語解説資料](https://qiita.com/uri/items/5d473a5df91954585e62)
+
+### Dockerを用いた解析環境のコンテナ化
+
+研究データから同じ解析結果が得られるような再生可能性の高い研究を行う上で，解析環境をコンテナ化することができるDockerがとても便利です。また，RStanやJAGSなどの準備が面倒だったり，難しいと感じるユーザーにとってもお手軽に解析環境を準備することができます。以下は，私が作成したRStudioを使った解析用Dockerのリストです。
+
+- [心理学で使うRパッケージの入ったRStudio Docker](https://hub.docker.com/r/ykunisato/paper-r) (日本語環境対応版は，[こちら](https://hub.docker.com/r/ykunisato/paper-r-jp))
+
+- [認知モデリング用RStudio Docker](https://hub.docker.com/r/ykunisato/cog-model-r)
+
+- [心理学的ネットワークモデリング用RStudio Docker](https://hub.docker.com/r/ykunisato/psynet-r)
+
+- [ネットワークメタ分析用RStudio Docker](https://hub.docker.com/r/ykunisato/netmeta-r)
+
+- [上記が全部入ったラボ用RStudio Docker](https://hub.docker.com/r/ykunisato/ccp-lab-r)
+
+
+
+
+# 環境の共有方法
+
+https://karthik.github.io/holepunch/
+
+
+
+
+[^1]: ReproducibilityとReplicabilityの定訳はないと思います。どちらも再現可能性と訳されることもありますが，意味は違いますので，Reproducibilityを再生可能性，Replicabilityを再現可能性と分けて訳してみました。翻訳にあたり，すでに再現実験などの言葉が日本語として定着しており，再現性には追試のニュアンスがあることから，Replicabilityを再現可能性と訳しました。そして，Reproducibilityは再現という言葉を避けて，すでに得られたデータから同じ結果を繰り返すことができるかというニュアンスを含めるために，再生可能性と訳しました。これは国里が2017年からなんとなく使っている翻訳なので，正式な翻訳やもっと良い翻訳があれば修正したいと考えています。
+
+[^2]:Goodman, S. N. et al. 2016 What does research reproducibility mean? Science Translational Medicine, 8(341), 341ps12.[link](https://stm.sciencemag.org/content/8/341/341ps12.full)
+
+[^3]: 私は，データに対して強迫的な傾向があるので，Rを本格的に導入する前は，すべてテキストエディタに記載していました。ただ，人間なので，どこかでエディタへのメモ記載を忘れることがあります。そうすると，また，最初からデータを処理し直したりしており，えらい無駄に時間をかけていました（データ解析版賽の河原の石積み）。こういう再生可能性への関心が高まってきて，ずいぶんと便利になってきました。
+
+[^4]: RでもPythonでも良いのですが，データ解析のみの場合は，Rの方が便利と思います。また，インターネットで調べた時に，心理学関連の解析であれば，Rの方が圧倒的に情報が多いと思います。
+
+[^5]:Epskamp, S. (2019). Reproducibility and Replicability in a Fast-Paced Methodological World. Advances in Methods and Practices in Psychological Science, 2(2), 145-155. [link](https://journals.sagepub.com/doi/full/10.1177/2515245919847421), [preprint](https://psyarxiv.com/cnq4d/)
 
 
