@@ -4,7 +4,7 @@ title: "再生可能なデータ解析入門"
 
 ## 再生可能性とは？
 
-研究における再現性を考える上で，Clarerbout, Jが提案したReplicabilityとReproducibilityの区分はとても便利です。Clarerbout, Jによると，
+　研究における再現性を考える上で，Clarerbout, Jが提案したReplicabilityとReproducibilityの区分はとても便利です。Clarerbout, Jによると，
 
 - Replicability(再現可能性) = 新規に取得したデータに同じ解析をして同じ結果が得られること
 - Reproducibility(再生可能性) = 既存データに同じ解析をして同じ結果が得られること[^1]
@@ -154,6 +154,26 @@ run -e PASSWORD=パスワード -p 8787:8787 -v ~:/home/rstudio -d --name コン
 ```
 
 ファイルサイズが大きめなのが悩ましいですが，これだと時間が経っても再生可能な形式で保存・配布が可能です。
+
+<br />
+<br />
+
+## holepunchを使ったBinder経由での解析環境の共有
+
+　解析環境とともにコードとデータを提供する方法としては，holepunchパッケージを使って，Binder上で公開する方法があります。holepunchパッケージは，自動的に依存関係を調べた上で，Dockerファイルを生成し，Binderで使えるようにしてくれます。Binderは，github上のリポジトリを元にJupyterやRstudio serverを使えるようにしてくれるサービです。Binder上ではRstudio serverが動くので，非常に簡単に解析環境を共有できます。詳しくは，[こちら](https://karthik.github.io/holepunch/)の公式の説明を確認ください。
+
+　公式の解説にしたがって，holepunchをインストールした上で，以下のコードを実行すると，Binderへのリンク用バッジが出てきます。
+
+```
+library(holepunch)
+write_compendium_description(package = "Your compendium name", 
+                             description = "Your compendium description")
+write_dockerfile(maintainer = "your_name") 
+generate_badge() # This generates a badge for your readme.
+```
+　
+　これを，GithubのREADME.mdファイルなどに貼り付けておくと，そこからbinderで飛ぶリンクになります。例として，[杣取さんと取り組んだ追試の解析用のGithubリポジトリ](https://github.com/ykunisato/somatori_kunisato_2019_replication_study)をご確認ください。
+
 
 <br />
 <br />

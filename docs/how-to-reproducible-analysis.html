@@ -410,7 +410,7 @@ div.tocify {
 
 <div class="section level2">
 <h2>再生可能性とは？</h2>
-<p>研究における再現性を考える上で，Clarerbout, Jが提案したReplicabilityとReproducibilityの区分はとても便利です。Clarerbout, Jによると，</p>
+<p>　研究における再現性を考える上で，Clarerbout, Jが提案したReplicabilityとReproducibilityの区分はとても便利です。Clarerbout, Jによると，</p>
 <ul>
 <li>Replicability(再現可能性) = 新規に取得したデータに同じ解析をして同じ結果が得られること</li>
 <li>Reproducibility(再生可能性) = 既存データに同じ解析をして同じ結果が得られること<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></li>
@@ -538,6 +538,18 @@ div.tocify {
 <p>ファイルサイズが大きめなのが悩ましいですが，これだと時間が経っても再生可能な形式で保存・配布が可能です。</p>
 <p><br /> <br /></p>
 </div>
+</div>
+<div id="holepunchbinder" class="section level2">
+<h2>holepunchを使ったBinder経由での解析環境の共有</h2>
+<p>　解析環境とともにコードとデータを提供する方法としては，holepunchパッケージを使って，Binder上で公開する方法があります。holepunchパッケージは，自動的に依存関係を調べた上で，Dockerファイルを生成し，Binderで使えるようにしてくれます。Binderは，github上のリポジトリを元にJupyterやRstudio serverを使えるようにしてくれるサービです。Binder上ではRstudio serverが動くので，非常に簡単に解析環境を共有できます。詳しくは，<a href="https://karthik.github.io/holepunch/">こちら</a>の公式の説明を確認ください。</p>
+<p>　公式の解説にしたがって，holepunchをインストールした上で，以下のコードを実行すると，Binderへのリンク用バッジが出てきます。</p>
+<pre><code>library(holepunch)
+write_compendium_description(package = &quot;Your compendium name&quot;, 
+                             description = &quot;Your compendium description&quot;)
+write_dockerfile(maintainer = &quot;your_name&quot;) 
+generate_badge() # This generates a badge for your readme.</code></pre>
+<p>　 　これを，GithubのREADME.mdファイルなどに貼り付けておくと，そこからbinderで飛ぶリンクになります。例として，<a href="https://github.com/ykunisato/somatori_kunisato_2019_replication_study">杣取さんと取り組んだ追試の解析用のGithubリポジトリ</a>をご確認ください。</p>
+<p><br /> <br /></p>
 </div>
 <div class="footnotes">
 <hr />
