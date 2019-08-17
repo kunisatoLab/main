@@ -53,28 +53,9 @@ title: "Code & Tips"
 <br />
 
 
-## 再生可能性の高いデータ解析
+## データ解析
 
 - [再生可能なデータ解析入門](how-to-reproducible-analysis.html)　☆6
-
-### Docker
-
-研究データから同じ解析結果が得られるような再生可能性の高い研究を行う上で，解析環境をコンテナ化することができるDockerがとても便利です。また，RStanやJAGSなどの準備が面倒だったり，難しいと感じるユーザーにとってもお手軽に解析環境を準備することができます。以下は，私が作成したRStudioを使った解析用Dockerのリストです。
-
-- [心理学で使うRパッケージの入ったRStudio Docker](https://hub.docker.com/r/ykunisato/paper-r) (日本語環境対応版は，[こちら](https://hub.docker.com/r/ykunisato/paper-r-jp))
-
-- [認知モデリング用RStudio Docker](https://hub.docker.com/r/ykunisato/cog-model-r)
-
-- [心理学的ネットワークモデリング用RStudio Docker](https://hub.docker.com/r/ykunisato/psynet-r)
-
-- [ネットワークメタ分析用RStudio Docker](https://hub.docker.com/r/ykunisato/netmeta-r)
-
-- [上記が全部入ったラボ用RStudio Docker](https://hub.docker.com/r/ykunisato/ccp-lab-r)(今後クラウドコンピューティングに対応するための更新をする予定です)
-
-<br />
-
-
-## 統計解析
 
 - [ベイズ統計とRstanの最初の一歩](how-to-start-rstan.html)
 
