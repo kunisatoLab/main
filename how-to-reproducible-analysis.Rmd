@@ -1,0 +1,31 @@
+---
+title: "再生可能なデータ解析入門"
+---
+
+## 再生可能性とは？
+
+研究における再現性を考える上で，Clarerbout, Jが提案したReproducibilityとReplicabilityの区分はとても便利です。Clarerbout, Jによると，
+
+- Reproducibility(再生可能性) = 既存データに同じ解析をして同じ結果が得られること
+- Replicability(再現可能性) = 新規に取得したデータに同じ解析をして同じ結果が得られること
+
+とされます[^1]。
+
+
+
+
+R Markdownや
+
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/wNlFMYILtIJT0X" width="510" height="420" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-77835559" title="統計解析の再現可能性を高める取り組み" target="_blank">統計解析の再現可能性を高める取り組み</a> </strong> from <strong><a href="//www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong> </div>
+
+
+Epskamp(2019)によると [^2]
+
+
+引用文献
+
+[^1]:Goodman, S. N. et al. 2016 What does research reproducibility mean? Science Translational Medicine, 8(341), 341ps12.[link](https://stm.sciencemag.org/content/8/341/341ps12.full)
+[^2]:Epskamp, S. (2019). Reproducibility and Replicability in a Fast-Paced Methodological World. Advances in Methods and Practices in Psychological Science, 2(2), 145-155. [link](https://journals.sagepub.com/doi/full/10.1177/2515245919847421), [preprint](https://psyarxiv.com/cnq4d/)
+
+

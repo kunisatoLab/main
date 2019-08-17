@@ -53,7 +53,11 @@ title: "Code & Tips"
 <br />
 
 
-## 心理学のためのDocker
+## 再生可能性の高いデータ解析
+
+- [再生可能なデータ解析入門](how-to-reproducible-analysis.html)　☆6
+
+### Docker
 
 研究データから同じ解析結果が得られるような再生可能性の高い研究を行う上で，解析環境をコンテナ化することができるDockerがとても便利です。また，RStanやJAGSなどの準備が面倒だったり，難しいと感じるユーザーにとってもお手軽に解析環境を準備することができます。以下は，私が作成したRStudioを使った解析用Dockerのリストです。
 
@@ -70,7 +74,7 @@ title: "Code & Tips"
 <br />
 
 
-## 統計学
+## 統計解析
 
 - [ベイズ統計とRstanの最初の一歩](how-to-start-rstan.html)
 
