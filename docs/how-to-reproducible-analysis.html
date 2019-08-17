@@ -431,9 +431,7 @@ div.tocify {
 <p><br /> <br /></p>
 </div>
 <div class="section level2">
-<h2>再生可能なようにデータ解析<環境>を記録・準備しよう！</h2>
-<div class="section level3">
-<h3>活発なソフトウェア開発が再生性を低める</h3>
+<h2>急速なソフトウェア開発が再生性を低める</h2>
 <p>　RやR Markdownを使っていれば大丈夫かというとそうではなくて，Rなどのオープンソースソフトウェアは，急速に発展しており，どんどん新しいパッケージが発表されたり変更が加えられています。Rパッケージはgithub上で開発されていることもあり，それをみると何人もの人が共同しつつ目まぐるしいスピードで変更を加えているのがわかりますし，エラーがあればissueに報告され，直ちに修正されている様子も確認できます。そのような急速にソフトウェアが開発される状況を踏まえて，Epskamp(2019)は<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>，再生可能性を低める脅威として以下のようなものを指摘しています。</p>
 <ul>
 <li><p>β版：よく使用されているけど，β版(よく0.x.xなどで表現される）のソフトも多い。しかし，β版は今後大きな変更が加えられる可能性があり，将来の再生性を低める可能性がある。</p></li>
@@ -441,8 +439,8 @@ div.tocify {
 </ul>
 <p><br /></p>
 </div>
-<div class="section level3">
-<h3>急速なソフトウェア開発による再生性低下を防ぐ方法</h3>
+<div class="section level2">
+<h2>急速なソフトウェア開発による再生性低下を防ぐ方法</h2>
 <p>　Epskamp(2019)は，急速なソフトウェア開発に伴う再生性低下のために，以下のような解決方法を提案しています。</p>
 <ol style="list-style-type: decimal">
 <li>安定版のソフトを使用する。Epskamp(2019)は，安定版のソフトか確認する指標として，以下の５点をあげている。</li>
@@ -459,16 +457,51 @@ div.tocify {
 <li>使用したソフトウェアパッケージの状態を再生できるようにする。</li>
 </ol>
 <p><br /></p>
-<p>上記の1と2だけでは，急速に開発されるソフトウェア環境で再生性を担保することができないので，３が必要になります。</p>
-<p><br /></p>
-<div id="r" class="section level4">
-<h4>Rのパッケージ管理</h4>
-<p><a href="https://qiita.com/okiyuki99/items/688a00ca9a58e42e3bfa">renvの日本語解説資料</a> <a href="https://qiita.com/uri/items/5d473a5df91954585e62">Packratの日本語解説資料</a></p>
+<p>上記の1と2だけでは，急速に開発されるソフトウェア環境で再生性を担保することができないので，３が必要になります。使用したソフトウェアパッケージの状態を再生できるようにするためには，(1)Rパッケージのバージョン管理, (2)解析環境のコンテナ化を推奨します。(Epskamp, 2019)。</p>
 <p><br /></p>
 </div>
-<div id="docker" class="section level4">
-<h4>Dockerを用いた解析環境のコンテナ化</h4>
-<p>研究データから同じ解析結果が得られるような再生可能性の高い研究を行う上で，解析環境をコンテナ化することができるDockerがとても便利です。また，RStanやJAGSなどの準備が面倒だったり，難しいと感じるユーザーにとってもお手軽に解析環境を準備することができます。以下は，私が作成したRStudioを使った解析用Dockerのリストです。</p>
+<div id="r" class="section level2">
+<h2>Rパッケージのパッケージ管理</h2>
+<p>　一番シンプルな方法は，以下のようにsessionInfo()を実行して，使用しているRパッケージのバージョン情報を記録することです。sessionInfo()を実行することで，現在どういう環境で解析がなされたかが記録できます。</p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 3.6.1 (2019-07-05)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Debian GNU/Linux 9 (stretch)
+## 
+## Matrix products: default
+## BLAS/LAPACK: /usr/lib/libopenblasp-r0.2.19.so
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## loaded via a namespace (and not attached):
+##  [1] Rcpp_1.0.2      digest_0.6.20   crayon_1.3.4    magrittr_1.5   
+##  [5] evaluate_0.14   pillar_1.4.2    rlang_0.4.0     stringi_1.4.3  
+##  [9] rstudioapi_0.10 rmarkdown_1.14  tools_3.6.1     stringr_1.4.0  
+## [13] xfun_0.8        yaml_2.2.0      compiler_3.6.1  pkgconfig_2.0.2
+## [17] htmltools_0.3.6 knitr_1.23      tibble_2.1.3</code></pre>
+<p>　devtools::install_version()を使えば，sessionInfo()で記録されたのと同じバージョンのRパッケージをインストールすることができます。以下の例の場合は，古いバージョンのggplot2をインストールしています。詳しくは，<a href="https://support.rstudio.com/hc/en-us/articles/219949047-Installing-older-versions-of-packages">こちら</a>を参照ください。</p>
+<pre><code>devtools::install_version(&quot;ggplot2&quot;, version = &quot;0.9.1&quot;)</code></pre>
+<p>　ただし，sessionInfo()+devtools::install_version()の組み合わせでは，Rパッケージの膨大な依存関係までは扱うことができないので，完全な環境の再現にはなりません。そこで，Rパッケージのバージョン管理では，現段階では，以下の３つのRパッケージを使うことを推奨します。それぞれ特徴はありますが，解析実施時or終了時のスナップショット(Rパッケージのバージョン情報などが含まれる)をとっておいて，後でその状態を再現するパッケージになります。</p>
+<ul>
+<li><p>checkpoint: <a href="https://cran.r-project.org/web/packages/checkpoint/vignettes/checkpoint.html">checkpointの解説記事</a></p></li>
+<li><p>renv: <a href="https://qiita.com/okiyuki99/items/688a00ca9a58e42e3bfa">renvの日本語解説資料</a></p></li>
+<li><p>packrat: <a href="https://qiita.com/uri/items/5d473a5df91954585e62">packratの日本語解説資料</a></p></li>
+</ul>
+<p><br /></p>
+<p>　しかし，そもそもOSが違うとかR本体の大きな変更があった場合は，これらのパッケージのバージョン管理だけでは，解決することはできません（古いRをいれればいいとかもありますが，面倒ですね・・・）。OSやR本体の変更も含めた再生性の確保をする場合は，次で説明する解析環境のコンテナ化が必須です。</p>
+</div>
+<div class="section level2">
+<h2>解析環境のコンテナ化</h2>
+<p>　OSやRのバージョンなどが違っても再生性を担保するには，仮想環境を作って，そこにOSやソフトを用意するという方法があります。ただ，これだとかなり容量が大きくなるので，Dockerが提供するコンテナ技術を使って，最小限の構成でRを使った解析環境を作って，後で利用できるようにすることを推奨します。なんとなく難易度が高そうですが，ユーザーは作業が少なくて済むので，おすすめです。また，RStanやJAGSなどの準備が面倒だったり，難しいと感じるユーザーは，既に準備されたDockerを使えば，お手軽に解析環境を準備することができます。以下は，私が作成したRStudioを使った解析用Dockerのリストです。ベースのpaper-rを使用すれば，すぐにstanやJAGSが使えます。</p>
 <ul>
 <li><p><a href="https://hub.docker.com/r/ykunisato/paper-r">心理学で使うRパッケージの入ったRStudio Docker</a> (日本語環境対応版は，<a href="https://hub.docker.com/r/ykunisato/paper-r-jp">こちら</a>)</p></li>
 <li><p><a href="https://hub.docker.com/r/ykunisato/cog-model-r">認知モデリング用RStudio Docker</a></p></li>
@@ -477,11 +510,33 @@ div.tocify {
 <li><p><a href="https://hub.docker.com/r/ykunisato/ccp-lab-r">上記が全部入ったラボ用RStudio Docker</a></p></li>
 </ul>
 <p><br /></p>
+<div id="docker" class="section level3">
+<h3>Dockerの始め方</h3>
+<p>使用はとっても簡単で，以下の５ステップで利用可能です。</p>
+<p>1.Docker Desktop ( <a href="https://www.docker.com/products/docker-desktop" class="uri">https://www.docker.com/products/docker-desktop</a> )をインストールする。</p>
+<p>2.ターミナル（Macの場合。Winはコマンドプロンプト)を開く</p>
+<p>3.ターミナルに以下を打ち込んで、コンテナーをrunする(runの前にPullが自動的なされます)。パスワードとコンテナ名はご自身の好きなように設定ください。</p>
+<pre><code>docker run -e PASSWORD=好きなパスワード -p 8787:8787 -v ~:/home/rstudio -d --好きなコンテナ名 ykunisato/国里のDockerHubで使いたいコンテナ名</code></pre>
+<p>4.ブラウザを開いて，urlバー（アドレスバー）に，<a href="http://localhost:8787/" class="uri">http://localhost:8787/</a> とタイプする</p>
+<p>5.ブラウザ上にRstudioが出てくるので，IDにrstudio，パスに上記で設定したパスワードをいれる。</p>
 </div>
-<div class="section level4">
-<h4>環境の共有方法</h4>
-<p><a href="https://karthik.github.io/holepunch/" class="uri">https://karthik.github.io/holepunch/</a></p>
+<div id="docker" class="section level3">
+<h3>Dockerの保存・配布方法</h3>
+<p>　国里のDocker hubに登録されているDockerはちょくちょく変更されます（ベースにしているrockerの変更があった場合，国里が気まぐれに変更した場合など）。そのため，解析が一段落したら，その現在使っているコンテナごと保存しておく必要があります。まず，解析で使っているコンテナのCONTAINER IDを確認します。確認には，ターミナルに以下のコマンドを打ち込んでください。</p>
+<pre><code>docker ps -a</code></pre>
+<p>　CONTAINER IDが分かったら，以下のコマンドを打ち込んで，使っているコンテナをイメージ（保存しやすくまとめる程度の理解で良いと思います）にします。例えば，私の使っているコンテナ(IDはb1c05f9a452)をcog190817という名前でイメージ化する場合は，“docker commit b1c05f9a452 cog190817”と打ち込みます。</p>
+<pre><code>docker commit コンテナのID 好きな名前+日付</code></pre>
+<p>　次に，以下のコマンドを打ち込んで，作成したイメージを保存します（形式はtar）。 例えば，先程作成したイメージのcog190817を保存する場合は，“docker save cogModel190817 &gt; cogModel190817.tar”と打ち込みます。まあまあ大きなサイズのファイルが保存されると思います（国里のDockerを使っている場合は，4GBを超えると思います）。これを保存しておけば，後で同じ環境で解析が実施できたり，配布すれば第三者が確認することもできます。</p>
+<pre><code>docker save 上で付けた名前 &gt; 好きな名前.tar</code></pre>
 </div>
+<div id="docker" class="section level3">
+<h3>保存・配布したDockerの利用方法</h3>
+<p>　tar形式で保存できたら，今度使うときは，ターミナルに以下のコマンドで読み込みます。先程の例の場合は，“docker load &lt; cogModel190817.tar”です。</p>
+<pre><code>docker load &lt; 上で付けた名前.tar</code></pre>
+<p>　“docker ps -a”を打ち込んで，上記のコマンドにより読み込まれた内容を確認します。REPOSITORYの列でリポジトリ名を確認します。そのリポジトリ名を使って，以下のようにrunをします（パスワードやコンテナ名は好きに設定する）。</p>
+<pre><code>run -e PASSWORD=パスワード -p 8787:8787 -v ~:/home/rstudio -d --name コンテナ名 リポジトリ名</code></pre>
+<p>ファイルサイズが大きめなのが悩ましいですが，これだと時間が経っても再生可能な形式で保存・配布が可能です。</p>
+<p><br /> <br /></p>
 </div>
 </div>
 <div class="footnotes">
