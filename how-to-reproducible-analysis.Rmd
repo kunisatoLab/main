@@ -74,13 +74,13 @@ sessionInfo()
 devtools::install_version("ggplot2", version = "0.9.1")
 ```
 
-　ただし，sessionInfo()+devtools::install_version()の組み合わせでは，Rパッケージの膨大な依存関係までは扱うことができないので，完全な環境の再現にはなりません。そこで，Rパッケージのバージョン管理では，現段階では，以下の３つのRパッケージを使うことを推奨します。それぞれ特徴はありますが，解析実施時or終了時のスナップショット(Rパッケージのバージョン情報などが含まれる)をとっておいて，後でその状態を再現するパッケージになります。
+　ただし，sessionInfo()+devtools::install_version()の組み合わせでは，Rパッケージの膨大な依存関係までは扱うことができないので，完全な環境の再現にはなりません。そこで，Rパッケージのバージョン管理では，現段階では，以下の３つのRパッケージを使うことを推奨します。それぞれ特徴はありますが，解析実施時or終了時のスナップショット(Rパッケージのバージョン情報などが含まれる)をとっておいて，後でその状態を再現するパッケージになります。なお，それぞれの解説については，既に優れた記事があるので，そちらを参照ください。
 
 - checkpoint: [checkpointの解説記事](https://cran.r-project.org/web/packages/checkpoint/vignettes/checkpoint.html)
 
-- renv: [okiyuki99氏によるrenvの日本語解説資料](https://qiita.com/okiyuki99/items/688a00ca9a58e42e3bfa)
+- renv: [Motoyuki Oki氏によるrenvの日本語解説資料](https://qiita.com/okiyuki99/items/688a00ca9a58e42e3bfa)
 
-- packrat: [uri氏によるpackratの日本語解説資料](https://qiita.com/uri/items/5d473a5df91954585e62)
+- packrat: [Shinya Uryu氏によるpackratの日本語解説資料](https://qiita.com/uri/items/5d473a5df91954585e62)
 
 <br />
 
