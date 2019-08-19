@@ -493,8 +493,8 @@ div.tocify {
 <p>　ただし，sessionInfo()+devtools::install_version()の組み合わせでは，Rパッケージの膨大な依存関係までは扱うことができないので，完全な環境の再現にはなりません。そこで，Rパッケージのバージョン管理では，現段階では，以下の３つのRパッケージを使うことを推奨します。それぞれ特徴はありますが，解析実施時or終了時のスナップショット(Rパッケージのバージョン情報などが含まれる)をとっておいて，後でその状態を再現するパッケージになります。</p>
 <ul>
 <li><p>checkpoint: <a href="https://cran.r-project.org/web/packages/checkpoint/vignettes/checkpoint.html">checkpointの解説記事</a></p></li>
-<li><p>renv: <span class="citation">[@okiyuki99氏によるrenvの日本語解説資料]</span>(<a href="https://qiita.com/okiyuki99/items/688a00ca9a58e42e3bfa" class="uri">https://qiita.com/okiyuki99/items/688a00ca9a58e42e3bfa</a>)</p></li>
-<li><p>packrat: <span class="citation">[@uri氏によるpackratの日本語解説資料]</span>(<a href="https://qiita.com/uri/items/5d473a5df91954585e62" class="uri">https://qiita.com/uri/items/5d473a5df91954585e62</a>)</p></li>
+<li><p>renv: <a href="https://qiita.com/okiyuki99/items/688a00ca9a58e42e3bfa">okiyuki99氏によるrenvの日本語解説資料</a></p></li>
+<li><p>packrat: <a href="https://qiita.com/uri/items/5d473a5df91954585e62">uri氏によるpackratの日本語解説資料</a></p></li>
 </ul>
 <p><br /></p>
 <p>　しかし，そもそもOSが違うとかR本体の大きな変更があった場合は，これらのパッケージのバージョン管理だけでは，解決することはできません（古いRをいれればいいとかもありますが，面倒ですね・・・）。OSやR本体の変更も含めた再生性の確保をする場合は，次で説明する解析環境のコンテナ化が必須です。</p>

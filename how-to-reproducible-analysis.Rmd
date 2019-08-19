@@ -78,9 +78,9 @@ devtools::install_version("ggplot2", version = "0.9.1")
 
 - checkpoint: [checkpointの解説記事](https://cran.r-project.org/web/packages/checkpoint/vignettes/checkpoint.html)
 
-- renv: [@okiyuki99氏によるrenvの日本語解説資料](https://qiita.com/okiyuki99/items/688a00ca9a58e42e3bfa)
+- renv: [okiyuki99氏によるrenvの日本語解説資料](https://qiita.com/okiyuki99/items/688a00ca9a58e42e3bfa)
 
-- packrat: [@uri氏によるpackratの日本語解説資料](https://qiita.com/uri/items/5d473a5df91954585e62)
+- packrat: [uri氏によるpackratの日本語解説資料](https://qiita.com/uri/items/5d473a5df91954585e62)
 
 <br />
 
