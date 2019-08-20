@@ -24,14 +24,23 @@ title: "Code & Tips"
 
 <br />
 
+## データ解析
+
+- [R言語の書き方とフォルダの準備の仕方（準備中）](how-to-R-language.html) ☆2
+
+- [再生可能なデータ解析入門](how-to-reproducible-analysis.html)　☆3
+
+- [ベイズ統計とRstanの最初の一歩](how-to-start-rstan.html)
+
+<br />
 
 ## 認知モデリング
 
-- [認知課題の解析データセット作成(修正予定)](how-to-dataHandling.html)　☆2
+- [認知課題の解析データセット作成(修正予定)](how-to-dataHandling.html)　☆4
 
-- [強化学習モデルを用いた認知モデリング入門(準備中)](how-to-cognitive-modeling-rl.html)　☆3
+- [強化学習モデルを用いた認知モデリング入門(準備中)](how-to-cognitive-modeling-rl.html)　☆5
 
-- [逐次サンプリングモデルを用いた認知モデリング入門(準備中)](how-to-cognitive-modeling-ssm.html)　☆4
+- [逐次サンプリングモデルを用いた認知モデリング入門(準備中)](how-to-cognitive-modeling-ssm.html)　☆6
 
 - [hBayesDMでベイジアン認知モデリング](how-to-hBayesDM.html)
 
@@ -48,16 +57,7 @@ title: "Code & Tips"
 
 ## 心理学的ネットワークモデリング
 
-- [心理学的ネットワーク分析入門(準備中)](how-to-psychological-network.html)　☆5
-
-<br />
-
-
-## データ解析
-
-- [再生可能なデータ解析入門](how-to-reproducible-analysis.html)　☆6
-
-- [ベイズ統計とRstanの最初の一歩](how-to-start-rstan.html)
+- [心理学的ネットワーク分析入門(準備中)](how-to-psychological-network.html)　☆7
 
 <br />
 
