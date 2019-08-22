@@ -1,0 +1,607 @@
+{
+  "2019_8_22_23_48_59_fxlmh9SL" : {
+    "data" : [ {
+      "internal_node_id" : "0.0-0.0",
+      "key_press" : 13,
+      "rt" : 390003.1349998899,
+      "stimulus" : "<p><span style='font-size:20pt;'>実験にお越しいただき，ありがとうございます!!!</span></p><p>キーボードのキーをどれか押して，開始してください</p>",
+      "time_elapsed" : 390012,
+      "trial_index" : 0,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "internal_node_id" : "0.0-1.0",
+      "key_press" : 68,
+      "rt" : 7182.99000011757,
+      "stimulus" : "<p style='text-align:left'>この課題では, 以下のような色のついた単語を見ていただきます。</p><p style='color:red;font-size:60pt;'>青</p><p style='text-align:left'>単語の意味は無視して，それぞれの単語の「色」を以下のキーボードのキーを押して回答してください。</p><p style='text-align:left'>左手の人差し指と中指でdとf，右手の人差し指と中指でjとkを押してください。</p><p style='text-align:left'>・<span style='color:red'>赤色</span>の単語ならdを押す</p><p style='text-align:left'>・<span style='color:blue'>青色</span>の単語ならfを押す</p><p style='text-align:left'>・<span style='color:green'>緑色</span>の単語ならjを押す</p><p style='text-align:left'>・<span style='color:yellow'>黄色</span>の単語ならkを押す</p><p style='text-align:left'>上の例の場合だと，赤色で「青」と書いてありますので，dを押します</p><p style='text-align:left'>キーボードのキーをどれか押すと課題が始まります</p>",
+      "time_elapsed" : 397196,
+      "trial_index" : 1,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.0",
+      "key_press" : 68,
+      "response" : "d",
+      "rt" : 706.2850000802428,
+      "stim_type" : "congruent",
+      "stimulus" : "<p style='color:red;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 398906,
+      "trial_index" : 2,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.1",
+      "key_press" : 68,
+      "response" : "d",
+      "rt" : 816.1299999337643,
+      "stim_type" : "congruent",
+      "stimulus" : "<p style='color:red;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 401142,
+      "trial_index" : 3,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.2",
+      "key_press" : 75,
+      "response" : "k",
+      "rt" : 1119.1650000400841,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:yellow;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 404260,
+      "trial_index" : 4,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.3",
+      "key_press" : 68,
+      "response" : "d",
+      "rt" : 833.6400000844151,
+      "stim_type" : "congruent",
+      "stimulus" : "<p style='color:red;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 406947,
+      "trial_index" : 5,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.4",
+      "key_press" : 74,
+      "response" : "j",
+      "rt" : 1056.3850000035018,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:green;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 408927,
+      "trial_index" : 6,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.5",
+      "key_press" : 74,
+      "response" : "j",
+      "rt" : 1151.4100001659244,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:green;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 411447,
+      "trial_index" : 7,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.6",
+      "key_press" : 75,
+      "response" : "k",
+      "rt" : 750.7199998944998,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:yellow;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 412857,
+      "trial_index" : 8,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.7",
+      "key_press" : 70,
+      "response" : "f",
+      "rt" : 803.7250000052154,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:blue;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 414985,
+      "trial_index" : 9,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.8",
+      "key_press" : 68,
+      "response" : "d",
+      "rt" : 767.6399999763817,
+      "stim_type" : "congruent",
+      "stimulus" : "<p style='color:red;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 417671,
+      "trial_index" : 10,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.9",
+      "key_press" : 74,
+      "response" : "j",
+      "rt" : 1205.779999960214,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:green;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 420372,
+      "trial_index" : 11,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.10",
+      "key_press" : 74,
+      "response" : "j",
+      "rt" : 752.4099999573082,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:green;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 423012,
+      "trial_index" : 12,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.11",
+      "key_press" : 75,
+      "response" : "k",
+      "rt" : 1193.859999999404,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:yellow;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 425172,
+      "trial_index" : 13,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.12",
+      "key_press" : 70,
+      "response" : "f",
+      "rt" : 872.7800000924617,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:blue;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 426656,
+      "trial_index" : 14,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.13",
+      "key_press" : 75,
+      "response" : "k",
+      "rt" : 1578.7949999794364,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:yellow;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 428922,
+      "trial_index" : 15,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.14",
+      "key_press" : 70,
+      "response" : "f",
+      "rt" : 983.7199999019504,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:blue;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 430872,
+      "trial_index" : 16,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.15",
+      "key_press" : 70,
+      "response" : "f",
+      "rt" : 862.6250000670552,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:blue;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 433527,
+      "trial_index" : 17,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "internal_node_id" : "0.0-3.0",
+      "key_press" : 13,
+      "rt" : 4853.695000056177,
+      "stimulus" : "<p>あなたの正答率は，<strong>89%</strong>でした。</p> <p>色と単語が一致していた時にボタンを押すまでにかかる時間の平均は， <strong>781ms</strong>でした。</p><p>色と単語が不一致だった時にボタンを押すまでにかかる時間の平均は， <strong>1028ms</strong>でした。</p><p>キーボードのキーをどれか押すと画面に結果の記録が表示されます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>",
+      "time_elapsed" : 439901,
+      "trial_index" : 18,
+      "trial_type" : "html-keyboard-response"
+    } ]
+  },
+  "2019_8_22_23_56_32_juStKRbZ" : {
+    "data" : [ {
+      "internal_node_id" : "0.0-0.0",
+      "key_press" : 13,
+      "rt" : 2693.859999999404,
+      "stimulus" : "<p><span style='font-size:20pt;'>実験にお越しいただき，ありがとうございます!!!</span></p><p>キーボードのキーをどれか押して，開始してください</p>",
+      "time_elapsed" : 2696,
+      "trial_index" : 0,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "internal_node_id" : "0.0-1.0",
+      "key_press" : 68,
+      "rt" : 2233.3450000733137,
+      "stimulus" : "<p style='text-align:left'>この課題では, 以下のような色のついた単語を見ていただきます。</p><p style='color:red;font-size:60pt;'>青</p><p style='text-align:left'>単語の意味は無視して，それぞれの単語の「色」を以下のキーボードのキーを押して回答してください。</p><p style='text-align:left'>左手の人差し指と中指でdとf，右手の人差し指と中指でjとkを押してください。</p><p style='text-align:left'>・<span style='color:red'>赤色</span>の単語ならdを押す</p><p style='text-align:left'>・<span style='color:blue'>青色</span>の単語ならfを押す</p><p style='text-align:left'>・<span style='color:green'>緑色</span>の単語ならjを押す</p><p style='text-align:left'>・<span style='color:yellow'>黄色</span>の単語ならkを押す</p><p style='text-align:left'>上の例の場合だと，赤色で「青」と書いてありますので，dを押します</p><p style='text-align:left'>キーボードのキーをどれか押すと課題が始まります</p>",
+      "time_elapsed" : 4930,
+      "trial_index" : 1,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.0",
+      "key_press" : 68,
+      "response" : "d",
+      "rt" : 554.2249998543411,
+      "stim_type" : "congruent",
+      "stimulus" : "<p style='color:red;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 6491,
+      "trial_index" : 2,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.1",
+      "key_press" : 70,
+      "response" : "f",
+      "rt" : 961.695000063628,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:blue;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 8290,
+      "trial_index" : 3,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.2",
+      "key_press" : 74,
+      "response" : "j",
+      "rt" : 1572.9300000239164,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:green;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 10571,
+      "trial_index" : 4,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.3",
+      "key_press" : 70,
+      "response" : "f",
+      "rt" : 943.0949999950826,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:blue;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 12205,
+      "trial_index" : 5,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.4",
+      "key_press" : 75,
+      "response" : "k",
+      "rt" : 1323.0350001249462,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:yellow;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 14231,
+      "trial_index" : 6,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.5",
+      "key_press" : 75,
+      "response" : "k",
+      "rt" : 876.9549999851733,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:yellow;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 15730,
+      "trial_index" : 7,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.6",
+      "key_press" : 68,
+      "response" : "d",
+      "rt" : 1251.99000001885,
+      "stim_type" : "congruent",
+      "stimulus" : "<p style='color:red;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 18340,
+      "trial_index" : 8,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.7",
+      "key_press" : 68,
+      "response" : "d",
+      "rt" : 533.4449999500066,
+      "stim_type" : "congruent",
+      "stimulus" : "<p style='color:red;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 19780,
+      "trial_index" : 9,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.8",
+      "key_press" : 75,
+      "response" : "k",
+      "rt" : 1052.5200001429766,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:yellow;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 22300,
+      "trial_index" : 10,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.9",
+      "key_press" : 75,
+      "response" : "k",
+      "rt" : 660.9400000888854,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:yellow;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 24671,
+      "trial_index" : 11,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.10",
+      "key_press" : 70,
+      "response" : "f",
+      "rt" : 1183.6800000164658,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:blue;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 26486,
+      "trial_index" : 12,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.11",
+      "key_press" : 74,
+      "response" : "j",
+      "rt" : 1552.9200001619756,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:green;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 29501,
+      "trial_index" : 13,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.12",
+      "key_press" : 68,
+      "response" : "d",
+      "rt" : 735.6849999632686,
+      "stim_type" : "congruent",
+      "stimulus" : "<p style='color:red;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 30745,
+      "trial_index" : 14,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.13",
+      "key_press" : 74,
+      "response" : "j",
+      "rt" : 1267.7099998109043,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:green;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 33806,
+      "trial_index" : 15,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.14",
+      "key_press" : 70,
+      "response" : "f",
+      "rt" : 941.8500000610948,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:blue;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 35501,
+      "trial_index" : 16,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.15",
+      "key_press" : 74,
+      "response" : "j",
+      "rt" : 1024.415000109002,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:green;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 37092,
+      "trial_index" : 17,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "internal_node_id" : "0.0-3.0",
+      "key_press" : 13,
+      "rt" : 1395.1049998868257,
+      "stimulus" : "<p>あなたの正答率は，<strong>89%</strong>でした。</p> <p>色と単語が一致していた時にボタンを押すまでにかかる時間の平均は， <strong>769ms</strong>でした。</p><p>色と単語が不一致だった時にボタンを押すまでにかかる時間の平均は， <strong>1113ms</strong>でした。</p><p>キーボードのキーをどれか押すと画面に結果の記録が表示されます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>",
+      "time_elapsed" : 40002,
+      "trial_index" : 18,
+      "trial_type" : "html-keyboard-response"
+    } ]
+  },
+  "2019_8_22_23_57_16_8EygxO3q" : {
+    "data" : [ {
+      "internal_node_id" : "0.0-0.0",
+      "key_press" : 13,
+      "rt" : 1413.3950001560152,
+      "stimulus" : "<p><span style='font-size:20pt;'>実験にお越しいただき，ありがとうございます!!!</span></p><p>キーボードのキーをどれか押して，開始してください</p>",
+      "time_elapsed" : 1414,
+      "trial_index" : 0,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "internal_node_id" : "0.0-1.0",
+      "key_press" : 68,
+      "rt" : 1903.3699999563396,
+      "stimulus" : "<p style='text-align:left'>この課題では, 以下のような色のついた単語を見ていただきます。</p><p style='color:red;font-size:60pt;'>青</p><p style='text-align:left'>単語の意味は無視して，それぞれの単語の「色」を以下のキーボードのキーを押して回答してください。</p><p style='text-align:left'>左手の人差し指と中指でdとf，右手の人差し指と中指でjとkを押してください。</p><p style='text-align:left'>・<span style='color:red'>赤色</span>の単語ならdを押す</p><p style='text-align:left'>・<span style='color:blue'>青色</span>の単語ならfを押す</p><p style='text-align:left'>・<span style='color:green'>緑色</span>の単語ならjを押す</p><p style='text-align:left'>・<span style='color:yellow'>黄色</span>の単語ならkを押す</p><p style='text-align:left'>上の例の場合だと，赤色で「青」と書いてありますので，dを押します</p><p style='text-align:left'>キーボードのキーをどれか押すと課題が始まります</p>",
+      "time_elapsed" : 3319,
+      "trial_index" : 1,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.0",
+      "key_press" : 74,
+      "response" : "j",
+      "rt" : 1848.245000001043,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:green;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 6169,
+      "trial_index" : 2,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.1",
+      "key_press" : 74,
+      "response" : "j",
+      "rt" : 603.4799998160452,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:green;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 8193,
+      "trial_index" : 3,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.2",
+      "key_press" : 70,
+      "response" : "f",
+      "rt" : 635.7850001659244,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:blue;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 10684,
+      "trial_index" : 4,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : false,
+      "internal_node_id" : "0.0-2.0-0.3",
+      "response" : "f",
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:blue;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 14600,
+      "trial_index" : 5,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.4",
+      "key_press" : 68,
+      "response" : "d",
+      "rt" : 1143.6550000216812,
+      "stim_type" : "congruent",
+      "stimulus" : "<p style='color:red;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 17180,
+      "trial_index" : 6,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.5",
+      "key_press" : 68,
+      "response" : "d",
+      "rt" : 373.240000102669,
+      "stim_type" : "congruent",
+      "stimulus" : "<p style='color:red;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 18381,
+      "trial_index" : 7,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.6",
+      "key_press" : 70,
+      "response" : "f",
+      "rt" : 1007.8499999362975,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:blue;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 21319,
+      "trial_index" : 8,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.7",
+      "key_press" : 75,
+      "response" : "k",
+      "rt" : 1029.4600001070648,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:yellow;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 23915,
+      "trial_index" : 9,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.8",
+      "key_press" : 74,
+      "response" : "j",
+      "rt" : 1028.0999999959022,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:green;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 25835,
+      "trial_index" : 10,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.9",
+      "key_press" : 75,
+      "response" : "k",
+      "rt" : 863.7999999336898,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:yellow;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 27426,
+      "trial_index" : 11,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.10",
+      "key_press" : 75,
+      "response" : "k",
+      "rt" : 970.5349998548627,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:yellow;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 30201,
+      "trial_index" : 12,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.11",
+      "key_press" : 68,
+      "response" : "d",
+      "rt" : 1225.0450002029538,
+      "stim_type" : "congruent",
+      "stimulus" : "<p style='color:red;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 32841,
+      "trial_index" : 13,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.12",
+      "key_press" : 74,
+      "response" : "j",
+      "rt" : 1082.755000097677,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:green;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 34520,
+      "trial_index" : 14,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.13",
+      "key_press" : 68,
+      "response" : "d",
+      "rt" : 811.0299999825656,
+      "stim_type" : "congruent",
+      "stimulus" : "<p style='color:red;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 37175,
+      "trial_index" : 15,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : true,
+      "internal_node_id" : "0.0-2.0-0.14",
+      "key_press" : 70,
+      "response" : "f",
+      "rt" : 873.0650001671165,
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:blue;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 39979,
+      "trial_index" : 16,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "correct" : false,
+      "internal_node_id" : "0.0-2.0-0.15",
+      "response" : "k",
+      "stim_type" : "incongruent",
+      "stimulus" : "<p style='color:yellow;font-size:60pt;'>赤</p>",
+      "time_elapsed" : 43317,
+      "trial_index" : 17,
+      "trial_type" : "html-keyboard-response"
+    }, {
+      "internal_node_id" : "0.0-3.0",
+      "key_press" : 13,
+      "rt" : 1472.53999998793,
+      "stimulus" : "<p>あなたの正答率は，<strong>78%</strong>でした。</p> <p>色と単語が一致していた時にボタンを押すまでにかかる時間の平均は， <strong>888ms</strong>でした。</p><p>色と単語が不一致だった時にボタンを押すまでにかかる時間の平均は， <strong>994ms</strong>でした。</p><p>キーボードのキーをどれか押すと画面に結果の記録が表示されます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>",
+      "time_elapsed" : 46401,
+      "trial_index" : 18,
+      "trial_type" : "html-keyboard-response"
+    } ]
+  }
+}

@@ -1,0 +1,19 @@
+---
+title: "R言語スタイルガイドと研究大要"
+---
+
+RStudioのコンソールの説明から
+
+R言語の使用法の演習をしつつスタイルガイドを身につける
+
+フォルダの準備の仕方についても説明する
+
+
+Rのスタイルガイド
+https://style.tidyverse.org/
+
+research compendium
+https://research-compendium.science/
+
+
+research compendiumは，研究要約や研究概要も考えられるが，すでによく使われている言葉で，わかりにくいので，研究大要とする。
