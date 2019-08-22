@@ -8,7 +8,7 @@ title: "Code & Tips"
 
 - [jsPsychを用いた認知課題の作成(準備中)](how-to-jspsych.html)　☆1
 
-- [jsPsychを用いたWEB実験の実施(準備中)](how-to-web-experiment-jspsych.html)
+- [jsPsychを用いたWEB実験の実施](how-to-web-experiment-jspsych.html)
 
 - [PsychoPyを用いた認知課題の作成 (PsychoPy3未対応,2020年3月には対応します・・・)](how-to-psychopy.html)
 

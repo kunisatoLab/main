@@ -12,7 +12,7 @@
 
 
 
-<title>jsPsychを用いたWEB実験の実施</title>
+<title>jsPsychをfirebaseで動かそう</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -403,18 +403,352 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">jsPsychを用いたWEB実験の実施</h1>
+<h1 class="title toc-ignore">jsPsychをfirebaseで動かそう</h1>
 
 </div>
 
 
-<div class="section level2">
-<h2>準備中</h2>
-<p>firebaseを用いたweb実験の実施について解説予定です。</p>
+<div id="firebase1" class="section level2">
+<h2>Firebaseの設定<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>:</h2>
+<ul>
+<li><a href="https://firebase.google.com/?hl=ja">Firebase</a>で，アカウントを作成します（Googleアカウントでログインすると使えるようになると思います）。</li>
+<li>「プロジェクトを作成」をクリックして，プロジェクト名を設定します。</li>
+</ul>
+<p>　プロジェクトはアプリのコンテナとなるので，１つのデータ収集に１つのプロジェクトを割り当てる（1web実験1プロジェクト）。わかりやすく認知課題名or研究名をプロジェクト名にしてもいいが，その名前がweb実験時のURLに記載されるので，参加者の回答に影響のない名前を選ぶと良い。</p>
+<p><img src="firebase_fig/firebase_fig1.png" /></p>
+<p>　続いて，Googleアナリティクスを使うか聞いてきますが，「今は必要ない」としておきます。</p>
+<p><img src="firebase_fig/firebase_fig2.png" /></p>
+<p>　無事プロジェクトが完成して，プロジェクトのページにはいるとこんな感じの画面が見れます。</p>
+<p><img src="firebase_fig/firebase_fig3.png" /></p>
+</div>
+<div id="firebase-cli" class="section level2">
+<h2>Firebase CLIのインストール</h2>
+<p>　 　Firebaseのサイト上のプロジェクトの設定は終わったので，次はローカルPC（手元のパソコンです）の設定をします。</p>
+<ul>
+<li>Firebase CLI を<a href="https://firebase.google.com/docs/cli?hl=ja">こちら</a>にしたがって，インストールします（OSによって違います）。</li>
+</ul>
+<p>手順は，Node.jsをインストールしてから以下のコマンドをターミナルに打ち込んで，Firebase CLIをインストールします。</p>
+<pre><code>npm install -g firebase-tools</code></pre>
+<p>その後，Google アカウントで Firebase にログインします。</p>
+<pre><code>firebase login</code></pre>
+<p>　これで，Firebase CLIを使用する準備が整いました。</p>
+<div id="firebase" class="section level3">
+<h3>Firebaseプロジェクトの初期化</h3>
+<ul>
+<li>Firebase用のフォルダをローカルPCに作成します（フォルダ名は英語ならなんでもいいと思います。場所もどこでもいいです）。</li>
+<li>ターミナルを開いて（Windowsならコマンドプロンプト？），作ったフォルダをカレントディレクトリに設定します(cdコマンドを使って設定します)。</li>
+</ul>
+<p>なお，以下がその例です。ターミナルの$の次にcdと打ち込んで，カレントディレクトリにするフォルダの場所を指定します。今回の例では，Documents内にfirebaseというフォルダを作って，さらに，その下のstroopを作った上で，カレントディレクトリにしています。</p>
+<pre><code>cd Documents/firebase/stroop</code></pre>
+<ul>
+<li>以下のコマンドを使って，firebaseの初期化をします。</li>
+</ul>
+<pre><code>firebase init</code></pre>
+<p>こんな感じの文字が出てきます。</p>
+<p><img src="firebase_fig/firebase_fig4.png" /></p>
+<ul>
+<li>以下のように，“Which Firebase CLI features do you want to set up for this folder?”と聞いてくるので，スペースキーを使って，Database, Hostingを選択してエンターを押します。</li>
+</ul>
+<p><img src="firebase_fig/firebase_fig5.png" /></p>
+<ul>
+<li><p>“Select a default Firebase project for this directory”と聞いてくるので，最初にFirebase上で設定したプロジェクト名を選択して，エンターを押します。</p></li>
+<li><p>“What file should be used for Database Rules?”と聞いてくるので，そのままエンターを押します。</p></li>
+<li><p>“What do you want to use as your public directory?”と聞いてくるので，そのままエンターを押します。</p></li>
+<li><p>“Configure as a single-page app (rewrite all urls to /index.html)?”と聞いてくるので， Nをタイプします。</p></li>
+</ul>
+<p>　これで，firebaseプロジェクトの初期化が終わりました。　</p>
+<ul>
+<li>ブラウザ上でも設定できるのですが，せっかくローカルにデータベースの設定ファイル(database.rules.json)があるので，それをテキストエディタで開きます。以下のような内容が見れると思います。</li>
+</ul>
+<pre><code>{
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
+  &quot;rules&quot;: {
+    &quot;.read&quot;: false,
+    &quot;.write&quot;: false
+  }
+}</code></pre>
+<ul>
+<li>これだと，データベースへの書き込みができないので，以下のようにwriteの方をtureに変更して，保存します。</li>
+</ul>
+<pre><code>{
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
+  &quot;rules&quot;: {
+    &quot;.read&quot;: false,
+    &quot;.write&quot;: true
+  }
+}</code></pre>
+<ul>
+<li>この変更内容をクラウド上のFirebaseに反映させるために，以下をターミナルに打ち込んで，デプロイします。しばらくかかりますが，“Deploy complete!”とか出てきたら成功です。</li>
+</ul>
+<pre><code>firebase deploy</code></pre>
+</div>
+</div>
+<div id="database" class="section level2">
+<h2>Databaseとアプリの設定</h2>
+<ul>
+<li><a href="https://firebase.google.com/?hl=ja">Firebase</a>のプロジェクトのページに移動して，左側のメニューからDatabaseを選びます。 　</li>
+<li>「データベースの作成」をクリックします。</li>
+</ul>
+<p><img src="firebase_fig/firebase_fig6.png" /></p>
+<ul>
+<li>「テストモードで開始」を選んで，「次へ」をクリックする（Firestoreは使わないので，「ロックモードで開始」でもいいかも）。</li>
+</ul>
+<p><img src="firebase_fig/firebase_fig7.png" /></p>
+<ul>
+<li>Cloud Firestoreのロケーションを選択する。なお，“asia-northeast1”は東京，“asia-northeast2”は大阪です。</li>
+</ul>
+<p><img src="firebase_fig/firebase_fig8.png" /></p>
+<ul>
+<li>使うのはCloud Firestoreではなく，Realtime Databaseなので，選択します。</li>
+</ul>
+<p><img src="firebase_fig/firebase_fig9.png" /></p>
+<p><img src="firebase_fig/firebase_fig10.png" /></p>
+<ul>
+<li>Realtime Databaseの「ルール」を開いて，さきほどローカルで設定した内容になっているか確認します（writeがtrueになっています）。</li>
+</ul>
+<p><img src="firebase_fig/firebase_fig11.png" /></p>
+<ul>
+<li>プロジェクトのページから，「アプリを追加」します。</li>
+</ul>
+<p><img src="firebase_fig/firebase_fig12.png" /></p>
+<ul>
+<li>“ウェブ&lt;/&gt;”をクリックします。</li>
+</ul>
+<p><img src="firebase_fig/firebase_fig13.png" /></p>
+<ul>
+<li>アプリの登録画面になりますので，名前を入力して，「アプリを登録」をクリックします。</li>
+</ul>
+<p><img src="firebase_fig/firebase_fig14.png" /></p>
+<ul>
+<li>Firebase SDKの追加というのが出てくるので，コピーします。この内容をjsPsychを使って作ったweb実験用HTML内に入れます。そうすることで，web実験サイトで入力された参加者の反応をRealtime databaseに保存できます。</li>
+</ul>
+<p><img src="firebase_fig/firebase_fig15.png" /></p>
+</div>
+<div id="realtime-databasejspsych" class="section level2">
+<h2>Realtime databaseにデータを保存するためのjsPsychの設定</h2>
+<ul>
+<li><p>コピーしたFirebase SDKを追加していきます。</p></li>
+<li>まずは，&quot;
+<script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-app.js"></script>
+<p>&quot;を追加します。RstudioでjsPsychを使っている場合は，jsPsychのタグ設定部分にfirebase関連のjsを追加します。データベースも使うので，firebase-appだけでなく，firebase-database.jsも追加します。</p></li>
+</ul>
+<pre><code>library(htmltools)
+tagList(
+tags$script(src=&#39;https://www.gstatic.com/firebasejs/6.4.0/firebase-app.js&#39;),
+tags$script(src=&#39;https://www.gstatic.com/firebasejs/6.4.0/firebase-database.js&#39;),
+tags$script(src=&#39;jspsych-6/jspsych.js&#39;),
+tags$script(src=&#39;jspsych-6/plugins/jspsych-html-keyboard-response.js&#39;)
+)</code></pre>
+<ul>
+<li>jsPsychの設定の本体である{js}チャンク内に上記のFirebaseの情報を追加します。XXXXXがそれぞれのFirebaseプロジェクトによって異なります。</li>
+</ul>
+<pre><code>// Firebase set up
+  // Your web app&#39;s Firebase configuration
+   var firebaseConfig = {
+    apiKey: &quot;XXXXX&quot;,
+    authDomain: &quot;XXXXX&quot;,
+    databaseURL: &quot;XXXXX&quot;,
+    projectId: &quot;XXXXX&quot;,
+    storageBucket: &quot;&quot;,
+    messagingSenderId: &quot;XXXXX&quot;,
+    appId: &quot;XXXXX&quot;
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);</code></pre>
+<ul>
+<li>Realtime Databaseに書き込む際のIDを設定します。jsPsychの設定の本体である{js}に以下コードを追加すると，exp_idに「日付時刻_8桁の乱数」が用意されます。</li>
+</ul>
+<pre><code>/*ID(日付時刻_８桁の乱数)の設定*/
+// 乱数
+var l = 8;
+var c = &quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&quot;;
+var cl = c.length;
+var r_num = &quot;&quot;;
+for(var i=0; i&lt;l; i++){
+  r_num += c[Math.floor(Math.random()*cl)];
+}
+// 日付時刻
+var time_date= new Date();
+var year = time_date.getFullYear();
+var month = time_date.getMonth()+1;
+var date = time_date.getDate();
+var hour = time_date.getHours();
+var minute = time_date.getMinutes();
+var second = time_date.getSeconds();
+// ID
+var exp_id = year +&#39;_&#39;+ month +&#39;_&#39;+ date +&#39;_&#39;+ hour +&#39;_&#39;+ minute +&#39;_&#39;+ second +&#39;_&#39; + r_num;</code></pre>
+<ul>
+<li>最後に，以下のコードを。jsPsychの設定の本体である{js}に書き込むと，データがRealtime Databaseに書き込まれます。</li>
+</ul>
+<pre><code>/*タイムラインの開始*/
+jsPsych.init({
+    timeline: timeline,
+    on_finish: function() {
+    firebase.database().ref(exp_id).set({
+      data: jsPsych.data.get().values()
+    })
+    }
+});</code></pre>
+<ul>
+<li>上記のように設定して，実験用HTMLファイルをknitします。</li>
+</ul>
+</div>
+<div id="htmlrealtime-database" class="section level2">
+<h2>実験用HTMLをホスティングして，Realtime Databaseにデータを保存する。</h2>
+<ul>
+<li>上記で準備し実験用HTMLファイルとjsPyschのフォルダを“public”フォルダ内におきます。以下の場合は，stroop_jp.htmlをおきました。</li>
+</ul>
+<p><img src="firebase_fig/firebase_fig16.png" /></p>
+<ul>
+<li>以下のコマンドでデプロイして，HTMLファイルをアップロードします。</li>
+</ul>
+<pre><code>firebase deploy</code></pre>
+<ul>
+<li><p>&quot;<a href="https://プロジェクト名.firebaseapp.com/ファイル名.html%22で実験画面が出てくればHostingは成功です" class="uri">https://プロジェクト名.firebaseapp.com/ファイル名.html&quot;で実験画面が出てくればHostingは成功です</a>。</p></li>
+<li><p>そして，実験課題に取り組んでから，firebaseのプロジェクトページに行って，Realtime Databaseにデータが入っていれば，データベースの方も成功です。以下は私が３回ストループ課題を行ったデータです。</p></li>
+</ul>
+<p><img src="firebase_fig/firebase_fig17.png" /></p>
+</div>
+<div id="realtime-database" class="section level2">
+<h2>Realtime Databaseのデータを読み込む</h2>
+<ul>
+<li>Realtime Databaseに保存されたデータは，Realtime Databaseのページの右上から，「JSONをエクスポート」をクリックすると，データが入ったJSONファイルがダウンロードされます。</li>
+</ul>
+<p><img src="firebase_fig/firebase_fig18.png" /></p>
+<ul>
+<li>ダウンロードしたJSONファイルを読み込む際には，以下のようにして，jsonliteパッケージを使います。</li>
+</ul>
+<pre class="r"><code>library(jsonlite)
+library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ──────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
+## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
+## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
+## ✔ readr   1.3.1     ✔ forcats 0.4.0</code></pre>
+<pre><code>## ── Conflicts ─────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter()  masks stats::filter()
+## ✖ purrr::flatten() masks jsonlite::flatten()
+## ✖ dplyr::lag()     masks stats::lag()</code></pre>
+<pre class="r"><code>db_list &lt;- fromJSON(&quot;json_data/stroop.json&quot;)</code></pre>
+<ul>
+<li>glimpse()で，読み込んだJSONファイルの構造をチェックします。このデータは，私が３回Stroop課題に取り組んだものです。listは参加者で構成されていますので，３つあります。そして，その下に実験データのdata.frameがあります。</li>
+</ul>
+<pre class="r"><code>glimpse(db_list)</code></pre>
+<pre><code>## List of 3
+##  $ 2019_8_22_23_48_59_fxlmh9SL:List of 1
+##   ..$ data:&#39;data.frame&#39;: 19 obs. of  10 variables:
+##   .. ..$ internal_node_id: chr [1:19] &quot;0.0-0.0&quot; &quot;0.0-1.0&quot; &quot;0.0-2.0-0.0&quot; &quot;0.0-2.0-0.1&quot; ...
+##   .. ..$ key_press       : int [1:19] 13 68 68 68 75 68 74 74 75 70 ...
+##   .. ..$ rt              : num [1:19] 390003 7183 706 816 1119 ...
+##   .. ..$ stimulus        : chr [1:19] &quot;&lt;p&gt;&lt;span style=&#39;font-size:20pt;&#39;&gt;実験にお越しいただき，ありがとうございます!!!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;キーボードのキーを&quot;| __truncated__ &quot;&lt;p style=&#39;text-align:left&#39;&gt;この課題では, 以下のような色のついた単語を見ていただきます。&lt;/p&gt;&lt;p style=&#39;color:red;&quot;| __truncated__ &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot; &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot; ...
+##   .. ..$ time_elapsed    : int [1:19] 390012 397196 398906 401142 404260 406947 408927 411447 412857 414985 ...
+##   .. ..$ trial_index     : int [1:19] 0 1 2 3 4 5 6 7 8 9 ...
+##   .. ..$ trial_type      : chr [1:19] &quot;html-keyboard-response&quot; &quot;html-keyboard-response&quot; &quot;html-keyboard-response&quot; &quot;html-keyboard-response&quot; ...
+##   .. ..$ correct         : logi [1:19] NA NA TRUE TRUE TRUE TRUE ...
+##   .. ..$ response        : chr [1:19] NA NA &quot;d&quot; &quot;d&quot; ...
+##   .. ..$ stim_type       : chr [1:19] NA NA &quot;congruent&quot; &quot;congruent&quot; ...
+##  $ 2019_8_22_23_56_32_juStKRbZ:List of 1
+##   ..$ data:&#39;data.frame&#39;: 19 obs. of  10 variables:
+##   .. ..$ internal_node_id: chr [1:19] &quot;0.0-0.0&quot; &quot;0.0-1.0&quot; &quot;0.0-2.0-0.0&quot; &quot;0.0-2.0-0.1&quot; ...
+##   .. ..$ key_press       : int [1:19] 13 68 68 70 74 70 75 75 68 68 ...
+##   .. ..$ rt              : num [1:19] 2694 2233 554 962 1573 ...
+##   .. ..$ stimulus        : chr [1:19] &quot;&lt;p&gt;&lt;span style=&#39;font-size:20pt;&#39;&gt;実験にお越しいただき，ありがとうございます!!!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;キーボードのキーを&quot;| __truncated__ &quot;&lt;p style=&#39;text-align:left&#39;&gt;この課題では, 以下のような色のついた単語を見ていただきます。&lt;/p&gt;&lt;p style=&#39;color:red;&quot;| __truncated__ &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot; &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot; ...
+##   .. ..$ time_elapsed    : int [1:19] 2696 4930 6491 8290 10571 12205 14231 15730 18340 19780 ...
+##   .. ..$ trial_index     : int [1:19] 0 1 2 3 4 5 6 7 8 9 ...
+##   .. ..$ trial_type      : chr [1:19] &quot;html-keyboard-response&quot; &quot;html-keyboard-response&quot; &quot;html-keyboard-response&quot; &quot;html-keyboard-response&quot; ...
+##   .. ..$ correct         : logi [1:19] NA NA TRUE TRUE TRUE TRUE ...
+##   .. ..$ response        : chr [1:19] NA NA &quot;d&quot; &quot;f&quot; ...
+##   .. ..$ stim_type       : chr [1:19] NA NA &quot;congruent&quot; &quot;incongruent&quot; ...
+##  $ 2019_8_22_23_57_16_8EygxO3q:List of 1
+##   ..$ data:&#39;data.frame&#39;: 19 obs. of  10 variables:
+##   .. ..$ internal_node_id: chr [1:19] &quot;0.0-0.0&quot; &quot;0.0-1.0&quot; &quot;0.0-2.0-0.0&quot; &quot;0.0-2.0-0.1&quot; ...
+##   .. ..$ key_press       : int [1:19] 13 68 74 74 70 NA 68 68 70 75 ...
+##   .. ..$ rt              : num [1:19] 1413 1903 1848 603 636 ...
+##   .. ..$ stimulus        : chr [1:19] &quot;&lt;p&gt;&lt;span style=&#39;font-size:20pt;&#39;&gt;実験にお越しいただき，ありがとうございます!!!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;キーボードのキーを&quot;| __truncated__ &quot;&lt;p style=&#39;text-align:left&#39;&gt;この課題では, 以下のような色のついた単語を見ていただきます。&lt;/p&gt;&lt;p style=&#39;color:red;&quot;| __truncated__ &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot; &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot; ...
+##   .. ..$ time_elapsed    : int [1:19] 1414 3319 6169 8193 10684 14600 17180 18381 21319 23915 ...
+##   .. ..$ trial_index     : int [1:19] 0 1 2 3 4 5 6 7 8 9 ...
+##   .. ..$ trial_type      : chr [1:19] &quot;html-keyboard-response&quot; &quot;html-keyboard-response&quot; &quot;html-keyboard-response&quot; &quot;html-keyboard-response&quot; ...
+##   .. ..$ correct         : logi [1:19] NA NA TRUE TRUE TRUE FALSE ...
+##   .. ..$ response        : chr [1:19] NA NA &quot;j&quot; &quot;j&quot; ...
+##   .. ..$ stim_type       : chr [1:19] NA NA &quot;incongruent&quot; &quot;incongruent&quot; ...</code></pre>
+<ul>
+<li>読み込んだJSONデータをas.tibbleを使ってデータフレームにする。すると，３つの参加者が変数になって，変数の下にdata.frameができました。</li>
+</ul>
+<pre class="r"><code>db_df &lt;- as_tibble(db_list, validate = F) 
+db_df</code></pre>
+<pre><code>## # A tibble: 1 x 3
+##   `2019_8_22_23_48_59_fxl… `2019_8_22_23_56_32_juS… `2019_8_22_23_57_16_8E…
+##   &lt;named list&gt;             &lt;named list&gt;             &lt;named list&gt;           
+## 1 &lt;df[,10] [19 × 10]&gt;      &lt;df[,10] [19 × 10]&gt;      &lt;df[,10] [19 × 10]&gt;</code></pre>
+<ul>
+<li>これは少し扱いにくいので，getherでlongデータ化します。</li>
+</ul>
+<pre class="r"><code>db_df2 &lt;- gather(db_df, ID, data)
+db_df2</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   ID                          data               
+##   &lt;chr&gt;                       &lt;list&gt;             
+## 1 2019_8_22_23_48_59_fxlmh9SL &lt;df[,10] [19 × 10]&gt;
+## 2 2019_8_22_23_56_32_juStKRbZ &lt;df[,10] [19 × 10]&gt;
+## 3 2019_8_22_23_57_16_8EygxO3q &lt;df[,10] [19 × 10]&gt;</code></pre>
+<ul>
+<li>各参加者にdata.frameがネストしちゃっているので，unnestします。これで，とりあえず解析データセットが完成しました。</li>
+</ul>
+<pre class="r"><code>db_df3 &lt;-unnest(db_df2)
+db_df3</code></pre>
+<pre><code>## # A tibble: 57 x 11
+##    ID    internal_node_id key_press     rt stimulus time_elapsed
+##    &lt;chr&gt; &lt;chr&gt;                &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;int&gt;
+##  1 2019… 0.0-0.0                 13 3.90e5 &lt;p&gt;&lt;spa…       390012
+##  2 2019… 0.0-1.0                 68 7.18e3 &lt;p styl…       397196
+##  3 2019… 0.0-2.0-0.0             68 7.06e2 &lt;p styl…       398906
+##  4 2019… 0.0-2.0-0.1             68 8.16e2 &lt;p styl…       401142
+##  5 2019… 0.0-2.0-0.2             75 1.12e3 &lt;p styl…       404260
+##  6 2019… 0.0-2.0-0.3             68 8.34e2 &lt;p styl…       406947
+##  7 2019… 0.0-2.0-0.4             74 1.06e3 &lt;p styl…       408927
+##  8 2019… 0.0-2.0-0.5             74 1.15e3 &lt;p styl…       411447
+##  9 2019… 0.0-2.0-0.6             75 7.51e2 &lt;p styl…       412857
+## 10 2019… 0.0-2.0-0.7             70 8.04e2 &lt;p styl…       414985
+## # … with 47 more rows, and 5 more variables: trial_index &lt;int&gt;,
+## #   trial_type &lt;chr&gt;, correct &lt;lgl&gt;, response &lt;chr&gt;, stim_type &lt;chr&gt;</code></pre>
+<ul>
+<li>上記の操作＋整形作業すると，以下のコードになります。</li>
+</ul>
+<pre class="r"><code>db_df &lt;- db_list %&gt;% 
+  as_tibble(validate = F) %&gt;%  #データフレーム化
+  gather(ID, data) %&gt;% 　　　　#ロング化
+  unnest() %&gt;% 　　　　　　　　#ネストやめる
+  select(ID,trial_index,stim_type,response,correct,rt) %&gt;%　#使う変数選択 
+  filter(trial_index !=0) %&gt;%　#ウェルカムメッセージは不要 
+  filter(trial_index !=1) %&gt;%  #教示は不要
+  filter(trial_index !=19)     #最後の教示も不要
+
+db_df</code></pre>
+<pre><code>## # A tibble: 51 x 6
+##    ID                         trial_index stim_type  response correct    rt
+##    &lt;chr&gt;                            &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;    &lt;lgl&gt;   &lt;dbl&gt;
+##  1 2019_8_22_23_48_59_fxlmh9…           2 congruent  d        TRUE     706.
+##  2 2019_8_22_23_48_59_fxlmh9…           3 congruent  d        TRUE     816.
+##  3 2019_8_22_23_48_59_fxlmh9…           4 incongrue… k        TRUE    1119.
+##  4 2019_8_22_23_48_59_fxlmh9…           5 congruent  d        TRUE     834.
+##  5 2019_8_22_23_48_59_fxlmh9…           6 incongrue… j        TRUE    1056.
+##  6 2019_8_22_23_48_59_fxlmh9…           7 incongrue… j        TRUE    1151.
+##  7 2019_8_22_23_48_59_fxlmh9…           8 incongrue… k        TRUE     751.
+##  8 2019_8_22_23_48_59_fxlmh9…           9 incongrue… f        TRUE     804.
+##  9 2019_8_22_23_48_59_fxlmh9…          10 congruent  d        TRUE     768.
+## 10 2019_8_22_23_48_59_fxlmh9…          11 incongrue… j        TRUE    1206.
+## # … with 41 more rows</code></pre>
+<p>　以上，Firebaseの登録からウェブ実験の準備をして，データ収集とそのデータの処理まででした。</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>本資料の作成にあたり，<a href="https://firebase.google.com/docs/cli?hl=ja">Firebaseのサイト</a>，<a href="https://github.com/nu-childlab/firebase-experiment-tutorial">Northwestern Child Language Development Labのチュートリアル資料</a>，<a href="https://github.com/Narquelion/lpl-training">Alex K.氏の資料</a>を参考にした。<a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2018 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 

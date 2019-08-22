@@ -1,7 +1,304 @@
 ---
-title: "jsPsychを用いたWEB実験の実施"
+title: "jsPsychをfirebaseで動かそう"
 ---
 
-## 準備中
+## Firebaseの設定[^1]:
 
-firebaseを用いたweb実験の実施について解説予定です。
+- [Firebase](https://firebase.google.com/?hl=ja)で，アカウントを作成します（Googleアカウントでログインすると使えるようになると思います）。
+- 「プロジェクトを作成」をクリックして，プロジェクト名を設定します。
+
+
+　プロジェクトはアプリのコンテナとなるので，１つのデータ収集に１つのプロジェクトを割り当てる（1web実験1プロジェクト）。わかりやすく認知課題名or研究名をプロジェクト名にしてもいいが，その名前がweb実験時のURLに記載されるので，参加者の回答に影響のない名前を選ぶと良い。
+
+
+![](firebase_fig/firebase_fig1.png)
+
+　続いて，Googleアナリティクスを使うか聞いてきますが，「今は必要ない」としておきます。
+
+
+![](firebase_fig/firebase_fig2.png)
+
+　無事プロジェクトが完成して，プロジェクトのページにはいるとこんな感じの画面が見れます。
+
+![](firebase_fig/firebase_fig3.png)
+
+## Firebase CLIのインストール
+　
+　Firebaseのサイト上のプロジェクトの設定は終わったので，次はローカルPC（手元のパソコンです）の設定をします。
+
+- Firebase CLI を[こちら](https://firebase.google.com/docs/cli?hl=ja)にしたがって，インストールします（OSによって違います）。
+
+手順は，Node.jsをインストールしてから以下のコマンドをターミナルに打ち込んで，Firebase CLIをインストールします。
+
+```
+npm install -g firebase-tools
+```
+
+その後，Google アカウントで Firebase にログインします。
+
+```
+firebase login
+```
+
+　これで，Firebase CLIを使用する準備が整いました。
+
+### Firebaseプロジェクトの初期化
+
+- Firebase用のフォルダをローカルPCに作成します（フォルダ名は英語ならなんでもいいと思います。場所もどこでもいいです）。
+- ターミナルを開いて（Windowsならコマンドプロンプト？），作ったフォルダをカレントディレクトリに設定します(cdコマンドを使って設定します)。
+
+なお，以下がその例です。ターミナルの$の次にcdと打ち込んで，カレントディレクトリにするフォルダの場所を指定します。今回の例では，Documents内にfirebaseというフォルダを作って，さらに，その下のstroopを作った上で，カレントディレクトリにしています。
+
+```
+cd Documents/firebase/stroop
+```
+- 以下のコマンドを使って，firebaseの初期化をします。
+
+```
+firebase init
+```
+
+こんな感じの文字が出てきます。
+
+![](firebase_fig/firebase_fig4.png)
+
+- 以下のように，"Which Firebase CLI features do you want to set up for this folder?"と聞いてくるので，スペースキーを使って，Database, Hostingを選択してエンターを押します。
+
+![](firebase_fig/firebase_fig5.png)
+
+
+- "Select a default Firebase project for this directory"と聞いてくるので，最初にFirebase上で設定したプロジェクト名を選択して，エンターを押します。
+
+- "What file should be used for Database Rules?"と聞いてくるので，そのままエンターを押します。
+
+- "What do you want to use as your public directory?"と聞いてくるので，そのままエンターを押します。
+
+- "Configure as a single-page app (rewrite all urls to /index.html)?"と聞いてくるので， Nをタイプします。
+
+　これで，firebaseプロジェクトの初期化が終わりました。　
+
+- ブラウザ上でも設定できるのですが，せっかくローカルにデータベースの設定ファイル(database.rules.json)があるので，それをテキストエディタで開きます。以下のような内容が見れると思います。
+
+```
+{
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
+  "rules": {
+    ".read": false,
+    ".write": false
+  }
+}
+```
+
+- これだと，データベースへの書き込みができないので，以下のようにwriteの方をtureに変更して，保存します。
+
+```
+{
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
+  "rules": {
+    ".read": false,
+    ".write": true
+  }
+}
+```
+
+- この変更内容をクラウド上のFirebaseに反映させるために，以下をターミナルに打ち込んで，デプロイします。しばらくかかりますが，"Deploy complete!"とか出てきたら成功です。
+
+```
+firebase deploy
+```
+
+## Databaseとアプリの設定
+
+- [Firebase](https://firebase.google.com/?hl=ja)のプロジェクトのページに移動して，左側のメニューからDatabaseを選びます。
+　
+- 「データベースの作成」をクリックします。
+
+![](firebase_fig/firebase_fig6.png)
+
+- 「テストモードで開始」を選んで，「次へ」をクリックする（Firestoreは使わないので，「ロックモードで開始」でもいいかも）。
+
+![](firebase_fig/firebase_fig7.png)
+
+- Cloud Firestoreのロケーションを選択する。なお，"asia-northeast1"は東京，"asia-northeast2"は大阪です。
+
+![](firebase_fig/firebase_fig8.png)
+
+- 使うのはCloud Firestoreではなく，Realtime Databaseなので，選択します。
+
+![](firebase_fig/firebase_fig9.png)
+
+![](firebase_fig/firebase_fig10.png)
+
+- Realtime Databaseの「ルール」を開いて，さきほどローカルで設定した内容になっているか確認します（writeがtrueになっています）。
+
+![](firebase_fig/firebase_fig11.png)
+
+- プロジェクトのページから，「アプリを追加」します。
+
+![](firebase_fig/firebase_fig12.png)
+
+- "ウェブ</>"をクリックします。
+
+![](firebase_fig/firebase_fig13.png)
+
+- アプリの登録画面になりますので，名前を入力して，「アプリを登録」をクリックします。
+
+![](firebase_fig/firebase_fig14.png)
+
+- Firebase SDKの追加というのが出てくるので，コピーします。この内容をjsPsychを使って作ったweb実験用HTML内に入れます。そうすることで，web実験サイトで入力された参加者の反応をRealtime databaseに保存できます。
+
+![](firebase_fig/firebase_fig15.png)
+
+
+## Realtime databaseにデータを保存するためのjsPsychの設定
+
+- コピーしたFirebase SDKを追加していきます。
+
+- まずは，"<script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-app.js"></script>"を追加します。RstudioでjsPsychを使っている場合は，jsPsychのタグ設定部分にfirebase関連のjsを追加します。データベースも使うので，firebase-appだけでなく，firebase-database.jsも追加します。
+
+```
+library(htmltools)
+tagList(
+tags$script(src='https://www.gstatic.com/firebasejs/6.4.0/firebase-app.js'),
+tags$script(src='https://www.gstatic.com/firebasejs/6.4.0/firebase-database.js'),
+tags$script(src='jspsych-6/jspsych.js'),
+tags$script(src='jspsych-6/plugins/jspsych-html-keyboard-response.js')
+)
+```
+- jsPsychの設定の本体である{js}チャンク内に上記のFirebaseの情報を追加します。XXXXXがそれぞれのFirebaseプロジェクトによって異なります。
+
+```
+// Firebase set up
+  // Your web app's Firebase configuration
+   var firebaseConfig = {
+    apiKey: "XXXXX",
+    authDomain: "XXXXX",
+    databaseURL: "XXXXX",
+    projectId: "XXXXX",
+    storageBucket: "",
+    messagingSenderId: "XXXXX",
+    appId: "XXXXX"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+```
+
+- Realtime Databaseに書き込む際のIDを設定します。jsPsychの設定の本体である{js}に以下コードを追加すると，exp_idに「日付時刻_8桁の乱数」が用意されます。
+
+```
+/*ID(日付時刻_８桁の乱数)の設定*/
+// 乱数
+var l = 8;
+var c = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+var cl = c.length;
+var r_num = "";
+for(var i=0; i<l; i++){
+  r_num += c[Math.floor(Math.random()*cl)];
+}
+// 日付時刻
+var time_date= new Date();
+var year = time_date.getFullYear();
+var month = time_date.getMonth()+1;
+var date = time_date.getDate();
+var hour = time_date.getHours();
+var minute = time_date.getMinutes();
+var second = time_date.getSeconds();
+// ID
+var exp_id = year +'_'+ month +'_'+ date +'_'+ hour +'_'+ minute +'_'+ second +'_' + r_num;
+```
+
+- 最後に，以下のコードを。jsPsychの設定の本体である{js}に書き込むと，データがRealtime Databaseに書き込まれます。
+
+```
+/*タイムラインの開始*/
+jsPsych.init({
+    timeline: timeline,
+    on_finish: function() {
+    firebase.database().ref(exp_id).set({
+      data: jsPsych.data.get().values()
+    })
+    }
+});
+```
+
+- 上記のように設定して，実験用HTMLファイルをknitします。
+
+## 実験用HTMLをホスティングして，Realtime Databaseにデータを保存する。
+
+- 上記で準備し実験用HTMLファイルとjsPyschのフォルダを"public"フォルダ内におきます。以下の場合は，stroop_jp.htmlをおきました。
+
+![](firebase_fig/firebase_fig16.png)
+
+
+- 以下のコマンドでデプロイして，HTMLファイルをアップロードします。
+
+```
+firebase deploy
+```
+
+- "https://プロジェクト名.firebaseapp.com/ファイル名.html"で実験画面が出てくればHostingは成功です。
+
+- そして，実験課題に取り組んでから，firebaseのプロジェクトページに行って，Realtime Databaseにデータが入っていれば，データベースの方も成功です。以下は私が３回ストループ課題を行ったデータです。
+
+![](firebase_fig/firebase_fig17.png)
+
+## Realtime Databaseのデータを読み込む
+
+- Realtime Databaseに保存されたデータは，Realtime Databaseのページの右上から，「JSONをエクスポート」をクリックすると，データが入ったJSONファイルがダウンロードされます。
+
+![](firebase_fig/firebase_fig18.png)
+
+- ダウンロードしたJSONファイルを読み込む際には，以下のようにして，jsonliteパッケージを使います。
+
+```{r}
+library(jsonlite)
+library(tidyverse)
+db_list <- fromJSON("json_data/stroop.json")
+```
+
+- glimpse()で，読み込んだJSONファイルの構造をチェックします。このデータは，私が３回Stroop課題に取り組んだものです。listは参加者で構成されていますので，３つあります。そして，その下に実験データのdata.frameがあります。
+
+```{r}
+glimpse(db_list)
+```
+
+- 読み込んだJSONデータをas.tibbleを使ってデータフレームにする。すると，３つの参加者が変数になって，変数の下にdata.frameができました。
+
+```{r}
+db_df <- as_tibble(db_list, validate = F) 
+db_df
+```
+
+- これは少し扱いにくいので，getherでlongデータ化します。
+
+```{r}
+db_df2 <- gather(db_df, ID, data)
+db_df2
+```
+
+- 各参加者にdata.frameがネストしちゃっているので，unnestします。これで，とりあえず解析データセットが完成しました。
+
+```{r}
+db_df3 <-unnest(db_df2)
+db_df3
+```
+
+- 上記の操作＋整形作業すると，以下のコードになります。
+
+```{r}
+db_df <- db_list %>% 
+  as_tibble(validate = F) %>%  #データフレーム化
+  gather(ID, data) %>% 　　　　#ロング化
+  unnest() %>% 　　　　　　　　#ネストやめる
+  select(ID,trial_index,stim_type,response,correct,rt) %>%　#使う変数選択 
+  filter(trial_index !=0) %>%　#ウェルカムメッセージは不要 
+  filter(trial_index !=1) %>%  #教示は不要
+  filter(trial_index !=19)     #最後の教示も不要
+
+db_df
+```
+
+　以上，Firebaseの登録からウェブ実験の準備をして，データ収集とそのデータの処理まででした。
+
+
+[^1]:本資料の作成にあたり，[Firebaseのサイト](https://firebase.google.com/docs/cli?hl=ja)，[Northwestern Child Language Development Labのチュートリアル資料](https://github.com/nu-childlab/firebase-experiment-tutorial)，[Alex K.氏の資料](https://github.com/Narquelion/lpl-training)を参考にした。
