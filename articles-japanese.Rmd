@@ -10,6 +10,12 @@ title: "学術論文（日本語）"
 
 - 佐藤秀樹・国里愛彦・小関俊祐・鈴木伸一　Rumination about an Interpersonal Offense Scale（RIO）日本語版の作成と信頼性・妥当性の検討　認知療法研究
 
+```{r eval=FALSE, include=FALSE}
+後日追加
+
+- 下野有紀　ほか　大学生用ひきこもり親和性尺度の作成 感情心理学研究
+```
+
 
 ### 2019
 
