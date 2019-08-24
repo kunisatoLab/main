@@ -12,7 +12,7 @@
 
 
 
-<title>Rで認知課題の解析データセットを作成しよう！</title>
+<title>認知課題の解析データセット作成</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -403,7 +403,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Rで認知課題の解析データセットを作成しよう！</h1>
+<h1 class="title toc-ignore">認知課題の解析データセット作成</h1>
 
 </div>
 
@@ -436,26 +436,21 @@ div.tocify {
 <li>オリジナルの生データを１つのファイルにまとめて，解析可能なフォーマットに変更する</li>
 <li>上記の操作について作業ログが残り，何度でもやり直せる</li>
 </ul>
-<p>このような条件を満たすもので，心理学科の学生にも使いやすいものとしては<strong>R</strong>があります。解析データセット作成では，<strong>R</strong>を使いましょう！以下では，(1)jsPsychを用いたWEB実験で得られたJSONファイルの処理，(2)PsychoPyを用いた実験で得られたcsvファイルの処理について解説します。なお，RやRstudioの基本的な使い方については，<a href="how-to-R-language.html">R言語の書き方と解析フォルダの準備方法</a>で学んでいることを前提とします。</p>
+<p>このような条件を満たすもので，心理学科の学生にも使いやすいものとしては<strong>R</strong>があります。解析データセット作成では，<strong>R</strong>を使いましょう！以下では，(1)jsPsychを用いたWEB実験で得られたJSONファイルの処理，(2)PsychoPyを用いた実験で得られたcsvファイルの処理について解説します。なお，RやRstudioの基本的な使い方については，<a href="how-to-R-language.html">R言語の基本と解析梱包</a>で学んでいることを前提とします。</p>
 </div>
 </div>
 <div id="jspsychwebjson" class="section level2">
 <h2>jsPsychを用いたWEB実験で得られたJSONファイルの処理</h2>
+<div class="section level3">
+<h3>データとフォルダの準備</h3>
+<p><a href="materials/stroop.zip">jsPsychを用いたWEB実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います。</p>
 </div>
-<div class="section level2">
-<h2>使用パッケージの準備</h2>
-<p>データの前処理では，tidyverseパッケージを用います。以下のようにコンソールに打ち込んで，tidyverseをインストールしましょう。</p>
-<pre><code>install.packages(&quot;tidyverse&quot;, dependencies = TRUE)</code></pre>
-</div>
-<div class="section level2">
-<h2>データとフォルダの準備</h2>
-<p><a href="materials/stroop.json">サンプルデータ</a>をクリックして，ダウンロードしてください</p>
-<p><a href="materials/Analysis.zip">サンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。“Analysis”フォルダ内に“Data”フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。</p>
-<p>今回は，すでにフォルダに名前がついていましたが，自分でフォルダ名を付ける場合は，日本語を使用するのは推奨しません。フォルダとファイルと変数名には，英語（日本語のローマ字化でけっこう）を使用してください。</p>
 </div>
 <div id="rstudio" class="section level2">
 <h2>Rstudioの作業ディレクトリーの設定</h2>
 <p>　 なお，パソコンで解析などの作業をする場合に，パソコンに，パソコン上のどこで作業をするのか，その場所を知らせる必要があります。そのような作業場所を作業ディレクトリーと言います。Rstudio上で，作業ディレクトリーを先程のAnalysisフォルダに設定します。具体的な操作は，　RStudioのメニューバーから、「Session」-&gt;「Set Working Directory」-&gt;「Choose Directory」で，先程のAnalysisフォルダを選択してください。</p>
+<div id="r" class="section level3">
+<h3>使用するRパッケージ</h3>
 <ul>
 <li>ダウンロードしたJSONファイルを読み込む際には，以下のようにして，jsonliteパッケージを使います。</li>
 </ul>
@@ -580,12 +575,13 @@ db_df</code></pre>
 ## 10 2019_8_22_23_48_59_fxlmh9…          11 incongrue… j        TRUE    1206.
 ## # … with 41 more rows</code></pre>
 </div>
+</div>
 <div id="psychopycsv" class="section level2">
 <h2>PsychoPyを用いた実験で得られたcsvファイルの処理</h2>
 </div>
 <div id="-1" class="section level2">
 <h2>データとフォルダの準備</h2>
-<p><a href="materials/Analysis.zip">サンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。“Analysis”フォルダ内に“Data”フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。</p>
+<p><a href="materials/Analysis.zip">PsychoPyを用いた実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。“Analysis”フォルダ内に“Data”フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。</p>
 <p>今回は，すでにフォルダに名前がついていましたが，自分でフォルダ名を付ける場合は，日本語を使用するのは推奨しません。フォルダとファイルと変数名には，英語（日本語のローマ字化でけっこう）を使用してください。</p>
 </div>
 <div id="rstudio-1" class="section level2">

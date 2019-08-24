@@ -26,7 +26,7 @@ title: "Code & Tips"
 
 ## データ解析
 
-- [R言語の書き方と解析フォルダの準備方法（準備中）](how-to-R-language.html) ☆2
+- [R言語の基本と解析梱包（準備中）](how-to-R-language.html) ☆2
 
 - [認知課題の解析データセット作成](how-to-dataHandling.html)　☆3
 
