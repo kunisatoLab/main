@@ -1,34 +1,41 @@
 ---
-title: "jsPsychをfirebaseで動かそう"
+title: "jsPsychを用いたWEB実験の実施：Firebaseでホスティング＆データ保存しよう！"
 ---
 
-## Firebaseの設定[^1]:
+## はじめに
 
-- [Firebase](https://firebase.google.com/?hl=ja)で，アカウントを作成します（Googleアカウントでログインすると使えるようになると思います）。
+WEB実験をするには，jsPsychで作成したWEB実験用htmlファイルを，どこかのウェブサーバーにおく必要があります。サーバーの知識のある方は自前でサーバーを立てて実施できますし，有料ですがpavlovia(https://pavlovia.org/about.html )などのサービスを使っても実施できます。自前でサーバーを立てると，その維持費用が必要なのと，サーバーの設定や管理には結構スキルが必要です。pavloviaは，サーバーの管理は不要で，設定も簡単ですが，ある程度の予算が必要です(2019年8月現在，1名の実験につき0.2ポンド)。Googleのサービスの1つのFirebaseなら，サーバーの管理は不要で（最初に少し設定が必要です），通常のWEB実験なら無料枠内で実施できます。以下では，Firebaseを用いたWEB実験の解説をしています。
+
+<br />
+
+## Firebaseアカウント＆プロジェクトの作成[^1]:
+
+- まずは，[Firebase](https://firebase.google.com/?hl=ja)で，Firebaseのアカウントを作成します（Googleアカウントでログインすると使えるようになると思います）。
 - 「プロジェクトを作成」をクリックして，プロジェクト名を設定します。
 
 
-　プロジェクトはアプリのコンテナとなるので，１つのデータ収集に１つのプロジェクトを割り当てます（1web実験1プロジェクトです）。わかりやすく認知課題名or研究名をプロジェクト名にしてもいいですが，その名前がweb実験時のURLに記載されるので，参加者の回答に影響のない名前を選ぶと良いかと思います。
-
+プロジェクトはアプリのコンテナになるので，１つのデータ収集に１つのプロジェクトを割り当てます（1web実験につき1プロジェクトです）。わかりやすく認知課題名or研究名をプロジェクト名にしてもいいですが，そのプロジェクト名がweb実験時のURLに記載されるので，参加者の回答に影響のない名前を選ぶと良いかと思います。
 
 ![](fig/firebase_fig1.png)
 
-　続いて，Googleアナリティクスを使うか聞いてきますが，「今は必要ない」としておきます。
+続いて，Googleアナリティクスを使うか聞いてきますが，「今は必要ない」としておきます。
 
 
 ![](fig/firebase_fig2.png)
 
-　無事プロジェクトが完成して，プロジェクトのページにはいるとこんな感じの画面が見れます。
+無事プロジェクトが完成して，プロジェクトのページにはいるとこんな感じの画面になります（今回のプロジェクト名はstroopです）。
 
 ![](fig/firebase_fig3.png)
 
+<br />
+
 ## Firebase CLIのインストール
 　
-　Firebaseのサイト上のプロジェクトの設定は終わったので，次はローカルPC（手元のパソコンです）の設定をします。
+Firebaseのサイト上のプロジェクトの設定は終わったので，次はローカルPC（手元のパソコンです）の設定をします。
 
-- Firebase CLI を[こちら](https://firebase.google.com/docs/cli?hl=ja)にしたがって，インストールします（OSによって違います）。
+- [こちら](https://firebase.google.com/docs/cli?hl=ja)にしたがって，Firebase CLI をインストールします。
 
-手順は，Node.jsをインストールしてから以下のコマンドをターミナルに打ち込んで，Firebase CLIをインストールします。
+手順は，Node.jsをインストールしてから（これはOSによって違います），以下のコマンドをターミナルに打ち込んで，Firebase CLIをインストールします。
 
 ```
 npm install -g firebase-tools
@@ -40,14 +47,16 @@ npm install -g firebase-tools
 firebase login
 ```
 
-　これで，Firebase CLIを使用する準備が整いました。
+これで，Firebase CLIを使用する準備が整いました。
+
+<br />
 
 ### Firebaseプロジェクトの初期化
 
 - Firebase用のフォルダをローカルPCに作成します（フォルダ名は英語ならなんでもいいと思います。場所もどこでもいいです）。
 - ターミナルを開いて（Windowsならコマンドプロンプト？），作ったフォルダをカレントディレクトリに設定します(cdコマンドを使って設定します)。
 
-なお，以下がその例です。ターミナルの$の次にcdと打ち込んで，カレントディレクトリにするフォルダの場所を指定します。今回の例では，Documents内にfirebaseというフォルダを作って，さらに，その下のstroopを作った上で，カレントディレクトリにしています。
+なお，以下がその例です。ターミナルの"$"の次にcdと打ち込んで，カレントディレクトリにするフォルダの場所を指定します(Macの場合，当該フォルダをターミナルにドラッグ&ドロップするとパスがはいると思います)。今回の例では，Documents内にfirebaseというフォルダを作って，さらに，その下にstroopというフォルダを作った上で，それをカレントディレクトリにしています。
 
 ```
 cd Documents/firebase/stroop
@@ -67,17 +76,21 @@ firebase init
 ![](fig/firebase_fig5.png)
 
 
-- "Select a default Firebase project for this directory"と聞いてくるので，最初にFirebase上で設定したプロジェクト名を選択して，エンターを押します。
+- "Select a default Firebase project for this directory"と聞いてきますので，最初にFirebase上で設定したプロジェクト名を選択して，エンターを押します。
 
-- "What file should be used for Database Rules?"と聞いてくるので，そのままエンターを押します。
+- "What file should be used for Database Rules?"と聞いてきますので，そのままエンターを押します。
 
-- "What do you want to use as your public directory?"と聞いてくるので，そのままエンターを押します。
+- "What do you want to use as your public directory?"と聞いてきますので，そのままエンターを押します。
 
-- "Configure as a single-page app (rewrite all urls to /index.html)?"と聞いてくるので， Nをタイプします。
+- "Configure as a single-page app (rewrite all urls to /index.html)?"と聞いてきますので， Nをタイプします。
 
-　これで，firebaseプロジェクトの初期化が終わりました。　
+これで，firebaseプロジェクトの初期化が終わりました。　
 
-- ブラウザ上でも設定できるのですが，せっかくローカルにデータベースの設定ファイル(database.rules.json)があるので，それをテキストエディタで開きます。以下のような内容が見れると思います。
+<br />
+
+### Databaseのセキュリティルールの設定
+
+- ブラウザ上でも設定できるのですが，せっかくローカルにデータベースの設定ファイル(database.rules.json)があるので，そっちで設定します。database.rules.jsonをテキストエディタで開きます。デフォルトでは，以下のような内容だと思います。
 
 ```
 {
@@ -107,15 +120,17 @@ firebase init
 firebase deploy
 ```
 
+<br />
+
 ## Databaseとアプリの設定
 
-- [Firebase](https://firebase.google.com/?hl=ja)のプロジェクトのページに移動して，左側のメニューからDatabaseを選びます。
+- 今度は，[Firebase](https://firebase.google.com/?hl=ja)のプロジェクトのページに移動して，左側のメニューからDatabaseを選びます。
 　
 - 「データベースの作成」をクリックします。
 
 ![](fig/firebase_fig6.png)
 
-- 「テストモードで開始」を選んで，「次へ」をクリックする（Firestoreは使わないので，「ロックモードで開始」でもいいかも）。
+- 「テストモードで開始」を選んで，「次へ」をクリックする（Firestoreは使わないので，「ロックモードで開始」でもいいかも？）。
 
 ![](fig/firebase_fig7.png)
 
@@ -123,13 +138,13 @@ firebase deploy
 
 ![](fig/firebase_fig8.png)
 
-- 使うのはCloud Firestoreではなく，Realtime Databaseなので，選択します。
+- 実際に使うのはCloud Firestoreではなく，Realtime Databaseなので，そちらを選択します。
 
 ![](fig/firebase_fig9.png)
 
 ![](fig/firebase_fig10.png)
 
-- Realtime Databaseの「ルール」を開いて，さきほどローカルで設定した内容になっているか確認します（writeがtrueになっています）。
+- Realtime Databaseの「ルール」を開いて，さきほどローカルで設定した内容になっているか確認します（writeがtrueになっていれば成功です）。
 
 ![](fig/firebase_fig11.png)
 
@@ -145,14 +160,14 @@ firebase deploy
 
 ![](fig/firebase_fig14.png)
 
-- Firebase SDKの追加というのが出てくるので，コピーします。この内容をjsPsychを使って作ったweb実験用HTML内に入れます。そうすることで，web実験サイトで入力された参加者の反応をRealtime databaseに保存できます。
+- Firebase SDKの追加というのが出てくるので，これをコピーします。この内容をjsPsychを使って作ったweb実験用HTML内に挿入することで，web実験サイトで入力された参加者の反応をRealtime databaseに保存できます。
 
 ![](fig/firebase_fig15.png)
 
 
 ## Realtime databaseにデータを保存するためのjsPsychの設定
 
-- コピーしたFirebase SDKを追加していきます。
+- コピーしたFirebase SDKをHTMLに挿入します。
 
 - まずは，"<script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-app.js"></script>"を追加します。RstudioでjsPsychを使っている場合は，jsPsychのタグ設定部分にfirebase関連のjsを追加します。データベースも使うので，firebase-appだけでなく，firebase-database.jsも追加します。
 
@@ -183,7 +198,7 @@ tags$script(src='jspsych-6/plugins/jspsych-html-keyboard-response.js')
   firebase.initializeApp(firebaseConfig);
 ```
 
-- Realtime Databaseに書き込む際のIDを設定します。jsPsychの設定の本体である{js}に以下コードを追加すると，exp_idに「日付時刻_8桁の乱数」が用意されます。
+- Realtime Databaseに書き込む際のIDを設定します。jsPsychの設定の本体である{js}に以下コードを追加すると，exp_idに「日付時刻_8桁の乱数」が用意されます（この辺の保存IDなどは個人の好みに合わせて設定ください）。
 
 ```
 /*ID(日付時刻_８桁の乱数)の設定*/
@@ -236,7 +251,7 @@ jsPsych.init({
 firebase deploy
 ```
 
-- "https://プロジェクト名.firebaseapp.com/ファイル名.html"で実験画面が出てくればHostingは成功です。
+- "https\://プロジェクト名.firebaseapp.com/ファイル名.html"で実験画面が出てくればHostingは成功です。
 
 - そして，実験課題に取り組んでから，firebaseのプロジェクトページに行って，Realtime Databaseにデータが入っていれば，データベースの方も成功です。以下は私が３回ストループ課題を行ったデータです。
 
@@ -248,7 +263,7 @@ firebase deploy
 
 ![](fig/firebase_fig18.png)
 
-　以上，Firebaseの登録からウェブ実験の準備をして，データ収集まで説明をしました。
+　以上，Firebaseの登録からウェブ実験の準備をして，データ収集までを解説しました。
 　
 
 [^1]:本資料の作成にあたり，[Firebaseのサイト](https://firebase.google.com/docs/cli?hl=ja)，[Northwestern Child Language Development Labのチュートリアル資料](https://github.com/nu-childlab/firebase-experiment-tutorial)，[Alex K.氏の資料](https://github.com/Narquelion/lpl-training)を参考にした。
