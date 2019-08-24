@@ -1,19 +1,29 @@
 ---
-title: "R言語スタイルガイドと研究大要"
+title: "R言語の基本と解析梱包：Rのスタイルガイドと解析のパッキング化の習得"
 ---
 
-RStudioのコンソールの説明から
+## 準備中
+
+```{r eval=FALSE, include=FALSE}
+
+RStudioのコンソールの説明
+
+
+Rmdの使用以外を認めない
+
 
 R言語の使用法の演習をしつつスタイルガイドを身につける
-
-フォルダの準備の仕方についても説明する
-
 
 Rのスタイルガイド
 https://style.tidyverse.org/
 
-research compendium
+
+フォルダの準備の仕方についても説明する
+
+解析パック(research compendium)
 https://research-compendium.science/
 
 
-research compendiumは，研究要約や研究概要も考えられるが，すでによく使われている言葉で，わかりにくいので，研究大要とする。
+```
+
+

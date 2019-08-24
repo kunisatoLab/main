@@ -263,7 +263,7 @@ firebase deploy
 
 ![](fig/firebase_fig18.png)
 
-　以上，Firebaseの登録からウェブ実験の準備をして，データ収集までを解説しました。
+以上，Firebaseの登録からウェブ実験の準備をして，データ収集までを解説しました。なお，FirebaseからダウンロードしたJSONファイルを解析可能なデータセットにする方法は，[認知課題の解析データセット作成](how-to-dataHandling.html)にて解説しています。
 　
 
 [^1]:本資料の作成にあたり，[Firebaseのサイト](https://firebase.google.com/docs/cli?hl=ja)，[Northwestern Child Language Development Labのチュートリアル資料](https://github.com/nu-childlab/firebase-experiment-tutorial)，[Alex K.氏の資料](https://github.com/Narquelion/lpl-training)を参考にした。
