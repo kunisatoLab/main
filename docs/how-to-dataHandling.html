@@ -409,12 +409,9 @@ div.tocify {
 
 
 <div class="section level2">
-<h2>認知課題データの解析データセット作成法</h2>
-<div class="section level3">
-<h3>統計解析よりも解析データセット作成が大切！</h3>
+<h2>統計解析よりも解析データセット作成が大切！</h2>
 <p>解析の再生可能性を高めるうえで，統計解析自体よりも解析データセット作成が大切です。特に認知課題から得られるデータは，統計解析にかけるまでのデータセットの作成段階で色々と操作が必要です（不要なものを除外したり，複数の参加者のデータを統合したり，変数に処理を加えたりなど）。その際に，ミスが生じがちです。これまで学生指導していて，データ解析でミスが混入する危険性が高いのがここです。この段階でのミスは発覚しにくく，後で追えないこともあり，最もデータ処理上気をつけなくてはいけない部分です。以下では，これらの問題をクリアするために，Rを用いた解析データセットの作成方法について解説します。</p>
 <p><br /></p>
-</div>
 <div id="excel" class="section level3">
 <h3>解析データセット作成ではExcelを使わない</h3>
 <p>最初に，解析データセットの作成では，<strong>Excelの使用を禁止</strong>します。ExcelもSPSSもマウスを使って操作をしますが，そのような操作はミスが生じやすく，その操作過程の記録が残らないことも多いので，注意が必要です（操作過程が残っていても追いにくい面もあります）。例えば以下のようなことがあります。</p>
@@ -426,6 +423,7 @@ div.tocify {
 <li>例2) Excel上でデータの確認のために，特定の変数の値で並び替えたが，その並び替えが特定の変数だけに指定されており，参加者の本当の値とは違う値が入ることになった。</li>
 </ul>
 <p>こういうことがあると，解析で得られた結果は真実とは違ったものになります。ソートに限らず，なんらかの処理をエクセル上でしてしまうと，それが本当にただしい処理をしたのか後で確認できなくなることがあります。</p>
+<p><br /></p>
 </div>
 <div id="r" class="section level3">
 <h3>解析データセット作成ではRを使おう</h3>
@@ -437,37 +435,29 @@ div.tocify {
 <li>上記の操作について作業ログが残り，何度でもやり直せる</li>
 </ul>
 <p>このような条件を満たすもので，心理学科の学生にも使いやすいものとしては<strong>R</strong>があります。解析データセット作成では，<strong>R</strong>を使いましょう！以下では，(1)jsPsychを用いたWEB実験で得られたJSONファイルの処理，(2)PsychoPyを用いた実験で得られたcsvファイルの処理について解説します。なお，RやRstudioの基本的な使い方については，<a href="how-to-R-language.html">R言語の基本と解析梱包</a>で学んでいることを前提とします。</p>
+<p><br /></p>
 </div>
 </div>
 <div id="jspsychwebjson" class="section level2">
 <h2>jsPsychを用いたWEB実験で得られたJSONファイルの処理</h2>
 <div class="section level3">
 <h3>データとフォルダの準備</h3>
-<p><a href="materials/stroop.zip">jsPsychを用いたWEB実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います。</p>
+<p><a href="materials/stroop.zip">jsPsychを用いたWEB実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います（国里がstroop課題に３回取り組んだデータです）。RstudioのWorking Directoryにこのstroop.jsonを置くか，stroop.jsonのある場所をRstudioのWorking Directoryにしてください。</p>
 </div>
-</div>
-<div id="rstudio" class="section level2">
-<h2>Rstudioの作業ディレクトリーの設定</h2>
-<p>　 なお，パソコンで解析などの作業をする場合に，パソコンに，パソコン上のどこで作業をするのか，その場所を知らせる必要があります。そのような作業場所を作業ディレクトリーと言います。Rstudio上で，作業ディレクトリーを先程のAnalysisフォルダに設定します。具体的な操作は，　RStudioのメニューバーから、「Session」-&gt;「Set Working Directory」-&gt;「Choose Directory」で，先程のAnalysisフォルダを選択してください。</p>
 <div id="r" class="section level3">
 <h3>使用するRパッケージ</h3>
 <ul>
-<li>ダウンロードしたJSONファイルを読み込む際には，以下のようにして，jsonliteパッケージを使います。</li>
+<li>JSONファイルの読み込みのためにjsonlite，データの整形のためにtidyverseを使用します。</li>
 </ul>
 <pre class="r"><code>library(jsonlite)
 library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ───────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
-<pre><code>## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
-## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
-## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
-## ✔ readr   1.3.1     ✔ forcats 0.4.0</code></pre>
-<pre><code>## ── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter()  masks stats::filter()
-## ✖ purrr::flatten() masks jsonlite::flatten()
-## ✖ dplyr::lag()     masks stats::lag()</code></pre>
+</div>
+<div id="json" class="section level3">
+<h3>JSONファイルの読み込み</h3>
+<p>ダウンロードしたJSONファイルを読み込む際には，以下のように，jsonliteパッケージのfromJSON()関数を使います。データ名は，list形式のdatabaseデータなので，db_listとしました。</p>
 <pre class="r"><code>db_list &lt;- fromJSON(&quot;materials/stroop.json&quot;)</code></pre>
 <ul>
-<li>glimpse()で，読み込んだJSONファイルの構造をチェックします。このデータは，私が３回Stroop課題に取り組んだものです。listは参加者で構成されていますので，３つあります。そして，その下に実験データのdata.frameがあります。</li>
+<li>glimpse()で，読み込んだJSONファイルの構造をチェックします。このデータは，私が３回Stroop課題に取り組んだものです。listは参加者で構成されていますので，３つあります。そして，それぞれの下に実験データのdata.frameがあります。</li>
 </ul>
 <pre class="r"><code>glimpse(db_list)</code></pre>
 <pre><code>## List of 3
@@ -507,8 +497,11 @@ library(tidyverse)</code></pre>
 ##   .. ..$ correct         : logi [1:19] NA NA TRUE TRUE TRUE FALSE ...
 ##   .. ..$ response        : chr [1:19] NA NA &quot;j&quot; &quot;j&quot; ...
 ##   .. ..$ stim_type       : chr [1:19] NA NA &quot;incongruent&quot; &quot;incongruent&quot; ...</code></pre>
+</div>
+<div id="json" class="section level3">
+<h3>読み込んだJSONファイルの整形</h3>
 <ul>
-<li>読み込んだJSONデータをas.tibbleを使ってデータフレームにする。すると，３つの参加者が変数になって，変数の下にdata.frameができました。</li>
+<li>読み込んだJSONデータをtidyverseのas.tibble()関数を使ってデータフレームにします（データフレームなので，db_dfという名前にしました）。すると，３つの参加者が変数になって，変数の下にdata.frameができました。</li>
 </ul>
 <pre class="r"><code>db_df &lt;- as_tibble(db_list, validate = F) 
 db_df</code></pre>
@@ -517,7 +510,7 @@ db_df</code></pre>
 ##   &lt;named list&gt;             &lt;named list&gt;             &lt;named list&gt;           
 ## 1 &lt;df[,10] [19 × 10]&gt;      &lt;df[,10] [19 × 10]&gt;      &lt;df[,10] [19 × 10]&gt;</code></pre>
 <ul>
-<li>これは少し扱いにくいので，getherでlongデータ化します。</li>
+<li>Rでは，第１行目に変数名があり，各変数名の下にデータがある形のものを扱います。上記の形式は，参加者名が列ではなく行になってしまっているので(wide型になっている)，困ります。そこで，tidyverseのgather()関数を使って，wide型とlong型にします。gather()関数では，gather(データ，wide型で変数名になっているものを格納するlong型での変数名，wide型でデータになっているものをlong型のデータにしたときの変数名)という感じで引数を設定します。なお，db_dfに代入すると上書きされるので，db_df2に代入をします。IDの列とdataの列ができていい感じです。</li>
 </ul>
 <pre class="r"><code>db_df2 &lt;- gather(db_df, ID, data)
 db_df2</code></pre>
@@ -528,7 +521,7 @@ db_df2</code></pre>
 ## 2 2019_8_22_23_56_32_juStKRbZ &lt;df[,10] [19 × 10]&gt;
 ## 3 2019_8_22_23_57_16_8EygxO3q &lt;df[,10] [19 × 10]&gt;</code></pre>
 <ul>
-<li>各参加者にdata.frameがネストしちゃっているので，unnestします。これで，とりあえず解析データセットが完成しました。</li>
+<li>gatherでいい感じになってきましたが，各参加者のdataは，値ではなくてdata.frameがネストしちゃっているので，unnestします。これで，とりあえず解析データセットが完成しました。</li>
 </ul>
 <pre class="r"><code>db_df3 &lt;-unnest(db_df2)
 db_df3</code></pre>
@@ -548,19 +541,34 @@ db_df3</code></pre>
 ## # … with 47 more rows, and 5 more variables: trial_index &lt;int&gt;,
 ## #   trial_type &lt;chr&gt;, correct &lt;lgl&gt;, response &lt;chr&gt;, stim_type &lt;chr&gt;</code></pre>
 <ul>
-<li>上記の操作＋整形作業すると，以下のコードになります。</li>
+<li>これでOKな気もしますが，不要な変数がいくつかありますし，教示などの参加者の反応が入ってないデータも不要だったりしますので，整形作業が必要です。まずは，その後の解析で使うであろうID,trial_index,stim_type,response,correct,rtのみを，tidyverseのselect()関数を使って選択します。なお，ここで“%&gt;%”というなぞのコマンドがでてきましたが，これはパイプ演算子です(tidyverseパッケージを読み込むと使えます)。“A %&gt;% B”は，Aを関数Bの第１引数（多くの関数の場合，データ）にいれるという意味です。大した機能ではなさそうですが，処理を重ねる場合に，関数から関数にデータを引き継いで処理が書けるので，わかりやすくかけるというメリットがあります（最後にその例を示します）。</li>
 </ul>
-<pre class="r"><code>db_df &lt;- db_list %&gt;% 
-  as_tibble(validate = F) %&gt;%  #データフレーム化
-  gather(ID, data) %&gt;% 　　　　#ロング化
-  unnest() %&gt;% 　　　　　　　　#ネストやめる
-  select(ID,trial_index,stim_type,response,correct,rt) %&gt;%　#使う変数選択 
+<pre class="r"><code>db_df4 &lt;-db_df3 %&gt;% 
+  select(ID,trial_index,stim_type,response,correct,rt)
+db_df4</code></pre>
+<pre><code>## # A tibble: 57 x 6
+##    ID                       trial_index stim_type   response correct     rt
+##    &lt;chr&gt;                          &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;lgl&gt;    &lt;dbl&gt;
+##  1 2019_8_22_23_48_59_fxlm…           0 &lt;NA&gt;        &lt;NA&gt;     NA      3.90e5
+##  2 2019_8_22_23_48_59_fxlm…           1 &lt;NA&gt;        &lt;NA&gt;     NA      7.18e3
+##  3 2019_8_22_23_48_59_fxlm…           2 congruent   d        TRUE    7.06e2
+##  4 2019_8_22_23_48_59_fxlm…           3 congruent   d        TRUE    8.16e2
+##  5 2019_8_22_23_48_59_fxlm…           4 incongruent k        TRUE    1.12e3
+##  6 2019_8_22_23_48_59_fxlm…           5 congruent   d        TRUE    8.34e2
+##  7 2019_8_22_23_48_59_fxlm…           6 incongruent j        TRUE    1.06e3
+##  8 2019_8_22_23_48_59_fxlm…           7 incongruent j        TRUE    1.15e3
+##  9 2019_8_22_23_48_59_fxlm…           8 incongruent k        TRUE    7.51e2
+## 10 2019_8_22_23_48_59_fxlm…           9 incongruent f        TRUE    8.04e2
+## # … with 47 more rows</code></pre>
+<ul>
+<li>trial_indexの0はウェルカムメッセージ，1は教示，18は課題終了の教示です。これらは不要ですので，tidyverseのfilter()関数を使って除外します(filter関数は特定の条件のデータを残す関数ですが，!=と指定すれば，該当するデータを除外してくれます)。</li>
+</ul>
+<pre class="r"><code>db_df5 &lt;-db_df4 %&gt;% 
   filter(trial_index !=0) %&gt;%　#ウェルカムメッセージは不要 
   filter(trial_index !=1) %&gt;%  #教示は不要
-  filter(trial_index !=19)     #最後の教示も不要
-
-db_df</code></pre>
-<pre><code>## # A tibble: 51 x 6
+  filter(trial_index !=18)     #最後の教示も不要
+db_df5</code></pre>
+<pre><code>## # A tibble: 48 x 6
 ##    ID                         trial_index stim_type  response correct    rt
 ##    &lt;chr&gt;                            &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;    &lt;lgl&gt;   &lt;dbl&gt;
 ##  1 2019_8_22_23_48_59_fxlmh9…           2 congruent  d        TRUE     706.
@@ -573,27 +581,100 @@ db_df</code></pre>
 ##  8 2019_8_22_23_48_59_fxlmh9…           9 incongrue… f        TRUE     804.
 ##  9 2019_8_22_23_48_59_fxlmh9…          10 congruent  d        TRUE     768.
 ## 10 2019_8_22_23_48_59_fxlmh9…          11 incongrue… j        TRUE    1206.
-## # … with 41 more rows</code></pre>
+## # … with 38 more rows</code></pre>
+<ul>
+<li>よく見たら，正誤の変数のcorrectは，TRUE・FALSEになっていますね。そこで，tidyverseのmutate()関数を使って，TRUE・FALSE型を数値型にした変数を別途作ります(mutate()関数は変数を作成するときに使えます)。</li>
+</ul>
+<pre class="r"><code>db_df6 &lt;-db_df5 %&gt;%
+  mutate(correct2 = as.numeric(correct))
+  
+db_df6</code></pre>
+<pre><code>## # A tibble: 48 x 7
+##    ID                trial_index stim_type  response correct    rt correct2
+##    &lt;chr&gt;                   &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;    &lt;lgl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+##  1 2019_8_22_23_48_…           2 congruent  d        TRUE     706.        1
+##  2 2019_8_22_23_48_…           3 congruent  d        TRUE     816.        1
+##  3 2019_8_22_23_48_…           4 incongrue… k        TRUE    1119.        1
+##  4 2019_8_22_23_48_…           5 congruent  d        TRUE     834.        1
+##  5 2019_8_22_23_48_…           6 incongrue… j        TRUE    1056.        1
+##  6 2019_8_22_23_48_…           7 incongrue… j        TRUE    1151.        1
+##  7 2019_8_22_23_48_…           8 incongrue… k        TRUE     751.        1
+##  8 2019_8_22_23_48_…           9 incongrue… f        TRUE     804.        1
+##  9 2019_8_22_23_48_…          10 congruent  d        TRUE     768.        1
+## 10 2019_8_22_23_48_…          11 incongrue… j        TRUE    1206.        1
+## # … with 38 more rows</code></pre>
+<ul>
+<li>上書きしなようにすると，db_dfが6まで増えてしまいました。ここで，“%&gt;%”が役に立ちます。関数を何度も使って処理を重ねていく場合に，以下のように“%&gt;%”でつないでいくと，一気にまとめて処理できますし，見た目も何をしているかわかりやすいです。なにか処理をした場合に，#を使ってコメントを残しておくとわかりやすいです。なお，mutate関数の位置を少し変えて，select関数適用後にlogical型のcorrectが残らないように変更しています。</li>
+</ul>
+<pre class="r"><code>db_df &lt;- db_list %&gt;% 
+  as_tibble(validate = F) %&gt;%  #データフレーム化
+  gather(ID, data) %&gt;% 　　　　#ロング化
+  unnest() %&gt;% 　　　　　　　　#ネストやめる
+  mutate(correct2 = as.numeric(correct)) %&gt;%  #正誤反応はlogical型からnumeric型に
+  select(ID,trial_index,stim_type,response,correct2,rt) %&gt;%　#使う変数選択 
+  filter(trial_index !=0) %&gt;%　#ウェルカムメッセージを除外 
+  filter(trial_index !=1) %&gt;%  #教示を除外
+  filter(trial_index !=18)     #終了時の教示を除外
+
+db_df</code></pre>
+<pre><code>## # A tibble: 48 x 6
+##    ID                        trial_index stim_type  response correct2    rt
+##    &lt;chr&gt;                           &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;
+##  1 2019_8_22_23_48_59_fxlmh…           2 congruent  d               1  706.
+##  2 2019_8_22_23_48_59_fxlmh…           3 congruent  d               1  816.
+##  3 2019_8_22_23_48_59_fxlmh…           4 incongrue… k               1 1119.
+##  4 2019_8_22_23_48_59_fxlmh…           5 congruent  d               1  834.
+##  5 2019_8_22_23_48_59_fxlmh…           6 incongrue… j               1 1056.
+##  6 2019_8_22_23_48_59_fxlmh…           7 incongrue… j               1 1151.
+##  7 2019_8_22_23_48_59_fxlmh…           8 incongrue… k               1  751.
+##  8 2019_8_22_23_48_59_fxlmh…           9 incongrue… f               1  804.
+##  9 2019_8_22_23_48_59_fxlmh…          10 congruent  d               1  768.
+## 10 2019_8_22_23_48_59_fxlmh…          11 incongrue… j               1 1206.
+## # … with 38 more rows</code></pre>
+</div>
+<div class="section level3">
+<h3>データのチェック</h3>
+<p>上記の作業で解析データセットができました。簡単に３名の参加者の条件ごと（ストループ課題での色と文字の一致条件と不一致条件）の正答率と平均反応時間を見てみましょう。tidyverseを使えば，group_byとsummariseで簡単にこういう整理ができます。なお，参加者のIDがちょっと長すぎたので，mutateを使ってIDをtime1,time2,time3に書き換えたidという変数を作って，使っています。このデータは，私が適当に３回回答したものですので，time1~3というidにしました。結果をみると，全体として，正答率はあまり変わりませんが，一致条件(congruent)の方が不一致条件(incongruent)よりも反応時間が短いことがわかりますね。私が適当に３回取り組んだ結果ですが，まあまあきれいな結果ですね。</p>
+<pre class="r"><code>db_df　 %&gt;% 
+  mutate(id = ifelse(ID == &quot;2019_8_22_23_48_59_fxlmh9SL&quot;, &quot;time1&quot;, ifelse(ID == &quot;2019_8_22_23_56_32_juStKRbZ&quot;, &quot;time2&quot;,&quot;time3&quot;))) %&gt;% 
+  group_by(id,stim_type) %&gt;% 
+  summarise(正答率=sum(correct2,na.rm = TRUE)/length(correct2), 平均反応時間=mean(rt,na.rm = TRUE))</code></pre>
+<pre><code>## # A tibble: 6 x 4
+##   id    stim_type   正答率 平均反応時間
+##   &lt;chr&gt; &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+## 1 time1 congruent    1             781.
+## 2 time1 incongruent  1            1028.
+## 3 time2 congruent    1             769.
+## 4 time2 incongruent  1            1113.
+## 5 time3 congruent    1             888.
+## 6 time3 incongruent  0.833         994.</code></pre>
+<p>平均反応時間をプロットすると以下のような感じです。</p>
+<pre class="r"><code>db_df　 %&gt;% 
+  mutate(id = ifelse(ID == &quot;2019_8_22_23_48_59_fxlmh9SL&quot;, &quot;time1&quot;, ifelse(ID == &quot;2019_8_22_23_56_32_juStKRbZ&quot;, &quot;time2&quot;,&quot;time3&quot;))) %&gt;% 
+  ggplot(aes(x=id,y=rt,fill=stim_type)) +
+  geom_bar(position = position_dodge(),stat = &quot;identity&quot;) </code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<p><img src="how-to-dataHandling_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="1" class="section level3">
+<h3>演習課題1</h3>
+<p>自分でjsPsychを使った認知課題を作成して，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。</p>
 </div>
 </div>
 <div id="psychopycsv" class="section level2">
 <h2>PsychoPyを用いた実験で得られたcsvファイルの処理</h2>
-</div>
-<div id="-1" class="section level2">
-<h2>データとフォルダの準備</h2>
-<p><a href="materials/Analysis.zip">PsychoPyを用いた実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。“Analysis”フォルダ内に“Data”フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。</p>
+<p>本研究室では，2020年度からjsPsychを使った認知課題の作成を学ぶようになっていますが，BIOPACやEEGを用いた実験などでは，PsychoPyで実験をしたほうが良いことがあります。PsychoPyでの実験では，参加者ごとにcsvファイルが得られます，以下では，そのようなcsvファイルの処理について解説しています。</p>
+<div id="-1" class="section level3">
+<h3>データとフォルダの準備</h3>
+<p><a href="materials/Analysis.zip">PsychoPyを用いた実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。“Analysis”フォルダ内に“Data”フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。RstudioのWorking Directoryにこの“Analysis”フォルダを置くか，“Analysis”フォルダのある場所をRstudioのWorking Directoryにしてください。</p>
 <p>今回は，すでにフォルダに名前がついていましたが，自分でフォルダ名を付ける場合は，日本語を使用するのは推奨しません。フォルダとファイルと変数名には，英語（日本語のローマ字化でけっこう）を使用してください。</p>
 </div>
-<div id="rstudio-1" class="section level2">
-<h2>Rstudioの作業ディレクトリーの設定</h2>
-<p>　 なお，パソコンで解析などの作業をする場合に，パソコンに，パソコン上のどこで作業をするのか，その場所を知らせる必要があります。そのような作業場所を作業ディレクトリーと言います。Rstudio上で，作業ディレクトリーを先程のAnalysisフォルダに設定します。具体的な操作は，　RStudioのメニューバーから、「Session」-&gt;「Set Working Directory」-&gt;「Choose Directory」で，先程のAnalysisフォルダを選択してください。</p>
-</div>
-<div class="section level2">
-<h2>カレントディレクトリーの移動</h2>
+<div class="section level3">
+<h3>カレントディレクトリーの移動</h3>
 <p>基本的には，Analysisフォルダで解析の前処理や解析は行いますが，一時的にフォルダ移動する必要があります。その時に便利なのが，getwd()とsetwd()です。wdは，作業ディレクトリ(working directory)を意味し，getwdで現在の作業ディレクトリの情報を取得し，setwdで作業ディレクトリを設定します。</p>
 <p>以下をRstudioのConsoleにタイプしてみましょう！</p>
 <pre><code>getwd()</code></pre>
-<p>おそらく，さきほど設定したAnalysisフォルダまでのパスが出力されたかと思います（そうじゃない人は，“Rstudioの作業ディレクトリーの設定”に戻って下さい）。</p>
+<p>おそらく，さきほど設定したAnalysisフォルダまでのパスが出力されたかと思います（そうじゃない場合は，Rstudioのworking directoryを設定し直してください）。</p>
 <p>次に，Analysisフォルダの１つ下の階層にあるDataフォルダに移動してみましょう。以下をRstudioのConsoleにタイプしてみましょう！</p>
 <pre><code>workDir &lt;- getwd()
 setwd(paste(workDir, &quot;Data&quot;, sep = &quot;/&quot;))</code></pre>
@@ -602,8 +683,8 @@ setwd(paste(workDir, &quot;Data&quot;, sep = &quot;/&quot;))</code></pre>
 <pre><code>setwd(&quot;..&quot;)</code></pre>
 <p>上記のsetwd(“..”)をRstudioのConsoleに打ちこんでから，getwd()でAnalysisフォルダに戻ってきているか確認をしてみましょう。</p>
 </div>
-<div id="data" class="section level2">
-<h2>Dataフォルダ内のファイル名を取得</h2>
+<div id="data" class="section level3">
+<h3>Dataフォルダ内のファイル名を取得</h3>
 <p>もう一度，Dataフォルダに移動します。その上で，list.filse()を使って，フォルダ内のファイル名をリスト化します（そしてfileNamesに入れる）。</p>
 <pre class="r"><code>workDir &lt;- getwd()</code></pre>
 <pre class="r"><code>setwd(paste(workDir, &quot;Data&quot;, sep = &quot;/&quot;))
@@ -614,15 +695,15 @@ fileNames &lt;- list.files()</code></pre>
 <pre class="r"><code>print(fileNames)</code></pre>
 <pre><code>## [1] &quot;sub01.csv&quot; &quot;sub02.csv&quot; &quot;sub03.csv&quot; &quot;sub04.csv&quot;</code></pre>
 </div>
-<div id="data" class="section level2">
-<h2>Dataフォルダ内のファイル数を確認</h2>
+<div id="data" class="section level3">
+<h3>Dataフォルダ内のファイル数を確認</h3>
 <p>fileNamesに格納されているファイルの数から参加者数を確認します。lengthでデータの長さ（ここでは，fileNamesに含まれるデータの個数）がわかります。今回は，４個のデータが入っています。</p>
 <pre class="r"><code>numberSubject &lt;- length(fileNames)
 print(numberSubject)</code></pre>
 <pre><code>## [1] 4</code></pre>
 </div>
-<div id="sub01" class="section level2">
-<h2>sub01のデータを読み込んでみる</h2>
+<div id="sub01" class="section level3">
+<h3>sub01のデータを読み込んでみる</h3>
 <p>では，早速，sub01.csvを読み込んでみましょう！tidyverseに入っているreadrパッケージのread_csv()でcsvファイルが読み込めます。そして，読み込むファイル名は，fileNamesに格納されているのものの１つ目（つまり，sub01）です。</p>
 <pre class="r"><code>sub01 &lt;- read_csv(paste(workDir, &quot;Data&quot;,fileNames[1], sep = &quot;/&quot;))
 sub01</code></pre>
@@ -642,8 +723,8 @@ sub01</code></pre>
 ## # … with 112 more rows, and 2 more variables: correct &lt;lgl&gt;,
 ## #   stimulus &lt;chr&gt;</code></pre>
 </div>
-<div id="sub01" class="section level2">
-<h2>sub01のデータで必要な部分を抽出</h2>
+<div id="sub01" class="section level3">
+<h3>sub01のデータで必要な部分を抽出</h3>
 <p>上記のsub01のデータの解析で必要なのは，rt（反応時間）, key_press（押したキー），trial_index(試行番号)，correct（正誤）になります。また，trial_typeでは，categorizeのデータだけが欲しい（textは教示なので，いらない）。このようなデータの整理では，tidyverseのdplyrパッケージを使います。ここで，%&gt;%というパイプ演算子というものがでてきます。これは，%&gt;%の左(or前)のものが，次にくる関数の第一引数に入ることを意味します（例えば，上のlength(fileNames)の場合，length()関数の第一引数は，ファイル名リストのfileNamesになります）。</p>
 <p>具体的な操作は以下になります。(1)まず，filterで，trial_typeが“categorize”なものにしぼります。(2)key_pressは，90だと紫の選択，77だと緑の選択になります。90と77だと扱いにくいので，90は1，77は0に変換します。ifelse(key_press == 90, 1,0)を使って，90なら1，それ以外は0になるようにして，mutateの新しい変数rewardを作成します（mutateは，新しい変数を作成する関数です）。(3)correctは，true,falseになるのですが，これも扱いにくいので，trueは1,falseは0にします。as.numeric(as.logical(correct))を使って，論理値にした上で，数値型に変換します。これもmutateを使って新たにrewardという名前を付けます。(4)この段階で，key_press, trial_type, time_elapsed, internal_node_id, correct, stimulusが要らなくなりました。selectを使って，不要な変数にマイナスをつけて除外します。(5)最後に，renameを使ってtrial_indexをnoに変更します。</p>
 <pre class="r"><code># データの整理
@@ -671,10 +752,10 @@ sub01</code></pre>
 ## # … with 110 more rows</code></pre>
 <p>これで，必要な部分だけきれいに抽出できました。</p>
 </div>
-<div class="section level2">
-<h2>４名のデータの読み込みと保存</h2>
 <div class="section level3">
-<h3>データの読み込み</h3>
+<h3>４名のデータの読み込みと保存</h3>
+<div class="section level4">
+<h4>データの読み込み</h4>
 <p>さて，今度は４名分のデータ（フォルダ内のすべてのデータ）を読み込んで，整理してみましょう。フォルダ内のデータ数分（今回は４）だけ，上記の操作を繰り返します。繰り返す場合は，for文を使います。for文は以下のように書きます。1から“繰り返す回数”までを順番にiに代入しつつ，“繰り返したい操作”を繰り返します。</p>
 <pre><code>for(i in 1:繰り返す回数){
     繰り返したい操作
@@ -714,13 +795,13 @@ analysisData</code></pre>
 ## 10   346    10      0      1     1
 ## # … with 470 more rows</code></pre>
 </div>
-<div class="section level3">
-<h3>データの保存</h3>
+<div class="section level4">
+<h4>データの保存</h4>
 <p>これで，４名分の生データを読み込んだので，今度は，これをcsvファイルとして保存します。csvファイルは，write.csv()を使って，保存できます。</p>
 <pre><code>write.csv(analysisData, &quot;analysisData.csv&quot;)</code></pre>
 </div>
-<div id="id" class="section level3">
-<h3>IDの対応表</h3>
+<div id="id" class="section level4">
+<h4>IDの対応表</h4>
 <p>上記の作業では，for文でのiをIDとしているが，それが実際のどのファイルに対応するのか対応づけできてない。そこで，以下では，上記と同じようなfor文を使って，iとフォルダのファイル名との対応づけをした対応表(idTable)を作成する。また，tidyverseのstringrパッケージを用いると（stringrパッケージはtidyverseを読み込むだけでは読み込まれないので，別途libraryで読み込む），文字列の一部を抽出することもできる。今回は，参加者ID番号にかかわる4~5番目の文字を抽出してみて，それをidTableにいれる。</p>
 <pre class="r"><code>library(stringr)
 idTable &lt;- NULL
@@ -739,10 +820,10 @@ print(idTable)</code></pre>
 ## 4 sub04.csv    04      4</code></pre>
 </div>
 </div>
-<div class="section level2">
-<h2>もう少し処理をしたデータの読み込みと保存</h2>
-<div id="-1" class="section level3">
-<h3>データの読み込み</h3>
+<div class="section level3">
+<h3>もう少し処理をしたデータの読み込みと保存</h3>
+<div id="-1" class="section level4">
+<h4>データの読み込み</h4>
 <p>上記では，フォルダ内のすべてのcsvファイルを読み込んで，その生データを結合して，１つのcsvファイルで保存しました。私個人としては，このように各試行ごとのデータを使って解析した方が良いと考えますが，目的によっては，各試行ごとのデータではなく，全試行における正答率などを参加者ごとに計算した場合もあるかと思います。今回は，各参加者のデータを読み込んで，紫を選んだ比率（1が紫，緑は0）と正答率(correctでは1が正答，0が誤答)を各参加者ごとにsummaryDataに保存してみます。先程ののanalysiDataを作成したコードにちょっとだけ追加をしてみます。</p>
 <pre class="r"><code># analysisDataの準備
 analysisData &lt;- NULL
@@ -783,28 +864,16 @@ summaryData &lt;- as_data_frame(summaryData)</code></pre>
 ## 3     3      0.483       0.567
 ## 4     4      0.575       0.625</code></pre>
 </div>
+</div>
 <div id="-1" class="section level3">
 <h3>データの保存</h3>
 <p>summaryDataをcsv形式で保存する。</p>
 <pre><code>write.csv(summaryData, &quot;summaryData.csv&quot;)</code></pre>
 </div>
+<div id="2" class="section level3">
+<h3>演習課題2</h3>
+<p>自分でPsychoPyを使った認知課題を作成して，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。</p>
 </div>
-<div class="section level2">
-<h2>おわりに</h2>
-<p>これで，解析用のデータセットを作ることができました。あとは，Rで解析してもよし，SPSSやHADで解析しても良いです（個人的にはRを薦めます・・・）。Rの入門資料については，以下にスライドをアップしていますので，読んでみてください。</p>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/bdxbQ58hm1Bu5O" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/r-74207682" title="臨床心理学におけるR入門: データハンドリングから統計解析まで" target="_blank">臨床心理学におけるR入門: データハンドリングから統計解析まで</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
-</div>
-<p>また，研究室においてあるRの書籍や以下のサイトを参考にしつつRでデータハンドリング・視覚化・統計解析（モデリング）をしてみましょう！</p>
-<ul>
-<li><a href="http://amzn.asia/1BxQP81">「R for Data Science: Import, Tidy, Transform, Visualize, and Model Data」</a>（研究室の本棚においてあります）</li>
-<li><a href="https://mrunadon.github.io/TableWithR/">Rで表の作成(Mr.Unadon氏のブログ)</a></li>
-<li><a href="(https://mrunadon.github.io/ggplot2/)">Rで色々な図の作成(Mr.Unadon氏のブログ)</a></li>
-<li><a href="https://mrunadon.github.io/ThesisPlot/">Rで論文用の図の作成（Mr.Unadon氏のブログ）</a></li>
-<li><a href="http://kosugitti.sakura.ne.jp/wp/wp-content/uploads/2014/01/R_tutorial2013.pdf">Rチュートリアルセミナー特別テキスト（山口大学小杉先生・押江先生のPDF資料）</a></li>
-</ul>
 </div>
 
 <footer>

@@ -1,8 +1,7 @@
 ---
 title: "認知課題の解析データセット作成"
 ---
-## 認知課題データの解析データセット作成法
-### 統計解析よりも解析データセット作成が大切！
+## 統計解析よりも解析データセット作成が大切！
 
 解析の再生可能性を高めるうえで，統計解析自体よりも解析データセット作成が大切です。特に認知課題から得られるデータは，統計解析にかけるまでのデータセットの作成段階で色々と操作が必要です（不要なものを除外したり，複数の参加者のデータを統合したり，変数に処理を加えたりなど）。その際に，ミスが生じがちです。これまで学生指導していて，データ解析でミスが混入する危険性が高いのがここです。この段階でのミスは発覚しにくく，後で追えないこともあり，最もデータ処理上気をつけなくてはいけない部分です。以下では，これらの問題をクリアするために，Rを用いた解析データセットの作成方法について解説します。
 
@@ -20,6 +19,8 @@ title: "認知課題の解析データセット作成"
 
 こういうことがあると，解析で得られた結果は真実とは違ったものになります。ソートに限らず，なんらかの処理をエクセル上でしてしまうと，それが本当にただしい処理をしたのか後で確認できなくなることがあります。
 
+<br />
+
 ### 解析データセット作成ではRを使おう
 
 認知課題解析用データセットの作成は，以下の原則を守りつつ行う必要があります。
@@ -31,86 +32,143 @@ title: "認知課題の解析データセット作成"
 
 このような条件を満たすもので，心理学科の学生にも使いやすいものとしては**R**があります。解析データセット作成では，**R**を使いましょう！以下では，(1)jsPsychを用いたWEB実験で得られたJSONファイルの処理，(2)PsychoPyを用いた実験で得られたcsvファイルの処理について解説します。なお，RやRstudioの基本的な使い方については，[R言語の基本と解析梱包](how-to-R-language.html)で学んでいることを前提とします。
 
+<br />
 
 ## jsPsychを用いたWEB実験で得られたJSONファイルの処理
 ### データとフォルダの準備
 
-[jsPsychを用いたWEB実験のサンプルデータ](materials/stroop.zip)をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います。
-
-
-## Rstudioの作業ディレクトリーの設定
-　
-なお，パソコンで解析などの作業をする場合に，パソコンに，パソコン上のどこで作業をするのか，その場所を知らせる必要があります。そのような作業場所を作業ディレクトリーと言います。Rstudio上で，作業ディレクトリーを先程のAnalysisフォルダに設定します。具体的な操作は，　RStudioのメニューバーから、「Session」->「Set Working Directory」->「Choose Directory」で，先程のAnalysisフォルダを選択してください。
+[jsPsychを用いたWEB実験のサンプルデータ](materials/stroop.zip)をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います（国里がstroop課題に３回取り組んだデータです）。RstudioのWorking Directoryにこのstroop.jsonを置くか，stroop.jsonのある場所をRstudioのWorking Directoryにしてください。
 
 ### 使用するRパッケージ
-- ダウンロードしたJSONファイルを読み込む際には，以下のようにして，jsonliteパッケージを使います。
 
-```{r}
+- JSONファイルの読み込みのためにjsonlite，データの整形のためにtidyverseを使用します。
+
+```{r message=FALSE}
 library(jsonlite)
 library(tidyverse)
+```
+
+
+### JSONファイルの読み込み
+
+ダウンロードしたJSONファイルを読み込む際には，以下のように，jsonliteパッケージのfromJSON()関数を使います。データ名は，list形式のdatabaseデータなので，db_listとしました。
+
+```{r}
 db_list <- fromJSON("materials/stroop.json")
 ```
 
-- glimpse()で，読み込んだJSONファイルの構造をチェックします。このデータは，私が３回Stroop課題に取り組んだものです。listは参加者で構成されていますので，３つあります。そして，その下に実験データのdata.frameがあります。
+- glimpse()で，読み込んだJSONファイルの構造をチェックします。このデータは，私が３回Stroop課題に取り組んだものです。listは参加者で構成されていますので，３つあります。そして，それぞれの下に実験データのdata.frameがあります。
 
 ```{r}
 glimpse(db_list)
 ```
 
-- 読み込んだJSONデータをas.tibbleを使ってデータフレームにする。すると，３つの参加者が変数になって，変数の下にdata.frameができました。
+### 読み込んだJSONファイルの整形
+
+- 読み込んだJSONデータをtidyverseのas.tibble()関数を使ってデータフレームにします（データフレームなので，db_dfという名前にしました）。すると，３つの参加者が変数になって，変数の下にdata.frameができました。
 
 ```{r}
 db_df <- as_tibble(db_list, validate = F) 
 db_df
 ```
 
-- これは少し扱いにくいので，getherでlongデータ化します。
+- Rでは，第１行目に変数名があり，各変数名の下にデータがある形のものを扱います。上記の形式は，参加者名が列ではなく行になってしまっているので(wide型になっている)，困ります。そこで，tidyverseのgather()関数を使って，wide型とlong型にします。gather()関数では，gather(データ，wide型で変数名になっているものを格納するlong型での変数名，wide型でデータになっているものをlong型のデータにしたときの変数名)という感じで引数を設定します。なお，db_dfに代入すると上書きされるので，db_df2に代入をします。IDの列とdataの列ができていい感じです。
 
 ```{r}
 db_df2 <- gather(db_df, ID, data)
 db_df2
 ```
 
-- 各参加者にdata.frameがネストしちゃっているので，unnestします。これで，とりあえず解析データセットが完成しました。
+- gatherでいい感じになってきましたが，各参加者のdataは，値ではなくてdata.frameがネストしちゃっているので，unnestします。これで，とりあえず解析データセットが完成しました。
 
 ```{r}
 db_df3 <-unnest(db_df2)
 db_df3
 ```
 
-- 上記の操作＋整形作業すると，以下のコードになります。
+- これでOKな気もしますが，不要な変数がいくつかありますし，教示などの参加者の反応が入ってないデータも不要だったりしますので，整形作業が必要です。まずは，その後の解析で使うであろうID,trial_index,stim_type,response,correct,rtのみを，tidyverseのselect()関数を使って選択します。なお，ここで"%>% "というなぞのコマンドがでてきましたが，これはパイプ演算子です(tidyverseパッケージを読み込むと使えます)。"A %>% B"は，Aを関数Bの第１引数（多くの関数の場合，データ）にいれるという意味です。大した機能ではなさそうですが，処理を重ねる場合に，関数から関数にデータを引き継いで処理が書けるので，わかりやすくかけるというメリットがあります（最後にその例を示します）。
+
+```{r}
+db_df4 <-db_df3 %>% 
+  select(ID,trial_index,stim_type,response,correct,rt)
+db_df4
+```
+
+- trial_indexの0はウェルカムメッセージ，1は教示，18は課題終了の教示です。これらは不要ですので，tidyverseのfilter()関数を使って除外します(filter関数は特定の条件のデータを残す関数ですが，!=と指定すれば，該当するデータを除外してくれます)。
+
+```{r}
+db_df5 <-db_df4 %>% 
+  filter(trial_index !=0) %>%　#ウェルカムメッセージは不要 
+  filter(trial_index !=1) %>%  #教示は不要
+  filter(trial_index !=18)     #最後の教示も不要
+db_df5
+```
+
+- よく見たら，正誤の変数のcorrectは，TRUE・FALSEになっていますね。そこで，tidyverseのmutate()関数を使って，TRUE・FALSE型を数値型にした変数を別途作ります(mutate()関数は変数を作成するときに使えます)。
+
+```{r}
+db_df6 <-db_df5 %>%
+  mutate(correct2 = as.numeric(correct))
+  
+db_df6
+```
+
+
+- 上書きしなようにすると，db_dfが6まで増えてしまいました。ここで，"%>%"が役に立ちます。関数を何度も使って処理を重ねていく場合に，以下のように"%>%"でつないでいくと，一気にまとめて処理できますし，見た目も何をしているかわかりやすいです。なにか処理をした場合に，#を使ってコメントを残しておくとわかりやすいです。なお，mutate関数の位置を少し変えて，select関数適用後にlogical型のcorrectが残らないように変更しています。
+
 
 ```{r}
 db_df <- db_list %>% 
   as_tibble(validate = F) %>%  #データフレーム化
   gather(ID, data) %>% 　　　　#ロング化
   unnest() %>% 　　　　　　　　#ネストやめる
-  select(ID,trial_index,stim_type,response,correct,rt) %>%　#使う変数選択 
-  filter(trial_index !=0) %>%　#ウェルカムメッセージは不要 
-  filter(trial_index !=1) %>%  #教示は不要
-  filter(trial_index !=19)     #最後の教示も不要
+  mutate(correct2 = as.numeric(correct)) %>%  #正誤反応はlogical型からnumeric型に
+  select(ID,trial_index,stim_type,response,correct2,rt) %>%　#使う変数選択 
+  filter(trial_index !=0) %>%　#ウェルカムメッセージを除外 
+  filter(trial_index !=1) %>%  #教示を除外
+  filter(trial_index !=18)     #終了時の教示を除外
 
 db_df
 ```
 
+### データのチェック
+
+上記の作業で解析データセットができました。簡単に３名の参加者の条件ごと（ストループ課題での色と文字の一致条件と不一致条件）の正答率と平均反応時間を見てみましょう。tidyverseを使えば，group_byとsummariseで簡単にこういう整理ができます。なお，参加者のIDがちょっと長すぎたので，mutateを使ってIDをtime1,time2,time3に書き換えたidという変数を作って，使っています。このデータは，私が適当に３回回答したものですので，time1~3というidにしました。結果をみると，全体として，正答率はあまり変わりませんが，一致条件(congruent)の方が不一致条件(incongruent)よりも反応時間が短いことがわかりますね。私が適当に３回取り組んだ結果ですが，まあまあきれいな結果ですね。
 
 
+```{r}
+db_df　 %>% 
+  mutate(id = ifelse(ID == "2019_8_22_23_48_59_fxlmh9SL", "time1", ifelse(ID == "2019_8_22_23_56_32_juStKRbZ", "time2","time3"))) %>% 
+  group_by(id,stim_type) %>% 
+  summarise(正答率=sum(correct2,na.rm = TRUE)/length(correct2), 平均反応時間=mean(rt,na.rm = TRUE))
+```
 
+平均反応時間をプロットすると以下のような感じです。
+
+```{r}
+db_df　 %>% 
+  mutate(id = ifelse(ID == "2019_8_22_23_48_59_fxlmh9SL", "time1", ifelse(ID == "2019_8_22_23_56_32_juStKRbZ", "time2","time3"))) %>% 
+  ggplot(aes(x=id,y=rt,fill=stim_type)) +
+  geom_bar(position = position_dodge(),stat = "identity") 
+```
+
+
+### 演習課題1
+
+自分でjsPsychを使った認知課題を作成して，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。
 
 
 ## PsychoPyを用いた実験で得られたcsvファイルの処理
 
-## データとフォルダの準備
+本研究室では，2020年度からjsPsychを使った認知課題の作成を学ぶようになっていますが，BIOPACやEEGを用いた実験などでは，PsychoPyで実験をしたほうが良いことがあります。PsychoPyでの実験では，参加者ごとにcsvファイルが得られます，以下では，そのようなcsvファイルの処理について解説しています。
 
-[PsychoPyを用いた実験のサンプルデータ](materials/Analysis.zip)をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。"Analysis"フォルダ内に"Data"フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。
+### データとフォルダの準備
+
+[PsychoPyを用いた実験のサンプルデータ](materials/Analysis.zip)をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。"Analysis"フォルダ内に"Data"フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。RstudioのWorking Directoryにこの"Analysis"フォルダを置くか，"Analysis"フォルダのある場所をRstudioのWorking Directoryにしてください。
 
 今回は，すでにフォルダに名前がついていましたが，自分でフォルダ名を付ける場合は，日本語を使用するのは推奨しません。フォルダとファイルと変数名には，英語（日本語のローマ字化でけっこう）を使用してください。
 
-## Rstudioの作業ディレクトリーの設定
-　
-なお，パソコンで解析などの作業をする場合に，パソコンに，パソコン上のどこで作業をするのか，その場所を知らせる必要があります。そのような作業場所を作業ディレクトリーと言います。Rstudio上で，作業ディレクトリーを先程のAnalysisフォルダに設定します。具体的な操作は，　RStudioのメニューバーから、「Session」->「Set Working Directory」->「Choose Directory」で，先程のAnalysisフォルダを選択してください。
-
-## カレントディレクトリーの移動
+### カレントディレクトリーの移動
 
 基本的には，Analysisフォルダで解析の前処理や解析は行いますが，一時的にフォルダ移動する必要があります。その時に便利なのが，getwd()とsetwd()です。wdは，作業ディレクトリ(working directory)を意味し，getwdで現在の作業ディレクトリの情報を取得し，setwdで作業ディレクトリを設定します。
 
@@ -120,7 +178,7 @@ db_df
 getwd()
 ```
 
-おそらく，さきほど設定したAnalysisフォルダまでのパスが出力されたかと思います（そうじゃない人は，"Rstudioの作業ディレクトリーの設定"に戻って下さい）。
+おそらく，さきほど設定したAnalysisフォルダまでのパスが出力されたかと思います（そうじゃない場合は，Rstudioのworking directoryを設定し直してください）。
 
 
 次に，Analysisフォルダの１つ下の階層にあるDataフォルダに移動してみましょう。以下をRstudioのConsoleにタイプしてみましょう！
@@ -140,7 +198,7 @@ setwd("..")
 
 上記のsetwd("..")をRstudioのConsoleに打ちこんでから，getwd()でAnalysisフォルダに戻ってきているか確認をしてみましょう。
 
-## Dataフォルダ内のファイル名を取得
+### Dataフォルダ内のファイル名を取得
 
 もう一度，Dataフォルダに移動します。その上で，list.filse()を使って，フォルダ内のファイル名をリスト化します（そしてfileNamesに入れる）。
 
@@ -170,7 +228,7 @@ fileNamseの中身を確認します。フォルダに入っているファイ�
 print(fileNames)
 ```
 
-## Dataフォルダ内のファイル数を確認
+### Dataフォルダ内のファイル数を確認
 
 fileNamesに格納されているファイルの数から参加者数を確認します。lengthでデータの長さ（ここでは，fileNamesに含まれるデータの個数）がわかります。今回は，４個のデータが入っています。
 
@@ -179,7 +237,7 @@ numberSubject <- length(fileNames)
 print(numberSubject)
 ```
 
-## sub01のデータを読み込んでみる
+### sub01のデータを読み込んでみる
 
 では，早速，sub01.csvを読み込んでみましょう！tidyverseに入っているreadrパッケージのread_csv()でcsvファイルが読み込めます。そして，読み込むファイル名は，fileNamesに格納されているのものの１つ目（つまり，sub01）です。
 
@@ -189,7 +247,7 @@ sub01
 ```
 
 
-## sub01のデータで必要な部分を抽出
+### sub01のデータで必要な部分を抽出
 
 上記のsub01のデータの解析で必要なのは，rt（反応時間）, key_press（押したキー），trial_index(試行番号)，correct（正誤）になります。また，trial_typeでは，categorizeのデータだけが欲しい（textは教示なので，いらない）。このようなデータの整理では，tidyverseのdplyrパッケージを使います。ここで，%>%というパイプ演算子というものがでてきます。これは，%>%の左(or前)のものが，次にくる関数の第一引数に入ることを意味します（例えば，上のlength(fileNames)の場合，length()関数の第一引数は，ファイル名リストのfileNamesになります）。
 
@@ -210,8 +268,8 @@ sub01
 
 これで，必要な部分だけきれいに抽出できました。
 
-## ４名のデータの読み込みと保存
-### データの読み込み
+### ４名のデータの読み込みと保存
+#### データの読み込み
 
 さて，今度は４名分のデータ（フォルダ内のすべてのデータ）を読み込んで，整理してみましょう。フォルダ内のデータ数分（今回は４）だけ，上記の操作を繰り返します。繰り返す場合は，for文を使います。for文は以下のように書きます。1から"繰り返す回数"までを順番にiに代入しつつ，"繰り返したい操作"を繰り返します。
 
@@ -246,7 +304,7 @@ analysisData
 ```
 
 
-### データの保存
+#### データの保存
 
 これで，４名分の生データを読み込んだので，今度は，これをcsvファイルとして保存します。csvファイルは，write.csv()を使って，保存できます。
 
@@ -254,7 +312,7 @@ analysisData
 write.csv(analysisData, "analysisData.csv")
 ```
 
-### IDの対応表
+#### IDの対応表
 
 上記の作業では，for文でのiをIDとしているが，それが実際のどのファイルに対応するのか対応づけできてない。そこで，以下では，上記と同じようなfor文を使って，iとフォルダのファイル名との対応づけをした対応表(idTable)を作成する。また，tidyverseのstringrパッケージを用いると（stringrパッケージはtidyverseを読み込むだけでは読み込まれないので，別途libraryで読み込む），文字列の一部を抽出することもできる。今回は，参加者ID番号にかかわる4~5番目の文字を抽出してみて，それをidTableにいれる。
 
@@ -271,8 +329,8 @@ idTable <- as.data.frame(idTable)
 print(idTable)
 ```
 
-## もう少し処理をしたデータの読み込みと保存
-### データの読み込み
+### もう少し処理をしたデータの読み込みと保存
+#### データの読み込み
 
 上記では，フォルダ内のすべてのcsvファイルを読み込んで，その生データを結合して，１つのcsvファイルで保存しました。私個人としては，このように各試行ごとのデータを使って解析した方が良いと考えますが，目的によっては，各試行ごとのデータではなく，全試行における正答率などを参加者ごとに計算した場合もあるかと思います。今回は，各参加者のデータを読み込んで，紫を選んだ比率（1が紫，緑は0）と正答率(correctでは1が正答，0が誤答)を各参加者ごとにsummaryDataに保存してみます。先程ののanalysiDataを作成したコードにちょっとだけ追加をしてみます。
 
@@ -316,16 +374,6 @@ summaryDataをcsv形式で保存する。
 write.csv(summaryData, "summaryData.csv")
 ```
 
-## おわりに
+### 演習課題2
 
-これで，解析用のデータセットを作ることができました。あとは，Rで解析してもよし，SPSSやHADで解析しても良いです（個人的にはRを薦めます・・・）。Rの入門資料については，以下にスライドをアップしていますので，読んでみてください。
-
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/bdxbQ58hm1Bu5O" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/r-74207682" title="臨床心理学におけるR入門: データハンドリングから統計解析まで" target="_blank">臨床心理学におけるR入門: データハンドリングから統計解析まで</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
-
-また，研究室においてあるRの書籍や以下のサイトを参考にしつつRでデータハンドリング・視覚化・統計解析（モデリング）をしてみましょう！
-
-- [「R for Data Science: Import, Tidy, Transform, Visualize, and Model Data」](http://amzn.asia/1BxQP81)（研究室の本棚においてあります）
-- [Rで表の作成(Mr.Unadon氏のブログ)](https://mrunadon.github.io/TableWithR/)
-- [Rで色々な図の作成(Mr.Unadon氏のブログ)]((https://mrunadon.github.io/ggplot2/))
-- [Rで論文用の図の作成（Mr.Unadon氏のブログ）](https://mrunadon.github.io/ThesisPlot/)
-- [Rチュートリアルセミナー特別テキスト（山口大学小杉先生・押江先生のPDF資料）](http://kosugitti.sakura.ne.jp/wp/wp-content/uploads/2014/01/R_tutorial2013.pdf)
+自分でPsychoPyを使った認知課題を作成して，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。
