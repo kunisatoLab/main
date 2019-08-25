@@ -1,5 +1,5 @@
 ---
-title: "R言語の基本と解析梱包：Rのスタイルガイドと解析のパッキング化の習得"
+title: "R言語の基本1"
 ---
 
 ## 準備中
@@ -23,14 +23,6 @@ R言語の使用法の演習をしつつスタイルガイドを身につける
 
 Rのスタイルガイド
 https://style.tidyverse.org/
-
-
-## 解析梱包
-フォルダの準備の仕方についても説明する
-
-解析パック(research compendium)
-https://research-compendium.science/
-
 
 ```
 

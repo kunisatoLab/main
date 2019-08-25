@@ -1,8 +1,8 @@
 ---
-title: "jsPsychを用いた認知課題の作成　その１"
+title: "jsPsychを用いた認知課題の作成1: jsPsychとJavaScript入門"
 ---
 
 
 ## 準備中
 
-ハローワールド＆ストループ課題
+ハローワールド

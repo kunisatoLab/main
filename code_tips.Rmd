@@ -6,11 +6,17 @@ title: "Code & Tips"
 
 ## 認知課題
 
-- [jsPsychを用いた認知課題の作成　その1(準備中)](how-to-jspsych1.html)　☆1(2コマ)
+- [jsPsychを用いた認知課題の作成1: jsPsychとJavaScript入門(準備中)](how-to-jspsych1.html)　☆1
 
-- [jsPsychを用いた認知課題の作成　その2(準備中)](how-to-jspsych2.html)　☆2(2コマ)
+- [jsPsychを用いた認知課題の作成2: ストループ課題(準備中)](how-to-jspsych2.html)　☆2
 
-- [jsPsychを用いた認知課題の作成　その3(準備中)](how-to-jspsych3.html)　☆3(2コマ)
+- [jsPsychを用いた認知課題の作成3：逆転学習課題1(準備中)](how-to-jspsych3.html)　☆3
+
+- [jsPsychを用いた認知課題の作成4: 逆転学習課題2(準備中)](how-to-jspsych4.html)　☆4
+
+- [jsPsychを用いた認知課題の作成5: 質問紙(準備中)](how-to-jspsych5.html)　☆5
+
+- [jsPsychを用いた認知課題の作成6: 音や動画呈示(準備中)](how-to-jspsych6.html)　☆6
 
 - [jsPsychを用いたWEB実験の実施](how-to-web-experiment-jspsych.html)
 
@@ -30,9 +36,11 @@ title: "Code & Tips"
 
 ## データ解析
 
-- [R言語の基本と解析梱包（準備中）](how-to-R-language.html) ☆4(2コマ)
+- [R言語の基本1（準備中）](how-to-R-language1.html) ☆7
 
-- [認知課題の解析データセット作成](how-to-dataHandling.html)　☆5(1コマ)
+- [R言語の基本2と解析梱包（準備中）](how-to-R-language2.html) ☆8
+
+- [認知課題の解析データセット作成](how-to-dataHandling.html)　☆9
 
 - [再生可能なデータ解析入門](how-to-reproducible-analysis.html)　
 
@@ -42,9 +50,13 @@ title: "Code & Tips"
 
 ## 認知モデリング
 
-- [強化学習モデルを用いた認知モデリング入門(準備中)](how-to-cognitive-modeling-rl.html)　☆6(2コマ)
+- [強化学習モデル1(準備中)](how-to-cognitive-modeling-rl1.html)　☆10
 
-- [逐次サンプリングモデルを用いた認知モデリング入門(準備中)](how-to-cognitive-modeling-ssm.html)　☆7(2コマ)
+- [強化学習モデル2(準備中)](how-to-cognitive-modeling-rl2.html)　☆11
+
+- [逐次サンプリングモデル1(準備中)](how-to-cognitive-modeling-ssm1.html)　☆12
+
+- [逐次サンプリングモデル2(準備中)](how-to-cognitive-modeling-ssm2.html)　☆13
 
 - [hBayesDMでベイジアン認知モデリング](how-to-hBayesDM.html)
 
@@ -61,7 +73,9 @@ title: "Code & Tips"
 
 ## 心理学的ネットワークモデリング
 
-- [心理学的ネットワーク分析入門(準備中)](how-to-psychological-network.html)　☆8(2コマ)
+- [心理学的ネットワーク分析入門1(準備中)](how-to-psychological-network1.html)　☆14
+
+- [心理学的ネットワーク分析入門2(準備中)](how-to-psychological-network2.html)　☆15
 
 <br />
 
