@@ -10,7 +10,7 @@ title: "Code & Tips"
 
 - [jsPsychを用いた認知課題の作成2: ストループ課題(準備中)](how-to-jspsych2.html)　☆2
 
-- [jsPsychを用いた認知課題の作成3：逆転学習課題1(準備中)](how-to-jspsych3.html)　☆3
+- [jsPsychを用いた認知課題の作成3: 逆転学習課題1(準備中)](how-to-jspsych3.html)　☆3
 
 - [jsPsychを用いた認知課題の作成4: 逆転学習課題2(準備中)](how-to-jspsych4.html)　☆4
 
