@@ -18,7 +18,7 @@ title: "Code & Tips"
 
 - [jsPsychを用いた認知課題の作成6: 音や動画呈示(準備中)](how-to-jspsych6.html)　☆6
 
-- [jsPsychを用いたWEB実験の実施](how-to-web-experiment-jspsych.html)
+- [jsPsychを用いたWEB実験の実施(FirebaseでWEB実験を実施する方法の解説)](how-to-web-experiment-jspsych.html)
 
 - [PsychoPyを用いた認知課題の作成 (PsychoPy3未対応,2020年3月には対応します・・・)](how-to-psychopy.html)
 
