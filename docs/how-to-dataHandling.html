@@ -409,11 +409,11 @@ div.tocify {
 
 
 <div class="section level2">
-<h2>統計解析よりも解析データセット作成が大切！</h2>
+<h2>1 統計解析よりも解析データセット作成が大切！</h2>
 <p>解析の再生可能性を高めるうえで，統計解析自体よりも解析データセット作成が大切です。特に認知課題から得られるデータは，統計解析にかけるまでのデータセットの作成段階で色々と操作が必要です（不要なものを除外したり，複数の参加者のデータを統合したり，変数に処理を加えたりなど）。その際に，ミスが生じがちです。これまで学生指導していて，データ解析でミスが混入する危険性が高いのがここです。この段階でのミスは発覚しにくく，後で追えないこともあり，最もデータ処理上気をつけなくてはいけない部分です。以下では，これらの問題をクリアするために，Rを用いた解析データセットの作成方法について解説します。</p>
 <p><br /></p>
 <div id="excel" class="section level3">
-<h3>解析データセット作成ではExcelを使わない</h3>
+<h3>1.1 解析データセット作成ではExcelを使わない</h3>
 <p>最初に，解析データセットの作成では，<strong>Excelの使用を禁止</strong>します。ExcelもSPSSもマウスを使って操作をしますが，そのような操作はミスが生じやすく，その操作過程の記録が残らないことも多いので，注意が必要です（操作過程が残っていても追いにくい面もあります）。例えば以下のようなことがあります。</p>
 <ul>
 <li>例1) 各参加者のデータを解析用エクセルファイルにコピー＆ペーストしていたが，参加者Aのデータをコピー＆ペーストしてから，参加者Bのデータをコピー＆ペーストしたが，実際にはコピーができておらず，参加者Aのデータが２回入ってしまった。</li>
@@ -426,7 +426,7 @@ div.tocify {
 <p><br /></p>
 </div>
 <div id="r" class="section level3">
-<h3>解析データセット作成ではRを使おう</h3>
+<h3>1.2 解析データセット作成ではRを使おう</h3>
 <p>認知課題解析用データセットの作成は，以下の原則を守りつつ行う必要があります。</p>
 <ul>
 <li>オリジナルの生データを直接操作しない（必ず別途バックアップとっておく）</li>
@@ -439,13 +439,13 @@ div.tocify {
 </div>
 </div>
 <div id="jspsychwebjson" class="section level2">
-<h2>jsPsychを用いたWEB実験で得られたJSONファイルの処理</h2>
+<h2>2 jsPsychを用いたWEB実験で得られたJSONファイルの処理</h2>
 <div class="section level3">
-<h3>データとフォルダの準備</h3>
+<h3>2.1 データとフォルダの準備</h3>
 <p><a href="materials/stroop.zip">jsPsychを用いたWEB実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います（国里がstroop課題に３回取り組んだデータです）。RstudioのWorking Directoryにこのstroop.jsonを置くか，stroop.jsonのある場所をRstudioのWorking Directoryにしてください。</p>
 </div>
 <div id="r" class="section level3">
-<h3>使用するRパッケージ</h3>
+<h3>2.2 使用するRパッケージ</h3>
 <ul>
 <li>JSONファイルの読み込みのためにjsonlite，データの整形のためにtidyverseを使用します。</li>
 </ul>
@@ -453,7 +453,7 @@ div.tocify {
 library(tidyverse)</code></pre>
 </div>
 <div id="json" class="section level3">
-<h3>JSONファイルの読み込み</h3>
+<h3>2.3 JSONファイルの読み込み</h3>
 <p>ダウンロードしたJSONファイルを読み込む際には，以下のように，jsonliteパッケージのfromJSON()関数を使います。データ名は，list形式のdatabaseデータなので，db_listとしました。</p>
 <pre class="r"><code>db_list &lt;- fromJSON(&quot;materials/stroop.json&quot;)</code></pre>
 <ul>
@@ -499,7 +499,7 @@ library(tidyverse)</code></pre>
 ##   .. ..$ stim_type       : chr [1:19] NA NA &quot;incongruent&quot; &quot;incongruent&quot; ...</code></pre>
 </div>
 <div id="json" class="section level3">
-<h3>読み込んだJSONファイルの整形</h3>
+<h3>2.4 読み込んだJSONファイルの整形</h3>
 <ul>
 <li>読み込んだJSONデータをtidyverseのas.tibble()関数を使ってデータフレームにします（データフレームなので，db_dfという名前にしました）。すると，３つの参加者が変数になって，変数の下にdata.frameができました。</li>
 </ul>
@@ -633,7 +633,7 @@ db_df</code></pre>
 ## # … with 38 more rows</code></pre>
 </div>
 <div class="section level3">
-<h3>データのチェック</h3>
+<h3>2.5 データのチェック</h3>
 <p>上記の作業で解析データセットができました。簡単に３名の参加者の条件ごと（ストループ課題での色と文字の一致条件と不一致条件）の正答率と平均反応時間を見てみましょう。tidyverseを使えば，group_byとsummariseで簡単にこういう整理ができます。なお，参加者のIDがちょっと長すぎたので，mutateを使ってIDをtime1,time2,time3に書き換えたidという変数を作って，使っています。このデータは，私が適当に３回回答したものですので，time1~3というidにしました。結果をみると，全体として，正答率はあまり変わりませんが，一致条件(congruent)の方が不一致条件(incongruent)よりも反応時間が短いことがわかりますね。私が適当に３回取り組んだ結果ですが，まあまあきれいな結果ですね。</p>
 <pre class="r"><code>db_df　 %&gt;% 
   mutate(id = ifelse(ID == &quot;2019_8_22_23_48_59_fxlmh9SL&quot;, &quot;time1&quot;, ifelse(ID == &quot;2019_8_22_23_56_32_juStKRbZ&quot;, &quot;time2&quot;,&quot;time3&quot;))) %&gt;% 
@@ -657,20 +657,20 @@ db_df</code></pre>
 <p><img src="how-to-dataHandling_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 <div id="1" class="section level3">
-<h3>演習課題1</h3>
+<h3>2.6演習課題1</h3>
 <p>自分でjsPsychを使った認知課題を作成して，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。</p>
 </div>
 </div>
 <div id="psychopycsv" class="section level2">
-<h2>PsychoPyを用いた実験で得られたcsvファイルの処理</h2>
+<h2>3 PsychoPyを用いた実験で得られたcsvファイルの処理</h2>
 <p>本研究室では，2020年度からjsPsychを使った認知課題の作成を学ぶようになっていますが，BIOPACやEEGを用いた実験などでは，PsychoPyで実験をしたほうが良いことがあります。PsychoPyでの実験では，参加者ごとにcsvファイルが得られます，以下では，そのようなcsvファイルの処理について解説しています。</p>
 <div id="-1" class="section level3">
-<h3>データとフォルダの準備</h3>
+<h3>3.1 データとフォルダの準備</h3>
 <p><a href="materials/Analysis.zip">PsychoPyを用いた実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。“Analysis”フォルダ内に“Data”フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。RstudioのWorking Directoryにこの“Analysis”フォルダを置くか，“Analysis”フォルダのある場所をRstudioのWorking Directoryにしてください。</p>
 <p>今回は，すでにフォルダに名前がついていましたが，自分でフォルダ名を付ける場合は，日本語を使用するのは推奨しません。フォルダとファイルと変数名には，英語（日本語のローマ字化でけっこう）を使用してください。</p>
 </div>
 <div class="section level3">
-<h3>カレントディレクトリーの移動</h3>
+<h3>3.2 カレントディレクトリーの移動</h3>
 <p>基本的には，Analysisフォルダで解析の前処理や解析は行いますが，一時的にフォルダ移動する必要があります。その時に便利なのが，getwd()とsetwd()です。wdは，作業ディレクトリ(working directory)を意味し，getwdで現在の作業ディレクトリの情報を取得し，setwdで作業ディレクトリを設定します。</p>
 <p>以下をRstudioのConsoleにタイプしてみましょう！</p>
 <pre><code>getwd()</code></pre>
@@ -684,7 +684,7 @@ setwd(paste(workDir, &quot;Data&quot;, sep = &quot;/&quot;))</code></pre>
 <p>上記のsetwd(“..”)をRstudioのConsoleに打ちこんでから，getwd()でAnalysisフォルダに戻ってきているか確認をしてみましょう。</p>
 </div>
 <div id="data" class="section level3">
-<h3>Dataフォルダ内のファイル名を取得</h3>
+<h3>3.3 Dataフォルダ内のファイル名を取得</h3>
 <p>もう一度，Dataフォルダに移動します。その上で，list.filse()を使って，フォルダ内のファイル名をリスト化します（そしてfileNamesに入れる）。</p>
 <pre class="r"><code>workDir &lt;- getwd()</code></pre>
 <pre class="r"><code>setwd(paste(workDir, &quot;Data&quot;, sep = &quot;/&quot;))
@@ -696,14 +696,14 @@ fileNames &lt;- list.files()</code></pre>
 <pre><code>## [1] &quot;sub01.csv&quot; &quot;sub02.csv&quot; &quot;sub03.csv&quot; &quot;sub04.csv&quot;</code></pre>
 </div>
 <div id="data" class="section level3">
-<h3>Dataフォルダ内のファイル数を確認</h3>
+<h3>3.4 Dataフォルダ内のファイル数を確認</h3>
 <p>fileNamesに格納されているファイルの数から参加者数を確認します。lengthでデータの長さ（ここでは，fileNamesに含まれるデータの個数）がわかります。今回は，４個のデータが入っています。</p>
 <pre class="r"><code>numberSubject &lt;- length(fileNames)
 print(numberSubject)</code></pre>
 <pre><code>## [1] 4</code></pre>
 </div>
 <div id="sub01" class="section level3">
-<h3>sub01のデータを読み込んでみる</h3>
+<h3>3.5 sub01のデータを読み込んでみる</h3>
 <p>では，早速，sub01.csvを読み込んでみましょう！tidyverseに入っているreadrパッケージのread_csv()でcsvファイルが読み込めます。そして，読み込むファイル名は，fileNamesに格納されているのものの１つ目（つまり，sub01）です。</p>
 <pre class="r"><code>sub01 &lt;- read_csv(paste(workDir, &quot;Data&quot;,fileNames[1], sep = &quot;/&quot;))
 sub01</code></pre>
@@ -724,7 +724,7 @@ sub01</code></pre>
 ## #   stimulus &lt;chr&gt;</code></pre>
 </div>
 <div id="sub01" class="section level3">
-<h3>sub01のデータで必要な部分を抽出</h3>
+<h3>3.6 sub01のデータで必要な部分を抽出</h3>
 <p>上記のsub01のデータの解析で必要なのは，rt（反応時間）, key_press（押したキー），trial_index(試行番号)，correct（正誤）になります。また，trial_typeでは，categorizeのデータだけが欲しい（textは教示なので，いらない）。このようなデータの整理では，tidyverseのdplyrパッケージを使います。ここで，%&gt;%というパイプ演算子というものがでてきます。これは，%&gt;%の左(or前)のものが，次にくる関数の第一引数に入ることを意味します（例えば，上のlength(fileNames)の場合，length()関数の第一引数は，ファイル名リストのfileNamesになります）。</p>
 <p>具体的な操作は以下になります。(1)まず，filterで，trial_typeが“categorize”なものにしぼります。(2)key_pressは，90だと紫の選択，77だと緑の選択になります。90と77だと扱いにくいので，90は1，77は0に変換します。ifelse(key_press == 90, 1,0)を使って，90なら1，それ以外は0になるようにして，mutateの新しい変数rewardを作成します（mutateは，新しい変数を作成する関数です）。(3)correctは，true,falseになるのですが，これも扱いにくいので，trueは1,falseは0にします。as.numeric(as.logical(correct))を使って，論理値にした上で，数値型に変換します。これもmutateを使って新たにrewardという名前を付けます。(4)この段階で，key_press, trial_type, time_elapsed, internal_node_id, correct, stimulusが要らなくなりました。selectを使って，不要な変数にマイナスをつけて除外します。(5)最後に，renameを使ってtrial_indexをnoに変更します。</p>
 <pre class="r"><code># データの整理
@@ -753,9 +753,9 @@ sub01</code></pre>
 <p>これで，必要な部分だけきれいに抽出できました。</p>
 </div>
 <div class="section level3">
-<h3>４名のデータの読み込みと保存</h3>
+<h3>3.6 ４名のデータの読み込みと保存</h3>
 <div class="section level4">
-<h4>データの読み込み</h4>
+<h4>3.6.1 データの読み込み</h4>
 <p>さて，今度は４名分のデータ（フォルダ内のすべてのデータ）を読み込んで，整理してみましょう。フォルダ内のデータ数分（今回は４）だけ，上記の操作を繰り返します。繰り返す場合は，for文を使います。for文は以下のように書きます。1から“繰り返す回数”までを順番にiに代入しつつ，“繰り返したい操作”を繰り返します。</p>
 <pre><code>for(i in 1:繰り返す回数){
     繰り返したい操作
@@ -796,12 +796,12 @@ analysisData</code></pre>
 ## # … with 470 more rows</code></pre>
 </div>
 <div class="section level4">
-<h4>データの保存</h4>
+<h4>3.6.2 データの保存</h4>
 <p>これで，４名分の生データを読み込んだので，今度は，これをcsvファイルとして保存します。csvファイルは，write.csv()を使って，保存できます。</p>
 <pre><code>write.csv(analysisData, &quot;analysisData.csv&quot;)</code></pre>
 </div>
 <div id="id" class="section level4">
-<h4>IDの対応表</h4>
+<h4>3.6.3 IDの対応表</h4>
 <p>上記の作業では，for文でのiをIDとしているが，それが実際のどのファイルに対応するのか対応づけできてない。そこで，以下では，上記と同じようなfor文を使って，iとフォルダのファイル名との対応づけをした対応表(idTable)を作成する。また，tidyverseのstringrパッケージを用いると（stringrパッケージはtidyverseを読み込むだけでは読み込まれないので，別途libraryで読み込む），文字列の一部を抽出することもできる。今回は，参加者ID番号にかかわる4~5番目の文字を抽出してみて，それをidTableにいれる。</p>
 <pre class="r"><code>library(stringr)
 idTable &lt;- NULL
@@ -821,9 +821,9 @@ print(idTable)</code></pre>
 </div>
 </div>
 <div class="section level3">
-<h3>もう少し処理をしたデータの読み込みと保存</h3>
+<h3>3.7 もう少し処理をしたデータの読み込みと保存</h3>
 <div id="-1" class="section level4">
-<h4>データの読み込み</h4>
+<h4>3.7.1 データの読み込み</h4>
 <p>上記では，フォルダ内のすべてのcsvファイルを読み込んで，その生データを結合して，１つのcsvファイルで保存しました。私個人としては，このように各試行ごとのデータを使って解析した方が良いと考えますが，目的によっては，各試行ごとのデータではなく，全試行における正答率などを参加者ごとに計算した場合もあるかと思います。今回は，各参加者のデータを読み込んで，紫を選んだ比率（1が紫，緑は0）と正答率(correctでは1が正答，0が誤答)を各参加者ごとにsummaryDataに保存してみます。先程ののanalysiDataを作成したコードにちょっとだけ追加をしてみます。</p>
 <pre class="r"><code># analysisDataの準備
 analysisData &lt;- NULL
@@ -866,12 +866,12 @@ summaryData &lt;- as_data_frame(summaryData)</code></pre>
 </div>
 </div>
 <div id="-1" class="section level3">
-<h3>データの保存</h3>
+<h3>3.8 データの保存</h3>
 <p>summaryDataをcsv形式で保存する。</p>
 <pre><code>write.csv(summaryData, &quot;summaryData.csv&quot;)</code></pre>
 </div>
 <div id="2" class="section level3">
-<h3>演習課題2</h3>
+<h3>3.9 演習課題2</h3>
 <p>自分でPsychoPyを使った認知課題を作成して，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。</p>
 </div>
 </div>
