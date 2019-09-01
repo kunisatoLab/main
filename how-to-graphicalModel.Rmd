@@ -2,6 +2,16 @@
 title: "Rでグラフィカルモデルを書こう！"
 ---
 
+
+```{r eval=FALSE, include=FALSE}
+# メモ
+#DiagrammeR(https://rich-iannone.github.io/DiagrammeR/)に合わせた修正
+#magickの加筆
+#https://cran.r-project.org/web/packages/magick/vignettes/intro.html
+
+```
+
+
 ## グラフィカルモデル
 
 以下のスライドにあるように，ベイジアン認知モデリングにおいて，階層モデルなどの複雑なモデルを使う場合，モデルの記述が大変になる。そこで，グラフィカルモデル（プレート表現）を用いると便利です。
