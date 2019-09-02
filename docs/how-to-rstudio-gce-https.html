@@ -88,7 +88,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -437,35 +436,72 @@ div.tocify {
 <div id="vmdocker" class="section level2">
 <h2>4. 仮想マシン(VM)にDockerをインストール</h2>
 <p>Compute EngineのページのVMインスタンスをみると先程設定したVMインスタンスがあると思います。こちらが起動していると接続というところの「SSH」がクリック可能になっていると思います。SSHをクリックしてください。すると，別ウィンドウが起動して，ターミナルが出現します。そこで，<a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">こちら</a>を参考に以下を打ち込んでDockerをインストールします。途中何か聞かれると思いますが，質問に従って，Yなどの返事をタイプください。</p>
-<pre><code>sudo apt-get update
-
-sudo apt-get install \
+<pre><code>sudo apt-get update</code></pre>
+<pre><code>sudo apt-get install \
     apt-transport-https \
     ca-certificates \
     curl \
     gnupg-agent \
-    software-properties-common
-
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-
-sudo apt-key fingerprint 0EBFCD88
-
-sudo add-apt-repository \
+    software-properties-common</code></pre>
+<pre><code>curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</code></pre>
+<pre><code>sudo apt-key fingerprint 0EBFCD88</code></pre>
+<pre><code>sudo add-apt-repository \
    &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
-   stable&quot;
-
-sudo apt-get install docker-ce docker-ce-cli containerd.io</code></pre>
+   stable&quot;</code></pre>
+<pre><code>sudo apt-get install docker-ce docker-ce-cli containerd.io</code></pre>
 </div>
 <div id="docker-compose" class="section level2">
 <h2>5. docker-composeをインストール</h2>
 <p>続けて，<a href="https://docs.docker.com/compose/install/">こちら</a>を参考にして，Docker-composeもインストールします。</p>
-<pre><code>sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose
-
-sudo chmod +x /usr/local/bin/docker-compose
-
-sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</code></pre>
-<p>これで，Dockerを動かす準備ができました。私はホスト側でGoogle Cloud SDKとFirebase CLIを使いたかったので，docker-composeに続いて，それらをインストールしています。Rstudio Serverに絶対に必要ということはないのですが，必要な場面もあるかもしれないので，それらのインストール方法を下のTIPSに書いておきます。</p>
+<pre><code>sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</code></pre>
+<pre><code>sudo chmod +x /usr/local/bin/docker-compose</code></pre>
+<pre><code>sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</code></pre>
+<p>これで，Dockerを動かす準備ができました。</p>
+<div id="google-cloud-sdkfirebase-cli" class="section level3">
+<h3>＜必要に応じて＞Google Cloud SDKとFirebase CLIのインストール</h3>
+<p>私はホスト側でGoogle Cloud SDKとFirebase CLIを使いたかったので，docker-composeに続いて，それらをインストールしています。Rstudio Serverに絶対に必要ということはないですが，Rsutido serverを使っていてホスト側からGoogle Cloud Strageを使ったバックアップやアップロードをしたい場合に，Google Cloud SDKが必要です。また，ウェブ実験などで，jsPsychなどで作成したファイルを直接デプロイしたい場合はFirebase CLIが必要です。</p>
+<div id="google-cloud-sdk" class="section level4">
+<h4>Google Cloud SDKをインストール</h4>
+<p>詳しくは<a href="https://cloud.google.com/storage/docs/gsutil_install?hl=ja#linux">こちら</a>を参照ください。</p>
+<ul>
+<li>コマンド プロンプトで次のコマンドを入力します。ディレクトリ名は，gc_sdkにします。あとは言われるままに，対応をしてください。</li>
+</ul>
+<pre><code>curl https://sdk.cloud.google.com | bash</code></pre>
+<ul>
+<li>shell を再起動します。</li>
+</ul>
+<pre><code>exec -l $SHELL</code></pre>
+<ul>
+<li>gcloud init を実行して gcloud 環境を初期化します。プロジェクトIDが聞かれるので，Google Cloud Platformで確認ください。</li>
+</ul>
+<pre><code>gcloud init</code></pre>
+<ul>
+<li>cloud strageを使うためのgsutilを準備します。この認証では，Strageの設定における相互運用性タブのサービスアカウントHMACを使います。作るとアクセスキーとシークレットキーが出てくるので，以下をタイプ後にコピペします。</li>
+</ul>
+<pre><code>gsutil config -a</code></pre>
+<ul>
+<li>以下も打ち込みます。</li>
+</ul>
+<pre><code>gcloud config set pass_credentials_to_gsutil false</code></pre>
+<ul>
+<li>Rstudio server保存用のバケット作ってみます。これでCloud Strageが使えるようになりました。</li>
+</ul>
+<pre><code>gsutil mb -l asia-northeast1 gs://保存用バケット名/</code></pre>
+</div>
+<div id="firebase-cli" class="section level4">
+<h4>Firebase CLIをインストール</h4>
+<p>詳しくは，<a href="https://firebase.google.com/docs/cli?hl=ja">こちら</a>を参照。ただ，Node.jsとnpmのインストールは，以下の方が楽（ちょっとバージョンが古くなるみたいだけど）。</p>
+<pre><code>sudo apt-get install nodejs</code></pre>
+<pre><code>sudo apt-get install npm</code></pre>
+<p>Firebase CLI をインストールします。</p>
+<pre><code>sudo npm install -g firebase-tools</code></pre>
+<p>ログインする。これだとコマンドライン上でログインができる。URLがでてくるので，ローカルのPCでもログインの手続きができる。</p>
+<pre><code>firebase login --no-localhost</code></pre>
+<p>うまくインストールできたか確認する。</p>
+<pre><code>sudo firebase list</code></pre>
+</div>
+</div>
 </div>
 <div id="docker-composeyml" class="section level2">
 <h2>6. docker-compose用YMLの準備</h2>
@@ -524,7 +560,8 @@ services:
 <p>なお，RStudio Serverを使ってない時はお金の節約もかねてVMインスタンスを停止すると思いますが，その場合，次に起動した時に，Dockerが停止したままになっていることがあります。そこで，VMインスタンスをクリックして，VMインスタンスの詳細から編集をクリックして，カスタムメタデータを以下のように設定します。これをしておくとインスタンスの起動とともにdockerコンテナを起動してくれます（起動のためにいちいちSSH接続しなくて済みます）。</p>
 <p><img src="fig/https_fig3.png" /></p>
 <pre><code>startup-script</code></pre>
-<pre><code>sudo docker start rstudio; sudo docker start ykunisato_https-portal_1</code></pre>
+<p>コンテナ名は，rstudioとアカウント名_https-portal_1になると思うが，SSH接続して，sudo docker-compose psで確認してから設定する。</p>
+<pre><code>sudo docker start rstudio; sudo docker start アカウント名_https-portal_1</code></pre>
 </div>
 <div id="tips" class="section level2">
 <h2>Tips</h2>
@@ -615,6 +652,24 @@ services:
 </tbody>
 </table>
 </div>
+<div id="googlecloudstoragergooglecomputeenginer" class="section level3">
+<h3>googleCloudStorageRとgoogleComputeEngineRで解析後に自動保存とインスタンスの自動停止をする</h3>
+<p>googleCloudStorageRもgoogleComputeEngineRも非常に優れたパッケージですが，比較的時間のかかる重い処理が終わったらワークスペースのものを自動保存し，インスタンスも停止するコマンドにだけ紹介します。これは地味に重要な機能です。というのは，GCEのVMインスタンスは稼働しているとずっと課金されますので，解析が終わったら結果を保存し，自動的にインスタンスも停止してくれるとすごく助かります。</p>
+<p>まず，<a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">googleCloudStorageRのセットアップ</a>と<a href="https://cloudyr.github.io/googleComputeEngineR/articles/installation-and-authentication.html">googleComputeEngineRのセットアップ</a>は，公式ドキュメントに従って，事前に済ませておきます。簡単に説明すると，GCPの「APIとサービス」→「認証情報」→「認証情報の作成」で認証に関するjsonファイルを得ます。それをインスタンスの安全な場所に置いた上で，Homeに“.Renviron”という名前のファイルを作って，以下の情報を書き込みます。</p>
+<pre><code>GCE_AUTH_FILE=&quot;/フルパス/認証.json&quot;
+GCE_DEFAULT_PROJECT_ID=&quot;プロジェクトID&quot;
+GCE_DEFAULT_ZONE=&quot;asia-northeast1-c&quot;
+GCS_DEFAULT_BUCKET = &quot;バケット名&quot;
+GCS_AUTH_FILE = &quot;/フルパス/認証.json&quot;</code></pre>
+<p>そして，以下を実行して，認証に成功した旨がでてきたら，成功です。</p>
+<pre><code>library(googleCloudStorageR)
+library(googleComputeEngineR)</code></pre>
+<p>解析コードの最後に以下を書き込んでおいて，実行すると，終了時点の日付時間などが名前になったRdataファイルをGoogle Cloud Storageに保存し，使っているVMインスタンスを停止します。これがちゃんと動作すれば，長い時間のかかる解析であっても夜安心してゆっくり寝れますね。</p>
+<pre><code># 終了時点の日付時間などが名前になったRdataファイルをGoogle Cloud Storageに保存
+gcs_save(list=ls(all=TRUE), file=paste(format(as.POSIXlt(Sys.time(), tz = &quot;Europe/Amsterdam&quot;),&quot;%Y_%m%d_%H%M_%s&quot;),&quot;_all.Rdata&quot;,sep=&quot;&quot;), bucket = gcs_get_global_bucket())
+# 使っているVMインスタンスを停止
+gce_vm_stop(&quot;インスタンス名&quot;)</code></pre>
+</div>
 <div id="zip" class="section level3">
 <h3>ウェブから直接zipファイルを得る方法</h3>
 <p>RStudio serverを使っていて，Githubから直接ファイルがzipなどのファイルがほしい時があります。githubならgitを使ってもいいですが，以下のようにしてもzipファイルの取得＆解凍ができます。</p>
@@ -623,51 +678,6 @@ curl &lt;- &quot;https://github.com/jspsych/jsPsych/releases/download/v6.1.0/jsp
 download.file(curl, temp, mode=&quot;wb&quot;) 
 unzip (temp, exdir = &quot;./jspsych-6.1.0&quot;)
 unlink(temp)</code></pre>
-</div>
-<div id="google-cloud-sdkfirebase-cli" class="section level3">
-<h3>Google Cloud SDKとFirebase CLIのインストール</h3>
-<p>もしRsutido serverを使っていてホスト側からGoogle Cloud Strageを使ったバックアップやアップロードをしたい場合に，Google Cloud SDKが必要です。また，ウェブ実験などで，jsPsychなどで作成したファイルを直接デプロイしたい場合はFirebase CLIが必要です。</p>
-<div id="google-cloud-sdk" class="section level4">
-<h4>Google Cloud SDKをインストール</h4>
-<p>詳しくは<a href="https://cloud.google.com/storage/docs/gsutil_install?hl=ja#linux">こちら</a>を参照ください。</p>
-<ul>
-<li>コマンド プロンプトで次のコマンドを入力します。ディレクトリ名は，gc_sdkにします。あとは言われるままに，対応をしてください。</li>
-</ul>
-<pre><code>curl https://sdk.cloud.google.com | bash</code></pre>
-<ul>
-<li>shell を再起動します。</li>
-</ul>
-<pre><code>exec -l $SHELL</code></pre>
-<ul>
-<li>gcloud init を実行して gcloud 環境を初期化します。プロジェクトIDが聞かれるので，Google Cloud Platformで確認ください。</li>
-</ul>
-<pre><code>gcloud init</code></pre>
-<ul>
-<li>cloud strageを使うためのgsutilを準備します。この認証では，Strageの設定における相互運用性タブのサービスアカウントHMACを使います。作るとアクセスキーとシークレットキーが出てくるので，以下をタイプ後にコピペします。</li>
-</ul>
-<pre><code>gsutil config -a</code></pre>
-<ul>
-<li>以下も打ち込みます。</li>
-</ul>
-<pre><code>gcloud config set pass_credentials_to_gsutil false</code></pre>
-<ul>
-<li>Rstudio server保存用のバケット作ってみます。これでCloud Strageが使えるようになりました。</li>
-</ul>
-<pre><code>gsutil mb -l asia-northeast1 gs://保存用バケット名/</code></pre>
-</div>
-<div id="firebase-cli" class="section level4">
-<h4>Firebase CLIをインストール</h4>
-<p>詳しくは，<a href="https://firebase.google.com/docs/cli?hl=ja">こちら</a>を参照。ただ，Node.jsとnpmのインストールは，以下の方が楽（ちょっとバージョンが古くなるみたいだけど）。</p>
-<pre><code>sudo apt-get install nodejs
-
-sudo apt-get install npm</code></pre>
-<p>Firebase CLI をインストールします。</p>
-<pre><code>sudo npm install -g firebase-tools</code></pre>
-<p>ログインする。これだとコマンドライン上でログインができる。URLがでてくるので，ローカルのPCでもログインの手続きができる。</p>
-<pre><code>firebase login --no-localhost</code></pre>
-<p>うまくインストールできたか確認する。</p>
-<pre><code>sudo firebase list</code></pre>
-</div>
 </div>
 <div id="google-cloud-strage" class="section level3">
 <h3>ファイルのアップや保存について(Google Cloud Strageの活用)</h3>

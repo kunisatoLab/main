@@ -38,23 +38,33 @@ Compute EngineのページのVMインスタンスをみると先程設定したV
 
 ```
 sudo apt-get update
+```
 
+```
 sudo apt-get install \
     apt-transport-https \
     ca-certificates \
     curl \
     gnupg-agent \
     software-properties-common
+```
 
+```
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+```
 
+```
 sudo apt-key fingerprint 0EBFCD88
+```
 
+```
 sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
+```
 
+```
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 ```
 
@@ -64,13 +74,89 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 ```
 sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
 
+```
 sudo chmod +x /usr/local/bin/docker-compose
+```
 
+```
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 ```
 
-これで，Dockerを動かす準備ができました。私はホスト側でGoogle Cloud SDKとFirebase CLIを使いたかったので，docker-composeに続いて，それらをインストールしています。Rstudio Serverに絶対に必要ということはないのですが，必要な場面もあるかもしれないので，それらのインストール方法を下のTIPSに書いておきます。
+これで，Dockerを動かす準備ができました。
+
+### ＜必要に応じて＞Google Cloud SDKとFirebase CLIのインストール
+
+私はホスト側でGoogle Cloud SDKとFirebase CLIを使いたかったので，docker-composeに続いて，それらをインストールしています。Rstudio Serverに絶対に必要ということはないですが，Rsutido serverを使っていてホスト側からGoogle Cloud Strageを使ったバックアップやアップロードをしたい場合に，Google Cloud SDKが必要です。また，ウェブ実験などで，jsPsychなどで作成したファイルを直接デプロイしたい場合はFirebase CLIが必要です。
+
+#### Google Cloud SDKをインストール
+
+詳しくは[こちら](https://cloud.google.com/storage/docs/gsutil_install?hl=ja#linux)を参照ください。
+
+- コマンド プロンプトで次のコマンドを入力します。ディレクトリ名は，gc_sdkにします。あとは言われるままに，対応をしてください。
+
+```
+curl https://sdk.cloud.google.com | bash
+```
+
+- shell を再起動します。
+
+```
+exec -l $SHELL
+```
+
+- gcloud init を実行して gcloud 環境を初期化します。プロジェクトIDが聞かれるので，Google Cloud Platformで確認ください。
+
+```
+gcloud init
+```
+
+- cloud strageを使うためのgsutilを準備します。この認証では，Strageの設定における相互運用性タブのサービスアカウントHMACを使います。作るとアクセスキーとシークレットキーが出てくるので，以下をタイプ後にコピペします。
+
+```
+gsutil config -a
+```
+
+- 以下も打ち込みます。
+
+```
+gcloud config set pass_credentials_to_gsutil false
+```
+
+- Rstudio server保存用のバケット作ってみます。これでCloud Strageが使えるようになりました。
+
+```
+gsutil mb -l asia-northeast1 gs://保存用バケット名/
+```
+
+#### Firebase CLIをインストール
+
+詳しくは，[こちら](https://firebase.google.com/docs/cli?hl=ja)を参照。ただ，Node.jsとnpmのインストールは，以下の方が楽（ちょっとバージョンが古くなるみたいだけど）。
+
+```
+sudo apt-get install nodejs
+```
+
+```
+sudo apt-get install npm
+```
+
+Firebase CLI をインストールします。
+```
+sudo npm install -g firebase-tools
+```
+
+ログインする。これだとコマンドライン上でログインができる。URLがでてくるので，ローカルのPCでもログインの手続きができる。
+
+```
+firebase login --no-localhost
+```
+
+うまくインストールできたか確認する。
+```
+sudo firebase list
+```
 
 ## 6. docker-compose用YMLの準備
 
@@ -160,8 +246,10 @@ userdel -r ユーザ名
 startup-script
 ```
 
+コンテナ名は，rstudioとアカウント名_https-portal_1になると思うが，SSH接続して，sudo docker-compose psで確認してから設定する。
+
 ```
-sudo docker start rstudio; sudo docker start ykunisato_https-portal_1
+sudo docker start rstudio; sudo docker start アカウント名_https-portal_1
 ```
 
 
@@ -286,6 +374,36 @@ R Markdownを用いたjsPsychによるウェブ実験課題の作成もこの通
 |![](fig/https_fig5.png)|
 |:-:|
 
+### googleCloudStorageRとgoogleComputeEngineRで解析後に自動保存とインスタンスの自動停止をする
+
+googleCloudStorageRもgoogleComputeEngineRも非常に優れたパッケージですが，比較的時間のかかる重い処理が終わったらワークスペースのものを自動保存し，インスタンスも停止するコマンドにだけ紹介します。これは地味に重要な機能です。というのは，GCEのVMインスタンスは稼働しているとずっと課金されますので，解析が終わったら結果を保存し，自動的にインスタンスも停止してくれるとすごく助かります。
+
+
+まず，[googleCloudStorageRのセットアップ](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html)と[googleComputeEngineRのセットアップ](https://cloudyr.github.io/googleComputeEngineR/articles/installation-and-authentication.html)は，公式ドキュメントに従って，事前に済ませておきます。簡単に説明すると，GCPの「APIとサービス」→「認証情報」→「認証情報の作成」で認証に関するjsonファイルを得ます。それをインスタンスの安全な場所に置いた上で，Homeに".Renviron"という名前のファイルを作って，以下の情報を書き込みます。
+
+```
+GCE_AUTH_FILE="/フルパス/認証.json"
+GCE_DEFAULT_PROJECT_ID="プロジェクトID"
+GCE_DEFAULT_ZONE="asia-northeast1-c"
+GCS_DEFAULT_BUCKET = "バケット名"
+GCS_AUTH_FILE = "/フルパス/認証.json"
+```
+
+そして，以下を実行して，認証に成功した旨がでてきたら，成功です。
+
+```
+library(googleCloudStorageR)
+library(googleComputeEngineR)
+```
+
+解析コードの最後に以下を書き込んでおいて，実行すると，終了時点の日付時間などが名前になったRdataファイルをGoogle Cloud Storageに保存し，使っているVMインスタンスを停止します。これがちゃんと動作すれば，長い時間のかかる解析であっても夜安心してゆっくり寝れますね。
+
+```
+# 終了時点の日付時間などが名前になったRdataファイルをGoogle Cloud Storageに保存
+gcs_save(list=ls(all=TRUE), file=paste(format(as.POSIXlt(Sys.time(), tz = "Europe/Amsterdam"),"%Y_%m%d_%H%M_%s"),"_all.Rdata",sep=""), bucket = gcs_get_global_bucket())
+# 使っているVMインスタンスを停止
+gce_vm_stop("インスタンス名")
+```
 
 ### ウェブから直接zipファイルを得る方法
 
@@ -297,77 +415,6 @@ curl <- "https://github.com/jspsych/jsPsych/releases/download/v6.1.0/jspsych-6.1
 download.file(curl, temp, mode="wb") 
 unzip (temp, exdir = "./jspsych-6.1.0")
 unlink(temp)
-```
-
-### Google Cloud SDKとFirebase CLIのインストール
-
-もしRsutido serverを使っていてホスト側からGoogle Cloud Strageを使ったバックアップやアップロードをしたい場合に，Google Cloud SDKが必要です。また，ウェブ実験などで，jsPsychなどで作成したファイルを直接デプロイしたい場合はFirebase CLIが必要です。
-
-
-#### Google Cloud SDKをインストール
-
-詳しくは[こちら](https://cloud.google.com/storage/docs/gsutil_install?hl=ja#linux)を参照ください。
-
-- コマンド プロンプトで次のコマンドを入力します。ディレクトリ名は，gc_sdkにします。あとは言われるままに，対応をしてください。
-
-```
-curl https://sdk.cloud.google.com | bash
-```
-
-- shell を再起動します。
-
-```
-exec -l $SHELL
-```
-
-- gcloud init を実行して gcloud 環境を初期化します。プロジェクトIDが聞かれるので，Google Cloud Platformで確認ください。
-
-```
-gcloud init
-```
-
-- cloud strageを使うためのgsutilを準備します。この認証では，Strageの設定における相互運用性タブのサービスアカウントHMACを使います。作るとアクセスキーとシークレットキーが出てくるので，以下をタイプ後にコピペします。
-
-```
-gsutil config -a
-```
-
-- 以下も打ち込みます。
-
-```
-gcloud config set pass_credentials_to_gsutil false
-```
-
-- Rstudio server保存用のバケット作ってみます。これでCloud Strageが使えるようになりました。
-
-```
-gsutil mb -l asia-northeast1 gs://保存用バケット名/
-```
-
-#### Firebase CLIをインストール
-
-詳しくは，[こちら](https://firebase.google.com/docs/cli?hl=ja)を参照。ただ，Node.jsとnpmのインストールは，以下の方が楽（ちょっとバージョンが古くなるみたいだけど）。
-
-```
-sudo apt-get install nodejs
-
-sudo apt-get install npm
-```
-
-Firebase CLI をインストールします。
-```
-sudo npm install -g firebase-tools
-```
-
-ログインする。これだとコマンドライン上でログインができる。URLがでてくるので，ローカルのPCでもログインの手続きができる。
-
-```
-firebase login --no-localhost
-```
-
-うまくインストールできたか確認する。
-```
-sudo firebase list
 ```
 
 ### ファイルのアップや保存について(Google Cloud Strageの活用)
@@ -434,7 +481,6 @@ sudo gsutil cp -r rstudio/ gs://バックアップ用のバケット名/`date "+
 ```
 
 これの操作をカスタムメタデータにshutdown-scriptとして追加するのも検討しましたが，ちょっとむずかしい様子でした。手動でお願いします（何か良い方法があればご指摘ください）・・・
-
 
 #### Dockerをまるごとimageにして保存して，送る
 
