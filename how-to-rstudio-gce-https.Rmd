@@ -396,11 +396,11 @@ library(googleCloudStorageR)
 library(googleComputeEngineR)
 ```
 
-解析コードの最後に以下を書き込んでおいて，実行すると，終了時点の日付時間などが名前になったRdataファイルをGoogle Cloud Storageに保存し，使っているVMインスタンスを停止します。これがちゃんと動作すれば，長い時間のかかる解析であっても夜安心してゆっくり寝れますね。
+解析コードの最後に以下を書き込んでおいて，実行すると，終了時点の日付時間などが名前になったRdataファイルをGoogle Cloud Storageに保存し，使っているVMインスタンスを停止します(ファイル名のtzは，Europe/AmsterdamやAsia/Tokyoなど，自分の住んでる地域に設定する)。これがちゃんと動作すれば，長い時間のかかる解析であっても夜安心してゆっくり寝れますね。
 
 ```
 # 終了時点の日付時間などが名前になったRdataファイルをGoogle Cloud Storageに保存
-gcs_save(list=ls(all=TRUE), file=paste(format(as.POSIXlt(Sys.time(), tz = "Europe/Amsterdam"),"%Y_%m%d_%H%M_%s"),"_all.Rdata",sep=""), bucket = gcs_get_global_bucket())
+gcs_save(list=ls(all=TRUE), file=paste(format(as.POSIXlt(Sys.time(), tz = "Asia/Tokyo"),"%Y_%m%d_%H%M_%s"),"_all.Rdata",sep=""), bucket = gcs_get_global_bucket())
 # 使っているVMインスタンスを停止
 gce_vm_stop("インスタンス名")
 ```

@@ -664,9 +664,9 @@ GCS_AUTH_FILE = &quot;/フルパス/認証.json&quot;</code></pre>
 <p>そして，以下を実行して，認証に成功した旨がでてきたら，成功です。</p>
 <pre><code>library(googleCloudStorageR)
 library(googleComputeEngineR)</code></pre>
-<p>解析コードの最後に以下を書き込んでおいて，実行すると，終了時点の日付時間などが名前になったRdataファイルをGoogle Cloud Storageに保存し，使っているVMインスタンスを停止します。これがちゃんと動作すれば，長い時間のかかる解析であっても夜安心してゆっくり寝れますね。</p>
+<p>解析コードの最後に以下を書き込んでおいて，実行すると，終了時点の日付時間などが名前になったRdataファイルをGoogle Cloud Storageに保存し，使っているVMインスタンスを停止します(ファイル名のtzは，Europe/AmsterdamやAsia/Tokyoなど，自分の住んでる地域に設定する)。これがちゃんと動作すれば，長い時間のかかる解析であっても夜安心してゆっくり寝れますね。</p>
 <pre><code># 終了時点の日付時間などが名前になったRdataファイルをGoogle Cloud Storageに保存
-gcs_save(list=ls(all=TRUE), file=paste(format(as.POSIXlt(Sys.time(), tz = &quot;Europe/Amsterdam&quot;),&quot;%Y_%m%d_%H%M_%s&quot;),&quot;_all.Rdata&quot;,sep=&quot;&quot;), bucket = gcs_get_global_bucket())
+gcs_save(list=ls(all=TRUE), file=paste(format(as.POSIXlt(Sys.time(), tz = &quot;Asia/Tokyo&quot;),&quot;%Y_%m%d_%H%M_%s&quot;),&quot;_all.Rdata&quot;,sep=&quot;&quot;), bucket = gcs_get_global_bucket())
 # 使っているVMインスタンスを停止
 gce_vm_stop(&quot;インスタンス名&quot;)</code></pre>
 </div>
