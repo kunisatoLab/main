@@ -44,6 +44,8 @@ title: "Code & Tips"
 
 - [再生可能なデータ解析入門](how-to-reproducible-analysis.html)　
 
+- [Docker-composeを使ってGCE上のRstudio serverをHTTPS化する方法](how-to-rstudio-gce-https.html)
+
 - [ベイズ統計とRstanの最初の一歩](how-to-start-rstan.html)
 
 <br />

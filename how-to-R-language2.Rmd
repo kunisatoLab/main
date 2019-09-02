@@ -6,23 +6,8 @@ title: "R言語の基本2と解析梱包"
 
 ```{r eval=FALSE, include=FALSE}
 
-
-
-## RStudio
-のコンソールの説明
-
-### Working Directory
-
-### Package
-
-## Rmd入門
-Rmdの使用以外を認めない
-
-
-R言語の使用法の演習をしつつスタイルガイドを身につける
-
-Rのスタイルガイド
-https://style.tidyverse.org/
+# Tidyverseの導入
+https://kazutan.github.io/fukuokaR15/index.html
 
 
 ## 解析梱包
