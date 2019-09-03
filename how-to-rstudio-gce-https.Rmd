@@ -164,7 +164,7 @@ DockerやDocker-composeについては解説をしませんので，[さくら�
 
 今回は，docker-composeを使います。これは，複数のDockerを使う場合に，それらの構成をyamlで定義して，それを元にしてDockerを用意するサービスです。今回は，[国里が作成したRStudio Sever用Docker(Rockerをベースに必要なソフトを色々といれたもの。Stanも使えます)](https://hub.docker.com/r/ykunisato/ccp-lab-r)と[https-portal](https://github.com/SteveLTN/https-portal)を使いますが，この２つのDockerの設定と接続などについてymalで記載をします。
 
-まずは，テキストエディタに以下の内容を貼り付けて（インデントに意味があるので崩れないようにする），ドメイン名（上で設定したもの），ユーザー名（自由につける），ユーザーパスワード（自由につける）を変更します。それを"docker-compose.yml"という名前をつけて保存します(必ず，"docker-compose.yml"という名前にしてください)。
+まずは，テキストエディタに以下の内容を貼り付けて（インデントに意味があるので崩れないようにする），ドメイン名（上で設定したもの），ユーザー名（自由につける），ユーザーパスワード（自由につける）を変更します。それを"docker-compose.yml"という名前をつけて保存します(必ず，"docker-compose.yml"という名前にしてください)。[^2]
 
 ざっくり内容を説明すると， 以下のyamlでは，https-portalとrstudioの２つのサービスをそれぞれ設定しています。https-portalは，設定するとnginxというWEBサーバーを用意して，Let's EncryptというSSL証明の認証局から証明書を自動でとってきて設定してくれます（これは１つずつ設定することを考えると驚くくらい楽です）。rstudioは，国里が用意したykunisato/ccp-lab-rから作られるRStudio Serverです。Rockerベースであれば，ykunisato/ccp-lab-rの代わりに他のDockerを使うことも可能です。https-portalとrstudioの関係としては，外のインターネットの世界とはnginxが接していて，nginxには外からHTTPSで接続がきます，そしてそこを経由して，Rstudio serverの8787番ポートに接続する感じです（8787番ポートが暗号化されずに外にでているのではなくnginxを介する＆暗号化することで安全性を高めているという理解を私はしています）。その他の細かい設定は，Dockerについて学習をすると段々とわかってくるかと思います。
 
@@ -174,6 +174,7 @@ version: '3'
 services:
   https-portal:
     image: steveltn/https-portal:1
+    container_name: https-portal
     ports:
       - 80:80
       - 443:443
@@ -187,6 +188,7 @@ services:
   rstudio:
     image: ykunisato/ccp-lab-r
     container_name: rstudio
+    restart: always
     environment:
       - VIRTUAL_HOST=ドメイン名
       - USER=ユーザー名
@@ -234,24 +236,6 @@ exit
 ```
 userdel -r ユーザ名
 ```
-
-
-## 9. 起動時にdocker-composeが起動するように設定
-
-なお，RStudio Serverを使ってない時はお金の節約もかねてVMインスタンスを停止すると思いますが，その場合，次に起動した時に，Dockerが停止したままになっていることがあります。そこで，VMインスタンスをクリックして，VMインスタンスの詳細から編集をクリックして，カスタムメタデータを以下のように設定します。これをしておくとインスタンスの起動とともにdockerコンテナを起動してくれます（起動のためにいちいちSSH接続しなくて済みます）。
-
-![](fig/https_fig3.png)
-
-```
-startup-script
-```
-
-コンテナ名は，rstudioとアカウント名_https-portal_1になると思うが，SSH接続して，sudo docker-compose psで確認してから設定する。
-
-```
-sudo docker start rstudio; sudo docker start アカウント名_https-portal_1
-```
-
 
 ## Tips
 
@@ -507,3 +491,5 @@ run -e PASSWORD=パスワード -p 8787:8787 -v ~:/home/rstudio -d --name コン
 
 
 [^1]: Dockerの活用を考えると，Container-Optimized OSが良いのですが，ホスト側でGoogle Cloud SDKを使いたかったので，Container-Optimized OSを使いました。Ubuntuを使う必然性はないのですが，なんとなく前に使ったことがあるLinuxだったので選びました。
+
+[^2]: 林真広様(@masaha03)より，ymlにrestart: alwaysを追加することで，メタデータにstartup-scriptを記載する必要がなくなることを教えていただきました。誠にありがとうございました。
