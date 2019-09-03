@@ -458,10 +458,18 @@ sudo gsutil cp -r rstudio/ gs://バケット名/フォルダ名/
 
 #### Google Cloud Strageへのバックアップ
 
-ユーザーのHome以下のデータをバックアップする場合は以下のようにしても良いかと思います。Cloud Strage上のフォルダ名をバックアプした年月日_時間とすることで，いつのバックアップかわかりやすくしておきます。
+ユーザーのHome以下のデータをバックアップする場合は以下のようにしても良いかと思います。homeのrstudioフォルダを圧縮した上で，フォルダ名をバックアプした年月日_時間にしたCloud Strage上バケットに保存して，最後に圧縮したフォルダを削除しています。
 
 ```
-sudo gsutil cp -r rstudio/ gs://バックアップ用のバケット名/`date "+%Y_%m%d_%H%M_%S"`/
+sudo tar czf rstudio.tar.gz rstudio
+sudo gsutil cp ./rstudio.tar.gz gs://バケット名/`TZ=Asia/Tokyo date "+%Y_%m%d_%H%M_%S"`/
+sudo rm rstudio.tar.gz
+```
+
+以下の一行でも実行できます。
+
+```
+sudo tar czf rstudio.tar.gz rstudio;sudo gsutil cp ./rstudio.tar.gz gs://バケット名/`TZ=Asia/Tokyo date "+%Y_%m%d_%H%M_%S"`/;sudo rm rstudio.tar.gz
 ```
 
 これの操作をカスタムメタデータにshutdown-scriptとして追加するのも検討しましたが，ちょっとむずかしい様子でした。手動でお願いします（何か良い方法があればご指摘ください）・・・
@@ -492,4 +500,4 @@ run -e PASSWORD=パスワード -p 8787:8787 -v ~:/home/rstudio -d --name コン
 
 [^1]: Dockerの活用を考えると，Container-Optimized OSが良いのですが，ホスト側でGoogle Cloud SDKを使いたかったので，Container-Optimized OSを使いました。Ubuntuを使う必然性はないのですが，なんとなく前に使ったことがあるLinuxだったので選びました。
 
-[^2]: 林真広様(@masaha03)より，ymlにrestart: alwaysを追加することで，メタデータにstartup-scriptを記載する必要がなくなることを教えていただきました。誠にありがとうございました。
+[^2]: [林真広様](https://twitter.com/masaha03)より，(1)ymlにrestart: alwaysを追加することで，メタデータにstartup-scriptを記載する必要がなくなること，(2)GCSに送る際にtarで圧縮することを教えていただきました。誠にありがとうございました。
