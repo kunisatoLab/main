@@ -388,6 +388,28 @@ gcs_save(list=ls(all=TRUE), file=paste(format(as.POSIXlt(Sys.time(), tz = "Asia/
 # 使っているVMインスタンスを停止
 gce_vm_stop("インスタンス名")
 ```
+### Rstudio serverからslackへ投稿する
+
+[盆栽日記](https://dichika.hateblo.jp/entry/20150701/p1)に紹介されていたhttrパッケージを使う方法で解析終了時にslackに自動的に投稿することができます。まず，slackでボットを作ってそのトークンを取得する（このやり方がいつも試行錯誤です。各自でお願いします・・・）。そして，トークン，slackのチャンネル名，ボット名を以下のように指定するとslackに通知が飛ぶようになります。なお，以下のコードでは，proc.time()を使って，経過時間の測定もしています。googleCloudStorageR・googleComputeEngineRと組み合わせると，slackを使った解析終了の連絡，データのバックアップ，インスタンスの停止が自動化できます。
+
+
+```
+t<-proc.time()
+
+ここに解析のコードを書く
+
+fin_time <- proc.time()-t
+
+httr::POST(url="https://slack.com/api/chat.postMessage",
+           body = list(token = "トークン",
+                       channel = "#チャンネル名", 
+                       username = "ボット名", 
+                       text = paste(format(as.POSIXlt(Sys.time(), tz = "Asia/Tokyo"),"%Y_%m%d_%H:%M"),
+                                    "研究１の解析終了！", 
+                                    fin_time[3], "秒かかりました。")
+           ))  
+
+```
 
 ### ウェブから直接zipファイルを得る方法
 

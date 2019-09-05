@@ -664,6 +664,25 @@ gcs_save(list=ls(all=TRUE), file=paste(format(as.POSIXlt(Sys.time(), tz = &quot;
 # 使っているVMインスタンスを停止
 gce_vm_stop(&quot;インスタンス名&quot;)</code></pre>
 </div>
+<div id="rstudio-serverslack" class="section level3">
+<h3>Rstudio serverからslackへ投稿する</h3>
+<p><a href="https://dichika.hateblo.jp/entry/20150701/p1">盆栽日記</a>に紹介されていたhttrパッケージを使う方法で解析終了時にslackに自動的に投稿することができます。まず，slackでボットを作ってそのトークンを取得する（このやり方がいつも試行錯誤です。各自でお願いします・・・）。そして，トークン，slackのチャンネル名，ボット名を以下のように指定するとslackに通知が飛ぶようになります。なお，以下のコードでは，proc.time()を使って，経過時間の測定もしています。googleCloudStorageR・googleComputeEngineRと組み合わせると，slackを使った解析終了の連絡，データのバックアップ，インスタンスの停止が自動化できます。</p>
+<pre><code>t&lt;-proc.time()
+
+ここに解析のコードを書く
+
+fin_time &lt;- proc.time()-t
+
+httr::POST(url=&quot;https://slack.com/api/chat.postMessage&quot;,
+           body = list(token = &quot;トークン&quot;,
+                       channel = &quot;#チャンネル名&quot;, 
+                       username = &quot;ボット名&quot;, 
+                       text = paste(format(as.POSIXlt(Sys.time(), tz = &quot;Asia/Tokyo&quot;),&quot;%Y_%m%d_%H:%M&quot;),
+                                    &quot;研究１の解析終了！&quot;, 
+                                    fin_time[3], &quot;秒かかりました。&quot;)
+           ))  
+</code></pre>
+</div>
 <div id="zip" class="section level3">
 <h3>ウェブから直接zipファイルを得る方法</h3>
 <p>RStudio serverを使っていて，Githubから直接ファイルがzipなどのファイルがほしい時があります。githubならgitを使ってもいいですが，以下のようにしてもzipファイルの取得＆解凍ができます。</p>
