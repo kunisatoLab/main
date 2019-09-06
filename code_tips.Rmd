@@ -6,7 +6,7 @@ title: "Code & Tips"
 
 ## 認知課題
 
-- [jsPsychを用いた認知課題の作成1: jsPsychとJavaScript入門(準備中)](how-to-jspsych1.html)　☆1
+- [jsPsychを用いた認知課題の作成1: jsPsychとJavaScript入門](how-to-jspsych1.html)　☆1
 
 - [jsPsychを用いた認知課題の作成2: ストループ課題(準備中)](how-to-jspsych2.html)　☆2
 
