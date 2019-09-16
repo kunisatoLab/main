@@ -88,7 +88,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -523,7 +522,7 @@ db_df2</code></pre>
 <ul>
 <li>gatherでいい感じになってきましたが，各参加者のdataは，値ではなくてdata.frameがネストしちゃっているので，unnestします。これで，とりあえず解析データセットが完成しました。</li>
 </ul>
-<pre class="r"><code>db_df3 &lt;-unnest(db_df2)
+<pre class="r"><code>db_df3 &lt;-unnest(db_df2,cols = data)
 db_df3</code></pre>
 <pre><code>## # A tibble: 57 x 11
 ##    ID    internal_node_id key_press     rt stimulus time_elapsed
@@ -609,7 +608,7 @@ db_df6</code></pre>
 <pre class="r"><code>db_df &lt;- db_list %&gt;% 
   as_tibble(validate = F) %&gt;%  #データフレーム化
   gather(ID, data) %&gt;% 　　　　#ロング化
-  unnest() %&gt;% 　　　　　　　　#ネストやめる
+  unnest(cols = data) %&gt;% 　　　　　　　　#ネストやめる
   mutate(correct2 = as.numeric(correct)) %&gt;%  #正誤反応はlogical型からnumeric型に
   select(ID,trial_index,stim_type,response,correct2,rt) %&gt;%　#使う変数選択 
   filter(trial_index !=0) %&gt;%　#ウェルカムメッセージを除外 

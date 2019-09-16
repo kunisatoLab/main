@@ -82,7 +82,7 @@ db_df2
 - gatherでいい感じになってきましたが，各参加者のdataは，値ではなくてdata.frameがネストしちゃっているので，unnestします。これで，とりあえず解析データセットが完成しました。
 
 ```{r}
-db_df3 <-unnest(db_df2)
+db_df3 <-unnest(db_df2,cols = data)
 db_df3
 ```
 
@@ -121,7 +121,7 @@ db_df6
 db_df <- db_list %>% 
   as_tibble(validate = F) %>%  #データフレーム化
   gather(ID, data) %>% 　　　　#ロング化
-  unnest() %>% 　　　　　　　　#ネストやめる
+  unnest(cols = data) %>% 　　　　　　　　#ネストやめる
   mutate(correct2 = as.numeric(correct)) %>%  #正誤反応はlogical型からnumeric型に
   select(ID,trial_index,stim_type,response,correct2,rt) %>%　#使う変数選択 
   filter(trial_index !=0) %>%　#ウェルカムメッセージを除外 
