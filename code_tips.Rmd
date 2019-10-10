@@ -6,7 +6,7 @@ title: "Code & Tips"
 
 ## ラボノート
 
-- [電子ラボノートeLabFTWの導入方法](hhow-to-elabftw.html)
+- [電子ラボノートeLabFTWの導入方法](how-to-elabftw.html)
 
 ## 認知課題
 
