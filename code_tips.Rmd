@@ -4,6 +4,10 @@ title: "Code & Tips"
 
 ☆は，学部ゼミでの必修事項です。後ろの数字の順番に学んでいきます。
 
+## ラボノート
+
+- [電子ラボノートeLabFTWの導入方法](hhow-to-elabftw.html)
+
 ## 認知課題
 
 - [jsPsychを用いた認知課題の作成1: jsPsychとJavaScript入門](how-to-jspsych1.html)　☆1
