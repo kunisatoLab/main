@@ -4,7 +4,7 @@ title: "学術論文（日本語）"
 
 ### 印刷中
 
-- 杣取恵太・国里愛彦 (印刷中). アンヘドニア(anhedonia)と遅延割引：Lempert & Pizzagalli(2010)の追試　心理学評論　 [採択後プレプリント](https://psyarxiv.com/4zbc5/)， [事前審査のプレプリント](https://osf.io/vj7w3/)， [データと解析コード](https://github.com/ykunisato/somatori_kunisato_2019_replication_study)， [マテリアル](https://osf.io/vj7w3/)，　[特集号のページ](http://team1mile.com/sjpr62-3/)
+- 杣取恵太・国里愛彦 (印刷中). アンヘドニア(anhedonia)と遅延割引：Lempert & Pizzagalli(2010)の追試　心理学評論　 [採択後プレプリント](https://psyarxiv.com/4zbc5/)， [事前審査のプレプリントとマテリアル](https://osf.io/vj7w3/)， [データと解析コード](https://github.com/ykunisato/somatori_kunisato_2019_replication_study)，[特集号のページ](http://team1mile.com/sjpr62-3/)
 
 - 国里愛彦・片平健太郎・沖村 宰・山下祐一 (印刷中).うつに対する計算論的アプローチ：強化学習モデルの観点から　心理学評論
 
