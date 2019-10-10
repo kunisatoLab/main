@@ -407,16 +407,16 @@ div.tocify {
 </div>
 
 
-<div class="section level2">
+<div id="はじめに" class="section level2">
 <h2>はじめに</h2>
 <p>本ページでは，Google Compute Engine上でRocker(RStudio ServerのDocker)をベースにしたDockerでRStudio Serverを使う場合にHTTPS化する方法を解説しています。SSL暗号化通信については，RStudio Server Proが対応していますが，Open Source Editionは対応していません。そのため，Rocker(RStudio ServerのDocker)を使ってRStudio Serverを立ち上げると，http接続になり，セキュリティ上リスクがありますし，ブラウザでも警告が出て気持ちよくありません。しかし，RStudio Server Proは心理学者が個人で定期的に支出できる額ではないので，SSL暗号化通信に対応してないRockerでもそれを可能にするというのが，今回の主な目的です。</p>
 <p>なお，国里は，サーバーに関して専門的な教育を受けたことはないので，間違っている部分も多いかと思います。本ページを参考に作業された結果，何らかの問題が生じた場合に，国里は責任を負えません。予めご了承ください（Google Compute Engineを使用すると課金されますので，慎重に作業ください。例えば何度もVMインスタンスを作成し，それを稼働したまま放置していたら，結構な金額になると思います）。また，お詳しい方は，誤りを見つけられましたら，ご指摘いただけましたら幸いです。</p>
 </div>
-<div id="google-compute-engine" class="section level2">
+<div id="google-compute-engineを使えるようにする" class="section level2">
 <h2>1. Google Compute Engineを使えるようにする</h2>
 <p><a href="https://cloud.google.com/compute/?hl=ja">公式のドキュメント</a>などを参考にGoogle Compute Engineを使えるように設定します（これは解説資料も多いので省略します）。</p>
 </div>
-<div id="vm" class="section level2">
+<div id="仮想マシンvmの準備" class="section level2">
 <h2>2. 仮想マシン(VM)の準備</h2>
 <ol style="list-style-type: decimal">
 <li>名前やマシンの構成は好みで選択してください（マシンの構成によって金額が変わるので，お財布と相談ください）。ブートディスクの設定で変更を押して，Ubuntu 18.04 LTSを選んで，ディスクサイズは30GBくらいにしておきます<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></li>
@@ -427,13 +427,13 @@ div.tocify {
 </ol>
 <p>なお，VMインスタンスは起動している間課金されるので，使わないときは停止しておきます。また，よく使う仮想マシン構成が決まっている場合は，インスタンステンプレートを使うと便利と思います。</p>
 </div>
-<div class="section level2">
+<div id="ドメイン名の入手" class="section level2">
 <h2>3. ドメイン名の入手</h2>
 <p>色々とサービスがありますが，私は<a href="https://domains.google/">GoogleのDomainサービス</a>を使いました。少々お金はかかりますが（私の場合は年1400円でした），HTTPS化には必要な作業です。ドメイン名が入手できたら，以下のように静的外部IPを使ってDNSの登録をします。</p>
 <p><img src="fig/https_fig1.png" /></p>
 <p><img src="fig/https_fig2.png" /></p>
 </div>
-<div id="vmdocker" class="section level2">
+<div id="仮想マシンvmにdockerをインストール" class="section level2">
 <h2>4. 仮想マシン(VM)にDockerをインストール</h2>
 <p>Compute EngineのページのVMインスタンスをみると先程設定したVMインスタンスがあると思います。こちらが起動していると接続というところの「SSH」がクリック可能になっていると思います。SSHをクリックしてください。すると，別ウィンドウが起動して，ターミナルが出現します。そこで，<a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">こちら</a>を参考に以下を打ち込んでDockerをインストールします。途中何か聞かれると思いますが，質問に従って，Yなどの返事をタイプください。</p>
 <pre><code>sudo apt-get update</code></pre>
@@ -451,17 +451,17 @@ div.tocify {
    stable&quot;</code></pre>
 <pre><code>sudo apt-get install docker-ce docker-ce-cli containerd.io</code></pre>
 </div>
-<div id="docker-compose" class="section level2">
+<div id="docker-composeをインストール" class="section level2">
 <h2>5. docker-composeをインストール</h2>
 <p>続けて，<a href="https://docs.docker.com/compose/install/">こちら</a>を参考にして，Docker-composeもインストールします。</p>
 <pre><code>sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</code></pre>
 <pre><code>sudo chmod +x /usr/local/bin/docker-compose</code></pre>
 <pre><code>sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</code></pre>
 <p>これで，Dockerを動かす準備ができました。</p>
-<div id="google-cloud-sdkfirebase-cli" class="section level3">
+<div id="必要に応じてgoogle-cloud-sdkとfirebase-cliのインストール" class="section level3">
 <h3>＜必要に応じて＞Google Cloud SDKとFirebase CLIのインストール</h3>
 <p>私はホスト側でGoogle Cloud SDKとFirebase CLIを使いたかったので，docker-composeに続いて，それらをインストールしています。Rstudio Serverに絶対に必要ということはないですが，Rsutido serverを使っていてホスト側からGoogle Cloud Strageを使ったバックアップやアップロードをしたい場合に，Google Cloud SDKが必要です。また，ウェブ実験などで，jsPsychなどで作成したファイルを直接デプロイしたい場合はFirebase CLIが必要です。</p>
-<div id="google-cloud-sdk" class="section level4">
+<div id="google-cloud-sdkをインストール" class="section level4">
 <h4>Google Cloud SDKをインストール</h4>
 <p>詳しくは<a href="https://cloud.google.com/storage/docs/gsutil_install?hl=ja#linux">こちら</a>を参照ください。</p>
 <ul>
@@ -489,7 +489,7 @@ div.tocify {
 </ul>
 <pre><code>gsutil mb -l asia-northeast1 gs://保存用バケット名/</code></pre>
 </div>
-<div id="firebase-cli" class="section level4">
+<div id="firebase-cliをインストール" class="section level4">
 <h4>Firebase CLIをインストール</h4>
 <p>詳しくは，<a href="https://firebase.google.com/docs/cli?hl=ja">こちら</a>を参照。ただ，Node.jsとnpmのインストールは，以下の方が楽（ちょっとバージョンが古くなるみたいだけど）。</p>
 <pre><code>sudo apt-get install nodejs</code></pre>
@@ -503,7 +503,7 @@ div.tocify {
 </div>
 </div>
 </div>
-<div id="docker-composeyml" class="section level2">
+<div id="docker-compose用ymlの準備" class="section level2">
 <h2>6. docker-compose用YMLの準備</h2>
 <p>DockerやDocker-composeについては解説をしませんので，<a href="https://knowledge.sakura.ad.jp/13265/">さくらナレッジのDocker入門</a>や<a href="https://www.amazon.co.jp/dp/4297100339/ref=cm_sw_r_tw_dp_U_x_HunBDbSJ25G3S">「Docker/Kubernetes 実践コンテナ開発入門」</a>などで別途学習をされると良いかと思います。</p>
 <p>今回は，docker-composeを使います。これは，複数のDockerを使う場合に，それらの構成をyamlで定義して，それを元にしてDockerを用意するサービスです。今回は，<a href="https://hub.docker.com/r/ykunisato/ccp-lab-r">国里が作成したRStudio Sever用Docker(Rockerをベースに必要なソフトを色々といれたもの。Stanも使えます)</a>と<a href="https://github.com/SteveLTN/https-portal">https-portal</a>を使いますが，この２つのDockerの設定と接続などについてymalで記載をします。</p>
@@ -540,13 +540,13 @@ services:
 </code></pre>
 <p>なお，上記のyamlのhttps-portalの設定ではSTAGE: productionとなっていますが，これは本番環境での実施を意味しています。Let’s Encryptは何度も実施すると一定期間使えなくなるので，まずはSTAGE: localでちゃんと動かくか確認してから，STAGE: productionを実施することを強く勧めます。STAGE: localは自己証明なので，これで実施をするとhttps化されますがブラウザでは警告がでると思います。警告を無視してちゃんと動作しているかを確認して，大丈夫そうなら，STAGE: productionに進むと良いと思います。</p>
 </div>
-<div id="docker-compose" class="section level2">
+<div id="docker-composeの実行" class="section level2">
 <h2>7. docker-composeの実行</h2>
 <p>上記で設定したdocker-compose.ymlを実行するために，VMインスタンスにSSH接続します。ウィンドウの右上の設定っぽいボタンをクリックするとアップロードの選択肢がでてくると思うので，それを使って，さきほどの“docker-compose.yml”をアップロードします。それができたら，以下を打ち込んで，docker-compose.ymlを実行します。</p>
 <pre><code>sudo docker-compose up</code></pre>
 <p>なんか終わった感じになったらSSH接続を切って，ブラウザに <a href="https://ドメイン名" class="uri">https://ドメイン名</a> を打ち込んでみます。Rstudioのログイン画面が出てくる＆URLバーに警告がでてなければ，Rstudio serverがHTTPS化できました。結構ややこしいことをしているのですが，殆どの作業を事前に設定したDockerがやってくているので，こちらの作業はかなり少なくて済みました。</p>
 </div>
-<div class="section level2">
+<div id="ユーザーとパスワードの追加" class="section level2">
 <h2>8. ユーザーとパスワードの追加</h2>
 <p>docker-compose.ymlで設定した以外のユーザーを追加する場合は，VMインスタンスにSSH接続した上で，Dockerコンテナに接続してユーザーアカウントを作ります。まず，以下のコマンドで，Dockerコンテナにssh接続します。</p>
 <pre><code>sudo docker exec -it rstudio bash</code></pre>
@@ -559,7 +559,7 @@ services:
 </div>
 <div id="tips" class="section level2">
 <h2>Tips</h2>
-<div id="docker-compose" class="section level3">
+<div id="よく使うdocker-composeコマンド" class="section level3">
 <h3>よく使うDocker-composeコマンド</h3>
 <p>docker-composは，up, down, psくらいです。細かい設定は，dockerコマンドを使うことが多いです。</p>
 <ul>
@@ -579,7 +579,7 @@ services:
 <pre><code>sudo docker-compose down --rmi all
 </code></pre>
 </div>
-<div id="docker-" class="section level3">
+<div id="よく使うdocker-コマンド" class="section level3">
 <h3>よく使うDocker コマンド</h3>
 <ul>
 <li>コンテナの一覧を確認</li>
@@ -623,7 +623,7 @@ services:
 <p>もし，ユーザーをそのユーザーのフォルダごと削除したくなったら，以下を打ち込みます。</p>
 <pre><code>sudo userdel -r ユーザ名</code></pre>
 </div>
-<div id="google-cloud-platformios" class="section level3">
+<div id="google-cloud-platformのiosアプリ" class="section level3">
 <h3>Google Cloud PlatformのiOSアプリ</h3>
 <p>iOSにGCPのアプリがあります。それほど機能はありませんが，スマホからVMインスタンスの監視や起動と停止はできます。起動・停止にPCが不要＆RStudo serverはウェブブラウザがあれば使用できるので，以下のように，iPadにキーボードを付けておけば，普通にRが使えます。</p>
 <table>
@@ -646,7 +646,7 @@ services:
 </tbody>
 </table>
 </div>
-<div id="googlecloudstoragergooglecomputeenginer" class="section level3">
+<div id="googlecloudstoragerとgooglecomputeenginerで解析後に自動保存とインスタンスの自動停止をする" class="section level3">
 <h3>googleCloudStorageRとgoogleComputeEngineRで解析後に自動保存とインスタンスの自動停止をする</h3>
 <p>googleCloudStorageRもgoogleComputeEngineRも非常に優れたパッケージですが，比較的時間のかかる重い処理が終わったらワークスペースのものを自動保存し，インスタンスも停止するコマンドにだけ紹介します。これは地味に重要な機能です。というのは，GCEのVMインスタンスは稼働しているとずっと課金されますので，解析が終わったら結果を保存し，自動的にインスタンスも停止してくれるとすごく助かります。</p>
 <p>まず，<a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">googleCloudStorageRのセットアップ</a>と<a href="https://cloudyr.github.io/googleComputeEngineR/articles/installation-and-authentication.html">googleComputeEngineRのセットアップ</a>は，公式ドキュメントに従って，事前に済ませておきます。簡単に説明すると，GCPの「APIとサービス」→「認証情報」→「認証情報の作成」で認証に関するjsonファイルを得ます。それをインスタンスの安全な場所に置いた上で，Homeに“.Renviron”という名前のファイルを作って，以下の情報を書き込みます。</p>
@@ -664,7 +664,7 @@ gcs_save(list=ls(all=TRUE), file=paste(format(as.POSIXlt(Sys.time(), tz = &quot;
 # 使っているVMインスタンスを停止
 gce_vm_stop(&quot;インスタンス名&quot;)</code></pre>
 </div>
-<div id="rstudio-serverslack" class="section level3">
+<div id="rstudio-serverからslackへ投稿する" class="section level3">
 <h3>Rstudio serverからslackへ投稿する</h3>
 <p><a href="https://dichika.hateblo.jp/entry/20150701/p1">盆栽日記</a>に紹介されていたhttrパッケージを使う方法で解析終了時にslackに自動的に投稿することができます。まず，slackでボットを作ってそのトークンを取得する（このやり方がいつも試行錯誤です。各自でお願いします・・・）。そして，トークン，slackのチャンネル名，ボット名を以下のように指定するとslackに通知が飛ぶようになります。なお，以下のコードでは，proc.time()を使って，経過時間の測定もしています。googleCloudStorageR・googleComputeEngineRと組み合わせると，slackを使った解析終了の連絡，データのバックアップ，インスタンスの停止が自動化できます。</p>
 <pre><code>t&lt;-proc.time()
@@ -683,7 +683,7 @@ httr::POST(url=&quot;https://slack.com/api/chat.postMessage&quot;,
            ))  
 </code></pre>
 </div>
-<div id="zip" class="section level3">
+<div id="ウェブから直接zipファイルを得る方法" class="section level3">
 <h3>ウェブから直接zipファイルを得る方法</h3>
 <p>RStudio serverを使っていて，Githubから直接ファイルがzipなどのファイルがほしい時があります。githubならgitを使ってもいいですが，以下のようにしてもzipファイルの取得＆解凍ができます。</p>
 <pre><code>temp &lt;- tempfile()
@@ -692,22 +692,22 @@ download.file(curl, temp, mode=&quot;wb&quot;)
 unzip (temp, exdir = &quot;./jspsych-6.1.0&quot;)
 unlink(temp)</code></pre>
 </div>
-<div id="google-cloud-strage" class="section level3">
+<div id="ファイルのアップや保存についてgoogle-cloud-strageの活用" class="section level3">
 <h3>ファイルのアップや保存について(Google Cloud Strageの活用)</h3>
 <p>Rstudio serverではペインからファイルのアップロードやダウンロードができますが，ある程度のファイルサイズになると難しくなります。その場合は，Google Cloud Strageを使うのが良いかと思います。なお，ユーザーとしてGoogle Cloud Strageを使う場合は，<a href="http://code.markedmondson.me/googleCloudStorageR/index.html">googleCloudStorageR</a>を使うのが良いです。以下では，ホスト側から各ユーザーのRstudioディレクトリにファイルをコピーしたり，バックアップしたりする場合の作業を記載しています。</p>
-<div class="section level4">
+<div id="バケットの作成" class="section level4">
 <h4>バケットの作成</h4>
 <p>Cloud Strageにバケットを作成します。</p>
 <pre><code>sudo gsutil mb -c &lt;ストレージクラス&gt; -l &lt;ロケーション&gt; gs://バケット名</code></pre>
 <p>東京の場合は，以下のような感じでしょうか。</p>
 <pre><code>sudo gsutil mb -c regional -l asia-northeast1 gs://バケット名</code></pre>
 </div>
-<div class="section level4">
+<div id="バケット内のファイルの参照" class="section level4">
 <h4>バケット内のファイルの参照</h4>
 <p>lsでどんなファイルがあるか確認できます。</p>
 <pre><code>sudo gsutil ls gs://バケット名</code></pre>
 </div>
-<div id="google-cloud-strage" class="section level4">
+<div id="google-cloud-strageからファイルやフォルダのコピー" class="section level4">
 <h4>Google Cloud Strageからファイルやフォルダのコピー</h4>
 <p>以下のようにして，Google Cloud Strageからファイルをコピーします。</p>
 <pre><code>sudo gsutil cp gs://バケット名/ファイル名 rstudio/ユーザー名/フォルダ名/</code></pre>
@@ -716,12 +716,12 @@ unlink(temp)</code></pre>
 <p>sudoで操作するので，Google Cloud Strageからコピーしたファイルはrootがユーザーになるので，以下のように変更をしておきます(私の環境では，ubuntu:ubuntuでうまくいきましたが，ちょっと自信はないです)。ただ，これしなくても動作することもあり，ちょっとよくわからない点ではあります。</p>
 <pre><code>sudo chown -R ubuntu:ubuntu rstudio/ユーザフォルダ名</code></pre>
 </div>
-<div id="google-cloud-strage" class="section level4">
+<div id="google-cloud-strageへのフォルダコピー" class="section level4">
 <h4>Google Cloud Strageへのフォルダコピー</h4>
 <p>Rstudio serverからGoogle Cloud Strageへのフォルダコピーは以下のようにします。以下だと，rstudio以下のすべてのユーザーのホーム以下のデータがバックアップされています。</p>
 <pre><code>sudo gsutil cp -r rstudio/ gs://バケット名/フォルダ名/</code></pre>
 </div>
-<div id="google-cloud-strage" class="section level4">
+<div id="google-cloud-strageへのバックアップ" class="section level4">
 <h4>Google Cloud Strageへのバックアップ</h4>
 <p>ユーザーのHome以下のデータをバックアップする場合は以下のようにしても良いかと思います。homeのrstudioフォルダを圧縮した上で，フォルダ名をバックアプした年月日_時間にしたCloud Strage上バケットに保存して，最後に圧縮したフォルダを削除しています。</p>
 <pre><code>sudo tar czf rstudio.tar.gz rstudio
@@ -729,9 +729,8 @@ sudo gsutil cp ./rstudio.tar.gz gs://バケット名/`TZ=Asia/Tokyo date &quot;+
 sudo rm rstudio.tar.gz</code></pre>
 <p>以下の一行でも実行できます。</p>
 <pre><code>sudo tar czf rstudio.tar.gz rstudio;sudo gsutil cp ./rstudio.tar.gz gs://バケット名/`TZ=Asia/Tokyo date &quot;+%Y_%m%d_%H%M_%S&quot;`/;sudo rm rstudio.tar.gz</code></pre>
-<p>これの操作をカスタムメタデータにshutdown-scriptとして追加するのも検討しましたが，ちょっとむずかしい様子でした。手動でお願いします（何か良い方法があればご指摘ください）・・・</p>
 </div>
-<div id="dockerimage" class="section level4">
+<div id="dockerをまるごとimageにして保存して送る" class="section level4">
 <h4>Dockerをまるごとimageにして保存して，送る</h4>
 <p>解析が終了したら，解析の再現性のためにも，使っているDockerイメージも保存すると良いかと思います。ただ，これはかなり重いので，Cloud Strageが必須です。まずは，以下のように，Dockerコマンドでイメージを保存します。</p>
 <pre><code>sudo docker commit コンテナのID 好きな名前

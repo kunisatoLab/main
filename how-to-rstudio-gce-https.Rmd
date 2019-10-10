@@ -494,8 +494,6 @@ sudo rm rstudio.tar.gz
 sudo tar czf rstudio.tar.gz rstudio;sudo gsutil cp ./rstudio.tar.gz gs://バケット名/`TZ=Asia/Tokyo date "+%Y_%m%d_%H%M_%S"`/;sudo rm rstudio.tar.gz
 ```
 
-これの操作をカスタムメタデータにshutdown-scriptとして追加するのも検討しましたが，ちょっとむずかしい様子でした。手動でお願いします（何か良い方法があればご指摘ください）・・・
-
 #### Dockerをまるごとimageにして保存して，送る
 
 解析が終了したら，解析の再現性のためにも，使っているDockerイメージも保存すると良いかと思います。ただ，これはかなり重いので，Cloud Strageが必須です。まずは，以下のように，Dockerコマンドでイメージを保存します。
