@@ -1,0 +1,127 @@
+---
+title: "電子ラボノートeLabFTWの導入方法"
+---
+
+電子ラボノートはいくつか出ていますが，心理学者が使うには少々高いです。[eLabFTW](https://www.elabftw.net/)は，オープンソースの電子ラボノートになり，設置するサーバーさえこちらで用意すれば，[eLabFTW](https://www.elabftw.net/)自体はフリーで導入できます（サーバー費用は別途かかります）。インストールもDokcerを使うので，難しくなく，[こちらのドキュメント](https://doc.elabftw.net/)を参考にすれば，すんなり導入できるかと思います。
+
+## サーバーの準備
+
+サーバーは各自好きなものを用意すればいいですが，ここではGoogle Compute Engineを使って，仮想マシン(VM)を使います。まず，好きな構成＆Ubuntu 18.04 LTSでインスタンスを作成します。その際に，httpとhttpsを開放しておきます。構成はご予算と相談で決めてください。また，常時稼働させるならそのままでもいいですが，ちょくちょくインスタンスを止めるなら，静的外部 IP アドレスを使うといいかと思います。また，インスタンスを立ち上げた際に得られる外部IPアドレス（もしくは静的外部IPアドレス）をご自身のもっているドメインに登録してください（セキュリティ上HTTPSが良いのでLet’s EncryptをつかってHTTPS化するのですが，その際にドメインが必要です）。
+
+## 仮想マシン(VM)に必要なソフトをインストール
+### Docker
+VMにSSHで接続して，ターミナルで以下を実行して，Dockerをインストールします。
+
+```
+sudo apt-get update
+```
+
+```
+sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+```
+
+```
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+```
+
+```
+sudo apt-key fingerprint 0EBFCD88
+```
+
+```
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+```
+
+```
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+```
+
+### docker-compose
+
+docker-composeをインストールします。
+
+```
+sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+
+```
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+```
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+```
+### dialog, git, zip
+
+dialog, git, zipをインストールします。
+
+```
+sudo apt-get update -y
+sudo apt-get install -y dialog git zip unzip
+```
+
+## eLabFTWのインストール
+
+[公式のドキュメント](https://doc.elabftw.net/)に書いてあるとおり，以下を実行して，eLabFTWをインストールします。
+
+```
+curl -sL https://get.elabftw.net -o elabctl && chmod +x elabctl
+```
+
+```
+sudo mv elabctl /usr/local/bin/
+```
+
+以下を実行するとターミナル画面上にインストール用の画面がでてきますので，順番に以下を選択します。
+
+「OK」 → 「Looks good to me」　→　「Server」　→　ドメイン名がある場合「yes」　→　ご自身の用意したドメイン名を入力して，「yes」　→　「Use HTTPS」　→　「Use correct certification」→　「Use Let’s Encrypt」→　メールアドレスを入力して「OK」
+
+```
+sudo elabctl install
+```
+
+終わったら以下を実行して，eLabFTWを開始します。
+
+```
+sudo elabctl start
+```
+
+## インストール後
+
+すぐにアクセスして，アドミン用のパスワードなどの設定をする。また，[公式ドキュメント](https://doc.elabftw.net/postinstall.html#postinstall)にしたがって，eLabFTWからメールを送れるようにSMTP2GOに無料登録して設定する。
+
+## バックアップ
+
+以下のコマンドで，/var/backups/elabftw/にバックアップが作成される。
+
+```
+sudo elabctl backup
+```
+
+## Let’s Encryptの更新
+
+90日でLet’s Encryptの証明書が切れるので，更新する。以下のようにやればできるはずだが・・・上手くいかず・・・これはちょっと先延ばし
+
+```
+# stop webserver
+sudo docker exec elabftw supervisorctl stop nginx
+# renew certificate
+sudo certbot renew
+# and start the webserver again
+sudo docker exec elabftw supervisorctl start nginx
+```
+
+## 日本語化
+
+eLabFTWは，様々な国の言語に翻訳されている（各研究者がボランティアで翻訳して，それが反映される。詳細は[こちら](https://doc.elabftw.net/contributing.html)）。日本語版については，国里が翻訳をしており，次のバージョン(現在3.3.9)で日本語化されるのではないかと期待している。翻訳には自信はないので，もし日本語化された際に，問題を見つけたら，[こちら](https://docs.google.com/forms/d/e/1FAIpQLSeVb0_ti9flHyGcRQcLESQO7Tzl3eH5hbCqXyzcGh7RWLQexA/viewform)までご連絡ください。
+
+
+
