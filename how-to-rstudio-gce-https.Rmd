@@ -494,6 +494,59 @@ sudo rm rstudio.tar.gz
 sudo tar czf rstudio.tar.gz rstudio;sudo gsutil cp ./rstudio.tar.gz gs://バケット名/`TZ=Asia/Tokyo date "+%Y_%m%d_%H%M_%S"`/;sudo rm rstudio.tar.gz
 ```
 
+そして，crontabを使って，定期的に実行できます。/etc/cron.d/に拡張子なしのファイルを作って，以下を書き込みます（私はファイル名をrstudioにして，"sudo vi /etc/cron.d/rstudio"を実行して書き込みをしています。viやcrontabの使い方はちょっと癖があるのでネットの情報を確認ください）。
+
+sudo vi /home/ykunisato/backup.sh
+
+```
+#!/bin/bash
+cd /home/ykunisato/rstudio/ykunisato
+tar czf Analysis.tar.gz Analysis
+gsutil cp Analysis.tar.gz gs://backup_rstudio_server/`TZ=Europe/Amsterdam date "+%Y_%m%d_%H%M_%S"`/
+rm Analysis.tar.gz
+```
+
+例
+```
+#!/bin/bash
+cd /home/ykunisato/rstudio/ykunisato
+tar czf Analysis.tar.gz Analysis
+gsutil cp Analysis.tar.gz gs://backup_rstudio_server/`date "+%Y_%m%d_%H%M_%S"`/
+rm Analysis.tar.gz
+```
+
+```
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/home/ykunisato/gc_sdk/google-cloud-sdk/bin
+HOME=/home/ykunisato
+BOTO_CONFIG="/home/ykunisato/.boto"
+
+
+50 21   * * *   ykunisato       sudo /bin/bash /home/ykunisato/backup.sh >> /home/ykunisato/corn.log 2>&1
+```
+
+sudo service cron restart
+
+上手くいきそうなのに，ファイルがアップされてない・・・
+
+Copying file://Analysis.tar.gz [Content-Type=application/x-tar]...
+/ [0 files][    0.0 B/155.3 MiB]                                                ^M==> NOTE: You are uploading one or more large file(s), which would run
+significantly faster if you enable parallel composite uploads. This
+feature can be enabled by editing the
+"parallel_composite_upload_threshold" value in your .boto
+configuration file. However, note that if you do this large files will
+be uploaded as `composite objects
+<https://cloud.google.com/storage/docs/composite-objects>`_,which
+means that any user who downloads such objects will need to have a
+compiled crcmod installed (see "gsutil help crcmod"). This is because
+without a compiled crcmod, computing checksums on composite objects is
+so slow that gsutil disables downloads of composite objects.
+-^M- [0 files][155.3 MiB/155.3 MiB]                                                ^M\^M\ [1 files][155.3 MiB/155.3 MiB]                                                ^
+M|^M
+Operation completed over 1 objects/155.3 MiB.
+
+
+
 #### Dockerをまるごとimageにして保存して，送る
 
 解析が終了したら，解析の再現性のためにも，使っているDockerイメージも保存すると良いかと思います。ただ，これはかなり重いので，Cloud Strageが必須です。まずは，以下のように，Dockerコマンドでイメージを保存します。
