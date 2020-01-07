@@ -4,9 +4,6 @@ title: "Code & Tips"
 
 ☆は，学部ゼミでの必修事項です。後ろの数字の順番に学んでいきます。
 
-## ラボノート
-
-- [電子ラボノートeLabFTWの導入方法](how-to-elabftw.html)
 
 ## Github
 
@@ -90,6 +87,10 @@ title: "Code & Tips"
 - [心理学的ネットワーク分析入門2(準備中)](how-to-psychological-network2.html)　☆15
 
 <br />
+
+## ラボノート
+
+- [電子ラボノートeLabFTWの導入方法](how-to-elabftw.html)
 
 
 ## 論文作成
