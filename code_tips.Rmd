@@ -18,13 +18,9 @@ title: "Code & Tips"
 
 - [jsPsychを用いた認知課題の作成2: ストループ課題(準備中)](how-to-jspsych2.html)　☆2
 
-- [jsPsychを用いた認知課題の作成3: 逆転学習課題1(準備中)](how-to-jspsych3.html)　☆3
+- [jsPsychを用いた認知課題の作成3: 逆転学習課題(準備中)](how-to-jspsych3.html)　☆3
 
-- [jsPsychを用いた認知課題の作成4: 逆転学習課題2(準備中)](how-to-jspsych4.html)　☆4
-
-- [jsPsychを用いた認知課題の作成5: 質問紙(準備中)](how-to-jspsych5.html)　☆5
-
-- [jsPsychを用いた認知課題の作成6: 音や動画呈示(準備中)](how-to-jspsych6.html)　☆6
+- [jsPsychを用いた認知課題の作成4: 音や動画呈示(準備中)](how-to-jspsych4.html)　☆4
 
 - [jsPsychを用いたWEB実験の実施(FirebaseでWEB実験を実施する方法の解説)](how-to-web-experiment-jspsych.html)
 
@@ -37,6 +33,9 @@ title: "Code & Tips"
 
 ## 調査
 
+- [jsPsychを用いた質問紙の作成](how-to-jspsych5.html)　☆5
+
+
 - [GoogleFormsとGoogleAppsScriptによる
 経験サンプリング自動調査システム(Mr. Unadonブログ)](https://mrunadon.github.io/%E7%B0%A1%E5%8D%984%E3%82%B9%E3%83%86%E3%83%83%E3%83%97%E3%81%A7%E7%B5%8C%E9%A8%93%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AA%E3%83%B3%E3%82%B0%E8%87%AA%E5%8B%95%E8%AA%BF%E6%9F%BB%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%81%AE%E6%A7%8B%E7%AF%89/)
 
@@ -44,11 +43,9 @@ title: "Code & Tips"
 
 ## データ解析
 
-- [R言語の基本1（準備中）](how-to-R-language1.html) ☆7
+- [R言語の基本と解析梱包（準備中）](how-to-R-language.html) ☆6
 
-- [R言語の基本2と解析梱包（準備中）](how-to-R-language2.html) ☆8
-
-- [認知課題の解析データセット作成](how-to-dataHandling.html)　☆9
+- [認知課題の解析データセット作成](how-to-dataHandling.html)　☆7
 
 - [再生可能なデータ解析入門](how-to-reproducible-analysis.html)　
 
@@ -60,13 +57,13 @@ title: "Code & Tips"
 
 ## 認知モデリング
 
-- [強化学習モデル1(準備中)](how-to-cognitive-modeling-rl1.html)　☆10
+- [強化学習モデル: 最尤推定(準備中)](how-to-cognitive-modeling-rl1.html)　☆8
 
-- [強化学習モデル2(準備中)](how-to-cognitive-modeling-rl2.html)　☆11
+- [強化学習モデル: ベイズ推定(準備中)](how-to-cognitive-modeling-rl2.html)　☆9
 
-- [逐次サンプリングモデル1(準備中)](how-to-cognitive-modeling-ssm1.html)　☆12
+- [逐次サンプリングモデル：DDM(準備中)](how-to-cognitive-modeling-ssm1.html)　☆10
 
-- [逐次サンプリングモデル2(準備中)](how-to-cognitive-modeling-ssm2.html)　☆13
+- [逐次サンプリングモデル: LBA(準備中)](how-to-cognitive-modeling-ssm2.html)　☆11
 
 - [hBayesDMでベイジアン認知モデリング](how-to-hBayesDM.html)
 
@@ -80,6 +77,11 @@ title: "Code & Tips"
 
 <br />
 
+## メタ分析
+
+- [メタ分析：メタ分析の実施手順](how-to-meta1.html)　☆12
+
+- [メタ分析：オープンデータベースによる研究蓄積](how-to-meta2.html)　☆13
 
 ## 心理学的ネットワークモデリング
 
