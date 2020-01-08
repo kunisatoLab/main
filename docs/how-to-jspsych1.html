@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -264,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -414,7 +420,7 @@ div.tocify {
 <li>JavaScriptの基本</li>
 </ol>
 <p><br></p>
-<div id="jspsych" class="section level2">
+<div id="jspsychとは" class="section level2">
 <h2>jsPsychとは</h2>
 <p>jsPsychとは，ウェブブラウザー（Microsoft Edge,Google Chrome,Safariなど）上で行動実験を行うためのJavaScriptライブラリーです。そもそもJavaScriptを上手く使えば，ウェブブラウザーで動作する行動実験課題は作成できます。しかし，全て一から作っていると大変です。そこで，jsPsychのライブラリーを活用することで，より楽に実験課題を作成することができます。</p>
 <p>jsPsychの情報としては，<a href="https://www.jspsych.org/">jsPsychのオフィシャルサイト</a>に豊富にありますし，日本語でも九州大学文学部心理学研究室の黒木大一朗先生の<a href="https://sites.google.com/site/webdeshinri/home">ウェブブラウザで心理学実験と調査jsPsych</a>にて詳細に解説されています<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>。分からないことがあれば，まず，この２つのサイトを参照すると良いかと思います。RstudioでjsPsychを使う方法は，<a href="https://github.com/CrumpLab/jsPsychR">Matthew Crump氏のGithub</a>を参考ください。</p>
@@ -424,33 +430,33 @@ div.tocify {
 </ul>
 <p><br></p>
 </div>
-<div id="jspsych" class="section level2">
+<div id="jspsychを使う準備" class="section level2">
 <h2>1.jsPsychを使う準備</h2>
-<div id="jspsych" class="section level3">
+<div id="jspsychのダウンロード" class="section level3">
 <h3>1.1 jsPsychのダウンロード</h3>
 <p>まず，<a href="https://github.com/jspsych/jsPsych/releases">jsPsychのリリースページ</a>にいきます。以下のようなページが出てくるので，Latest releaseのところを見ます（以下の例だとv6.1.0です）。</p>
 <p><img src="fig/jspsych1_fig1.png" /></p>
 <p>少し下の方にスクロールすると，“jspsych-X.X.X.zip”(以下の場合は，“jspsych-6.1.0.zip”です)というファイルが見えてくるので，それをクリックして，ダウンロードします。</p>
 <p><img src="fig/jspsych1_fig2.png" /></p>
-<div class="section level4">
+<div id="ゼミ生向けの情報" class="section level4">
 <h4>ゼミ生向けの情報</h4>
 <p>私のゼミ生の場合は，クラウド上のRstudio serverで作業をします。そのため，jsPsychを直接RStudioに読み込みますので，上記の“jspsych-X.X.X.zip”というファイルを右クリックして，このファイルへのリンクをコピーします（Chromeを使う場合は，右クリックすると以下のように出てきますので，「Copy Link Adress」をクリックください）。</p>
 <p><img src="fig/jspsych1_fig3.png" /></p>
 </div>
 </div>
-<div id="jspsych" class="section level3">
+<div id="jspsych課題用のフォルダの作成" class="section level3">
 <h3>1.2 jsPsych課題用のフォルダの作成</h3>
 <p>jsPsychで認知課題を作成する際には，フォルダを作って，そこに使用するファイル一式(jsPsychライブラリ，呈示する刺激，HTML，Rmdファイルなど)を置くようにしましょう。まずは，パソコンの好きな場所に，「hello」という名前のフォルダを作ってください。</p>
-<div id="-1" class="section level4">
+<div id="ゼミ生向けの情報-1" class="section level4">
 <h4>ゼミ生向けの情報</h4>
 <p>私のゼミ生の場合は，クラウド上のRstudio serverで作業をします。Rstudioの左下のペインの「Files」から「New Folder」をクリックして，出てきた以下のようなウィンドウに「hello」と打ち込んでください。</p>
 <p><img src="fig/jspsych1_fig4.png" /></p>
 </div>
 </div>
-<div id="jspsych" class="section level3">
+<div id="jspsychライブラリの設置" class="section level3">
 <h3>1.3 jsPsychライブラリの設置</h3>
 <p>フォルダができたら，“jspsych-X.X.X.zip”を解凍・展開して，出てきた“jspsych-X.X.X”フォルダをコピーして，さきほどの「hello」フォルダにペーストします。</p>
-<div id="-2" class="section level4">
+<div id="ゼミ生向けの情報-2" class="section level4">
 <h4>ゼミ生向けの情報</h4>
 <p>私のゼミ生の場合は，クラウド上のRstudio serverで作業をします。必ず以下の手順に従ってください。</p>
 <ul>
@@ -463,7 +469,7 @@ unzip (temp, exdir = &quot;./jspsych-6.1.0&quot;)
 unlink(temp)</code></pre>
 </div>
 </div>
-<div id="rstudiojspsych" class="section level3">
+<div id="rstudioでjspsychを使う準備" class="section level3">
 <h3>1.4 RstudioでjsPsychを使う準備</h3>
 <p>本ページでは，RstudioでjsPsychを使います。早速，RStudioを起動しましょう。Rstudioが起動すると以下のような画面かと思います。</p>
 <p><img src="fig/jspsych1_fig5.png" /></p>
@@ -474,11 +480,11 @@ unlink(temp)</code></pre>
 <p>R Markdownファイルが作成されて，左上のペインにでてきました。とりあえず，hello1.Rmdという名前で保存しておきます（保存マークをクリックすると保存できます）。</p>
 <p><img src="fig/jspsych1_fig8.png" /></p>
 </div>
-<div id="r-markdonjspsych" class="section level3">
+<div id="r-markdonでjspsychを扱う" class="section level3">
 <h3>1.5 R MarkdonでjsPsychを扱う</h3>
 <p>R Markdon(ファイルの拡張子は.Rmd)は，ざっくり言うと，文章とプログラミングコード（基本的にはRだが，JavaScriptやPyhtonも使える）をまとめてHTMLファイル(インターネットのサイトを作っているファイル)にして出力してくれるものです。R Markdownの詳細については，<a href="https://kazutan.github.io/kazutanR/Rmd_intro.html">Kazutan氏のサイト</a>が非常に勉強になると思います。R Markdownは，解析コードと文章を１つのファイルに読みやすい形でまとめられるので，解析などでも便利なものですが，ここでは，jsPsychを使うために利用します。</p>
 </div>
-<div id="jspsychrmarkdown" class="section level3">
+<div id="jspsychを使うときのrmarkdownの設定" class="section level3">
 <h3>1.6 jsPsychを使うときのRMarkdownの設定</h3>
 <ul>
 <li>1.Rmdのyamlヘッダを以下のように変更します（タイトルは課題名とか，名前は自分や研究グループの名前を記載してください）。このyamlヘッダではインデントが重要ですので，必ず以下のインデントの構造と同じようにしてください。</li>
@@ -515,31 +521,31 @@ tags$script(src=&#39;jspsych-6/plugins/jspsych-html-keyboard-response.js&#39;)
 <p><br></p>
 </div>
 </div>
-<div id="jspsych" class="section level2">
+<div id="こんにちわjspsych文字を画面に表示" class="section level2">
 <h2>2. こんにちわjsPsych(文字を画面に表示)</h2>
 <p>だいたいプログラミングの最初は，「Hello World」とか書くので，今回も「こんにちわあ」と画面に表示させることにします。</p>
-<div id="javascript" class="section level3">
+<div id="javascriptの書き込み" class="section level3">
 <h3>2.1 JavaScriptの書き込み</h3>
 <p>先程のRmdの準備の段階で，プラグインなどの準備はできているので，JavaScriptの本体の記載に集中します。以下の画像の{js}チャンクをご自身のRmdファイルに転記してください（コピペだけだと覚えないので・・・）。</p>
 <p>コードの内容を説明すると，まずtimelineというものを準備します（これは試行の順番などを指示するものです。timelineに従って課題は進みます。なお，timeline名はtimeline以外の名前でも使えます）。「こんいちわあ」という文字を出すwelcome試行を設定して（プラグインのhtml-keyboard-responseを使用），timelineにプッシュしています（イメージするなら登録ですね）。最後に，jsPsych.initで，timelineに従って実験をするように指定しています。</p>
 <p><img src="fig/jspsych1_fig11.png" /></p>
 </div>
-<div id="rmdhtml" class="section level3">
+<div id="rmdからhtmlファイルを出力する" class="section level3">
 <h3>2.2 RmdからHTMLファイルを出力する</h3>
 <p>Rmdファイルの書き込みが完成したら，以下の緑の丸で囲った「Knit」ボタンをクリックします。これをクリックすると，RmdファイルからHTMLファイル生成されます。HTMLファイルができると，それが別ウィンドウで開かれて，画面上に「こんにちわあ」が呈示されるかと思います。それができたら成功です（上手く行かない場合は，上の画像をよく見て，記入ミスがないか確認してください）。</p>
 <p><img src="fig/jspsych1_fig12.png" /></p>
 <p><br></p>
-<div id="1.1" class="section level4">
-<h4>演習課題1.1</h4>
+<div id="演習課題1" class="section level4">
+<h4>演習課題1</h4>
 <ul>
 <li>「こんにちわあ」の代わりに「こんばんわあ」と画面に表示してみましょう。</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="javascript" class="section level2">
+<div id="javascriptの基本" class="section level2">
 <h2>3. JavaScriptの基本</h2>
-<div id="javascript" class="section level3">
+<div id="javascriptで変数と配列を使ってみる" class="section level3">
 <h3>3.1 JavaScriptで変数と配列を使ってみる</h3>
 <p>まず，新規にRmdファイルを作成して，hello1.Rmdの内容をコピペして，hello2.Rmdという名前で保存します。</p>
 <p>プログラミングをしていると，変数というのが出てきます。変数は簡単にいうと箱です。箱ですので，好きなものをいれることができます（ただ，箱によっては，入れられるものと入れられないものがあります）。JavaScriptでは，「これが変数だよ」っと宣言する場合には，varを使います。先程のコードだと，var timeline = []というのがありましたが，これは，timelineという変数に，空っぽの配列[]をいれるよという宣言です(配列については後で説明します)。</p>
@@ -548,14 +554,14 @@ tags$script(src=&#39;jspsych-6/plugins/jspsych-html-keyboard-response.js&#39;)
 <p>変数に追加して覚えておくと良いのが配列です。配列は，簡単にいうと，複数の値を変数に格納したものです（箱の中に入っている物が複数ある状態です）。例えば，以下のように書くと，textの中には，“こんにちは”から始まって４つの挨拶が入っていると宣言することになります。</p>
 <pre><code>var text = [&quot;こんにちは&quot;,&quot;ニイハオ&quot;,&quot;アニョハセヨ&quot;,&quot;ハロー&quot;]</code></pre>
 <p>このtextの中の特定の挨拶を指定したい場合，その配列のインデックスで指定します。難しい言い方をしましたが，配列の何番目か数字で指定するという意味です。その際，その数字は0番目から始まるのに注意します。つまり，上記のtextの場合，text[1]は“ニイハオ”であり，“こんにちは”はtext[0]です。普通だと1番目から数えると思うのに0からスタートするのは忘れないようにしておきましょう（なお，Rだと1からスタートしますし，PythonだとJavaScriptと同じく0からスタートします。ややこしいですね）。</p>
-<div id="1.2" class="section level4">
-<h4>演習課題1.2</h4>
+<div id="演習課題2" class="section level4">
+<h4>演習課題2</h4>
 <ul>
 <li>textに“こんにちは”,“ニイハオ”,“アニョハセヨ”,“ハロー”の４つを格納して，“アニョハセヨ”を画面に呈示してください。</li>
 </ul>
 </div>
 </div>
-<div id="javascriptfor" class="section level3">
+<div id="javascriptでfor文を使ってみる" class="section level3">
 <h3>3.2 JavaScriptでfor文を使ってみる</h3>
 <p>3.1で配列を覚えました。その配列の中身４つを順番に呈示したい時，以下のように書くとそれができます。なお，さきほどまでの設定だと，なにかキーボード入力がないと次の刺激に進まないので，stimulusの後ろに“trial_duration: 1000,”を追加しています。これは刺激を1000ms(1000ミリ秒つまり1秒)呈示するという意味です。</p>
 <pre><code>    /* タイムラインを用意 */
@@ -601,14 +607,14 @@ tags$script(src=&#39;jspsych-6/plugins/jspsych-html-keyboard-response.js&#39;)
 }</code></pre>
 <p>for文が分かったところで，さきほどの配列の中身４つを呈示するのは，以下のように書くことができます。for文で書くとすっきりしますね。さて，for文で書いたものを動かしてみましょう。</p>
 <p><img src="fig/jspsych1_fig14.png" /></p>
-<div id="1.3" class="section level4">
-<h4>演習課題1.3</h4>
+<div id="演習課題3" class="section level4">
+<h4>演習課題3</h4>
 <ul>
 <li>色々な国の挨拶を８カ国分用意して，for文で8カ国分の挨拶を呈示してみましょう！</li>
 </ul>
 </div>
 </div>
-<div id="javascriptif" class="section level3">
+<div id="javascriptでif文を使ってみる" class="section level3">
 <h3>3.3 JavaScriptでif文を使ってみる</h3>
 <p>3.2では繰り返しのfor文を覚えました。あとは分岐のif文を覚えれば基礎は終了です。</p>
 <p>for文は同じ内容を繰り返す場合に使います。そのため，ほぼ同じ内容だけど，少しだけ違う場合には使えないです。例えば，for文のインデックスが奇数の場合は配列Aから刺激を出して，偶数の場合は配列Bから刺激を出すというのは単純なfor文だとちょっと難しい。こういう時に条件分岐のif文を使えると簡単にプログラミングできます。</p>
@@ -637,8 +643,8 @@ else {
 }</code></pre>
 <p>さて，本題に戻って，以下のように，「こんにちは」の配列のtext1と「こんばんは」の配列のtext2を用意します。そして，for文のindexが偶数(ここでは0か2です)ならtext1を，奇数ならtext2を呈示してみましょう。</p>
 <p><img src="fig/jspsych1_fig15.png" /></p>
-<div id="1.4" class="section level4">
-<h4>演習課題1.4</h4>
+<div id="演習課題4" class="section level4">
+<h4>演習課題4</h4>
 <ul>
 <li>「こんにちは」の配列のtext1と「こんばんは」の配列のtext2にそれぞれ２つ足して，要素を６つにします。さらに，各国の「おはようございます」が６つ入った配列を追加して(text3としますか)，色々な国の挨拶を朝・昼・晩と順番に6回呈示してみましょう！<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></li>
 </ul>
@@ -649,7 +655,7 @@ else {
 <hr />
 <ol>
 <li id="fn1"><p>本ページを作る際に，黒木先生のサイトをかなり参考にさせていただきました。特に，必要最小限のJavaScriptの知識について大変参考になりました。<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>時間が余った人は，演習課題1.4で３つの配列を順番に呈示した際に配列には４つ入っているのに全て使ってないことに気がついたと思います。全て使い切るにはどうすればよいでしょうか？考えて，試してみましょう。<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>時間が余った人は，演習課題4で３つの配列を順番に呈示した際に配列には４つ入っているのに全て使ってないことに気がついたと思います。全て使い切るにはどうすればよいでしょうか？考えて，試してみましょう。<a href="#fnref2" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
 

@@ -13,7 +13,7 @@ title: "Code & Tips"
 
 - [jsPsychを用いた認知課題の作成1: jsPsychとJavaScript入門](how-to-jspsych1.html)　☆1
 
-- [jsPsychを用いた認知課題の作成2: ストループ課題(準備中)](how-to-jspsych2.html)　☆2
+- [jsPsychを用いた認知課題の作成2: ストループ課題](how-to-jspsych2.html)　☆2
 
 - [jsPsychを用いた認知課題の作成3: 逆転学習課題(準備中)](how-to-jspsych3.html)　☆3
 
@@ -30,7 +30,7 @@ title: "Code & Tips"
 
 ## 調査
 
-- [jsPsychを用いた質問紙の作成](how-to-jspsych5.html)　☆5
+- [jsPsychを用いた質問紙の作成(準備中)](how-to-jspsych5.html)　☆5
 
 
 - [GoogleFormsとGoogleAppsScriptによる
@@ -76,9 +76,9 @@ title: "Code & Tips"
 
 ## メタ分析
 
-- [メタ分析：メタ分析の実施手順](how-to-meta1.html)　☆12
+- [メタ分析：メタ分析の実施手順(準備中)](how-to-meta1.html)　☆12
 
-- [メタ分析：オープンデータベースによる研究蓄積](how-to-meta2.html)　☆13
+- [メタ分析：オープンデータベースによる研究蓄積(準備中)](how-to-meta2.html)　☆13
 
 ## 心理学的ネットワークモデリング
 

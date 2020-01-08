@@ -1,0 +1,37 @@
+---
+title: "Hello"
+author: "Yoshihiko Kunisato"
+output:
+  html_document:
+    mathjax: null
+    highlight: null
+    theme: null
+    css: jspsych-6.1.0/css/jspsych.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+library(htmltools)
+tagList(
+tags$script(src='jspsych-6.1.0/jspsych.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js')
+)
+```
+
+```{js}
+    /* タイムラインを用意 */
+    var timeline = [];
+    /* trialで呈示する文字を設定 */
+    var welcome = {
+      type: "html-keyboard-response",
+      stimulus: "こんにちわあ"
+    };
+    timeline.push(welcome);
+    /* 実験開始 */
+    jsPsych.init({
+      timeline: timeline
+    });
+```
