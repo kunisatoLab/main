@@ -7,7 +7,7 @@ title: "Code & Tips"
 
 ## Github
 
-- [Github入門(準備中)](how-to-github.html) ☆0
+- [Github入門](how-to-github.html) ☆0
 
 ## 認知課題
 

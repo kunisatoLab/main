@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -264,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -407,7 +413,78 @@ div.tocify {
 </div>
 
 
-<p>準備中</p>
+<div id="ゼミでのgithubの活用" class="section level2">
+<h2>ゼミでのGitHubの活用</h2>
+<p>本ゼミでは，GitHubを活用して，以下のことを行います。</p>
+<ul>
+<li>ゼミでの論文報告（「こんな面白い論文読んだよ！」の報告）</li>
+<li>ゼミでの研究進捗報告（「先週からこんなことしたよ！」や「何もせんかったよ！」の報告）</li>
+<li>ゼミでの研究プロジェクト管理（卒論や修論が全体のどこまで進んだか確認する）</li>
+<li>ゼミでの演習課題（jsPsychから認知モデリングなどのゼミの演習課題は各自のGitHubリポジトリで管理する）</li>
+<li>卒論や修論での実験・調査の準備（jsPsychのプログラミング）</li>
+<li>卒論や修論でのデータ解析（Rを使う）</li>
+<li>卒論や修論の執筆とレビュー（R Markdownで執筆，GitHub上で国里がレビューする）</li>
+</ul>
+<p>「わお，わけわからん」と思ったかもしれませんが，データ収集以外のゼミでの活動は，ほぼGitHubを介して行われます（データ収集はjsPsychで作ったプログラムを国里のサーバーにアップして収集します）。</p>
+<p>以下では，RStudioで使用する上で最低限のGitHubの知識について説明をします。より詳細は，Shinya Uryuさんの<a href="https://qiita.com/uri/items/6b94609f156173ed43ed">「RStudioではじめるGitによるバージョン管理」</a>や静岡理工科大学の紀ノ定保礼さんの以下のslide shareを参照ください。</p>
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/ifIG31dbS7Fbeu?startSlide=55" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
+</iframe>
+<div style="margin-bottom:5px">
+<strong> <a href="//www.slideshare.net/nocchi_airport/r-markdown-111322653" title="R Markdownによるドキュメント生成と バージョン管理入門" target="_blank">R Markdownによるドキュメント生成と バージョン管理入門</a> </strong> from <strong><a href="//www.slideshare.net/nocchi_airport" target="_blank">nocchi_airport</a></strong>
+</div>
+<p><br /> <br /></p>
+</div>
+<div id="githubアカウントの作成" class="section level2">
+<h2>GitHubアカウントの作成</h2>
+<p>GoogleでGitHubと検索するか，以下のリンクをクリックください。そして，Sign Upしてください。その際に，大学から発行された心理学科のメールアドレスを登録ください（大学のメールアドレスを使えば，教育機関向けの割引が使えます。詳細は<a href="https://help.github.com/ja/github/teaching-and-learning-with-github-education/about-github-education-for-students">こちら</a>）。</p>
+<p><br /></p>
+<div id="github" class="section level3">
+<h3><a href="https://github.com/">GitHub</a></h3>
+<p><br /> <br /></p>
+<p><img src="fig/GitHub_gif1.gif" /> <br /> <br /> <br /></p>
+</div>
+</div>
+<div id="ざっくりとgithubの仕組みを知ろう" class="section level2">
+<h2>ざっくりとGitHubの仕組みを知ろう！</h2>
+<p>ざっくりGitHubについて説明をすると以下のようになります。</p>
+<p>まず，クラウド上にGitHubのリポジトリがあって，それとみなさんの手元のPCとでファイルのやり取りするのをイメージしてください。</p>
+<p>GitHubのリポジトリには，コード，データ（もちろん，GitHubなどにアップする同意を得た匿名化処理済みのデータです），卒論・修論のファイルを置きます（最初は各自の作成したファイルはないので国里の用意したテンプレートファイルがあります）。</p>
+<p>まず，みなさんは，GitHubリポジトリからPull(初回時はClone)して，自分のPC上にリポジトリのファイルを落とします（簡単に言えばダウンロード）。</p>
+<p>そのPullしたファイルに加筆修正したり，ファイルを追加したりします（解析したり，論文を執筆したりなどの作業です）。ファイルに変更を加えたら，こまめにCommitをして変更履歴を残します（大きめは変更を加えたらかならずCommitする）。</p>
+<p>Commitで記録を残した履歴はみなさんのPCに残っているだけなので，これをPushしてGitHubのリポジトリに反映させます。これで１サイクルが終了です。</p>
+<p>日々の研究活動では，GitHubリポジトリからPullして自分のPCを最新の状態にして，作業したらその都度Commitし，Pushしてリポジトリも最新の状態に保つというサイクルを回していくことになります。</p>
+<p>なんだか面倒だなあという気もするかもしれませんが，変更履歴を残すことは透明性の高い研究をすすめる上での重要ですし，色々と作業をしたけど前の状態に戻したいときにも便利です。さらに，共同作業をする場合にもGitHubはとても有用です。</p>
+<p><img src="fig/GitHub_fig1.png" /></p>
+<p><br /> <br /> <br /></p>
+<p>それでは，RStudioでの利用方法を説明していきます。</p>
+</div>
+<div id="すでにあるgithubリポジトリを自分の手元にもってくる" class="section level2">
+<h2>すでにあるGitHubリポジトリを自分の手元にもってくる</h2>
+<p>すでにあるGitHubリポジトリを自分の手元にもってくる場合は，Cloneをします（一度Cloneしたら，その後は，Pullになります）。Cloneは以下のように，GitHubリポジトリにいって（ゼミ生は，国里が各自の卒論・修論用リポジトリを用意しています），左側の“Clone or Download”のボタンから，Git用のURLをコピーします。</p>
+<p><img src="fig/GitHub_gif2.gif" /> <br /> <br /> <br /></p>
+<p>そして，以下のようにRStudio上でFile → New Project→Version Control→Gitと進んで，コピーしたURLと保存するフォルダの設定します。これで，Clone完了です。</p>
+<p><img src="fig/GitHub_gif3.gif" /> <br /> <br /> <br /></p>
+<p>一度，GitHubのプロジェクトを作っておくと，RStudioはそれを記憶しているので，以下のようにFile→Recent Projetsで作成したプロジェクトが出てくるので，それをクリックすれば，GitHubプロジェクトが開けます。</p>
+<p>RStudioのプロジェクトは，解析などで使うファイルやフォルダをひとまとめにしてくれるものです（今回の場合は，GitHubリポジトリがプロジェクトになります）。RStudioを使う場合は，必ずプロジェクトファイルを作りましょう。</p>
+<p><img src="fig/GitHub_gif4.gif" /> <br /> <br /> <br /></p>
+<p>さて，Cloneができると最初の準備は終わりです。以降では，毎回，プロジェクトを開いたら，Pullで自分のPCのファイルを最新にして，作業したらCommmitで変更履歴を残して，PushでGitHubリポジトリも最新にしておきましょう。</p>
+</div>
+<div id="pullで手元のpcのファイルを最新の状態にする" class="section level2">
+<h2>Pullで手元のPCのファイルを最新の状態にする</h2>
+<p>以下のように，Git→Pullをクリックすれば，自動的に差分を計算して，手元のPCのファイルを最新にしてくれます。</p>
+<p><img src="fig/GitHub_gif5.gif" /> <br /> <br /> <br /></p>
+</div>
+<div id="変更履歴をcommitで記録する" class="section level2">
+<h2>変更履歴をCommitで記録する</h2>
+<p>ファイルを変更したら，こまめにCommitをしましょう。Git→Commitをクリックして，開いたウインドウでファイルを選択したら，かならずCommit messageを記入しましょう。ずCommit messageにはあとでわかりやすいように行った変更のメモをしておきます（例えば，「方法の参加者を加筆」とか「相関分析を追加」とか）。Commitできたら，Pushをします。Commitはこまめにしますが，Pushはある程度まとめて問題はありません（とはいえ，その日の作業の終わりにはかならずPushしてください）。</p>
+<p><img src="fig/GitHub_gif6.gif" /> <br /> <br /> <br /></p>
+</div>
+<div id="共同作業としてのgithub" class="section level2">
+<h2>共同作業としてのGitHub</h2>
+<p>RStudioでGitHubを活用する上で，最低限の知識を説明してきました。GitHubは1人で使っても便利なものですが，その真価は共同作業において発揮します。例えば，卒論・修論では，指導教員からチェックを受けると思いますが，そのチェックをする際に，指導教員が学生のリポジトリを実際に操作して確認することもできます。そして，もし指導教員がなんらかの変更を加えた場合は，GitHub上でその変更を統合することになります。このようなやりとりをGitHubでは簡単にできます（Mergeを使う）。さらに，卒論・修論のチェック時期になれば，GitHub上に卒論・修論のRMarkdownファイルをおいてけば，それを指導教員がReviewして，コメントをつけ，それをもとに修正・加筆をするなどもできます。</p>
+<p><img src="fig/GitHub_fig2.png" /></p>
+<p>上記のように，GitHubは便利なツールなのでゼミで活用しますが，それ以上に，今後の社会において専門性をもった者が共同作業をするということが今以上に求められるようになります。その際の，基礎となるスキルや考え方として，GitHubに馴染んでおくことは決して無駄にはならないかと思います。</p>
+</div>
 
 <footer>
   <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
