@@ -1,5 +1,5 @@
 ---
-title: "jsPsychを用いた認知課題の作成1: jsPsychとJavaScript入門 v0.1"
+title: "jsPsychを用いた認知課題の作成1: jsPsychとJavaScript入門"
 ---
 
 本ページでは，jsPsychを用いた認知課題の作成をRstudioで行う方法について解説をします。本ページでは，以下の内容を解説しています。

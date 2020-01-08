@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -88,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -237,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -265,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -408,9 +413,357 @@ div.tocify {
 </div>
 
 
-<div class="section level2">
-<h2>準備中</h2>
-<p>ストループ課題</p>
+<p>本ページでは，jsPsychを用いた認知課題の作成をRstudioで行う方法について解説をします。以下では，簡単なストループ課題を作ってみて，jsPsychでの課題作成方法を学びます。</p>
+<p><br></p>
+<div id="ストループ課題を作る準備" class="section level2">
+<h2>0. ストループ課題を作る準備</h2>
+<p>ストループ課題に限りませんが，認知課題をプログラミングする場合に，いきなりそのままプログラムを書くのは避けたほうが良いです。私が認知課題を作る時にやっている普段やっていることを整理すると以下のような感じになります。</p>
+<ol style="list-style-type: decimal">
+<li>課題の情報を整理する</li>
+<li>課題の設計図を作る</li>
+<li>教示と課題のメインブロックを最もシンプルな形で作る</li>
+<li>課題のメインブロックに機能を追加をする</li>
+<li>メインブロック以外のブロックを追加していく</li>
+</ol>
+<p>1~5にまっすぐ進むわけでなく，試行錯誤しつつ，行きつ戻りつしながら進みます。特に初学者にとって大切に思うのは，1と２の課題の情報を整理して紙などに課題の設計図を書いてみること，いきなり実際に行う課題を作ろうとするのではなくメインブロックを一番シンプルな形（例えば，ストループ課題の場合は，文字を画面に出すことです）で作ることです。その後で，徐々に機能を追加していきます。いきなり完成形を作ろうとしなくても良いです。</p>
+<p><br></p>
+</div>
+<div id="課題の情報を整理する" class="section level2">
+<h2>1. 課題の情報を整理する</h2>
+<p>まずストループ課題の情報を整理します。</p>
+<p>ストループ課題は，以下のように文字の意味と文字の色が同じだったり違ったりすることで，意味と色の情報が干渉しあうストループ効果を調べる課題です。典型的には，以下の左のように意味と色が一致な刺激や右のように不一致な刺激を呈示し，意味ではなく色に関して反応するように求めます。その時の反応時間を計測して，一致条件よりも不一致条件の方が反応時間が長い場合にストループ効果が示されたとします（不一致条件では，色の判断に意味の情報が干渉するので遅くなる）。</p>
+<p><img src="fig/jspsych2_fig1.png" /></p>
+<p>ストループ課題にもいろいろなタイプがありますが，今回は，赤色・青色・緑色・黄色の４つの刺激を使って，一致条件と不一致条件を作って，キーボードのボタン押しによって，反応時間を測定することにしましょう。</p>
+<p><br></p>
+</div>
+<div id="課題の設計図を作る" class="section level2">
+<h2>2. 課題の設計図を作る</h2>
+<p>それではストループ課題の設計図を作ってみましょう！私はなにかプログラムを書くときは，必ず全体像を紙に書き出してから作業を始めます。がむしゃらにトライアンドエラーを繰り返すのも大切ですが，まずは自分が作ろうとしているものの全体像を紙に書き出します。</p>
+<p>全体像を書き出すと，以下のようになります（以下の図は私が紙に書き出したものをGoogle スライドで清書したものです。必ず，紙などに書き出す習慣をつけましょう）。左側の図にあるように，開始メッセージ（画面に「ようこそ！」みたいなのを出す），フルスクリーンにする（ブラウザの一部で実験課題をすると集中できないのでフルスクリーンで実施します），課題の教示（課題について説明する文書です），課題のメインの部分（ストループ刺激を呈示して，反応を取得する。そして，これを刺激の数だけ繰り返す），終了メッセージ（課題終了のメッセージです。今回は正答率などのフィードバックもすることにします）の順番になります。</p>
+<p>ここで大切なのは，実験課題は全体で１つというよりは，いくつかのブロックから構成されているとうことです。全体をいきなり作るのは結構たいへんですが，一部のブロックだけ作るなら頑張れるかもしれません。こうやって小さなブロックをいくつか作って，それをLEGOブロックみたいに組み合わせることで全体を作っていきます。こういう小さなブロックに分けて作っていくやり方を意識するようにしてみてください。</p>
+<p><img src="fig/jspsych2_fig2.png" /></p>
+<p>そして，図の左側のように刺激の組み合わせも書き出します。赤・緑・黄・青の４種類があるので，色４種と文字４種で16通りがあります。そして，1，6，11，16が一致条件，それ以外は不一致条件ですね。上の図のような順番で刺激を呈示すると，参加者は予想できてしまいますので，刺激呈示する際には，ランダム化して呈示します。</p>
+<p>紙に書き出すとか古臭いと思うかもしれませんが，こういう地味な作業をすることが漏れのない設計に繋がります。実験課題などのプログラミングだけでなく，理論やモデルの理解の際にもこういう習慣を身に着けておくと良いです。</p>
+<p><br></p>
+</div>
+<div id="教示と課題のメインブロックを最もシンプルな形で作る" class="section level2">
+<h2>3. 教示と課題のメインブロックを最もシンプルな形で作る</h2>
+<p>さて，設計図を見るといくつかあるブロックの中で一番メインのプロックは刺激呈示をして反応を取得するブロックです。これを最もシンプルな形で作るとすれば，反応の取得はおいておいて，まずは刺激を呈示するブロックを作ることになります。ということで，以下では，早速，教示と課題のメインブロックの刺激呈示部分を作ることとにします。なぜ教示も作るかというと，教示は一般的には簡単につくれることが多いのと，教示は参加者向けのものではありますが，上記の設計図と同じ働きをして，課題の全体像を意識することにつながります。</p>
+<p><br></p>
+<div id="教示を呈示する" class="section level3">
+<h3>3.1 教示を呈示する</h3>
+<p>早速，教示を作ってみましょう。以下のような内容を画面に呈示して，説明をします（＜＞内はその前の単語の色を指定しています）。</p>
+<pre><code>この課題では, 以下のような色のついた単語を見ていただきます。
+青＜赤色＞
+単語の意味は無視して，それぞれの単語の「色」を以下のキーボードのキーを押して回答してください。
+左手の人差し指と中指でdとf，右手の人差し指と中指でjとkを押してください。
+・赤色＜赤色＞の単語ならdを押す
+・青色＜青色＞の単語ならfを押す
+・緑色＜緑色＞の単語ならjを押す
+・黄色＜黄色＞の単語ならkを押す
+上の例の場合だと，赤色で「青」と書いてありますので，dを押します
+キーボードのキーをどれか押すと課題が始まります</code></pre>
+<p>新たにR Markdownファイルを新規に作成して，以下の内容を打ち込みます（基本的に<a href="https://kunisatolab.github.io/main/how-to-jspsych1.html">こちら</a>と同じです）。author名はご自身の名前に変更ください。</p>
+<p><img src="fig/jspsych2_fig3.png" /></p>
+<p>教示は，以下のように，“html-keyboard-response”を使って呈示します。stimulusってところで呈示する内容を指定します。post_trial_gapは，教示出してから次に移行する間の時間です。ここでは，1000msに設定します。なお，教示の説明部分は，pで挟まれた文章がありますが，これは，文字の大きさを変えたり，左揃えにする際に必要になります。そして，spanで挟まれた文章は，文字の色を変えることができます。</p>
+<p>教示の設定を書く，instructionができたら，timelineを作って，instructionにpushします。最後に，jsPsych.init()で，課題をtimelineにそって走らせましょう。なお，今回から，on_finish: function() {jsPsych.data.displayData();}を追加しています。これを追加しておくと，課題の終了時に呈示した刺激や反応などが表示されますので，便利です。</p>
+<p><img src="fig/jspsych2_fig4.png" /></p>
+<p>ここまでできたら，「Knit」を押して，教示を出してみましょう。一番基本の教示ブロックが完成しました。</p>
+<p><br></p>
+</div>
+<div id="ストループ刺激を呈示する" class="section level3">
+<h3>3.2 ストループ刺激を呈示する</h3>
+<p>さて，次はメインのブロックです。メインのブロックでは，ストループ刺激（色のついた文字）を呈示し，その反応を取得します。ただいきなり反応取得までいくとごちゃごちゃしますので，まずは刺激を順番通りに呈示するだけにします（ランダム化しない）。段階を踏むのは遠回りに思えるかもしれませんが，いきなり色々と入れ込むとわけわからなくなるので，やめておきましょう。</p>
+<p>以下のように，stimuliの中に16個のストループ刺激(stimulus)を用意します。p styleで色やフォントサイズの指定をしています（最初のstimulusは赤色の60ポイントの「赤」という文字ですね）。上の課題の設計図のところで作成したように，刺激を順番に指定します。これで，stimuliには，16個の色と文字の異なる刺激が準備できました。</p>
+<pre><code>var stimuli = [
+  {stimulus: &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:yellow;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;緑&lt;/p&gt;&quot; },
+  {stimulus: &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;緑&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:yellow;font-size:60pt;&#39;&gt;緑&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;緑&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;黄&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;黄&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:yellow;font-size:60pt;&#39;&gt;黄&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;黄&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:yellow;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;},
+  {stimulus: &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;}
+];</code></pre>
+<p>さて，このstimliを呈示していくわけですが，前に学んだようにfor文で呈示することもできますが，jsPsychでは，「Timeline variables」を使って，もう少し簡単に書くこともできます(Timeline variablesの詳細は，<a href="https://www.jspsych.org/overview/timeline/">こちら</a>を参照ください)。教示をhtml-keyborad-responseで呈示しましたが，それは１回だけでした。jsPsychでは，instructionや以下のstroopといったオブジェクトの中にもtimelineを作ることができます（なんだかよくわからないと思いますが，stroopの中に16個の刺激を呈示するtimelineを持つことができて，これができるとコードがすっきりします）。var stroop ={の後ろにtimeline:[{}]を作ります。timeline:[{}]内で，type, trial_duration, stimulus, promptを指定します。そして，。timeline:[{}]の後ろに，timeline_variablesで先程作ったstimuliを指定します。なお，今回は，stimulusを入れ替えて呈示するので，jsPsych.timelineVariable()を使って，timeline_variablesで指定したstimliの中のstimulusをstimulus: jsPsych.timelineVariable(‘stimulus’)と指定します。このように，timeline_variablesに16個のストループ刺激が入ったstimuliを指定したので，timeline:[{}]のstimulusをstimuliのstimulusを使って変更しつつ16回呈示します。</p>
+<p>ちょっと分かりにくいですが，呈示したい刺激のリストを作って，それをtimeline_variablesに入れます。そうすると，jsPsych.timelineVariable()を使って，その前のtimeline内の内容を変更することができます（今回の場合は，stimulusを施行ごとに変更しています）。これを上手く使うと，シンプルかつ柔軟に課題を作ることができます。</p>
+<p><img src="fig/jspsych2_fig5.png" /></p>
+<p>これで，作成したリストの順番でストループ刺激が呈示されるかと思います。試してみましょう。</p>
+<p><br></p>
+</div>
+<div id="演習課題1" class="section level3">
+<h3>演習課題1</h3>
+<ul>
+<li>今回は漢字で刺激を呈示しましたが，「赤」ではなく，「あか」のようにひらがなで刺激を呈示してみましょう。</li>
+</ul>
+<p><br> <br></p>
+</div>
+<div id="デバッグについて" class="section level3">
+<h3>デバッグについて</h3>
+<p>さて，ここまで上手く作れたでしょうか？なかなか動かなくて困った人もいるかもしれません。RmdファイルからHTMLは作れるけど，ちゃんと動作しないことも多いです。その時に，以下の方法でバグを探すと良いです。</p>
+<p>上手く動作しないときは，タイトルと作者だけ表示されることが多いですが，その上手く動いていないHTMLファイルをブラウザ（Chrome）で開きます。そして，右クリックをしてメニューをだして，Inspectをクリックします。そうすると以下の右側のような画面がでてくるので，そのConsoleあたりをみるとエラーが出ています。エラーをみると，コードのどこに問題があるか確認できます。これにしたがって，コードを修正していくと，ちゃんと走るかと思います。</p>
+<p><img src="fig/jspsych2_fig6.png" /></p>
+<p><br></p>
+</div>
+</div>
+<div id="課題のメインブロックに機能を追加をする" class="section level2">
+<h2>4. 課題のメインブロックに機能を追加をする</h2>
+<p>メインブロックの刺激呈示はできましたが，いくつかやり残したことがあります。ここでは，提示する刺激のランダム化と反応の取得をします。</p>
+<p><br></p>
+<div id="ストループ刺激をランダムに呈示する" class="section level3">
+<h3>4.1 ストループ刺激をランダムに呈示する</h3>
+<p>まず，刺激のランダム化は簡単で，timeline_variablesの後ろに，randomize_order: trueを入れればできます(ランダム化の詳細は，<a href="https://www.jspsych.org/overview/timeline/">こちら</a>を参照ください)。</p>
+<pre><code>var stroop = {
+  timeline: [{
+    type: &quot;html-keyboard-response&quot;,
+    trial_duration: 2000,
+    stimulus: jsPsych.timelineVariable(&#39;stimulus&#39;),
+    prompt: &#39;赤色ならd,  青色ならf,  緑色ならj,  黄色ならk&#39;,
+  }],
+  timeline_variables: stimuli,
+  randomize_order: true
+};</code></pre>
+<p>ただ，実際の課題は，刺激リストを数回繰り返すことも多いかと思います。その場合は，sampleを使います。sampleでは，以下のような方法があります。</p>
+<ul>
+<li><p>with-replacement: timeline variablesから特定の数ランダムにサンプルする(数はsizeで指定する)。同じアイテムが何度も選ばれることがある。</p></li>
+<li><p>without-replacement: timeline variablesから特定の数ランダムにサンプルする(数はsizeで指定する)。それぞれのアイテムが１回だけ選ばれる。</p></li>
+<li><p>fixed-repetitons: timeline variablesのアイテムがランダムに特定の回数サンプルされる（繰り返しの数はsizeで指定する）。</p></li>
+</ul>
+<p>今回の場合は，ストループ刺激のリストをランダムに2回（リストを2周する）呈示するので，fixed-repetitonsが適していますね。timeline_variables: stimuliの次にsample: {type: ‘fixed-repetitions’,size: 2}を追加しましょう。これで，simuliリストのアイテムを２回ランダムに呈示します。</p>
+<pre><code>var stroop = {
+  timeline: [{
+    type: &quot;html-keyboard-response&quot;,
+    trial_duration: 2000,
+    stimulus: jsPsych.timelineVariable(&#39;stimulus&#39;),
+    prompt: &#39;赤色ならd,  青色ならf,  緑色ならj,  黄色ならk&#39;,
+  }],
+  timeline_variables: stimuli,
+  sample: {type: &#39;fixed-repetitions&#39;,size: 2}
+};</code></pre>
+<p><br></p>
+</div>
+<div id="ボタン押しの記録と正誤判定" class="section level3">
+<h3>4.2 ボタン押しの記録と正誤判定</h3>
+<p>今回作成しているストループ課題では，キーボードのタイピングで反応を取得します(d,f,j,k)。なお，Java Script内で処理する際に文字よりも数字のコードのほうが便利です。そこで，キーボードのそれぞれ割り振られたコード使います。それぞれのキーボードにどういうコードが割り振られているかは，<a href="https://keycode.info/">https://keycode.info/</a>で簡単に確認できます。なお，今回使う，d,f,j,kの場合は，以下のようになります。</p>
+<ul>
+<li>赤色の単語ならdを押す = 68</li>
+<li>緑色の単語ならjを押す = 74</li>
+<li>黄色の単語ならkを押す = 75</li>
+<li>青色の単語ならfを押す = 70</li>
+</ul>
+<p>この情報も踏まえて，stimuliのリストに手を加えます。先程は，stimulusのみを書いていましたが，その後の正誤判定のためや解析で使えるように，dataにno（項目番号）,stim_type（一致か不一致か）,correct_key_press（正答のキーボードのキーのコード）を以下のように追加します。</p>
+<pre><code>var stimuli = [
+  {
+    stimulus: &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot;,
+    data: { no:&#39;1&#39;, stim_type: &#39;congruent&#39;, correct_key_press: &#39;68&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot;,
+    data: { no:&#39;2&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;74&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:yellow;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot;,
+    data: { no:&#39;3&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;75&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot;,
+    data: { no:&#39;4&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;70&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;緑&lt;/p&gt;&quot;,
+    data: { no:&#39;5&#39;, stim_type: &#39;congruent&#39;, correct_key_press: &#39;68&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;緑&lt;/p&gt;&quot;,
+    data: { no:&#39;6&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;74&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:yellow;font-size:60pt;&#39;&gt;緑&lt;/p&gt;&quot;,
+    data: { no:&#39;7&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;75&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;緑&lt;/p&gt;&quot;,
+    data: { no:&#39;8&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;70&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;黄&lt;/p&gt;&quot;,
+    data: { no:&#39;9&#39;, stim_type: &#39;congruent&#39;, correct_key_press: &#39;68&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;黄&lt;/p&gt;&quot;,
+    data: { no:&#39;10&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;74&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:yellow;font-size:60pt;&#39;&gt;黄&lt;/p&gt;&quot;,
+    data: { no:&#39;11&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;75&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;黄&lt;/p&gt;&quot;,
+    data: { no:&#39;12&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;70&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;,
+    data: { no:&#39;13&#39;, stim_type: &#39;congruent&#39;, correct_key_press: &#39;68&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;,
+    data: { no:&#39;14&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;74&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:yellow;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;,
+    data: { no:&#39;15&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;75&#39;}
+  },
+  {
+    stimulus: &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;,
+    data: { no:&#39;16&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;70&#39;}
+  }
+];</code></pre>
+<p>そして，以下のようにstroopブロックに追加をしていきます。</p>
+<ul>
+<li>typeの下に，choices: [“d”,“f”,“j”,“k”]をおいて，stroopブロックで使う選択肢を指定する。</li>
+<li>キーを押したら刺激呈示が終わるように，response_ends_trial: trueを追加する。</li>
+<li>刺激呈示or反応後にすぐに次の刺激がでてくるとまずいのでpost_trial_gapでブランクをいれます。その際に，post_trial_gap: function() {return Math.floor(Math.random() * 1500) + 500;}として，ランダムになるようにします（Math.random()は0~1の間の値をランダムにとるので，最小500ms，最大2000msになります）。</li>
+</ul>
+<p>以下が設定できたら，一度走らせてみましょう！それでうまくいっていれば，キーボードで反応をすると，最後にその選択が記録されます。</p>
+<pre><code>var stroop = {
+  timeline: [{
+    type: &quot;html-keyboard-response&quot;,
+    choices: [&quot;d&quot;,&quot;f&quot;,&quot;j&quot;,&quot;k&quot;],
+    trial_duration: 2000,
+    response_ends_trial: true,
+    stimulus: jsPsych.timelineVariable(&#39;stimulus&#39;),
+    prompt: &#39;赤色ならd,  青色ならf,  緑色ならj,  黄色ならk&#39;,
+    data: jsPsych.timelineVariable(&#39;data&#39;)，
+    post_trial_gap: function() {
+        return Math.floor(Math.random() * 1500) + 500;
+    }
+  }],
+  timeline_variables: stimuli,
+  sample: {type: &#39;fixed-repetitions&#39;,size: 2}
+};</code></pre>
+<p>さて，その後の解析なども含めて，反応の正誤判定をしておくと便利です。stimuliのリストのアイテムの正答反応を意味するcorrect_key_pressと実際の反応が記録されdataに保存されたdata.key_pressとが一致していれば，その試行の反応は正答です。それをif文を使って表現すると以下になります。基本的にはcorrectは0としておいて，もしアイテムの正答反応と反応が一致したら，correctを1にして，dataに保存します。</p>
+<pre><code>var correct = 0;
+if(data.correct_key_press == data.key_press){
+  correct = 1;
+} 
+data.correct = correct;</code></pre>
+<p>この作業は試行の最後にしてほしいので，試行終了時の作業を指示するon_finish: function()を使います。また，ここではstimuli内のdataを使うので，data: jsPsych.timelineVariable(‘data’)も指定します。そうすると以下のようになります。</p>
+<pre><code>/*ストループ課題*/
+var stroop = {
+  timeline: [{
+    type: &quot;html-keyboard-response&quot;,
+    choices: [&quot;d&quot;,&quot;f&quot;,&quot;j&quot;,&quot;k&quot;],
+    trial_duration: 2000,
+    response_ends_trial: true,
+    stimulus: jsPsych.timelineVariable(&#39;stimulus&#39;),
+    prompt: &#39;赤色ならd,  青色ならf,  緑色ならj,  黄色ならk&#39;,
+    data: jsPsych.timelineVariable(&#39;data&#39;),
+    on_finish: function(data){
+      var correct = 0;
+      if(data.correct_key_press == data.key_press){
+        correct = 1;
+      } 
+      data.correct = correct;
+    },
+    post_trial_gap: function() {
+        return Math.floor(Math.random() * 1500) + 500;
+    }
+  }],
+  timeline_variables: stimuli,
+  sample: {type: &#39;fixed-repetitions&#39;,size: 2}
+};</code></pre>
+<p>走らせてみて，最後に表示される結果から，ちゃんと正答した時にcorrectが1になっていますか？それができていれば，メインブロック部分は完成です。</p>
+<p><br></p>
+</div>
+<div id="演習課題2" class="section level3">
+<h3>演習課題2</h3>
+<ul>
+<li>上記では繰り返しが２回でしたが，繰り返しが３回のストループ課題を作ってみましょう。</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="メインブロック以外のブロックを追加していく" class="section level2">
+<h2>5. メインブロック以外のブロックを追加していく</h2>
+<p>さて，メインブロックは完成したので，残りのブロックを追加していきます。まずは，課題が始まった時に表示されるウェルカムメッセージとフルスクリーンで実施するための教示などのブロックを追加して，最後に終了の教示（今回はデブリーフィングとして，結果のフィードバックをする）を表示します。</p>
+<p><br></p>
+<div id="ウェウカムメッセージとフルスクリーン化の追加" class="section level3">
+<h3>5.1 ウェウカムメッセージとフルスクリーン化の追加</h3>
+<p>最初にウェウカムメッセージとして以下のwelcomブロックを追加します。</p>
+<pre><code>/* 最初のメッセージ*/
+var welcome = {
+  type: &quot;html-keyboard-response&quot;,
+  stimulus: &quot;&lt;p&gt;&lt;span style=&#39;font-size:20pt;&#39;&gt;実験にお越しいただき，ありがとうございます!!!&lt;/span&gt;&lt;/p&gt;&quot;+
+  &quot;&lt;p&gt;キーボードのキーをどれか押して，開始してください&lt;/p&gt;&quot;
+};</code></pre>
+<p>timelineにもwelcomを追加します。</p>
+<pre><code>var timeline = [];
+timeline.push(welcome);
+timeline.push(instructions);
+timeline.push(stroop);</code></pre>
+<p>さらに，認知課題をブラウザで実行する場合は，全画面表示で行う必要がありますので（気が散るので），そのブロックを追加します。全画面に関しては，jsPsychのプラグインにjspsych-fullscreen.jsというものがあるので，それを活用できます。ただ，jspsych-fullscreen.jsは英語表記なので，日本語化したものを作成しています。<a href="https://github.com/kunisatoLab/main/raw/master/materials/jspsych-fullscreen_jp.zip">jspsych-fullscreen_jp.js</a>をクリックして，ダウンロードして解凍したjspsych-fullscreen_jp.jsをjsPsychのpluginsフォルダ内に置いてください。その上で課題のRmdの最初の方に，tags$script(src=‘jspsych-6.1.0/plugins/jspsych-fullscreen_jp.js’)を追加ください。</p>
+<pre><code>library(htmltools)
+tagList(
+tags$script(src=&#39;jspsych-6.1.0/jspsych.js&#39;),
+tags$script(src=&#39;jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js&#39;),
+tags$script(src=&#39;jspsych-6.1.0/plugins/jspsych-fullscreen_jp.js&#39;)
+)</code></pre>
+<p>最後に，timelineのwelcomeの次にfullscreenのブロックをプッシュします。これで，ウェルカムメッセージが表示されて，全画面表示ができるようになっていると思います。</p>
+<pre><code>var timeline = [];
+timeline.push(welcome);
+timeline.push({
+  type: &#39;fullscreen&#39;,
+  fullscreen_mode: true
+});
+timeline.push(instructions);
+timeline.push(stroop);</code></pre>
+<p><br></p>
+</div>
+<div id="デブリーフィング" class="section level3">
+<h3>5.2 デブリーフィング</h3>
+<p>いよいよ最後です。最後に，終了時の教示（今回は結果のフィードバックをする）のブロックを追加します。html-keyboard-responseを使って画面を表示しますが，stimulusにて，dataから結果を引っ張ってきて，一致試行と不一致試行の平均反応時間を計算しています。ややこしそうですが，dataからfilterで絞り込みをかけて，countなどで数えるという単純な作業をしているだけになります。その計算結果をいれこんだ文章をつくって表示しています。</p>
+<pre><code>/*デブリーフィングの設定*/
+var debrief = {
+  type: &quot;html-keyboard-response&quot;,
+  stimulus: function() {
+    var incongruent_trials = jsPsych.data.get().filter({stim_type: &#39;incongruent&#39;}).count();
+    var congruent_trials = jsPsych.data.get().filter({stim_type: &#39;congruent&#39;}).count();
+    var accuracy = Math.round(jsPsych.data.get().filter({correct: 1}).count() / (incongruent_trials + congruent_trials) * 100);
+    var congruent_rt = Math.round(jsPsych.data.get().filter({correct: 1, stim_type: &#39;congruent&#39;}).select(&#39;rt&#39;).mean());
+    var incongruent_rt = Math.round(jsPsych.data.get().filter({correct: 1, stim_type: &#39;incongruent&#39;}).select(&#39;rt&#39;).mean());
+    return &quot;&lt;p&gt;あなたの正答率は，&lt;strong&gt;&quot;+accuracy+&quot;%&lt;/strong&gt;でした。&lt;/p&gt; &quot; +
+    &quot;&lt;p&gt;色と単語が一致していた時にボタンを押すまでにかかる時間の平均は， &lt;strong&gt;&quot; + congruent_rt + &quot;ms&lt;/strong&gt;でした。&lt;/p&gt;&quot;+
+    &quot;&lt;p&gt;色と単語が不一致だった時にボタンを押すまでにかかる時間の平均は， &lt;strong&gt;&quot; + incongruent_rt + &quot;ms&lt;/strong&gt;でした。&lt;/p&gt;&quot;+
+    &quot;&lt;p&gt;キーボードのキーをどれか押すと画面に結果の記録が表示されます。ブラウザを閉じて終了してください。ご参加ありがとうございました。&lt;/p&gt;&quot;;
+  }
+};</code></pre>
+<p>上記のdebriefブロックができたら，timelineにdebriefをpushします。</p>
+<pre><code>var timeline = [];
+timeline.push(welcome);
+timeline.push({
+  type: &#39;fullscreen&#39;,
+  fullscreen_mode: true
+});
+timeline.push(instructions);
+timeline.push(stroop);
+timeline.push(debrief);</code></pre>
+<p>さて，これで，ストループ課題は完成です！</p>
+<p><br></p>
+</div>
+<div id="演習課題3" class="section level3">
+<h3>演習課題3</h3>
+<ul>
+<li>キーボードのキーを，“d”,“f”,“j”,“k”ではなく，“z”,“x”,“n”,“m”に変えてストループ課題を作ってみよう！</li>
+</ul>
+</div>
 </div>
 
 <footer>
