@@ -88,10 +88,17 @@ title: "Code & Tips"
 
 <br />
 
+## 論文執筆
+
+- [RStudioで卒論・修論執筆（準備中）](how-to-write-with-rstudio.html)　☆16
+
+<br />
+
 ## ラボノート
 
 - [電子ラボノートeLabFTWの導入方法](how-to-elabftw.html)
 
+<br />
 
 ## 論文作成
 
