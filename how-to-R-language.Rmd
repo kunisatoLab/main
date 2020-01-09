@@ -24,6 +24,19 @@ R言語の使用法の演習をしつつスタイルガイドを身につける
 Rのスタイルガイド
 https://style.tidyverse.org/
 
+リンク
+https://kazutan.github.io/JSSP2018_spring/index.html
+
+
+https://heavywatal.github.io/slides/nagoya2018/0-why-r.html
+
+
+https://kazutan.github.io/kazutanR/index.html
+
+
+便利なリンクの紹介
+
+https://sites.google.com/site/yasknsd/ge-ren-dememo
 ```
 
 
