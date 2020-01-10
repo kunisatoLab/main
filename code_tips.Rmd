@@ -9,6 +9,8 @@ title: "Code & Tips"
 
 - [Github入門](how-to-github.html) ☆0
 
+<br />
+
 ## 認知課題
 
 - [jsPsychを用いた認知課題の作成1: jsPsychとJavaScript入門](how-to-jspsych1.html)　☆1
@@ -26,7 +28,6 @@ title: "Code & Tips"
 - [Presentationを用いた認知課題の作成](how-to-presentation.html)
 
 <br />
-
 
 ## 調査
 
@@ -80,6 +81,8 @@ title: "Code & Tips"
 
 - [メタ分析：オープンデータベースによる研究蓄積(準備中)](how-to-meta2.html)　☆13
 
+<br />
+
 ## 心理学的ネットワークモデリング
 
 - [心理学的ネットワーク分析入門1(準備中)](how-to-psychological-network1.html)　☆14
@@ -90,7 +93,13 @@ title: "Code & Tips"
 
 ## 論文執筆
 
-- [RStudioで卒論・修論執筆（準備中）](how-to-write-with-rstudio.html)　☆16
+- [心理学の研究ってどうやるの？（準備中）](how-to-conduct-research.html)　☆16
+
+<br />
+
+## 論文執筆
+
+- [RStudioで卒論・修論執筆（準備中）](how-to-write-with-rstudio.html)　☆17
 
 <br />
 
