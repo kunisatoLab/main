@@ -103,6 +103,13 @@ title: "Code & Tips"
 
 <br />
 
+## Rパッケージ
+
+- [latent cause model（開発中）](https://ykunisato.github.io/lcmr/)
+
+<br />
+
+
 ## ラボノート
 
 - [電子ラボノートeLabFTWの導入方法](how-to-elabftw.html)
