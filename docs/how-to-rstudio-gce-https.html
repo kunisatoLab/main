@@ -425,7 +425,8 @@ div.tocify {
 <li>VMインスタンスは起動のたびに外部IPが変わっちゃうので<a href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address?hl=ja">静的外部 IP アドレスの予約</a>をします。</li>
 <li>VMインスタンスを起動します。設定した外部IPになっているか確認します。</li>
 </ol>
-<p>なお，VMインスタンスは起動している間課金されるので，使わないときは停止しておきます。また，よく使う仮想マシン構成が決まっている場合は，インスタンステンプレートを使うと便利と思います。</p>
+<p>VMインスタンスは起動している間課金されるので，使わないときは停止しておきます。また，よく使う仮想マシン構成が決まっている場合は，インスタンステンプレートを使うと便利と思います。</p>
+<p>※ サーバーを稼働させると外部から攻撃のようなアクセスにさらされることになります。実際使うのは，研究室のメンバーだけだと思うので，デフォルトのファイヤーウォールではなく，GCPの「VPCネットワーク」→「ファイヤーウォールルール」で，HTTP(tcp:80)とHTTPS(tcp:443)を個別に作成し（VMで使うタグも設定する），IP範囲に使うIPを入れておくと，それ以外のIPからのアクセスを拒否できます。</p>
 </div>
 <div id="ドメイン名の入手" class="section level2">
 <h2>3. ドメイン名の入手</h2>
@@ -729,6 +730,29 @@ sudo gsutil cp ./rstudio.tar.gz gs://バケット名/`TZ=Asia/Tokyo date &quot;+
 sudo rm rstudio.tar.gz</code></pre>
 <p>以下の一行でも実行できます。</p>
 <pre><code>sudo tar czf rstudio.tar.gz rstudio;sudo gsutil cp ./rstudio.tar.gz gs://バケット名/`TZ=Asia/Tokyo date &quot;+%Y_%m%d_%H%M_%S&quot;`/;sudo rm rstudio.tar.gz</code></pre>
+<p>そして，crontabを使って，定期的に実行できます。/etc/cron.d/に拡張子なしのファイルを作って，以下を書き込みます（私はファイル名をrstudioにして，“sudo vi /etc/cron.d/rstudio”を実行して書き込みをしています。viやcrontabの使い方はちょっと癖があるのでネットの情報を確認ください）。</p>
+<p>sudo vi /home/ykunisato/backup.sh</p>
+<pre><code>#!/bin/bash
+cd /home/ykunisato/rstudio/ykunisato
+tar czf Analysis.tar.gz Analysis
+gsutil cp Analysis.tar.gz gs://backup_rstudio_server/`TZ=Europe/Amsterdam date &quot;+%Y_%m%d_%H%M_%S&quot;`/
+rm Analysis.tar.gz</code></pre>
+<p>例</p>
+<pre><code>#!/bin/bash
+cd /home/ykunisato/rstudio/ykunisato
+tar czf Analysis.tar.gz Analysis
+gsutil cp Analysis.tar.gz gs://backup_rstudio_server/`date &quot;+%Y_%m%d_%H%M_%S&quot;`/
+rm Analysis.tar.gz</code></pre>
+<pre><code>SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/home/ykunisato/gc_sdk/google-cloud-sdk/bin
+HOME=/home/ykunisato
+BOTO_CONFIG=&quot;/home/ykunisato/.boto&quot;
+
+
+50 21   * * *   ykunisato       sudo /bin/bash /home/ykunisato/backup.sh &gt;&gt; /home/ykunisato/corn.log 2&gt;&amp;1</code></pre>
+<p>sudo service cron restart</p>
+<p>上手くいきそうなのに，ファイルがアップされてない・・・</p>
+<p>Copying <a href="file://Analysis.tar.gz" class="uri">file://Analysis.tar.gz</a> [Content-Type=application/x-tar]… / [0 files][ 0.0 B/155.3 MiB] ^M==&gt; NOTE: You are uploading one or more large file(s), which would run significantly faster if you enable parallel composite uploads. This feature can be enabled by editing the “parallel_composite_upload_threshold” value in your .boto configuration file. However, note that if you do this large files will be uploaded as <code>composite objects &lt;https://cloud.google.com/storage/docs/composite-objects&gt;</code>_,which means that any user who downloads such objects will need to have a compiled crcmod installed (see “gsutil help crcmod”). This is because without a compiled crcmod, computing checksums on composite objects is so slow that gsutil disables downloads of composite objects. -^M- [0 files][155.3 MiB/155.3 MiB] ^M^M [1 files][155.3 MiB/155.3 MiB] <sup> M|</sup>M Operation completed over 1 objects/155.3 MiB.</p>
 </div>
 <div id="dockerをまるごとimageにして保存して送る" class="section level4">
 <h4>Dockerをまるごとimageにして保存して，送る</h4>
