@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -264,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -418,15 +424,35 @@ div.tocify {
 </div>
 <div id="仮想マシンvmの準備" class="section level2">
 <h2>2. 仮想マシン(VM)の準備</h2>
-<ol style="list-style-type: decimal">
-<li>名前やマシンの構成は好みで選択してください（マシンの構成によって金額が変わるので，お財布と相談ください）。ブートディスクの設定で変更を押して，Ubuntu 18.04 LTSを選んで，ディスクサイズは30GBくらいにしておきます<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></li>
-<li>ファイヤーウォールの設定(「HTTP トラフィックを許可する」と「HTTPS トラフィックを許可する」にチェックをいれる)</li>
-<li>VMインスタンスを作成します。勝手に立ち上がると思うので，停止します（作成したインスタンスの右端の方で停止ができます）。</li>
-<li>VMインスタンスは起動のたびに外部IPが変わっちゃうので<a href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address?hl=ja">静的外部 IP アドレスの予約</a>をします。</li>
-<li>VMインスタンスを起動します。設定した外部IPになっているか確認します。</li>
-</ol>
-<p>VMインスタンスは起動している間課金されるので，使わないときは停止しておきます。また，よく使う仮想マシン構成が決まっている場合は，インスタンステンプレートを使うと便利と思います。</p>
-<p>※ サーバーを稼働させると外部から攻撃のようなアクセスにさらされることになります。実際使うのは，研究室のメンバーだけだと思うので，デフォルトのファイヤーウォールではなく，GCPの「VPCネットワーク」→「ファイヤーウォールルール」で，HTTP(tcp:80)とHTTPS(tcp:443)を個別に作成し（VMで使うタグも設定する），IP範囲に使うIPを入れておくと，それ以外のIPからのアクセスを拒否できます。</p>
+<p>1.名前やマシンの構成は好みで選択してください（マシンの構成によって金額が変わるので，お財布と相談ください）。ブートディスクの設定で変更を押して，Ubuntu 18.04 LTSを選んで，ディスクサイズは30GBくらいにしておきます<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>。</p>
+<p>2.ファイヤーウォールの設定(「HTTP トラフィックを許可する」と「HTTPS トラフィックを許可する」にチェックをいれる)</p>
+<p>※ よく使う仮想マシン構成が決まっている場合は，インスタンステンプレートを使うと便利と思います。</p>
+<p>3.VMインスタンスを作成します。勝手に立ち上がると思うので，停止します（作成したインスタンスの右端の方で停止ができます）。</p>
+<p>4.VMインスタンスは起動している間課金されるので，使わないときは停止しておきます。でも，VMインスタンスは起動のたびに外部IPが変わっちゃうので<a href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address?hl=ja">静的外部 IP アドレスの予約</a>をします。</p>
+<p>5.VMインスタンスを起動します。設定した外部IPになっているか確認します。</p>
+<p>6.このまま稼働させると，sshdに攻撃がされます（結構頻繁にアタックされます・・・）。SSHポート番号を変更しておきます。ちょっとややこしいですが，以下の手順でSSHポートは変更できます。</p>
+<ul>
+<li>VMインスタンスを停止します。</li>
+<li>GCPの「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール ルールの作成」を押して新しいSSHポートを設定します。名前やターゲットタグは好きな名前にしてください。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは許可，ソースのIP範囲は， <code>0.0.0.0/0</code> とします。プロトコルは<code>tcp</code>でポートに好きなポート番号を入れます。</li>
+<li>設定した新しいファイアウォールルールを適用するため，VMインスタンスを編集して，ネットワークタグに上記で決めたターゲットタグを入れて保存します。</li>
+<li>VMインスタンスを起動します。</li>
+<li>通常のSSH接続(22portを使用)をします（「Compute Engine」の「VMインスタンス」の当該VMインスタンスの右端にある「SSH」をクリックします）。</li>
+<li>コンソールっぽい画面が出てきたら，以下のコマンドを打って，viでsshdの設定ファイルを開きます。</li>
+</ul>
+<pre><code>sudo vi /etc/ssh/sshd_config</code></pre>
+<ul>
+<li><p>バンっと画面に文字が出てきてビビるかもしれませんが，落ち着いて，<code># Port 22</code>を探して，<code>i</code>をタイプします（文字が挿入できるようになります）。#をはずして，22の代わりに自分が使いたいポート番号を入れます(<code>Port 自分の使いたい番号</code>)。入力ができたら，escキーをタイプしてから，<code>:wq</code>とタイプします（保存されます）。</p></li>
+<li><p>sshdの設定を反映させるために，以下のコマンドで再起動させます。</p></li>
+</ul>
+<pre><code>sudo systemctl restart sshd</code></pre>
+<ul>
+<li><p>ここで今22番portで開いた画面はそのままにして（閉じない），VMインスタンスの右端にある「SSH」の下矢印を押して，「ブラウザウィンドウでカスタムポートを開く」をクリックします。入力欄が出てくるので，そこに先程設定した新しいSSHのポートを入力して開きます。</p></li>
+<li><p>新しいSSHのポートでも開けたら，22番portを閉じます。もう一度，「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール ルールの作成」を押します。名前やターゲットタグは好きな名前にしてください。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは<code>拒否</code>，ソースのIP範囲は， <code>0.0.0.0/0</code> とします。プロトコルは<code>tcp</code>でポートは<code>22</code>にします。</p></li>
+<li><p>VMインスタンスを一度停止して，編集し，ネットワークタグに上記で決めたターゲットタグを入れて保存します(これで，httpのタグ，httpsのタグ，新しいsshポートのタグ，22番ポートを閉じるタグの４つがあると思います)。</p></li>
+<li><p>もう一度，VMインスタンスを起動します。通常のSSH接続(22番ポート)をしても接続できず，「ブラウザウィンドウでカスタムポートを開く」で自分で設定したSSHポートを使って接続できたら成功です。</p></li>
+<li><p>ちなみに，SSH接続後に以下を入力するとアクセス状況を見れます（<code>f</code>で次の画面に進んで，<code>q</code>で閉じます）。</p></li>
+</ul>
+<pre><code>sudo less /var/log/auth.log</code></pre>
 </div>
 <div id="ドメイン名の入手" class="section level2">
 <h2>3. ドメイン名の入手</h2>
@@ -560,6 +586,10 @@ services:
 </div>
 <div id="tips" class="section level2">
 <h2>Tips</h2>
+<div id="ipアドレスによるアクセスの制限" class="section level3">
+<h3>IPアドレスによるアクセスの制限</h3>
+<p>実際のところ使うのは，研究室のメンバーだけだと思います。知らないIPアドレスからの接続を許可しない設定にしておくと良いかなと思います。その場合は，GCPの「VPCネットワーク」→「ファイヤーウォールルール」で，HTTP(tcp:80)とHTTPS(tcp:443)を個別に作成し（VMで使うタグも設定する），IP範囲に使うIPを入れておくと，それ以外のIPからのアクセスを拒否できます。作成したファイヤーウォールルールは，VMインスタンスのファイヤーウォールの設定でタグを入れればVMインスタンスに適用されます（デフォルトのHTTPとHTTPSはタグから外しておく）。</p>
+</div>
 <div id="よく使うdocker-composeコマンド" class="section level3">
 <h3>よく使うDocker-composeコマンド</h3>
 <p>docker-composは，up, down, psくらいです。細かい設定は，dockerコマンドを使うことが多いです。</p>
