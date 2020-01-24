@@ -4,7 +4,19 @@ title: "国内学会・研究会発表"
 
 ## 2020
 
+### ポスター発表
+
+### 口頭発表・シンポジウム・研究会
+
+- 国里愛彦 (2020).オープンサイエンスの動向と計算論的アプローチ 第25回計算論的精神医学コロキウム NCNP 2020年1月24日(WEB経由で発表)
+
+※ 以下は当日の発表スライドから計算論的アプローチの部分を削除した内容です。
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/5iTcwoDdWKzdVo" width="510" height="420" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-223711438" title="再現可能性入門と最近の動向" target="_blank">再現可能性入門と最近の動向</a> </strong> from <strong><a href="//www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong> </div>
+
 ## 2019
+
+### ポスター発表
 
 - [112] 長谷川 晃・杣取 恵太・西村 春輝・服部 陽介・国里 愛彦(2019). 衝動的行為と反すうが抑うつを強める過程: 行動的衝動性に対する潜在変数アプローチを適用して 日本心理学会第83回大会　大阪(茨木)　立命館大学大阪いばらきキャンパス　2019年9月11日 [優秀発表賞]
 
