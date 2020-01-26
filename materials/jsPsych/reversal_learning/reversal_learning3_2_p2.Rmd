@@ -1,0 +1,56 @@
+---
+title: "Reversal learning task"
+author: "Yoshihiko Kunisato"
+output:
+  html_document:
+    mathjax: null
+    highlight: null
+    theme: null
+    css: jspsych-6.1.0/css/jspsych.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+```
+
+```{r}
+library(htmltools)
+tagList(
+tags$script(src='jspsych-6.1.0/jspsych.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-html-button-response.js')
+)
+```
+
+```{js}
+var instructions = {
+  type: "html-keyboard-response",
+  stimulus: "<p style='text-align:left'>画面に２つの図形がでてきますので，どちらかの図形を選択してください。</p>"+
+    "<p style='text-align:left'>あなたの選択に対して，ポジティブな反応（緑色の笑顔）かネガティブな反応（赤色の悲しい顔）が出ます。</p>"+
+    "<p style='text-align:left'>一方の図形はポジティブな反応が出やすく，もう一方はそうではありません。</p>"+
+    "<p style='text-align:left'>できるだけ，ポジティブな反応が得られるように，選択をしてください。</p>"+
+    "<p style='text-align:left'>なお，図形とそれに対する反応との関係は途中で変わることがあります。</p>"+
+    "<p style='text-align:left'>また，図形の出る位置（左右）は頻繁に変わります。</p>",
+  post_trial_gap: 1000
+};
+
+var choice = {
+    stimulus: '',
+    type: 'html-button-response',
+    choices: ['<div style="position: absolute; top: 50%; left: 20%"><img src="img/s1.jpeg" width="200px"/></div>',
+    '<div style="position: absolute; top: 50%; right: 20%"><img src="img/s2.jpeg" width="200px"/></div>'],
+    button_html: '%choice%',
+    trial_duration: 2000
+};
+
+var timeline = [];
+timeline.push(instructions);
+timeline.push(choice);
+
+jsPsych.init({
+    timeline: timeline,
+    on_finish: function() {
+     jsPsych.data.displayData();
+    }
+});
+```

@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -264,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -420,7 +426,7 @@ div.tocify {
 <ul>
 <li><p><a href="how-to-jspsych1.html">jsPsychを用いた認知課題の作成1: jsPsychとJavaScript入門</a>　☆1</p></li>
 <li><p><a href="how-to-jspsych2.html">jsPsychを用いた認知課題の作成2: ストループ課題</a>　☆2</p></li>
-<li><p><a href="how-to-jspsych3.html">jsPsychを用いた認知課題の作成3: 逆転学習課題(準備中)</a>　☆3</p></li>
+<li><p><a href="how-to-jspsych3.html">jsPsychを用いた認知課題の作成3: 逆転学習課題</a>　☆3</p></li>
 <li><p><a href="how-to-jspsych4.html">jsPsychを用いた認知課題の作成4: 音や動画呈示(準備中)</a>　☆4</p></li>
 <li><p><a href="how-to-web-experiment-jspsych.html">jsPsychを用いたWEB実験の実施(FirebaseでWEB実験を実施する方法の解説)</a></p></li>
 <li><p><a href="how-to-psychopy.html">PsychoPyを用いた認知課題の作成 (PsychoPy3未対応,2020年3月には対応します・・・)</a></p></li>
