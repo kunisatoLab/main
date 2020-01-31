@@ -1,0 +1,53 @@
+---
+title: "movie"
+author: "Yoshihiko Kunisato"
+output:
+  html_document:
+    mathjax: null
+    highlight: null
+    theme: null
+    css: jspsych-6.1.0/css/jspsych.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+```
+
+```{r}
+library(htmltools)
+tagList(
+tags$script(src='jspsych-6.1.0/jspsych.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-video-slider-response.js')
+)
+```
+
+```{js}
+var instructions = {
+  type: "html-keyboard-response",
+  stimulus: "<p style='text-align:left'>これから動画が流れます。</p>"+
+    "<p style='text-align'>流れている動画どのくらい好きか嫌いかマウスを使ってスライダーを動かして評価してください。</p>"+
+    "<p style='text-align:left'>スペースを押して始めてください。</p>",
+  post_trial_gap: 1000
+};
+
+var movie1 = {
+    type: 'video-slider-response',
+    sources:['video/v1.mp4'],
+    width: 600,
+    labels: ["嫌い", "どちらでもない", "好き"],
+    prompt: "<p>この動画がどのくらい好きか嫌いか，マウスでスライダーを動かして，評定してください</p>",
+    button_label: "次へ"
+}
+
+var timeline = [];
+timeline.push(instructions);
+timeline.push(movie1);
+
+jsPsych.init({
+    timeline: timeline,
+    on_finish: function() {
+     jsPsych.data.displayData();
+    }
+});
+```
