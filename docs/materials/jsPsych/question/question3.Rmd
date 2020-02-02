@@ -1,0 +1,65 @@
+---
+title: "question"
+author: "Yoshihiko Kunisato"
+output:
+  html_document:
+    mathjax: null
+    highlight: null
+    theme: null
+    css: jspsych-6.1.0/css/jspsych.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+```
+
+```{r}
+library(htmltools)
+tagList(
+tags$script(src='jspsych-6.1.0/jspsych.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-html-form.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-likert.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-multi-select.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-text.js')
+)
+```
+
+```{js}
+var options = [ "非常にあてはまる", 
+  "かなりあてはまる", 
+  "ややあてはまる", 
+  "どちらともいえない",
+  "あまりあてはまらない",
+  "ほとんどあてはまらない",
+  "全くあてはまらない"];
+
+var multi_choice = {
+  type: 'survey-multi-choice',
+  questions: [
+    {prompt: "私は研究室が好きだ", name: 'lab', options: options, required:true}, 
+    {prompt: "私はプログラミングが好きだ", name: 'program', options: options, required: false}
+  ],
+  button_label: '次へ'
+};
+
+var multi_choice_h = {
+  type: 'survey-multi-choice',
+  questions: [
+    {prompt: "私は心理学が好きだ", name: 'psych', options: options, required: true, horizontal: true}, 
+    {prompt: "私は専修大学が好きだ", name: 'senshu', options: options, required: false, horizontal: true}
+  ],
+  button_label: '次へ'
+};
+
+var timeline = [];
+timeline.push(multi_choice);
+timeline.push(multi_choice_h);
+
+jsPsych.init({
+    timeline: timeline,
+    on_finish: function() {
+     jsPsych.data.displayData();
+    }
+});
+```

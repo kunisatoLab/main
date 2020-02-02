@@ -33,7 +33,7 @@ title: "Code & Tips"
 
 ## 調査
 
-- [jsPsychを用いた質問紙の作成(準備中)](how-to-jspsych5.html)　☆7
+- [jsPsychを用いた質問紙の作成](how-to-jspsych5.html)　☆7
 
 
 - [GoogleFormsとGoogleAppsScriptによる

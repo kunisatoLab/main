@@ -1,0 +1,47 @@
+---
+title: "question"
+author: "Yoshihiko Kunisato"
+output:
+  html_document:
+    mathjax: null
+    highlight: null
+    theme: null
+    css: jspsych-6.1.0/css/jspsych.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+```
+
+```{r}
+library(htmltools)
+tagList(
+tags$script(src='jspsych-6.1.0/jspsych.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-html-form.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-likert.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-multi-select.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-text.js')
+)
+```
+
+```{js}
+var survey_text = {
+  type: 'survey-text',
+  questions: [
+    {prompt: "氏名をご記入ください", name: 'name',placeholder: "姓 名"},
+    {prompt: "jsPsychを学んだ感想を書いてください", rows: 10, columns: 80}, 
+  ],
+  button_label: '次へ',
+};
+
+var timeline = [];
+timeline.push(survey_text);
+
+jsPsych.init({
+    timeline: timeline,
+    on_finish: function() {
+     jsPsych.data.displayData();
+    }
+});
+```

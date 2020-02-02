@@ -1,0 +1,60 @@
+---
+title: "question"
+author: "Yoshihiko Kunisato"
+output:
+  html_document:
+    mathjax: null
+    highlight: null
+    theme: null
+    css: jspsych-6.1.0/css/jspsych.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+```
+
+```{r}
+library(htmltools)
+tagList(
+tags$script(src='jspsych-6.1.0/jspsych.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-html-form.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-likert.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-multi-select.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-text.js')
+)
+```
+
+```{js}
+var multi_select = {
+    type: 'survey-multi-select',
+    questions: [
+      {
+        prompt: "好きな心理学を選んでください（複数回答可）", 
+        options: ["知覚心理学", "学習心理学", "認知心理学", "発達心理学", "心理統計学","社会心理学","生理心理学","臨床心理学"], 
+        horizontal: true,
+        required: true,
+        name: 'psych'
+      }, 
+      {
+        prompt: "臨床心理学で好きな内容を選んでください（複数回答可）", 
+        options: ["心理療法", "心理査定", "異常心理学"], 
+        horizontal: false,
+        required:　false,
+        name: 'ClinicalPsych'
+      }
+    ], 
+    button_label: '次へ',
+    randomize_question_order: true
+};
+
+var timeline = [];
+timeline.push(multi_select);
+
+jsPsych.init({
+    timeline: timeline,
+    on_finish: function() {
+     jsPsych.data.displayData();
+    }
+});
+```

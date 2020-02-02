@@ -1,0 +1,47 @@
+---
+title: "question"
+author: "Yoshihiko Kunisato"
+output:
+  html_document:
+    mathjax: null
+    highlight: null
+    theme: null
+    css: jspsych-6.1.0/css/jspsych.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+```
+
+```{r}
+library(htmltools)
+tagList(
+tags$script(src='jspsych-6.1.0/jspsych.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-html-form.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-likert.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-multi-select.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-survey-text.js')
+)
+```
+
+```{js}
+var form = {
+  type: 'survey-html-form',
+  preamble: '<p> 以下の質問に回答してください。</p>',
+  html: '<p> 好きな食べ物: <input name="food_like" type="text" /></p>'+
+  　　　'<p> 嫌いな食べ物: <input name="food_dislike" type="text" /></p>'+
+        '<p> 好きなYoutuber: <input name="youtuber" type="text" /></p>',
+  button_label: '次へ'
+};
+
+var timeline = [];
+timeline.push(form);
+
+jsPsych.init({
+    timeline: timeline,
+    on_finish: function() {
+     jsPsych.data.displayData();
+    }
+});
+```
