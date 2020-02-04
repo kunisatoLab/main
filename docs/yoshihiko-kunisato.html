@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -264,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -422,6 +428,9 @@ div.tocify {
 </div>
 <div id="メールフォーム" class="section level4">
 <h4><a href="https://docs.google.com/forms/d/1OQ7pN-oQda1YwGvcTBga3oKkviI697uc9AQlGVhX2YI/viewform">メールフォーム</a></h4>
+</div>
+<div id="researchmap" class="section level4">
+<h4><a href="https://researchmap.jp/ykunisato/">researchmap</a></h4>
 </div>
 <div id="google-scholar" class="section level4">
 <h4><a href="http://scholar.google.com/citations?hl=en&amp;user=cIhFY1YAAAAJ&amp;view_op=list_works&amp;gmla=AJsN-F7XXdjEVvO0pY8lFA19xtBq863U6a1bfQ12xa94TeIywgyckyZZLTHy4w22BKWLQJNyO9poNHdBCbXOlOjBAtMt007KIQvJ3pw1eoK3M-H7cbPbOmyU5ERgq4Wflfy8ZAjESXzV">Google Scholar</a></h4>
