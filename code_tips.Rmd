@@ -43,7 +43,7 @@ title: "Code & Tips"
 
 ## データ解析
 
-- [R言語の基本と解析のパッケージ化](how-to-R-language.html) ☆8
+- [R言語の基本と解析のパッケージ化(準備中)](how-to-R-language.html) ☆8
 
 - [認知課題の解析データセット作成](how-to-dataHandling.html)　☆9
 

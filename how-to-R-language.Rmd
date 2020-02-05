@@ -67,4 +67,4 @@ R, RStudio, RMarkdown, Tidyverseの使用法としては，以下の書籍をオ
 
 - [vertical](https://github.com/CrumpLab/vertical)
 
-
+## 卒論・修論用RMarkdownテンプレート＜準備中・・・＞
