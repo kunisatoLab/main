@@ -1,42 +1,70 @@
 ---
 title: "R言語の基本と解析のパッケージ化"
 ---
+## RとRStudioR入門
 
-## 準備中
+本研究室では，研究室のRStudio上で，行動課題や調査票の作成（jsPsych），統計解析（R, tidyverse），卒論・修論の執筆（RMarkdown），バージョン管理(Github)を行います。極限までRStudio上でやります。そこまでこだわる必要はないのですが，マネジメントと効率化と再現性の観点から，そのようにします。ということで，RとRStudioについて
 
-```{r eval=FALSE, include=FALSE}
+<br>
+
+### 第5回春の方法論セミナー
+
+RやRStudioの使用法については，すでに多くの優れた資料があります。今回は，小杉考司さん（みなさんの知っているコスギッチ先生ですね），紀ノ定保礼さん，前田和寛さんが講師を務められた[日本社会心理学会 第５回春の方法論セミナー「R/RStudio入門」](http://www.socialpsychology.jp/seminar/seminar_180321.html)を中心に学んでいきましょう！第５回春の方法論セミナー「R/RStudio入門」は，[資料](https://kazutan.github.io/JSSP2018_spring/index.html)と[動画](https://www.youtube.com/playlist?list=PL7OS4lcGSZ3B1R3kbwu57jPNEpacCCAwP)が公開されています。資料だけで分からない場合は，動画も確認しましょう。
+
+<br>
+
+### RとRStudio入門
+
+まずは，RとRStudioへの入門から始めましょう！[R/RStudioの入門資料](https://kazutan.github.io/JSSP2018_spring/intro_rstudio.html)を上から読んでいきましょう。「Rに触れてみよう」以降は，実際にコンソールにコマンドを打ち込んで確認しつつすすめましょう！RStudioの概要とRコンソールの操作になれればOKです。
+
+<br>
+
+### データハンドリング入門
+
+続けて，データハンドリングに入門します。統計解析や図を作る前に，データを整形する必要があります。エクセルなどで整形する人もありますが，ヒューマンエラーが確実に入り込みます。止めましょう。必ずRを使って，生データから解析や図を作るのに使うデータセットの前処理をするようにしましょう。この作業においては，tidyverseパッケージが便利です。[データハンドリングの入門資料](https://kazutan.github.io/JSSP2018_spring/data_handling.html)を上から進めて，tidyverseパッケージに含まれるdplyrやtidyrに慣れていきましょう！
+
+<br>
+
+### データの可視化入門
+
+最後に，データの可視化（つまり図を作る）に入門します。Rには標準のplot関数がありますが，ggplot2パッケージを使うと，きれいな図を簡単に作成することができます。[データの可視化の入門資料](https://kazutan.github.io/JSSP2018_spring/visualization.html)を上から進めて，ggplot2に慣れていきましょう。
+
+<br>
+
+### スタイルガイド
+
+Rコードは，動けばいい部分もありますが，第３者も読みやすいように書く必要があります。そのような書き方の指針として，[tidyverseスタイルガイド](https://style.tidyverse.org/)があります。以下のスライドにはその要点をまとめていますので，[tidyverseスタイルガイド](https://style.tidyverse.org/)と合わせて確認をしてください。
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/wNlFMYILtIJT0X?startSlide=21" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-77835559" title="統計解析の再現可能性を高める取り組み" target="_blank">統計解析の再現可能性を高める取り組み</a> </strong> from <strong><a href="//www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong> </div>
+
+<br>
+
+RやRStudioに少しなれてきたでしょうか？以下のスライドは，データハンドリングから統計解析までまとめたものになりますので，一度ざーっと確認をしておいてください。
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/bdxbQ58hm1Bu5O" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/r-74207682" title="臨床心理学におけるR入門: データハンドリングから統計解析まで" target="_blank">臨床心理学におけるR入門: データハンドリングから統計解析まで</a> </strong> from <strong><a href="https://www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong> </div>
+
+<br>
+
+### 推薦書籍
+
+R, RStudio, RMarkdown, Tidyverseの使用法としては，以下の書籍をオススメします。
+
+- [RユーザのためのRStudio実践入門−tidyverseによるモダンな分析フローの世界−(松村優哉・湯谷啓明・紀ノ定保礼・前田和寛, 技術評論社)](https://www.amazon.co.jp/dp/4774198536/ref=cm_sw_em_r_mt_dp_U_UOWoEbZT5F0ET)
+
+- [再現可能性のすゝめ(高橋康介，共立出版)](https://www.amazon.co.jp/dp/4320112431/ref=cm_sw_em_r_mt_dp_U_7OWoEbBG1R974)
+
+- [Rではじめるデータサイエンス(Hadley Wickham & Garrett Grolemund, 大橋真也・黒川利明(訳)，オライリー・ジャパン)](https://www.amazon.co.jp/dp/487311814X/ref=cm_sw_em_r_mt_dp_U_3OWoEbHD8BA75)
+
+## 解析のパッケージ化＜準備中・・・＞
+
+- 国里が書いた[再現可能な心理学研究入門](https://psyarxiv.com/x8js5/)の特に「4.2解析のパッケージ化」を読んでおいてください。
+
+- [Klein et al.(2018)のA Practical Guide for Transparency in Psychological Science論文のサプリメント](https://psych-transparency-guide.uni-koeln.de/)が分かりやすいです。
 
 
-
-## RStudio
-のコンソールの説明
-
-### Working Directory
-
-### Package
-
-## Rmd入門
-Rmdの使用以外を認めない
+- [codebook](http://www.martin-elff.net/knitr/memisc/codebook.html)
 
 
-R言語の使用法の演習をしつつスタイルガイドを身につける
-
-Rのスタイルガイド
-https://style.tidyverse.org/
-
-リンク
-https://kazutan.github.io/JSSP2018_spring/index.html
-
-
-https://heavywatal.github.io/slides/nagoya2018/0-why-r.html
-
-
-https://kazutan.github.io/kazutanR/index.html
-
-
-便利なリンクの紹介
-
-https://sites.google.com/site/yasknsd/ge-ren-dememo
-```
+- [vertical](https://github.com/CrumpLab/vertical)
 
 

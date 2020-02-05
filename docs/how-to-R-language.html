@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -264,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -407,8 +413,65 @@ div.tocify {
 </div>
 
 
-<div id="準備中" class="section level2">
-<h2>準備中</h2>
+<div id="rとrstudior入門" class="section level2">
+<h2>RとRStudioR入門</h2>
+<p>本研究室では，研究室のRStudio上で，行動課題や調査票の作成（jsPsych），統計解析（R, tidyverse），卒論・修論の執筆（RMarkdown），バージョン管理(Github)を行います。極限までRStudio上でやります。そこまでこだわる必要はないのですが，マネジメントと効率化と再現性の観点から，そのようにします。ということで，RとRStudioについて</p>
+<p><br></p>
+<div id="第5回春の方法論セミナー" class="section level3">
+<h3>第5回春の方法論セミナー</h3>
+<p>RやRStudioの使用法については，すでに多くの優れた資料があります。今回は，小杉考司さん（みなさんの知っているコスギッチ先生ですね），紀ノ定保礼さん，前田和寛さんが講師を務められた<a href="http://www.socialpsychology.jp/seminar/seminar_180321.html">日本社会心理学会 第５回春の方法論セミナー「R/RStudio入門」</a>を中心に学んでいきましょう！第５回春の方法論セミナー「R/RStudio入門」は，<a href="https://kazutan.github.io/JSSP2018_spring/index.html">資料</a>と<a href="https://www.youtube.com/playlist?list=PL7OS4lcGSZ3B1R3kbwu57jPNEpacCCAwP">動画</a>が公開されています。資料だけで分からない場合は，動画も確認しましょう。</p>
+<p><br></p>
+</div>
+<div id="rとrstudio入門" class="section level3">
+<h3>RとRStudio入門</h3>
+<p>まずは，RとRStudioへの入門から始めましょう！<a href="https://kazutan.github.io/JSSP2018_spring/intro_rstudio.html">R/RStudioの入門資料</a>を上から読んでいきましょう。「Rに触れてみよう」以降は，実際にコンソールにコマンドを打ち込んで確認しつつすすめましょう！RStudioの概要とRコンソールの操作になれればOKです。</p>
+<p><br></p>
+</div>
+<div id="データハンドリング入門" class="section level3">
+<h3>データハンドリング入門</h3>
+<p>続けて，データハンドリングに入門します。統計解析や図を作る前に，データを整形する必要があります。エクセルなどで整形する人もありますが，ヒューマンエラーが確実に入り込みます。止めましょう。必ずRを使って，生データから解析や図を作るのに使うデータセットの前処理をするようにしましょう。この作業においては，tidyverseパッケージが便利です。<a href="https://kazutan.github.io/JSSP2018_spring/data_handling.html">データハンドリングの入門資料</a>を上から進めて，tidyverseパッケージに含まれるdplyrやtidyrに慣れていきましょう！</p>
+<p><br></p>
+</div>
+<div id="データの可視化入門" class="section level3">
+<h3>データの可視化入門</h3>
+<p>最後に，データの可視化（つまり図を作る）に入門します。Rには標準のplot関数がありますが，ggplot2パッケージを使うと，きれいな図を簡単に作成することができます。<a href="https://kazutan.github.io/JSSP2018_spring/visualization.html">データの可視化の入門資料</a>を上から進めて，ggplot2に慣れていきましょう。</p>
+<p><br></p>
+</div>
+<div id="スタイルガイド" class="section level3">
+<h3>スタイルガイド</h3>
+<p>Rコードは，動けばいい部分もありますが，第３者も読みやすいように書く必要があります。そのような書き方の指針として，<a href="https://style.tidyverse.org/">tidyverseスタイルガイド</a>があります。以下のスライドにはその要点をまとめていますので，<a href="https://style.tidyverse.org/">tidyverseスタイルガイド</a>と合わせて確認をしてください。</p>
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/wNlFMYILtIJT0X?startSlide=21" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
+</iframe>
+<div style="margin-bottom:5px">
+<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-77835559" title="統計解析の再現可能性を高める取り組み" target="_blank">統計解析の再現可能性を高める取り組み</a> </strong> from <strong><a href="//www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong>
+</div>
+<p><br></p>
+<p>RやRStudioに少しなれてきたでしょうか？以下のスライドは，データハンドリングから統計解析までまとめたものになりますので，一度ざーっと確認をしておいてください。</p>
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/bdxbQ58hm1Bu5O" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
+</iframe>
+<div style="margin-bottom:5px">
+<strong> <a href="//www.slideshare.net/YoshihikoKunisato/r-74207682" title="臨床心理学におけるR入門: データハンドリングから統計解析まで" target="_blank">臨床心理学におけるR入門: データハンドリングから統計解析まで</a> </strong> from <strong><a href="https://www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong>
+</div>
+<p><br></p>
+</div>
+<div id="推薦書籍" class="section level3">
+<h3>推薦書籍</h3>
+<p>R, RStudio, RMarkdown, Tidyverseの使用法としては，以下の書籍をオススメします。</p>
+<ul>
+<li><p><a href="https://www.amazon.co.jp/dp/4774198536/ref=cm_sw_em_r_mt_dp_U_UOWoEbZT5F0ET">RユーザのためのRStudio実践入門−tidyverseによるモダンな分析フローの世界−(松村優哉・湯谷啓明・紀ノ定保礼・前田和寛, 技術評論社)</a></p></li>
+<li><p><a href="https://www.amazon.co.jp/dp/4320112431/ref=cm_sw_em_r_mt_dp_U_7OWoEbBG1R974">再現可能性のすゝめ(高橋康介，共立出版)</a></p></li>
+<li><p><a href="https://www.amazon.co.jp/dp/487311814X/ref=cm_sw_em_r_mt_dp_U_3OWoEbHD8BA75">Rではじめるデータサイエンス(Hadley Wickham &amp; Garrett Grolemund, 大橋真也・黒川利明(訳)，オライリー・ジャパン)</a></p></li>
+</ul>
+</div>
+</div>
+<div id="解析のパッケージ化準備中" class="section level2">
+<h2>解析のパッケージ化＜準備中・・・＞</h2>
+<ul>
+<li><p>国里が書いた<a href="https://psyarxiv.com/x8js5/">再現可能な心理学研究入門</a>の特に「4.2解析のパッケージ化」を読んでおいてください。</p></li>
+<li><p><a href="https://psych-transparency-guide.uni-koeln.de/">Klein et al.(2018)のA Practical Guide for Transparency in Psychological Science論文のサプリメント</a>が優れている。</p></li>
+<li><p><a href="http://www.martin-elff.net/knitr/memisc/codebook.html">codebook</a></p></li>
+<li><p><a href="https://github.com/CrumpLab/vertical">vertical</a></p></li>
+</ul>
 </div>
 
 <footer>
