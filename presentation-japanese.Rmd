@@ -12,7 +12,7 @@ title: "国内学会・研究会発表"
 
 ※ 以下は当日の発表スライドから計算論的アプローチの部分を削除した内容です。
 
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/5iTcwoDdWKzdVo" width="510" height="420" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-223711438" title="再現可能性入門と最近の動向" target="_blank">再現可能性入門と最近の動向</a> </strong> from <strong><a href="//www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong> </div>
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vStKDpYXXMYq_KkFcTcct8Xhhup3nL_dSIIGH27fin4Nv8ohz11xfqso6UEWQqGMlaIgkIPdf7qs_3_/embed?start=false&loop=false&delayms=30000" frameborder="0" width="480" height="389" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 ## 2019
 
@@ -84,8 +84,6 @@ title: "国内学会・研究会発表"
 <iframe width="560" height="315" src="https://www.youtube.com/embed/7yxuL0hg5fc" frameborder="0" allowfullscreen></iframe>
 
 - 国里愛彦(2017). ベイズ統計の基礎　研究会「臨床疫学研究における報告の質向上のための統計学の研究会」,東京医科歯科大学, 2017年3月18日 
-
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS" width="510" height="420" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
 
 - 国里愛彦(2017). 統計解析の再現可能性を高める取り組み　研究会「臨床疫学研究における報告の質向上のための統計学の研究会」,東京医科歯科大学, 2017年7月8日 
 
