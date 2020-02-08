@@ -2,4 +2,4 @@
 title: "RStudioで卒論・修論執筆"
 ---
 
-## 準備中
+https://github.com/ykunisato/senshuRmd

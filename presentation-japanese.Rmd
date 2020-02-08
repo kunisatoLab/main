@@ -85,7 +85,7 @@ title: "国内学会・研究会発表"
 
 - 国里愛彦(2017). 統計解析の再現可能性を高める取り組み　研究会「臨床疫学研究における報告の質向上のための統計学の研究会」,東京医科歯科大学, 2017年7月8日 
 
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/wNlFMYILtIJT0X" width="510" height="420" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-77835559" title="統計解析の再現可能性を高める取り組み" target="_blank">統計解析の再現可能性を高める取り組み</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTySEMxqNr-FrwAAbnJWm4gza2hkWQGbU-wI_3P0kHPFGGsrCt6EFjxcVNs3OP4OHYGYM8dA-AbT2lS/embed?start=false&loop=false&delayms=30000" frameborder="0" width="480" height="389" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 - [90] 国里愛彦　(2017). 公募シンポジウム「明日からできる経験サンプリング法-効率的なデータ収集と洗練した解析で移ろう心を描き出す-」　企画・司会・企画趣旨説明　日本心理学会第81回大会 久留米 久留米シティプラザ　2017年9月20日
 
@@ -272,7 +272,7 @@ Cognitive Behavioural Therapy for children and/or persons with disabilities」�
  
 - 国里愛彦(2012).「メタ・アナリシス」の入門 研究会「心理・医学系研究者のためのデータ解析環境Rによる統計学の研究会」，東京医科歯科大学，8月25日
 
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/NNW9OPcULYgH7B" width="510" height="420" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-37490113" title="メタ・アナリシスの入門" target="_blank">メタ・アナリシスの入門</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRD1R5yRiru8JJbm6TCvSZr16jOA01I0mZHd86v7CFDKrQ7ltoENxuik5MJ9Mz1Q7b4_AJ_E8TciptA/embed?start=false&loop=false&delayms=30000" frameborder="0" width="480" height="389" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
  
 - 国里愛彦 (2012). 神経ネットワークとグラフ理論 シンポジウム「応用脳科学研究の進展」早稲田大学応用脳科学研究所主催，早稲田大学，6月30日
  

@@ -35,13 +35,13 @@ RやRStudioの使用法については，すでに多くの優れた資料があ
 
 Rコードは，動けばいい部分もありますが，第３者も読みやすいように書く必要があります。そのような書き方の指針として，[tidyverseスタイルガイド](https://style.tidyverse.org/)があります。以下のスライドにはその要点をまとめていますので，[tidyverseスタイルガイド](https://style.tidyverse.org/)と合わせて確認をしてください。
 
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/wNlFMYILtIJT0X?startSlide=21" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-77835559" title="統計解析の再現可能性を高める取り組み" target="_blank">統計解析の再現可能性を高める取り組み</a> </strong> from <strong><a href="//www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong> </div>
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vS54HiCsuieNDAzOdt4-lyh0w0H2L7SRE6ncM3dTEq3nojp70ADhhRA_WJ2oWlgSH83JYyubGiTe9LU/embed?start=false&loop=false&delayms=30000" frameborder="0" width="480" height="389" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 <br>
 
-RやRStudioに少しなれてきたでしょうか？以下のスライドは，データハンドリングから統計解析までまとめたものになりますので，一度ざーっと確認をしておいてください。
+RやRStudioに少しなれてきたでしょうか？以下のスライドは，私がデータハンドリングに関してまとめたものになりますので，一度ざーっと確認をしておいてください。
 
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/bdxbQ58hm1Bu5O" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/r-74207682" title="臨床心理学におけるR入門: データハンドリングから統計解析まで" target="_blank">臨床心理学におけるR入門: データハンドリングから統計解析まで</a> </strong> from <strong><a href="https://www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong> </div>
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRmBmqtoE3Vd_r_RcuvdTxPe2AZT6G8knY-3X6DmxKyx3PBJpXWUU4HdnQJ-2WDb42YaVn22bPRuJeA/embed?start=false&loop=false&delayms=30000" frameborder="0" width="480" height="389" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 <br>
 
