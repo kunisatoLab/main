@@ -43,9 +43,11 @@ title: "Code & Tips"
 
 ## データ解析
 
-- [R言語の基本と解析のパッケージ化(準備中)](how-to-R-language.html) ☆8
+- [R言語の基本](how-to-R-language.html) ☆8
 
 - [認知課題の解析データセット作成](how-to-dataHandling.html)　☆9
+
+- [RStudioで卒論・修論執筆](how-to-write-with-rstudio.html)　☆10
 
 - [再生可能なデータ解析入門](how-to-reproducible-analysis.html)　
 
@@ -57,13 +59,13 @@ title: "Code & Tips"
 
 ## 認知モデリング
 
-- [強化学習モデル: 最尤推定(準備中)](how-to-cognitive-modeling-rl1.html)　☆10
+- [強化学習モデル: 最尤推定(準備中)](how-to-cognitive-modeling-rl1.html)　☆11
 
-- [強化学習モデル: ベイズ推定(準備中)](how-to-cognitive-modeling-rl2.html)　☆11
+- [強化学習モデル: ベイズ推定(準備中)](how-to-cognitive-modeling-rl2.html)　☆12
 
-- [逐次サンプリングモデル：DDM(準備中)](how-to-cognitive-modeling-ssm1.html)　☆12
+- [逐次サンプリングモデル：DDM(準備中)](how-to-cognitive-modeling-ssm1.html)　☆13
 
-- [逐次サンプリングモデル: LBA(準備中)](how-to-cognitive-modeling-ssm2.html)　☆13
+- [逐次サンプリングモデル: LBA(準備中)](how-to-cognitive-modeling-ssm2.html)　☆14
 
 - [hBayesDMでベイジアン認知モデリング](how-to-hBayesDM.html)
 
@@ -79,9 +81,9 @@ title: "Code & Tips"
 
 ## メタ分析
 
-- [メタ分析：メタ分析の実施手順](how-to-meta1.html)　☆14
+- [メタ分析：メタ分析の実施手順](how-to-meta1.html)　☆15
 
-- [メタ分析：オープンデータベースによる研究蓄積(準備中)](how-to-meta2.html)　☆15
+- [メタ分析：オープンデータベースによる研究蓄積(準備中)](how-to-meta2.html)　☆16
 
 <br />
 
@@ -92,11 +94,6 @@ title: "Code & Tips"
 - [心理学的ネットワーク分析入門2(準備中)](how-to-psychological-network2.html)
 
 
-<br />
-
-## 論文執筆
-
-- [RStudioで卒論・修論執筆（準備中）](how-to-write-with-rstudio.html)　☆16
 
 <br />
 

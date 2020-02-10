@@ -54,16 +54,3 @@ R, RStudio, RMarkdown, Tidyverseの使用法としては，以下の書籍をオ
 - [再現可能性のすゝめ(高橋康介，共立出版)](https://www.amazon.co.jp/dp/4320112431/ref=cm_sw_em_r_mt_dp_U_7OWoEbBG1R974)
 
 - [Rではじめるデータサイエンス(Hadley Wickham & Garrett Grolemund, 大橋真也・黒川利明(訳)，オライリー・ジャパン)](https://www.amazon.co.jp/dp/487311814X/ref=cm_sw_em_r_mt_dp_U_3OWoEbHD8BA75)
-
-## 解析のパッケージ化＜準備中・・・＞
-
-- 国里が書いた[再現可能な心理学研究入門](https://psyarxiv.com/x8js5/)の特に「4.2解析のパッケージ化」を読んでおいてください。
-
-- [Klein et al.(2018)のA Practical Guide for Transparency in Psychological Science論文のサプリメント](https://psych-transparency-guide.uni-koeln.de/)が分かりやすいです。
-
-
-- [codebook](http://www.martin-elff.net/knitr/memisc/codebook.html)
-
-
-- [vertical](https://github.com/CrumpLab/vertical)
-

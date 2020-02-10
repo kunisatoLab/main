@@ -3,3 +3,14 @@ title: "RStudioで卒論・修論執筆"
 ---
 
 https://github.com/ykunisato/senshuRmd
+
+
+https://ykunisato.github.io/senshuRmd/index.html
+
+
+## 解析のパッケージ化＜準備中・・・＞
+
+- 国里が書いた[再現可能な心理学研究入門](https://psyarxiv.com/x8js5/)の特に「4.2解析のパッケージ化」を読んでおいてください。
+
+
+
