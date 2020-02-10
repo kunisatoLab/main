@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -264,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -412,6 +418,9 @@ div.tocify {
 </div>
 <div id="section" class="section level3">
 <h3>2020</h3>
+<!--
+Katahira, K., Kunisato, Y., Yamashita, Y., & Suzuki, S. (2020) A robust data-driven approach identifies four personality types across four large data sets. Frontiers in Big Data
+-->
 </div>
 <div id="section-1" class="section level3">
 <h3>2019</h3>
