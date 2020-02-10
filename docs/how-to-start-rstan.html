@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,13 +87,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -111,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -131,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -152,47 +191,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -206,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -241,8 +305,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -251,6 +313,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -341,101 +413,133 @@ div.tocify {
 </div>
 
 
-<div class="section level2">
-<h2>ベイズ統計の基礎</h2>
-<p>まずは，以下のSlideShareのスライドの31ページまで読んでみましょう！</p>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
-</div>
-</div>
-<div id="rstan" class="section level2">
-<h2>Rstanのインストール</h2>
-<p>本プログラムを走らせるにあたり，最新のRとRstudioをインストールしてください。また，<a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started-(Japanese)">RStan Getting Started (Japanese)</a>を参照して，Rstanのインストールもしてください。Rstanの他に使用するパッケージは，bayesplot，tidyverseです（install.packages()でインストールください）。</p>
-</div>
-<div class="section level2">
-<h2>使用パッケージの読み込み</h2>
-<pre class="r"><code>rm(list=ls())
+<p>修正中</p>
+<!--
+
+## ベイズ統計の基礎
+
+まずは，以下のSlideShareのスライドの31ページまで読んでみましょう！
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+## Rstanのインストール
+
+本プログラムを走らせるにあたり，最新のRとRstudioをインストールしてください。また，[RStan Getting Started (Japanese)](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started-(Japanese))を参照して，Rstanのインストールもしてください。Rstanの他に使用するパッケージは，bayesplot，tidyverseです（install.packages()でインストールください）。
+
+## 使用パッケージの読み込み
+
+
+```r
+rm(list=ls())
 library(tidyverse)
 library(bayesplot)
-library(rstan)</code></pre>
-</div>
-<div class="section level2">
-<h2>データの準備</h2>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=33" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
-</div>
-<p>ある疾患Aに対する新しい治療薬Bの有効性を調べたいとします。そこで，60名の患者を，通常治療(tAU)と通常治療に新しい治療薬を追加した治療(tNEW)の2群に割り付ける臨床試験を実施しました（tAU : tNEW = 1 : 1）。プライマリーアウトカムは，治療一ヶ月後の疾患Aに関する症状評価尺度得点とします（尺度の合計得点範囲は，1 ~ 100点で，症状が重いほど得点が高くなります）。なお，新しい治療は，コストが高いので，通常治療よりも6点以上は高くないといけないとする臨床的な共通認識が存在するとします。</p>
-<p>データを作成するにあたり，tAU群(30名)の治療後の症状評価尺度得点は，平均50，標準偏差8の正規分布に従い，tNEW群(30名)の治療後の症状評価尺度得点は，平均40，標準偏差10に従うとします（あくまでデータを作成するために設定しました。実際は，知り得ない情報になります）。</p>
-<pre class="r"><code># データの作成
-numtAU &lt;- 30
-numtNEW &lt;- 30
+library(rstan)
+```
+
+
+
+## データの準備
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=33" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+ある疾患Aに対する新しい治療薬Bの有効性を調べたいとします。そこで，60名の患者を，通常治療(tAU)と通常治療に新しい治療薬を追加した治療(tNEW)の2群に割り付ける臨床試験を実施しました（tAU : tNEW = 1 : 1）。プライマリーアウトカムは，治療一ヶ月後の疾患Aに関する症状評価尺度得点とします（尺度の合計得点範囲は，1 ~ 100点で，症状が重いほど得点が高くなります）。なお，新しい治療は，コストが高いので，通常治療よりも6点以上は高くないといけないとする臨床的な共通認識が存在するとします。
+
+データを作成するにあたり，tAU群(30名)の治療後の症状評価尺度得点は，平均50，標準偏差8の正規分布に従い，tNEW群(30名)の治療後の症状評価尺度得点は，平均40，標準偏差10に従うとします（あくまでデータを作成するために設定しました。実際は，知り得ない情報になります）。
+
+
+```r
+# データの作成
+numtAU <- 30
+numtNEW <- 30
 
 # 正規分布から乱数発生させてデータを作成
 set.seed(321)
-scoretAU &lt;- rnorm(numtAU, mean = 50, sd = 8) 
-scoretNEW &lt;- rnorm(numtNEW, mean = 40, sd = 10) 
+scoretAU <- rnorm(numtAU, mean = 50, sd = 8) 
+scoretNEW <- rnorm(numtNEW, mean = 40, sd = 10) 
 
 #　尺度得点は整数なので丸める
-scoretAUr &lt;- round(scoretAU, digits = 0)
-scoretNEWr &lt;- round(scoretNEW, digits = 0)
+scoretAUr <- round(scoretAU, digits = 0)
+scoretNEWr <- round(scoretNEW, digits = 0)
 
 # Stanに渡すデータの準備（list型で作成する）
-stanData1 &lt;- list(StAU=scoretAUr, StNEW = scoretNEWr, NtAU = numtAU, NtNEW = numtNEW)</code></pre>
-</div>
-<div class="section level2">
-<h2>データの要約と可視化</h2>
-<p>作成したデータの要約統計量を算出し，図示する。要約統計量の算出には，tidyverseに入っているdplyr，可視化には，tidyverseに入っているggplot2を使っています。</p>
-<div class="section level3">
-<h3>要約統計量</h3>
-<pre class="r"><code># プロットするためデータのデータフレーム化
-group &lt;- rep(c(&quot;tAU&quot;,&quot;tNEW&quot;),times = c(numtAU, numtNEW))
-score &lt;- append(scoretAUr,scoretNEWr)
-data1 &lt;- data_frame(group,score)
+stanData1 <- list(StAU=scoretAUr, StNEW = scoretNEWr, NtAU = numtAU, NtNEW = numtNEW)
+```
 
+## データの要約と可視化
+
+作成したデータの要約統計量を算出し，図示する。要約統計量の算出には，tidyverseに入っているdplyr，可視化には，tidyverseに入っているggplot2を使っています。
+
+### 要約統計量
+
+
+```r
+# プロットするためデータのデータフレーム化
+group <- rep(c("tAU","tNEW"),times = c(numtAU, numtNEW))
+score <- append(scoretAUr,scoretNEWr)
+data1 <- data_frame(group,score)
+```
+
+```
+## Warning: `data_frame()` is deprecated, use `tibble()`.
+## This warning is displayed once per session.
+```
+
+```r
 # データの要約
-data1 %&gt;% 
-  group_by(group) %&gt;% 
-  summarise(Mean = mean(score,na.rm = T), SD = sd(score,na.rm = T), Min = min(score, na.rm = T), Max = max(score, na.rm = T))</code></pre>
-<pre><code>## # A tibble: 2 x 5
+data1 %>% 
+  group_by(group) %>% 
+  summarise(Mean = mean(score,na.rm = T), SD = sd(score,na.rm = T), Min = min(score, na.rm = T), Max = max(score, na.rm = T))
+```
+
+```
+## # A tibble: 2 x 5
 ##   group  Mean    SD   Min   Max
-##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 tAU    50.7  7.72  31.0  70.0
-## 2 tNEW   40.2  9.26  18.0  58.0</code></pre>
-</div>
-<div class="section level3">
-<h3>チャートプロット＋バイオリンプロット</h3>
-<pre class="r"><code>data1 %&gt;% 
+##   <chr> <dbl> <dbl> <dbl> <dbl>
+## 1 tAU    50.7  7.72    31    70
+## 2 tNEW   40.2  9.26    18    58
+```
+
+### チャートプロット＋バイオリンプロット
+
+
+```r
+data1 %>% 
   ggplot(aes(x = group, y = score, color = group)) +
   geom_violin(trim = FALSE) +
-  geom_jitter(position = position_jitter(0.2)) </code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-</div>
-<div class="section level3">
-<h3>チャートプロット＋箱ひげ図</h3>
-<pre class="r"><code>data1 %&gt;% 
+  geom_jitter(position = position_jitter(0.2)) 
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+
+### チャートプロット＋箱ひげ図
+
+
+```r
+data1 %>% 
   ggplot(aes(x = group, y = score, color = group)) +
   geom_boxplot(position=position_dodge(0.8)) +
-  geom_jitter(position = position_jitter(0.2)) </code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-</div>
-</div>
-<div class="section level2">
-<h2>ベイズ推定</h2>
-<p>この試験についての先行研究がなく，情報のある事前分布を設定するのが難しいとします。その場合には，無情報事前分布をおきます。ここでは，各群の平均と標準偏差の無情報事前分布として，0から100の区間の一様分布を指定します。</p>
-<div id="stan" class="section level3">
-<h3>Stanコード</h3>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=35" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
-</div>
-<p>Stanコードは以下になります。今回，muとsigmaについては，事前分布を明示的に書いていません。この場合は，parametersブロックで指定した範囲の一様分布が事前分布に使われます。</p>
-<p>なお，今回は，Stanコードを“”でくくってmodel1にいれて，それをあとでstan()で，コンパイルしてサンプリングしています。一方で，.stanという名前のファイルを作って読み込むスタイルもあります。.stanファイルを作る方がオードソックスですが，ちょと扱いにくいし，ファイルが増えるので私は好きじゃありません（ただの好みです）。ご自身にとって一番しっくりいく方法をご利用ください。</p>
-<pre class="r"><code>model1 &lt;- &quot;
+  geom_jitter(position = position_jitter(0.2)) 
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+
+## ベイズ推定
+
+この試験についての先行研究がなく，情報のある事前分布を設定するのが難しいとします。その場合には，無情報事前分布をおきます。ここでは，各群の平均と標準偏差の無情報事前分布として，0から100の区間の一様分布を指定します。
+
+### Stanコード
+
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=35" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+Stanコードは以下になります。今回，muとsigmaについては，事前分布を明示的に書いていません。この場合は，parametersブロックで指定した範囲の一様分布が事前分布に使われます。
+
+なお，今回は，Stanコードを""でくくってmodel1にいれて，それをあとでstan()で，コンパイルしてサンプリングしています。一方で，.stanという名前のファイルを作って読み込むスタイルもあります。.stanファイルを作る方がオードソックスですが，ちょと扱いにくいし，ファイルが増えるので私は好きじゃありません（ただの好みです）。ご自身にとって一番しっくりいく方法をご利用ください。
+
+
+
+```r
+model1 <- "
 data{
      int NtAU;
      int NtNEW;
@@ -444,351 +548,404 @@ data{
 }
 
 parameters {
-     vector&lt;lower = 0, upper = 100&gt; [2] mu;
-     vector&lt;lower = 0, upper = 100&gt; [2] sigma;
+     vector<lower = 0, upper = 100> [2] mu;
+     vector<lower = 0, upper = 100> [2] sigma;
 }
 
 model {
   StAU ~ normal(mu[1],sigma[1]);
   StNEW ~ normal(mu[2],sigma[2]);
 }
-&quot;</code></pre>
-</div>
-<div id="rstan" class="section level3">
-<h3>Rstanによるサンプリング</h3>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=36" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
-</div>
-<p>stan()によって，model1をコンパイルした上で，サンプリングする。ちなみに，コンパイル時にエラーが出るが，それは，気にしなくても良いです。</p>
-<pre class="r"><code># Stanの設定（並列化など）
+"
+```
+
+### Rstanによるサンプリング
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=36" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+stan()によって，model1をコンパイルした上で，サンプリングする。ちなみに，コンパイル時にエラーが出るが，それは，気にしなくても良いです。
+
+
+```r
+# Stanの設定（並列化など）
 rstan_options(auto_write=TRUE)
 options(mc.cores = parallel::detectCores())
 # サンプリング
-fit1 &lt;- stan(model_code = model1, 
+fit1 <- stan(model_code = model1, 
             seed = 1234, 
             data = stanData1,
             warmup = 300, 
             iter = 1000,
             chains = 4,
-            thin = 2)</code></pre>
-<pre><code>## In file included from file16d1d71384644.cpp:8:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/StanHeaders/include/src/stan/model/model_header.hpp:4:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/StanHeaders/include/stan/math.hpp:4:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/StanHeaders/include/stan/math/rev/mat.hpp:4:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/StanHeaders/include/stan/math/rev/core.hpp:12:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/StanHeaders/include/stan/math/rev/core/gevv_vvv_vari.hpp:5:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/StanHeaders/include/stan/math/rev/core/var.hpp:7:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/BH/include/boost/math/tools/config.hpp:13:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/BH/include/boost/config.hpp:39:
-## /Library/Frameworks/R.framework/Versions/3.4/Resources/library/BH/include/boost/config/compiler/clang.hpp:200:11: warning: &#39;BOOST_NO_CXX11_RVALUE_REFERENCES&#39; macro redefined [-Wmacro-redefined]
-## #  define BOOST_NO_CXX11_RVALUE_REFERENCES
-##           ^
-## &lt;command line&gt;:6:9: note: previous definition is here
-## #define BOOST_NO_CXX11_RVALUE_REFERENCES 1
-##         ^
-## 1 warning generated.</code></pre>
-</div>
-<div class="section level3">
-<h3>収束の確認</h3>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=37" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
-</div>
-<div class="section level4">
-<h4>トレースプロットの確認</h4>
-<p>warmupの区間は，チェーンによってばらついていますが，それ以降は，きれいに混ざっています。ちなみに，thin=2にしているので，n_warmupは半分の150になります。</p>
-<pre class="r"><code># Warmupもみたいので，それを含めて抽出する
-post1Warmup &lt;- extract(fit1, inc_warmup = TRUE, permuted = FALSE)
+            thin = 2)
+```
+
+
+### 収束の確認
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=37" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+#### トレースプロットの確認
+
+warmupの区間は，チェーンによってばらついていますが，それ以降は，きれいに混ざっています。ちなみに，thin=2にしているので，n_warmupは半分の150になります。
+
+
+```r
+# Warmupもみたいので，それを含めて抽出する
+post1Warmup <- extract(fit1, inc_warmup = TRUE, permuted = FALSE)
 # トレースプロット
-mcmc_trace(post1Warmup, n_warmup = 150)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-</div>
-<div class="section level4">
-<h4>自己相関</h4>
-<p>自己相関も問題なさそうです。</p>
-<pre class="r"><code>post1Array &lt;- as.array(fit1)
-mcmc_acf(post1Array)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=38" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
-</div>
-</div>
-<div id="rhat" class="section level4">
-<h4>Rhatの確認</h4>
-<p>1.1以下に収まっていました。</p>
-<pre class="r"><code>mcmc_rhat(rhat(fit1)) + yaxis_text()</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-</div>
-<div class="section level4">
-<h4>有効サンプルサイズ</h4>
-<p>有効サンプルサイズが0.1を下回ることはありませんでした。</p>
-<pre class="r"><code>mcmc_neff(neff_ratio(fit1))+ yaxis_text()</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-</div>
-</div>
-<div class="section level3">
-<h3>推定結果の確認</h3>
-<div id="-1" class="section level4">
-<h4>要約統計量</h4>
-<p>EAP推定値（mean）をみると，muは要約統計量の平均値と同じくらいで，sigmaは要約統計量よりも少し大きくなっている。</p>
-<pre class="r"><code>print(fit1)</code></pre>
-<pre><code>## Inference for Stan model: 714b95f9b4d5aaca8b6732b0753c05e1.
+mcmc_trace(post1Warmup, n_warmup = 150)
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+
+#### 自己相関
+
+自己相関も問題なさそうです。
+
+
+```r
+post1Array <- as.array(fit1)
+mcmc_acf(post1Array)
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=38" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+#### Rhatの確認
+
+1.1以下に収まっていました。
+
+
+```r
+mcmc_rhat(rhat(fit1)) + yaxis_text()
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+
+#### 有効サンプルサイズ
+
+有効サンプルサイズが0.1を下回ることはありませんでした。
+
+
+```r
+mcmc_neff(neff_ratio(fit1))+ yaxis_text()
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+
+
+### 推定結果の確認
+#### 要約統計量
+EAP推定値（mean）をみると，muは要約統計量の平均値と同じくらいで，sigmaは要約統計量よりも少し大きくなっている。
+
+
+```r
+print(fit1)
+```
+
+```
+## Inference for Stan model: 714b95f9b4d5aaca8b6732b0753c05e1.
 ## 4 chains, each with iter=1000; warmup=300; thin=2; 
 ## post-warmup draws per chain=350, total post-warmup draws=1400.
 ## 
-##             mean se_mean   sd    2.5%     25%     50%     75%   97.5%
-## mu[1]      50.65    0.04 1.49   47.62   49.71   50.69   51.65   53.41
-## mu[2]      40.23    0.05 1.74   36.88   39.06   40.24   41.35   43.54
-## sigma[1]    8.10    0.04 1.17    6.29    7.24    7.99    8.67   11.07
-## sigma[2]    9.71    0.04 1.30    7.59    8.78    9.57   10.44   12.76
-## lp__     -148.65    0.05 1.45 -152.11 -149.37 -148.29 -147.61 -146.86
-##          n_eff Rhat
-## mu[1]     1347    1
-## mu[2]     1099    1
-## sigma[1]  1087    1
-## sigma[2]  1012    1
-## lp__      1021    1
+##             mean se_mean   sd    2.5%     25%     50%     75%   97.5% n_eff
+## mu[1]      50.78    0.04 1.50   47.83   49.75   50.77   51.85   53.71  1248
+## mu[2]      40.27    0.05 1.81   36.63   39.15   40.24   41.44   43.88  1327
+## sigma[1]    8.14    0.03 1.17    6.25    7.29    8.01    8.80   10.68  1160
+## sigma[2]    9.64    0.04 1.31    7.50    8.69    9.50   10.44   12.55  1275
+## lp__     -148.73    0.05 1.51 -152.32 -149.51 -148.37 -147.61 -146.86  1016
+##          Rhat
+## mu[1]       1
+## mu[2]       1
+## sigma[1]    1
+## sigma[2]    1
+## lp__        1
 ## 
-## Samples were drawn using NUTS(diag_e) at Mon Apr  2 10:29:36 2018.
+## Samples were drawn using NUTS(diag_e) at Mon Feb 10 17:06:35 2020.
 ## For each parameter, n_eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor on split chains (at 
-## convergence, Rhat=1).</code></pre>
-</div>
-<div class="section level4">
-<h4>事後分布のプロット</h4>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=39" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
-</div>
-<p>各群の平均と標準偏差の事後密度曲線（中央値と95%確信区間）をプロットします。</p>
-<pre class="r"><code>post1Matrix &lt;- as.matrix(fit1)
-mcmc_areas(post1Matrix, pars = c(&quot;mu[1]&quot;,&quot;mu[2]&quot;),prob = 0.95)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<pre class="r"><code>mcmc_areas(post1Matrix, pars = c(&quot;sigma[1]&quot;,&quot;sigma[2]&quot;),prob = 0.95)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
-</div>
-<div class="section level4">
-<h4>平均値差の事後分布</h4>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=40" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
-</div>
-<p>tAU群とtNEW群の母平均値の差(正だとtNEWが優越)の事後分布をプロットします。</p>
-<pre class="r"><code># 事後分布からのサンプルを抽出してデータフレーム化
-post1DF &lt;- as_data_frame(post1Matrix)
+## convergence, Rhat=1).
+```
+
+#### 事後分布のプロット
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=39" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+各群の平均と標準偏差の事後密度曲線（中央値と95%確信区間）をプロットします。
+
+
+```r
+post1Matrix <- as.matrix(fit1)
+mcmc_areas(post1Matrix, pars = c("mu[1]","mu[2]"),prob = 0.95)
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+
+```r
+mcmc_areas(post1Matrix, pars = c("sigma[1]","sigma[2]"),prob = 0.95)
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-13-2.png" width="672" />
+
+
+#### 平均値差の事後分布
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=40" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+tAU群とtNEW群の母平均値の差(正だとtNEWが優越)の事後分布をプロットします。
+
+
+```r
+# 事後分布からのサンプルを抽出してデータフレーム化
+post1DF <- as_data_frame(post1Matrix)
+```
+
+```
+## Warning: `as_data_frame()` is deprecated, use `as_tibble()` (but mind the new semantics).
+## This warning is displayed once per session.
+```
+
+```r
 # mu[1](tAU群)とmu[2](tNEW群)の母平均値差を計算しデータフレーム化
-muDiff &lt;- post1DF$`mu[1]` - post1DF$`mu[2]`
-muDiffData &lt;- data_frame(muDiff)
+muDiff <- post1DF$`mu[1]` - post1DF$`mu[2]`
+muDiffData <- data_frame(muDiff)
 
 # EAP推定値，標準偏差，95%信用区間
-muDiffData %&gt;% 
-  summarise(Mean = mean(muDiff,na.rm = T), SD = sd(muDiff,na.rm = T), CI_2.5 = quantile(muDiff,probs = 0.025, na.rm = T), CI_97.5 = quantile(muDiff,probs = 0.975, na.rm = T))</code></pre>
-<pre><code>## # A tibble: 1 x 4
+muDiffData %>% 
+  summarise(Mean = mean(muDiff,na.rm = T), SD = sd(muDiff,na.rm = T), CI_2.5 = quantile(muDiff,probs = 0.025, na.rm = T), CI_97.5 = quantile(muDiff,probs = 0.975, na.rm = T))
+```
+
+```
+## # A tibble: 1 x 4
 ##    Mean    SD CI_2.5 CI_97.5
-##   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
-## 1  10.4  2.25   6.27    14.9</code></pre>
-<pre class="r"><code># プロット
-muDiffData %&gt;% 
+##   <dbl> <dbl>  <dbl>   <dbl>
+## 1  10.5  2.33   5.96    15.1
+```
+
+```r
+# プロット
+muDiffData %>% 
   ggplot(aes(x=muDiff)) +
-  geom_density()</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-</div>
-<div id="0" class="section level4">
-<h4>平均値の差が0以上である確率</h4>
-<pre class="r"><code># 基準点
-criteria &lt;- 0
+  geom_density()
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-14-1.png" width="672" />
+
+#### 平均値の差が0以上である確率
+
+```r
+# 基準点
+criteria <- 0
 
 # muDiffでcriteria以下のサンプルの個数
-numUnderCriteria &lt;- muDiffData %&gt;% 
-  filter(muDiff &lt;= criteria) %&gt;% 
+numUnderCriteria <- muDiffData %>% 
+  filter(muDiff <= criteria) %>% 
   count()
 
 # muDiffでcriteriaより上のサンプルの個数
-numOverCriteria &lt;- muDiffData %&gt;% 
-  filter(muDiff &gt; criteria) %&gt;% 
+numOverCriteria <- muDiffData %>% 
+  filter(muDiff > criteria) %>% 
   count()
 
 # プロット
-muDiffData %&gt;% 
+muDiffData %>% 
   ggplot(aes(x = muDiff)) +
   geom_density() +
-  geom_vline(xintercept = criteria, colour = &quot;red&quot;)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<pre class="r"><code>print(paste(&quot;群間の平均値の差の事後分布において，&quot;,criteria,&quot;以上である確率は，&quot;,(numOverCriteria/(numOverCriteria+numUnderCriteria)),&quot;です&quot;))</code></pre>
-<pre><code>## [1] &quot;群間の平均値の差の事後分布において， 0 以上である確率は， 1 です&quot;</code></pre>
-</div>
-</div>
-<div id="6" class="section level3">
-<h3>#平均値の差が6以上である確率</h3>
-<pre class="r"><code># 基準点
-criteria &lt;- 6
+  geom_vline(xintercept = criteria, colour = "red")
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-15-1.png" width="672" />
+
+```r
+print(paste("群間の平均値の差の事後分布において，",criteria,"以上である確率は，",(numOverCriteria/(numOverCriteria+numUnderCriteria)),"です"))
+```
+
+```
+## [1] "群間の平均値の差の事後分布において， 0 以上である確率は， 1 です"
+```
+
+### #平均値の差が6以上である確率
+
+```r
+# 基準点
+criteria <- 6
 
 # muDiffでcriteria以下のサンプルの個数
-numUnderCriteria &lt;- muDiffData %&gt;% 
-  filter(muDiff &lt;= criteria) %&gt;% 
+numUnderCriteria <- muDiffData %>% 
+  filter(muDiff <= criteria) %>% 
   count()
 
 # muDiffでcriteriaより上のサンプルの個数
-numOverCriteria &lt;- muDiffData %&gt;% 
-  filter(muDiff &gt; criteria) %&gt;% 
+numOverCriteria <- muDiffData %>% 
+  filter(muDiff > criteria) %>% 
   count()
 
 # プロット
-muDiffData %&gt;% 
+muDiffData %>% 
   ggplot(aes(x = muDiff)) +
   geom_density() +
-  geom_vline(xintercept = criteria, colour = &quot;red&quot;)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-<pre class="r"><code>print(paste(&quot;群間の平均値の差の事後分布において，&quot;,criteria,&quot;以上である確率は，&quot;,(numOverCriteria/(numOverCriteria+numUnderCriteria)),&quot;です&quot;))</code></pre>
-<pre><code>## [1] &quot;群間の平均値の差の事後分布において， 6 以上である確率は， 0.978571428571429 です&quot;</code></pre>
-<div class="section level4">
-<h4>事後予測分布</h4>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=41" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
-</div>
-<p>２群の平均と標準偏差の事後分布からのサンプルと正規分布を用いて，データを発生させて，事後予測分布を作成する。今回は，Stanの外側で処理をしているが，generated quantities{}ブロックで，_rngを使って，任意のパラメータの事後予測分布を出すこともできる。</p>
-<pre class="r"><code># 事後分布のサンプル数分，サンプルと正規分布からデータを作成
-numSamples &lt;- length(post1DF$`mu[1]`)
-tAUPred &lt;- rnorm(numSamples,post1DF$`mu[1]`,post1DF$`sigma[1]`)
-tNEWPred &lt;- rnorm(numSamples,post1DF$`mu[2]`,post1DF$`sigma[2]`)
+  geom_vline(xintercept = criteria, colour = "red")
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-16-1.png" width="672" />
+
+```r
+print(paste("群間の平均値の差の事後分布において，",criteria,"以上である確率は，",(numOverCriteria/(numOverCriteria+numUnderCriteria)),"です"))
+```
+
+```
+## [1] "群間の平均値の差の事後分布において， 6 以上である確率は， 0.973571428571429 です"
+```
+
+
+#### 事後予測分布
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=41" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+２群の平均と標準偏差の事後分布からのサンプルと正規分布を用いて，データを発生させて，事後予測分布を作成する。今回は，Stanの外側で処理をしているが，generated quantities{}ブロックで，_rngを使って，任意のパラメータの事後予測分布を出すこともできる。
+
+
+```r
+# 事後分布のサンプル数分，サンプルと正規分布からデータを作成
+numSamples <- length(post1DF$`mu[1]`)
+tAUPred <- rnorm(numSamples,post1DF$`mu[1]`,post1DF$`sigma[1]`)
+tNEWPred <- rnorm(numSamples,post1DF$`mu[2]`,post1DF$`sigma[2]`)
 
 
 # 事後分布と事前分布のサンプルを結合，ラベルの作成，データフレーム化
-samples &lt;- append(tAUPred,tNEWPred)
-groupPred &lt;- rep(c(&#39;tAUPred&#39;,&#39;tNEWPred&#39;), times = c(numSamples,numSamples))
-postPred &lt;- data_frame(groupPred, samples)
+samples <- append(tAUPred,tNEWPred)
+groupPred <- rep(c('tAUPred','tNEWPred'), times = c(numSamples,numSamples))
+postPred <- data_frame(groupPred, samples)
 
-postPred %&gt;%
+postPred %>%
   ggplot(aes(samples, fill = groupPred)) +
-  geom_density(alpha = 0.5)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<pre class="r"><code># データの要約
-postPred %&gt;% 
-  group_by(groupPred) %&gt;% 
-  summarise(Mean = mean(samples,na.rm = T), SD = sd(samples,na.rm = T), CI_2.5 = quantile(samples,probs = 0.025, na.rm = T), CI_97.5 = quantile(samples,probs = 0.975, na.rm = T))</code></pre>
-<pre><code>## # A tibble: 2 x 5
+  geom_density(alpha = 0.5)
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+
+```r
+# データの要約
+postPred %>% 
+  group_by(groupPred) %>% 
+  summarise(Mean = mean(samples,na.rm = T), SD = sd(samples,na.rm = T), CI_2.5 = quantile(samples,probs = 0.025, na.rm = T), CI_97.5 = quantile(samples,probs = 0.975, na.rm = T))
+```
+
+```
+## # A tibble: 2 x 5
 ##   groupPred  Mean    SD CI_2.5 CI_97.5
-##   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
-## 1 tAUPred    51.0  8.38   34.6    68.0
-## 2 tNEWPred   40.3  9.96   20.7    59.3</code></pre>
-</div>
-</div>
-</div>
-<div class="section level2">
-<h2>ベイズ更新</h2>
-<p>上記の結果から，２群の平均と標準偏差の事後分布のEAP推定値と標準偏差は以下のようになる。</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left"></th>
-<th align="left">EAP推定値</th>
-<th align="left">標準偏差</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">tAU mu</td>
-<td align="left">50.76</td>
-<td align="left">1.47</td>
-</tr>
-<tr class="even">
-<td align="left">tNEW mu</td>
-<td align="left">40.22</td>
-<td align="left">1.69</td>
-</tr>
-<tr class="odd">
-<td align="left">tAU sigma</td>
-<td align="left">8.17</td>
-<td align="left">1.15</td>
-</tr>
-<tr class="even">
-<td align="left">tNEW sigma</td>
-<td align="left">9.71</td>
-<td align="left">1.27</td>
-</tr>
-</tbody>
-</table>
-<p>今回，群間の平均に差が認められたので，もっと大規模な臨床試験を計画しました。今度は，120名の患者を集めて，各群60名ずつ無作為割付を行いました。 あまり強い事前分布を置くのはその合理性の主張が難しいですが，今回は，ベイズ更新の練習のために，上記の事後分布を事前分布に指定した解析を行います。</p>
-<div id="-1" class="section level3">
-<h3>データの準備</h3>
-<p>なお，今回の新たな試験は，tAU群(60名)の治療後の症状評価尺度得点は，平均50，標準偏差7の正規分布に従い，tNEW群(60名)の治療後の症状評価尺度得点は，平均55，標準偏差7に従うとします。つまり，先程は，tNEW群が優越だったのですが，今度は，やや劣るという結果になります。</p>
-<pre class="r"><code># データの作成
-numtAU &lt;- 60
-numtNEW &lt;- 60
+##   <chr>     <dbl> <dbl>  <dbl>   <dbl>
+## 1 tAUPred    51.0  8.37   34.6    67.3
+## 2 tNEWPred   40.3  9.71   21.4    59.8
+```
+
+
+## ベイズ更新
+
+上記の結果から，２群の平均と標準偏差の事後分布のEAP推定値と標準偏差は以下のようになる。
+
+|     |EAP推定値|標準偏差|
+|:--|:--|:--|
+|tAU mu| 50.76 |1.47| 
+|tNEW mu| 40.22 |1.69|
+|tAU sigma| 8.17 |1.15|
+|tNEW sigma| 9.71| 1.27|
+
+今回，群間の平均に差が認められたので，もっと大規模な臨床試験を計画しました。今度は，120名の患者を集めて，各群60名ずつ無作為割付を行いました。
+あまり強い事前分布を置くのはその合理性の主張が難しいですが，今回は，ベイズ更新の練習のために，上記の事後分布を事前分布に指定した解析を行います。
+
+### データの準備
+
+なお，今回の新たな試験は，tAU群(60名)の治療後の症状評価尺度得点は，平均50，標準偏差7の正規分布に従い，tNEW群(60名)の治療後の症状評価尺度得点は，平均55，標準偏差7に従うとします。つまり，先程は，tNEW群が優越だったのですが，今度は，やや劣るという結果になります。
+
+
+```r
+# データの作成
+numtAU <- 60
+numtNEW <- 60
 
 # 乱数発生でデータを作成
 set.seed(321)
-scoretAU &lt;- rnorm(numtAU, mean = 50, sd = 7) 
-scoretNEW &lt;- rnorm(numtNEW, mean = 55, sd = 7) 
+scoretAU <- rnorm(numtAU, mean = 50, sd = 7) 
+scoretNEW <- rnorm(numtNEW, mean = 55, sd = 7) 
 
 #　尺度得点は整数なので丸める
-scoretAUr &lt;- round(scoretAU, digits = 0)
-scoretNEWr &lt;- round(scoretNEW, digits = 0)
+scoretAUr <- round(scoretAU, digits = 0)
+scoretNEWr <- round(scoretNEW, digits = 0)
 
 # Stanに渡すデータの準備（list型で作成する）
-stanData2 &lt;- list(StAU=scoretAUr, StNEW = scoretNEWr, NtAU = numtAU, NtNEW = numtNEW)</code></pre>
-</div>
-<div id="-1" class="section level3">
-<h3>データの要約と可視化</h3>
-<p>作成したデータの要約統計量を算出し，図示する。</p>
-<div id="-2" class="section level4">
-<h4>要約統計量</h4>
-<pre class="r"><code># プロットするためデータのデータフレーム化
-group &lt;- rep(c(&quot;tAU&quot;,&quot;tNEW&quot;),times = c(numtAU, numtNEW))
-score &lt;- append(scoretAUr,scoretNEWr)
-data2 &lt;- data_frame(group,score)
+stanData2 <- list(StAU=scoretAUr, StNEW = scoretNEWr, NtAU = numtAU, NtNEW = numtNEW)
+```
+
+### データの要約と可視化
+
+作成したデータの要約統計量を算出し，図示する。
+
+
+#### 要約統計量
+
+
+```r
+# プロットするためデータのデータフレーム化
+group <- rep(c("tAU","tNEW"),times = c(numtAU, numtNEW))
+score <- append(scoretAUr,scoretNEWr)
+data2 <- data_frame(group,score)
 
 # データの要約
-data2 %&gt;% 
-  group_by(group) %&gt;% 
-  summarise(Mean = mean(score,na.rm = T), SD = sd(score,na.rm = T), Min = min(score, na.rm = T), Max = max(score, na.rm = T))</code></pre>
-<pre><code>## # A tibble: 2 x 5
+data2 %>% 
+  group_by(group) %>% 
+  summarise(Mean = mean(score,na.rm = T), SD = sd(score,na.rm = T), Min = min(score, na.rm = T), Max = max(score, na.rm = T))
+```
+
+```
+## # A tibble: 2 x 5
 ##   group  Mean    SD   Min   Max
-##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 tAU    50.3  6.54  34.0  67.0
-## 2 tNEW   54.7  6.56  38.0  71.0</code></pre>
-</div>
-<div id="-1" class="section level4">
-<h4>チャートプロット＋バイオリンプロット</h4>
-<pre class="r"><code>data2 %&gt;% 
+##   <chr> <dbl> <dbl> <dbl> <dbl>
+## 1 tAU    50.3  6.54    34    67
+## 2 tNEW   54.7  6.56    38    71
+```
+
+
+#### チャートプロット＋バイオリンプロット
+
+
+```r
+data2 %>% 
   ggplot(aes(x = group, y = score, color = group)) +
   geom_violin(trim = FALSE) +
-  geom_jitter(position = position_jitter(0.2)) </code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-</div>
-<div id="-1" class="section level4">
-<h4>チャートプロット＋箱ひげ図</h4>
-<pre class="r"><code>data2 %&gt;% 
+  geom_jitter(position = position_jitter(0.2)) 
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+
+#### チャートプロット＋箱ひげ図
+
+
+```r
+data2 %>% 
   ggplot(aes(x = group, y = score, color = group)) +
   geom_boxplot(position=position_dodge(0.8)) +
-  geom_jitter(position = position_jitter(0.2)) </code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=42" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
-</div>
-</div>
-</div>
-<div id="stan-1" class="section level3">
-<h3>Stanコード</h3>
-<p>先程の事後分布から以下のような事前分布を設定した。</p>
-<ul>
-<li>mu[1] ~ normal(50.76, 1.47);</li>
-<li>mu[2] ~ normal(40.22, 1.69);</li>
-<li>sigma[1] ~ normal(8.17, 1.15);</li>
-<li>sigma[2] ~ normal(9.71, 1.27);</li>
-</ul>
-<pre class="r"><code>model2 &lt;- &quot;
+  geom_jitter(position = position_jitter(0.2)) 
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-21-1.png" width="672" />
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=42" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+### Stanコード
+
+先程の事後分布から以下のような事前分布を設定した。
+
+- mu[1] ~ normal(50.76, 1.47);
+- mu[2] ~ normal(40.22, 1.69);
+- sigma[1] ~ normal(8.17, 1.15);
+- sigma[2] ~ normal(9.71, 1.27);
+  
+
+```r
+model2 <- "
 data{
      int NtAU;
      int NtNEW;
@@ -797,8 +954,8 @@ data{
 }
 
 parameters {
-     vector&lt;lower = 0, upper = 100&gt; [2] mu;
-     vector&lt;lower = 0, upper = 100&gt; [2] sigma;
+     vector<lower = 0, upper = 100> [2] mu;
+     vector<lower = 0, upper = 100> [2] sigma;
 }
 
 model {
@@ -810,303 +967,393 @@ model {
   StAU ~ normal(mu[1],sigma[1]);
   StNEW ~ normal(mu[2],sigma[2]);
 }
-&quot;</code></pre>
-</div>
-<div id="rstan-1" class="section level3">
-<h3>Rstanによるサンプリング</h3>
-<p>stan()によって，model1（無情報事前分布）とmodel2（ベイズ更新）をコンパイルした上で，サンプリングする。</p>
-<pre class="r"><code># Stanの設定（並列化など）
+"
+```
+
+
+### Rstanによるサンプリング
+
+stan()によって，model1（無情報事前分布）とmodel2（ベイズ更新）をコンパイルした上で，サンプリングする。
+
+
+```r
+# Stanの設定（並列化など）
 rstan_options(auto_write=TRUE)
 options(mc.cores = parallel::detectCores())
 
 # さきほどの事後分布を事前分布に使ったもの
-fit2 &lt;- stan(model_code = model2, 
+fit2 <- stan(model_code = model2, 
             seed = 1234, 
             data = stanData2,
             warmup = 300, 
             iter = 1000,
             chains = 4,
-            thin = 2)</code></pre>
-<pre><code>## In file included from file16d1d7d648aa2.cpp:8:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/StanHeaders/include/src/stan/model/model_header.hpp:4:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/StanHeaders/include/stan/math.hpp:4:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/StanHeaders/include/stan/math/rev/mat.hpp:4:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/StanHeaders/include/stan/math/rev/core.hpp:12:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/StanHeaders/include/stan/math/rev/core/gevv_vvv_vari.hpp:5:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/StanHeaders/include/stan/math/rev/core/var.hpp:7:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/BH/include/boost/math/tools/config.hpp:13:
-## In file included from /Library/Frameworks/R.framework/Versions/3.4/Resources/library/BH/include/boost/config.hpp:39:
-## /Library/Frameworks/R.framework/Versions/3.4/Resources/library/BH/include/boost/config/compiler/clang.hpp:200:11: warning: &#39;BOOST_NO_CXX11_RVALUE_REFERENCES&#39; macro redefined [-Wmacro-redefined]
-## #  define BOOST_NO_CXX11_RVALUE_REFERENCES
-##           ^
-## &lt;command line&gt;:6:9: note: previous definition is here
-## #define BOOST_NO_CXX11_RVALUE_REFERENCES 1
-##         ^
-## 1 warning generated.</code></pre>
-<pre class="r"><code># 無情報的事前分布を使ったもの（これはあとで比較する用，先ほどと同じmodel1を使用）
-fit3 &lt;- stan(model_code = model1, 
+            thin = 2)
+
+# 無情報的事前分布を使ったもの（これはあとで比較する用，先ほどと同じmodel1を使用）
+fit3 <- stan(model_code = model1, 
             seed = 1234, 
             data = stanData2,
             warmup = 300, 
             iter = 1000,
             chains = 4,
-            thin = 2)</code></pre>
-</div>
-<div id="-1" class="section level3">
-<h3>収束の確認</h3>
-<p>煩雑なので，収束の確認は，ベイズ更新を試しているfit2だけやります（fit3も収束しているので，各自でご確認ください）。</p>
-<div id="-1" class="section level4">
-<h4>トレースプロットの確認</h4>
-<p>warmupの区間は，チェーンによってばらついていますが，それ以降は，きれいに混ざっています。</p>
-<pre class="r"><code># Warmupもみたいので，それを含めて抽出する
-post2Warmup &lt;- extract(fit2, inc_warmup = TRUE, permuted = FALSE)
+            thin = 2)
+```
+
+
+### 収束の確認
+
+煩雑なので，収束の確認は，ベイズ更新を試しているfit2だけやります（fit3も収束しているので，各自でご確認ください）。
+
+#### トレースプロットの確認
+
+warmupの区間は，チェーンによってばらついていますが，それ以降は，きれいに混ざっています。
+
+
+```r
+# Warmupもみたいので，それを含めて抽出する
+post2Warmup <- extract(fit2, inc_warmup = TRUE, permuted = FALSE)
 # トレースプロット
-mcmc_trace(post2Warmup, n_warmup = 150)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-</div>
-<div id="rhat-1" class="section level4">
-<h4>Rhatの確認</h4>
-<p>1.1以下に収まっていました。</p>
-<pre class="r"><code>mcmc_rhat(rhat(fit2)) + yaxis_text()</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
-</div>
-<div id="-1" class="section level4">
-<h4>有効サンプルサイズ</h4>
-<p>有効サンプルサイズが0.1を下回ることはありませんでした。</p>
-<pre class="r"><code>mcmc_neff(neff_ratio(fit2))+ yaxis_text()</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
-</div>
-<div id="-1" class="section level4">
-<h4>自己相関</h4>
-<p>自己相関も問題なさそうです。</p>
-<pre class="r"><code>post2Array &lt;- as.array(fit2)
-mcmc_acf(post2Array)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
-</div>
-</div>
-<div id="-1" class="section level3">
-<h3>推定結果の確認</h3>
-<div id="-3" class="section level4">
-<h4>要約統計量</h4>
-<p>先程のtNEWが優勢なデータの事後分布を用いてベイズ更新したところ，記述統計的にはtAUが優勢にもかからず，２群の平均は約50でほぼ同じになりました。</p>
-<pre class="r"><code>print(fit2)</code></pre>
-<pre><code>## Inference for Stan model: 2238085ebfd919a8f19826c5fd5f40bc.
+mcmc_trace(post2Warmup, n_warmup = 150)
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+
+#### Rhatの確認
+
+1.1以下に収まっていました。
+
+
+```r
+mcmc_rhat(rhat(fit2)) + yaxis_text()
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-25-1.png" width="672" />
+
+#### 有効サンプルサイズ
+
+有効サンプルサイズが0.1を下回ることはありませんでした。
+
+
+```r
+mcmc_neff(neff_ratio(fit2))+ yaxis_text()
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+
+#### 自己相関
+
+自己相関も問題なさそうです。
+
+
+```r
+post2Array <- as.array(fit2)
+mcmc_acf(post2Array)
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+
+### 推定結果の確認
+#### 要約統計量
+
+先程のtNEWが優勢なデータの事後分布を用いてベイズ更新したところ，記述統計的にはtAUが優勢にもかからず，２群の平均は約50でほぼ同じになりました。
+
+
+```r
+print(fit2)
+```
+
+```
+## Inference for Stan model: 2238085ebfd919a8f19826c5fd5f40bc.
 ## 4 chains, each with iter=1000; warmup=300; thin=2; 
 ## post-warmup draws per chain=350, total post-warmup draws=1400.
 ## 
-##             mean se_mean   sd    2.5%     25%     50%     75%   97.5%
-## mu[1]      50.45    0.02 0.76   48.95   49.96   50.45   50.95   51.86
-## mu[2]      50.48    0.03 1.10   48.19   49.81   50.55   51.26   52.48
-## sigma[1]    7.03    0.02 0.62    5.93    6.60    6.99    7.44    8.33
-## sigma[2]    8.44    0.02 0.88    6.79    7.80    8.42    9.04   10.19
-## lp__     -307.06    0.04 1.40 -310.52 -307.79 -306.81 -306.02 -305.28
-##          n_eff Rhat
-## mu[1]     1400    1
-## mu[2]     1237    1
-## sigma[1]  1400    1
-## sigma[2]  1267    1
-## lp__      1212    1
+##             mean se_mean   sd    2.5%     25%     50%     75%   97.5% n_eff
+## mu[1]      50.50    0.02 0.78   48.99   49.99   50.48   51.02   51.97  1387
+## mu[2]      50.44    0.03 1.11   48.16   49.75   50.47   51.21   52.54  1415
+## sigma[1]    7.04    0.02 0.61    5.93    6.62    7.01    7.44    8.33  1395
+## sigma[2]    8.41    0.02 0.84    6.90    7.81    8.35    8.94   10.23  1269
+## lp__     -307.04    0.05 1.43 -310.63 -307.72 -306.73 -306.02 -305.28   901
+##          Rhat
+## mu[1]       1
+## mu[2]       1
+## sigma[1]    1
+## sigma[2]    1
+## lp__        1
 ## 
-## Samples were drawn using NUTS(diag_e) at Mon Apr  2 10:30:30 2018.
+## Samples were drawn using NUTS(diag_e) at Mon Feb 10 17:08:38 2020.
 ## For each parameter, n_eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor on split chains (at 
-## convergence, Rhat=1).</code></pre>
-</div>
-<div id="-1" class="section level4">
-<h4>事後分布のプロット</h4>
-<p>各群の平均と標準偏差の事後密度曲線（中央値と95%確信区間）をプロットします。</p>
-<pre class="r"><code>post2Matrix &lt;- as.matrix(fit2)
-mcmc_areas(post2Matrix, pars = c(&quot;mu[1]&quot;,&quot;mu[2]&quot;),prob = 0.95)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
-<pre class="r"><code>mcmc_areas(post2Matrix, pars = c(&quot;sigma[1]&quot;,&quot;sigma[2]&quot;),prob = 0.95)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
-</div>
-<div class="section level4">
-<h4>無情報事前分布の場合</h4>
-<p>一方，過去の試験の事後分布をベイズ更新せず，無情報事前分布をおいた場合は，以下のようになり，ちゃんとtAUの方が優勢になっています。</p>
-<pre class="r"><code>print(fit3)</code></pre>
-<pre><code>## Inference for Stan model: 714b95f9b4d5aaca8b6732b0753c05e1.
+## convergence, Rhat=1).
+```
+
+#### 事後分布のプロット
+
+各群の平均と標準偏差の事後密度曲線（中央値と95%確信区間）をプロットします。
+
+
+```r
+post2Matrix <- as.matrix(fit2)
+mcmc_areas(post2Matrix, pars = c("mu[1]","mu[2]"),prob = 0.95)
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+
+```r
+mcmc_areas(post2Matrix, pars = c("sigma[1]","sigma[2]"),prob = 0.95)
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-29-2.png" width="672" />
+
+
+#### 無情報事前分布の場合
+
+一方，過去の試験の事後分布をベイズ更新せず，無情報事前分布をおいた場合は，以下のようになり，ちゃんとtAUの方が優勢になっています。
+
+
+```r
+print(fit3)
+```
+
+```
+## Inference for Stan model: 714b95f9b4d5aaca8b6732b0753c05e1.
 ## 4 chains, each with iter=1000; warmup=300; thin=2; 
 ## post-warmup draws per chain=350, total post-warmup draws=1400.
 ## 
-##             mean se_mean   sd    2.5%     25%     50%     75%   97.5%
-## mu[1]      50.35    0.02 0.91   48.59   49.74   50.38   50.96   52.13
-## mu[2]      54.68    0.02 0.84   53.06   54.14   54.68   55.25   56.39
-## sigma[1]    6.70    0.02 0.63    5.61    6.26    6.64    7.08    8.04
-## sigma[2]    6.70    0.02 0.62    5.61    6.28    6.67    7.07    8.06
-## lp__     -276.57    0.04 1.38 -279.84 -277.26 -276.29 -275.50 -274.79
-##          n_eff Rhat
-## mu[1]     1400    1
-## mu[2]     1336    1
-## sigma[1]  1400    1
-## sigma[2]  1379    1
-## lp__      1272    1
+##             mean se_mean   sd    2.5%     25%     50%     75%   97.5% n_eff
+## mu[1]      50.31    0.02 0.87   48.68   49.71   50.30   50.88   52.01  1401
+## mu[2]      54.65    0.02 0.87   53.01   54.06   54.65   55.25   56.34  1367
+## sigma[1]    6.71    0.02 0.64    5.61    6.27    6.63    7.08    8.08  1494
+## sigma[2]    6.71    0.02 0.62    5.58    6.27    6.65    7.10    8.06  1291
+## lp__     -276.59    0.04 1.44 -280.14 -277.27 -276.27 -275.51 -274.77  1211
+##          Rhat
+## mu[1]       1
+## mu[2]       1
+## sigma[1]    1
+## sigma[2]    1
+## lp__        1
 ## 
-## Samples were drawn using NUTS(diag_e) at Mon Apr  2 10:30:39 2018.
+## Samples were drawn using NUTS(diag_e) at Mon Feb 10 17:08:40 2020.
 ## For each parameter, n_eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor on split chains (at 
-## convergence, Rhat=1).</code></pre>
-<pre class="r"><code>post3Matrix &lt;- as.matrix(fit3)
-mcmc_areas(post3Matrix, pars = c(&quot;mu[1]&quot;,&quot;mu[2]&quot;),prob = 0.95)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
-<pre class="r"><code>mcmc_areas(post3Matrix, pars = c(&quot;sigma[1]&quot;,&quot;sigma[2]&quot;),prob = 0.95)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-30-2.png" width="672" /></p>
-</div>
-<div id="-1" class="section level4">
-<h4>平均値差の事後分布</h4>
-<p>tAU群とtNEW群の母平均値の差(正だとtNEWが優越)の事後分布をプロットします。ベイズ更新した方は，群間の平均の差のEAP推定値は，約0であり，95%信用区間も0をまたいでいます。一方，無情報事前分布の方は，群間の平均値の差のEAP推定値は，-4.39であり，95%信用区間は0をまたいでいません。事前分布によって，かなり結果が異なりました。</p>
-<pre class="r"><code># 事後分布からのサンプルを抽出してデータフレーム化
-post2DF &lt;- as_data_frame(post2Matrix)
-post3DF &lt;- as_data_frame(post3Matrix)
+## convergence, Rhat=1).
+```
+
+```r
+post3Matrix <- as.matrix(fit3)
+mcmc_areas(post3Matrix, pars = c("mu[1]","mu[2]"),prob = 0.95)
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-30-1.png" width="672" />
+
+```r
+mcmc_areas(post3Matrix, pars = c("sigma[1]","sigma[2]"),prob = 0.95)
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-30-2.png" width="672" />
+
+#### 平均値差の事後分布
+
+tAU群とtNEW群の母平均値の差(正だとtNEWが優越)の事後分布をプロットします。ベイズ更新した方は，群間の平均の差のEAP推定値は，約0であり，95%信用区間も0をまたいでいます。一方，無情報事前分布の方は，群間の平均値の差のEAP推定値は，-4.39であり，95%信用区間は0をまたいでいません。事前分布によって，かなり結果が異なりました。
+
+
+```r
+# 事後分布からのサンプルを抽出してデータフレーム化
+post2DF <- as_data_frame(post2Matrix)
+post3DF <- as_data_frame(post3Matrix)
 
 # mu[1](tAU群)とmu[2](tNEW群)の母平均値差を計算しデータフレーム化
-muDiffBayesUpDate &lt;- post2DF$`mu[1]` - post2DF$`mu[2]`
-muDiffNonInfoPrior &lt;- post3DF$`mu[1]` - post3DF$`mu[2]`
-muDiff &lt;- append(muDiffBayesUpDate,muDiffNonInfoPrior)
-numSamples &lt;- length(post2DF$`mu[1]`)
-priorType &lt;- rep(c(&#39;Bayesian Updating&#39;,&#39;Non-informative Priors&#39;), times = c(numSamples,numSamples))
-muDiffData &lt;- data_frame(priorType,muDiff)
+muDiffBayesUpDate <- post2DF$`mu[1]` - post2DF$`mu[2]`
+muDiffNonInfoPrior <- post3DF$`mu[1]` - post3DF$`mu[2]`
+muDiff <- append(muDiffBayesUpDate,muDiffNonInfoPrior)
+numSamples <- length(post2DF$`mu[1]`)
+priorType <- rep(c('Bayesian Updating','Non-informative Priors'), times = c(numSamples,numSamples))
+muDiffData <- data_frame(priorType,muDiff)
 
 # EAP推定値，標準偏差，95%信用区間
-muDiffData %&gt;% 
-  group_by(priorType) %&gt;% 
-  summarise(Mean = mean(muDiff,na.rm = T), SD = sd(muDiff,na.rm = T), CI_2.5 = quantile(muDiff,probs = 0.025, na.rm = T), CI_97.5 = quantile(muDiff,probs = 0.975, na.rm = T))</code></pre>
-<pre><code>## # A tibble: 2 x 5
+muDiffData %>% 
+  group_by(priorType) %>% 
+  summarise(Mean = mean(muDiff,na.rm = T), SD = sd(muDiff,na.rm = T), CI_2.5 = quantile(muDiff,probs = 0.025, na.rm = T), CI_97.5 = quantile(muDiff,probs = 0.975, na.rm = T))
+```
+
+```
+## # A tibble: 2 x 5
 ##   priorType                 Mean    SD CI_2.5 CI_97.5
-##   &lt;chr&gt;                    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
-## 1 Bayesian Updating      -0.0330  1.31  -2.50    2.64
-## 2 Non-informative Priors -4.33    1.25  -6.70   -1.89</code></pre>
-<pre class="r"><code># プロット
-muDiffData %&gt;% 
+##   <chr>                    <dbl> <dbl>  <dbl>   <dbl>
+## 1 Bayesian Updating       0.0615  1.35  -2.56    2.71
+## 2 Non-informative Priors -4.34    1.26  -6.69   -1.82
+```
+
+```r
+# プロット
+muDiffData %>% 
   ggplot(aes(x = muDiff, fill = priorType)) +
-  geom_density(alpha = 0.5)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
-</div>
-<div id="0" class="section level4">
-<h4>平均値の差が0より小さい確率</h4>
-<pre class="r"><code># 基準点
-criteria &lt;- 0
+  geom_density(alpha = 0.5)
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-31-1.png" width="672" />
+
+#### 平均値の差が0より小さい確率
+
+
+```r
+# 基準点
+criteria <- 0
 
 # Bayesisn Updatingにおいて，muDiffでcriteria以下のサンプルの個数
-numUnderCriteriaBU &lt;- muDiffData %&gt;% 
-  filter(priorType == &#39;Bayesian Updating&#39;) %&gt;% 
-  filter(muDiff &lt;= criteria) %&gt;% 
+numUnderCriteriaBU <- muDiffData %>% 
+  filter(priorType == 'Bayesian Updating') %>% 
+  filter(muDiff <= criteria) %>% 
   count()
 
 # Bayesisn Updatingにおいて，muDiffでcriteriaより上のサンプルの個数
-numOverCriteriaBU &lt;- muDiffData %&gt;% 
-  filter(priorType == &#39;Bayesian Updating&#39;) %&gt;% 
-  filter(muDiff &gt; criteria) %&gt;% 
+numOverCriteriaBU <- muDiffData %>% 
+  filter(priorType == 'Bayesian Updating') %>% 
+  filter(muDiff > criteria) %>% 
   count()
 
 # Non-informative Priorsにおいて，muDiffでcriteria以下のサンプルの個数
-numUnderCriteriaNI &lt;- muDiffData %&gt;% 
-  filter(priorType == &#39;Non-informative Priors&#39;) %&gt;% 
-  filter(muDiff &lt;= criteria) %&gt;% 
+numUnderCriteriaNI <- muDiffData %>% 
+  filter(priorType == 'Non-informative Priors') %>% 
+  filter(muDiff <= criteria) %>% 
   count()
 
 # Non-informative Priorsにおいて，muDiffでcriteriaより上のサンプルの個数
-numOverCriteriaNI &lt;- muDiffData %&gt;% 
-  filter(priorType == &#39;Non-informative Priors&#39;) %&gt;% 
-  filter(muDiff &gt; criteria) %&gt;% 
+numOverCriteriaNI <- muDiffData %>% 
+  filter(priorType == 'Non-informative Priors') %>% 
+  filter(muDiff > criteria) %>% 
   count()
 
 # プロット
-muDiffData %&gt;% 
+muDiffData %>% 
   ggplot(aes(x = muDiff, fill = priorType)) +
   geom_density(alpha = 0.5) +
-  geom_vline(xintercept = criteria, colour = &quot;red&quot;)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
-<pre class="r"><code>print(paste(&quot;Bayesisn Updatinにおいて，群間の平均値の差の事後分布が，&quot;,criteria,&quot;より小さい確率は，&quot;,(numUnderCriteriaBU/(numOverCriteriaBU+numUnderCriteriaBU)),&quot;です&quot;))</code></pre>
-<pre><code>## [1] &quot;Bayesisn Updatinにおいて，群間の平均値の差の事後分布が， 0 より小さい確率は， 0.537857142857143 です&quot;</code></pre>
-<pre class="r"><code>print(paste(&quot;Non-informative Priorsにおいて，群間の平均値の差の事後分布が，&quot;,criteria,&quot;より小さい確率は，&quot;,(numUnderCriteriaNI/(numOverCriteriaNI+numUnderCriteriaNI)),&quot;です&quot;))</code></pre>
-<pre><code>## [1] &quot;Non-informative Priorsにおいて，群間の平均値の差の事後分布が， 0 より小さい確率は， 1 です&quot;</code></pre>
-</div>
-<div id="-6" class="section level4">
-<h4>平均値の差が-6以下である確率</h4>
-<pre class="r"><code># 基準点
-criteria &lt;- -6
+  geom_vline(xintercept = criteria, colour = "red")
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-32-1.png" width="672" />
+
+```r
+print(paste("Bayesisn Updatinにおいて，群間の平均値の差の事後分布が，",criteria,"より小さい確率は，",(numUnderCriteriaBU/(numOverCriteriaBU+numUnderCriteriaBU)),"です"))
+```
+
+```
+## [1] "Bayesisn Updatinにおいて，群間の平均値の差の事後分布が， 0 より小さい確率は， 0.486428571428571 です"
+```
+
+```r
+print(paste("Non-informative Priorsにおいて，群間の平均値の差の事後分布が，",criteria,"より小さい確率は，",(numUnderCriteriaNI/(numOverCriteriaNI+numUnderCriteriaNI)),"です"))
+```
+
+```
+## [1] "Non-informative Priorsにおいて，群間の平均値の差の事後分布が， 0 より小さい確率は， 1 です"
+```
+
+#### 平均値の差が-6以下である確率
+
+```r
+# 基準点
+criteria <- -6
 
 # Bayesisn Updatingにおいて，muDiffでcriteria以下のサンプルの個数
-numUnderCriteriaBU &lt;- muDiffData %&gt;% 
-  filter(priorType == &#39;Bayesian Updating&#39;) %&gt;% 
-  filter(muDiff &lt;= criteria) %&gt;% 
+numUnderCriteriaBU <- muDiffData %>% 
+  filter(priorType == 'Bayesian Updating') %>% 
+  filter(muDiff <= criteria) %>% 
   count()
 
 # Bayesisn Updatingにおいて，muDiffでcriteriaより上のサンプルの個数
-numOverCriteriaBU &lt;- muDiffData %&gt;% 
-  filter(priorType == &#39;Bayesian Updating&#39;) %&gt;% 
-  filter(muDiff &gt; criteria) %&gt;% 
+numOverCriteriaBU <- muDiffData %>% 
+  filter(priorType == 'Bayesian Updating') %>% 
+  filter(muDiff > criteria) %>% 
   count()
 
 # Non-informative Priorsにおいて，muDiffでcriteria以下のサンプルの個数
-numUnderCriteriaNI &lt;- muDiffData %&gt;% 
-  filter(priorType == &#39;Non-informative Priors&#39;) %&gt;% 
-  filter(muDiff &lt;= criteria) %&gt;% 
+numUnderCriteriaNI <- muDiffData %>% 
+  filter(priorType == 'Non-informative Priors') %>% 
+  filter(muDiff <= criteria) %>% 
   count()
 
 # Non-informative Priorsにおいて，muDiffでcriteriaより上のサンプルの個数
-numOverCriteriaNI &lt;- muDiffData %&gt;% 
-  filter(priorType == &#39;Non-informative Priors&#39;) %&gt;% 
-  filter(muDiff &gt; criteria) %&gt;% 
+numOverCriteriaNI <- muDiffData %>% 
+  filter(priorType == 'Non-informative Priors') %>% 
+  filter(muDiff > criteria) %>% 
   count()
 
 # プロット
-muDiffData %&gt;% 
+muDiffData %>% 
   ggplot(aes(x = muDiff, fill = priorType)) +
   geom_density(alpha = 0.5) +
-  geom_vline(xintercept = criteria, colour = &quot;red&quot;)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
-<pre class="r"><code>print(paste(&quot;Bayesisn Updatinにおいて，群間の平均値の差の事後分布が，&quot;,criteria,&quot;以下である確率は，&quot;,(numUnderCriteriaBU/(numOverCriteriaBU+numUnderCriteriaBU)),&quot;です&quot;))</code></pre>
-<pre><code>## [1] &quot;Bayesisn Updatinにおいて，群間の平均値の差の事後分布が， -6 以下である確率は， 0 です&quot;</code></pre>
-<pre class="r"><code>print(paste(&quot;Non-informative Priorsにおいて，群間の平均値の差の事後分布が，&quot;,criteria,&quot;以下である確率は，&quot;,(numUnderCriteriaNI/(numOverCriteriaNI+numUnderCriteriaNI)),&quot;です&quot;))</code></pre>
-<pre><code>## [1] &quot;Non-informative Priorsにおいて，群間の平均値の差の事後分布が， -6 以下である確率は， 0.1 です&quot;</code></pre>
-</div>
-<div id="-1" class="section level4">
-<h4>事後予測分布</h4>
-<p>tAUについては，事前分布による違いが少なそうなので，今回は，Bayesian UpdatingとNon-informative Priorsの２種類のtNEWの事後予測分布を計算します。</p>
-<pre class="r"><code># 事後分布のサンプル数分，サンプルと正規分布からデータを作成
-numSamples &lt;- length(post2DF$`mu[1]`)
-tNEWPredBayesianUpdating &lt;- rnorm(numSamples,post2DF$`mu[2]`,post2DF$`sigma[2]`)
-tNEWPredNonInformative &lt;- rnorm(numSamples,post3DF$`mu[2]`,post3DF$`sigma[2]`)
+  geom_vline(xintercept = criteria, colour = "red")
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-33-1.png" width="672" />
+
+```r
+print(paste("Bayesisn Updatinにおいて，群間の平均値の差の事後分布が，",criteria,"以下である確率は，",(numUnderCriteriaBU/(numOverCriteriaBU+numUnderCriteriaBU)),"です"))
+```
+
+```
+## [1] "Bayesisn Updatinにおいて，群間の平均値の差の事後分布が， -6 以下である確率は， 0 です"
+```
+
+```r
+print(paste("Non-informative Priorsにおいて，群間の平均値の差の事後分布が，",criteria,"以下である確率は，",(numUnderCriteriaNI/(numOverCriteriaNI+numUnderCriteriaNI)),"です"))
+```
+
+```
+## [1] "Non-informative Priorsにおいて，群間の平均値の差の事後分布が， -6 以下である確率は， 0.0964285714285714 です"
+```
+
+
+#### 事後予測分布
+
+tAUについては，事前分布による違いが少なそうなので，今回は，Bayesian UpdatingとNon-informative Priorsの２種類のtNEWの事後予測分布を計算します。
+
+
+```r
+# 事後分布のサンプル数分，サンプルと正規分布からデータを作成
+numSamples <- length(post2DF$`mu[1]`)
+tNEWPredBayesianUpdating <- rnorm(numSamples,post2DF$`mu[2]`,post2DF$`sigma[2]`)
+tNEWPredNonInformative <- rnorm(numSamples,post3DF$`mu[2]`,post3DF$`sigma[2]`)
 
 # 事後分布と事前分布のサンプルを結合，ラベルの作成，データフレーム化
-samples &lt;- append(tNEWPredBayesianUpdating,tNEWPredNonInformative)
-postPred &lt;- data_frame(priorType, samples)
+samples <- append(tNEWPredBayesianUpdating,tNEWPredNonInformative)
+postPred <- data_frame(priorType, samples)
 
-postPred %&gt;%
+postPred %>%
   ggplot(aes(samples, fill = (priorType))) +
-  geom_density(alpha = 0.5)</code></pre>
-<p><img src="how-to-start-rstan_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
-<pre class="r"><code># データの要約
-postPred %&gt;% 
-  group_by(priorType) %&gt;% 
-  summarise(Mean = mean(samples,na.rm = T), SD = sd(samples,na.rm = T), CI_2.5 = quantile(samples,probs = 0.025, na.rm = T), CI_97.5 = quantile(samples,probs = 0.975, na.rm = T))</code></pre>
-<pre><code>## # A tibble: 2 x 5
+  geom_density(alpha = 0.5)
+```
+
+<img src="how-to-start-rstan_files/figure-html/unnamed-chunk-34-1.png" width="672" />
+
+```r
+# データの要約
+postPred %>% 
+  group_by(priorType) %>% 
+  summarise(Mean = mean(samples,na.rm = T), SD = sd(samples,na.rm = T), CI_2.5 = quantile(samples,probs = 0.025, na.rm = T), CI_97.5 = quantile(samples,probs = 0.975, na.rm = T))
+```
+
+```
+## # A tibble: 2 x 5
 ##   priorType               Mean    SD CI_2.5 CI_97.5
-##   &lt;chr&gt;                  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
-## 1 Bayesian Updating       50.7  8.62   33.4    66.9
-## 2 Non-informative Priors  54.7  6.77   41.1    68.2</code></pre>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=43" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
-</div>
-</div>
-</div>
-</div>
-<div class="section level2">
-<h2>ベイズ統計での報告の注意事項</h2>
-<p>以下のスライドの45ページからベイズ統計での報告の注意事項についてまとめているので，ご確認ください。</p>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=44" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
-</div>
-</div>
+##   <chr>                  <dbl> <dbl>  <dbl>   <dbl>
+## 1 Bayesian Updating       50.7  8.54   34.0    67.1
+## 2 Non-informative Priors  54.7  6.77   41.2    67.5
+```
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=43" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+## ベイズ統計での報告の注意事項
+
+以下のスライドの45ページからベイズ統計での報告の注意事項についてまとめているので，ご確認ください。
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=44" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong> </div>
+
+-->
 
 <footer>
-  <p>Copyright &copy; 2018 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -1126,6 +1373,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
