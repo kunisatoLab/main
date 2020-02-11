@@ -9,9 +9,7 @@ title: "学術論文"
 
 ### 2020
 
-<!--
-Katahira, K., Kunisato, Y., Yamashita, Y., & Suzuki, S. (2020) A robust data-driven approach identifies four personality types across four large data sets. Frontiers in Big Data
--->
+- [29] Katahira, K., Kunisato, Y., Yamashita, Y., & Suzuki, S. (2020) A robust data-driven approach identifies four personality types across four large data sets. Frontiers in Big Data
 
 ### 2019
 
