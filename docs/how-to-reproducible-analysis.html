@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -88,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -237,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -265,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -408,7 +413,7 @@ div.tocify {
 </div>
 
 
-<div class="section level2">
+<div id="再生可能性とは" class="section level2">
 <h2>再生可能性とは？</h2>
 <p>　研究における再現性を考える上で，Clarerbout, Jが提案したReplicabilityとReproducibilityの区分はとても便利です。Clarerbout, Jによると，</p>
 <ul>
@@ -418,19 +423,16 @@ div.tocify {
 <p>とされます<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>。Replicability(再現可能性) は，簡単に言うと新たに追試をして同じ結果が得られることです。これについては，これ以上このページでは扱いません。</p>
 <p>　一方，Reproducibility(再生可能性)は，既に収集されたデータに対して，論文などで記載されている同じ解析を行った場合に，同じ結果が得られることです。再生が不可能な研究は，再現もしないと思われるので，まずは再生可能な研究ができることが前提になります。本ページの以降では，この再生可能なデータ解析について詳しく解説します。 　 <br /> <br /></p>
 </div>
-<div id="r" class="section level2">
+<div id="再生可能なデータ解析のためにrを使おう" class="section level2">
 <h2>再生可能なデータ解析のためにRを使おう！</h2>
 <p>　再生可能なデータ解析をする際の原則は，「データに対して行った操作をすべて記録する」です。これが可能なら，ExcelやSPSSなどを使っても全く問題はありません。つまり，これらのソフトの操作をするたびに，テキストエディタなどにすべての作業を記入し，それを第三者にもわかるようにしておけば良いです。ただ，これはかなり骨が折れます<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>。なんで骨が折れるかというと，Excelなどでマウスを動かしてポチポチやった作業を記録するのですが，これが面倒です。面倒ですが，その記録がないと，生データから解析結果を得ることができなくなります（例えば，逆点処理・変数変換・データの除外をしたのに記録してないと結果は変わってきます）。</p>
 <p>　そこで便利なのがRやPythonなどのオープンソースなプログラミング言語です<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>。プログラムコードを書くのが面倒くさいなあと思われるかもしれませんが，インターネットで検索すれば，必ず優れた例や解説もあるので，すぐに慣れると思います。生データを読み込んで，それ以降Rなどで処理をすれば，その行った処理がすべて記録されます。ただ，Rのコンソールにそのまま書き込むと行った処理の記録になりませんので，R Markdownを使用することを強くおすすめします。</p>
 <p>　Rでのコードの書き方やR Markdownの使い方などは，以下のスライドで詳しく解説しているので，参照してください。R Markdonwについては，<a href="https://kazutan.github.io/kazutanR/index.html">kazutanのサイト</a>や<a href="https://www.amazon.co.jp/dp/4320112431/ref=cm_sw_em_r_mt_dp_U_wo9vDb0EMTZK9">中京大学の高橋康介先生による「再現可能性のすゝめ 」</a>を参照することを強くおすすめします。最近は，<a href="https://github.com/">github</a>や<a href="https://osf.io/dashboard">OSF</a>などで，データとコードが配布されていることも多くなりました。興味のある研究のデータやコードをダウンロードして，解析やRコードの書き方を学ぶのも実践的で良いかと思います。 　 <br /></p>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/wNlFMYILtIJT0X" width="510" height="420" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTySEMxqNr-FrwAAbnJWm4gza2hkWQGbU-wI_3P0kHPFGGsrCt6EFjxcVNs3OP4OHYGYM8dA-AbT2lS/embed?start=false&amp;loop=false&amp;delayms=30000" frameborder="0" width="480" height="389" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
 </iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-77835559" title="統計解析の再現可能性を高める取り組み" target="_blank">統計解析の再現可能性を高める取り組み</a> </strong> from <strong><a href="//www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong>
-</div>
 <p><br /> <br /></p>
 </div>
-<div class="section level2">
+<div id="急速なソフトウェア開発が再生性を低める" class="section level2">
 <h2>急速なソフトウェア開発が再生性を低める</h2>
 <p>　RやR Markdownを使っていれば大丈夫かというとそうではなくて，Rなどのオープンソースソフトウェアは，急速に発展しており，どんどん新しいパッケージが発表されたり変更が加えられています。Rパッケージはgithub上で開発されていることもあり，それをみると何人もの人が共同しつつ目まぐるしいスピードで変更を加えているのがわかりますし，エラーがあればissueに報告され，直ちに修正されている様子も確認できます。そのような急速にソフトウェアが開発される状況を踏まえて，Epskamp(2019)は<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>，再生可能性を低める脅威として以下のようなものを指摘しています。</p>
 <ul>
@@ -439,7 +441,7 @@ div.tocify {
 </ul>
 <p><br /></p>
 </div>
-<div class="section level2">
+<div id="急速なソフトウェア開発による再生性低下を防ぐ方法" class="section level2">
 <h2>急速なソフトウェア開発による再生性低下を防ぐ方法</h2>
 <p>　Epskamp(2019)は，急速なソフトウェア開発に伴う再生性低下のために，以下のような解決方法を提案しています。</p>
 <ol style="list-style-type: decimal">
@@ -460,16 +462,16 @@ div.tocify {
 <p>上記の1と2だけでは，急速に開発されるソフトウェア環境で再生性を担保することができないので，３が必要になります。使用したソフトウェアパッケージの状態を再生できるようにするためには，(1)Rパッケージのバージョン管理, (2)解析環境のコンテナ化を推奨します。(Epskamp, 2019)。</p>
 <p><br /></p>
 </div>
-<div id="r" class="section level2">
+<div id="rパッケージのパッケージ管理" class="section level2">
 <h2>Rパッケージのパッケージ管理</h2>
 <p>　一番シンプルな方法は，以下のようにsessionInfo()を実行して，使用しているRパッケージのバージョン情報を記録することです。sessionInfo()を実行することで，現在どういう環境で解析がなされたかが記録できます。</p>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>## R version 3.6.1 (2019-07-05)
+<pre><code>## R version 3.6.2 (2019-12-12)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Debian GNU/Linux 9 (stretch)
+## Running under: Debian GNU/Linux 10 (buster)
 ## 
 ## Matrix products: default
-## BLAS/LAPACK: /usr/lib/libopenblasp-r0.2.19.so
+## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.3.5.so
 ## 
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -483,11 +485,11 @@ div.tocify {
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.2      digest_0.6.20   crayon_1.3.4    magrittr_1.5   
-##  [5] evaluate_0.14   pillar_1.4.2    rlang_0.4.0     stringi_1.4.3  
-##  [9] rstudioapi_0.10 rmarkdown_1.14  tools_3.6.1     stringr_1.4.0  
-## [13] xfun_0.8        yaml_2.2.0      compiler_3.6.1  pkgconfig_2.0.2
-## [17] htmltools_0.3.6 knitr_1.23      tibble_2.1.3</code></pre>
+##  [1] Rcpp_1.0.3      digest_0.6.23   crayon_1.3.4    magrittr_1.5   
+##  [5] evaluate_0.14   pillar_1.4.3    rlang_0.4.4     stringi_1.4.5  
+##  [9] rstudioapi_0.10 rmarkdown_2.0   tools_3.6.2     stringr_1.4.0  
+## [13] xfun_0.12       yaml_2.2.0      compiler_3.6.2  pkgconfig_2.0.3
+## [17] htmltools_0.4.0 knitr_1.27      tibble_2.1.3</code></pre>
 <p>　devtools::install_version()を使えば，sessionInfo()で記録されたのと同じバージョンのRパッケージをインストールすることができます。以下の例の場合は，古いバージョンのggplot2をインストールしています。詳しくは，<a href="https://support.rstudio.com/hc/en-us/articles/219949047-Installing-older-versions-of-packages">こちら</a>を参照ください。</p>
 <pre><code>devtools::install_version(&quot;ggplot2&quot;, version = &quot;0.9.1&quot;)</code></pre>
 <p>　ただし，sessionInfo()+devtools::install_version()の組み合わせでは，Rパッケージの膨大な依存関係までは扱うことができないので，完全な環境の再現にはなりません。そこで，Rパッケージのバージョン管理では，現段階では，以下の３つのRパッケージを使うことを推奨します。それぞれ特徴はありますが，解析実施時or終了時のスナップショット(Rパッケージのバージョン情報などが含まれる)をとっておいて，後でその状態を再現するパッケージになります。なお，それぞれの解説については，既に優れた記事があるので，そちらを参照ください。</p>
@@ -499,7 +501,7 @@ div.tocify {
 <p><br /></p>
 <p>　しかし，そもそもOSが違うとかR本体の大きな変更があった場合は，これらのパッケージのバージョン管理だけでは，解決することはできません（古いRをいれればいいとかもありますが，面倒ですね・・・）。OSやR本体の変更も含めた再生性の確保をする場合は，次で説明する解析環境のコンテナ化が必須です。</p>
 </div>
-<div class="section level2">
+<div id="解析環境のコンテナ化" class="section level2">
 <h2>解析環境のコンテナ化</h2>
 <p>　OSやRのバージョンなどが違っても再生性を担保するには，仮想環境を作って，そこにOSやソフトを用意するという方法があります。ただ，これだとかなり容量が大きくなるので，Dockerが提供するコンテナ技術を使って，最小限の構成でRを使った解析環境を作って，後で利用できるようにすることを推奨します。なんとなく難易度が高そうですが，ユーザーは作業が少なくて済むので，おすすめです。また，RStanやJAGSなどの準備が面倒だったり，難しいと感じるユーザーは，既に準備されたDockerを使えば，お手軽に解析環境を準備することができます。以下は，私が作成したRStudioを使った解析用Dockerのリストです。ベースのpaper-rを使用すれば，すぐにstanやJAGSが使えます。</p>
 <ul>
@@ -510,7 +512,7 @@ div.tocify {
 <li><p><a href="https://hub.docker.com/r/ykunisato/ccp-lab-r">上記が全部入ったラボ用RStudio Docker</a></p></li>
 </ul>
 <p><br /></p>
-<div id="docker" class="section level3">
+<div id="dockerの始め方" class="section level3">
 <h3>Dockerの始め方</h3>
 <p>使用はとっても簡単で，以下の５ステップで利用可能です。</p>
 <p>1.Docker Desktop ( <a href="https://www.docker.com/products/docker-desktop" class="uri">https://www.docker.com/products/docker-desktop</a> )をインストールする。</p>
@@ -520,7 +522,7 @@ div.tocify {
 <p>4.ブラウザを開いて，urlバー（アドレスバー）に，<a href="http://localhost:8787/" class="uri">http://localhost:8787/</a> とタイプする</p>
 <p>5.ブラウザ上にRstudioが出てくるので，IDにrstudio，パスに上記で設定したパスワードをいれる。</p>
 </div>
-<div id="docker" class="section level3">
+<div id="dockerの保存配布方法" class="section level3">
 <h3>Dockerの保存・配布方法</h3>
 <p>　国里のDocker hubに登録されているDockerはちょくちょく変更されます（ベースにしているrockerの変更があった場合，国里が気まぐれに変更した場合など）。そのため，解析が一段落したら，その現在使っているコンテナごと保存しておく必要があります。まず，解析で使っているコンテナのCONTAINER IDを確認します。確認には，ターミナルに以下のコマンドを打ち込んでください。</p>
 <pre><code>docker ps -a</code></pre>
@@ -529,7 +531,7 @@ div.tocify {
 <p>　次に，以下のコマンドを打ち込んで，作成したイメージを保存します（形式はtar）。 例えば，先程作成したイメージのcog190817を保存する場合は，“docker save cogModel190817 &gt; cogModel190817.tar”と打ち込みます。まあまあ大きなサイズのファイルが保存されると思います（国里のDockerを使っている場合は，4GBを超えると思います）。これを保存しておけば，後で同じ環境で解析が実施できたり，配布すれば第三者が確認することもできます。</p>
 <pre><code>docker save 上で付けた名前 &gt; 好きな名前.tar</code></pre>
 </div>
-<div id="docker" class="section level3">
+<div id="保存配布したdockerの利用方法" class="section level3">
 <h3>保存・配布したDockerの利用方法</h3>
 <p>　tar形式で保存できたら，今度使うときは，ターミナルに以下のコマンドで読み込みます。先程の例の場合は，“docker load &lt; cogModel190817.tar”です。</p>
 <pre><code>docker load &lt; 上で付けた名前.tar</code></pre>
@@ -539,7 +541,7 @@ div.tocify {
 <p><br /> <br /></p>
 </div>
 </div>
-<div id="holepunchbinder" class="section level2">
+<div id="holepunchを使ったbinder経由での解析環境の共有" class="section level2">
 <h2>holepunchを使ったBinder経由での解析環境の共有</h2>
 <p>　解析環境とともにコードとデータを提供する方法としては，holepunchパッケージを使って，Binder上で公開する方法があります。holepunchパッケージは，自動的に依存関係を調べた上で，Dockerファイルを生成し，Binderで使えるようにしてくれます。Binderは，github上のリポジトリを元にJupyterやRstudio serverを使えるようにしてくれるサービです。Binder上ではRstudio serverが動くので，非常に簡単に解析環境を共有できます。詳しくは，<a href="https://karthik.github.io/holepunch/">こちら</a>の公式の説明を確認ください。</p>
 <p>　公式の解説にしたがって，holepunchをインストールした上で，以下のコードを実行すると，Binderへのリンク用バッジが出てきます。</p>
