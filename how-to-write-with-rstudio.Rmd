@@ -19,10 +19,12 @@ title: "RStudioで卒論・修論執筆"
 ## senshuRmdパッケージを使ってみよう！
 ### Githubリポジトリの用意
 
+詳しくは以下を参考に作業ください。
+https://kunisatolab.github.io/main/how-to-github.html
 
 
-https://github.com/ykunisato/senshuRmd
 
+### senshuRmdを使って卒論・修論のパッケージ化する
 
 https://ykunisato.github.io/senshuRmd/index.html
 
