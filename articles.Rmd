@@ -9,7 +9,9 @@ title: "学術論文"
 
 ### 2020
 
-- [29] Katahira, K., Kunisato, Y., Yamashita, Y., & Suzuki, S. (2020) Commentary: "A robust data-driven approach identifies four personality types across four large data sets". Frontiers in Big Data, 3(8).
+- [30] Katahira, K., Kunisato, Y., Okimura, T., & Yamashita, Y. (in press) Retrospective surprise: A computational component for active inference
+
+- [29] Katahira, K., Kunisato, Y., Yamashita, Y., & Suzuki, S. (2020) Commentary: "A robust data-driven approach identifies four personality types across four large data sets". Frontiers in Big Data, 3(8). [Link](https://www.frontiersin.org/articles/10.3389/fdata.2020.00008/full)
 
 ### 2019
 
