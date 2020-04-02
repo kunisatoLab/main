@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -87,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -248,48 +248,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -303,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -446,26 +413,54 @@ div.tocify {
 </div>
 
 
-<div class="section level3">
+<div id="教員" class="section level3">
 <h3>教員</h3>
 <ul>
 <li><a href="yoshihiko-kunisato.html">国里愛彦</a></li>
 </ul>
 </div>
-<div class="section level3">
+<div id="学術振興会特別研究員pd" class="section level3">
+<h3>学術振興会特別研究員（PD）</h3>
+<ul>
+<li>遠山朝子</li>
+</ul>
+</div>
+<div id="大学院生博士過程" class="section level3">
 <h3>大学院生（博士過程）</h3>
 <ul>
 <li><a href="https://ksomatori.github.io/homepage/index.html">杣取恵太</a>(休学中) <a href="materials/FB/2018_somatori.pdf">参加者用研究FB</a></li>
 </ul>
 </div>
-<div class="section level3">
+<div id="大学院生修士年" class="section level3">
 <h3>大学院生（修士２年）</h3>
 </div>
-<div id="-1" class="section level3">
+<div id="大学院生修士年-1" class="section level3">
 <h3>大学院生（修士１年）</h3>
 </div>
-<div class="section level3">
+<div id="学部生年" class="section level3">
 <h3>学部生（４年）</h3>
+<ul>
+<li>齋藤裕希子</li>
+<li>ウ ジヒ</li>
+<li>田中遼太</li>
+<li>五十嵐大知</li>
+</ul>
+</div>
+<div id="学部生年-1" class="section level3">
+<h3>学部生（３年）</h3>
+<ul>
+<li>澤村直樹</li>
+<li>朱延盛</li>
+<li>小嶺幸司</li>
+</ul>
+</div>
+<div id="obog" class="section level3">
+<h3>OB・OG</h3>
+</div>
+<div id="年度" class="section level3">
+<h3>2019年度</h3>
+<div id="学部" class="section level4">
+<h4>学部</h4>
 <ul>
 <li>菊池流那</li>
 <li>柴田真衣</li>
@@ -476,21 +471,10 @@ div.tocify {
 <li>鈴木海渡</li>
 </ul>
 </div>
-<div id="-1" class="section level3">
-<h3>学部生（３年）</h3>
-<ul>
-<li>齋藤裕希子</li>
-<li>ウ ジヒ</li>
-<li>田中遼太</li>
-<li>五十嵐大知</li>
-</ul>
 </div>
-<div id="obog" class="section level3">
-<h3>OB・OG</h3>
-</div>
-<div class="section level3">
+<div id="年度-1" class="section level3">
 <h3>2018年度</h3>
-<div class="section level4">
+<div id="学部-1" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>阿久津裕史(卒業論文題目「感情への恐れがマインドフルネス特性及びひきこもり親和性に与える影響について」）</li>
@@ -502,7 +486,7 @@ div.tocify {
 <li>西田千夏(卒業論文題目「メランコリー親和型性格とコーピング及びサポート模索の関連」) <a href="materials/FB/2018_nishida.pdf">参加者用研究FB</a></li>
 </ul>
 </div>
-<div class="section level4">
+<div id="修士" class="section level4">
 <h4>修士</h4>
 <ul>
 <li>井口聖香(修士論文題目「過剰適応者の感情抑制」)</li>
@@ -510,9 +494,9 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="-1" class="section level3">
+<div id="年度-2" class="section level3">
 <h3>2017年度</h3>
-<div id="-1" class="section level4">
+<div id="学部-2" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>福地友輔(卒業論文題目「重要他者に対する再確認傾向と表情認知及び不安の関連」）</li>
@@ -523,7 +507,7 @@ div.tocify {
 <li>関谷朋志</li>
 </ul>
 </div>
-<div id="-1" class="section level4">
+<div id="修士-1" class="section level4">
 <h4>修士</h4>
 <ul>
 <li>金子美帆 (修士論文題目「反実仮想思考を用いた先延ばし行動低減プログラムの効果の検討」）</li>
@@ -531,7 +515,7 @@ div.tocify {
 <li>土谷美月 (修士論文題目「不確実さ不耐性と条件づけ場所嗜好性の関連-強化率の操作とvirtual realityを用いた検討-」）</li>
 </ul>
 </div>
-<div id="2" class="section level4">
+<div id="博士2年" class="section level4">
 <h4>博士2年</h4>
 <ul>
 <li><a href="https://mrunadon.github.io/blogdown_page/post/profile/">坂本次郎</a>　(日本学術振興会 特別研究員DC1)</li>
@@ -544,9 +528,9 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="-2" class="section level3">
+<div id="年度-3" class="section level3">
 <h3>2016年度</h3>
-<div id="-2" class="section level4">
+<div id="学部-3" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>山本由佳(卒業論文題目「対人場面における認知的方略の違いと抑うつの関連」）</li>
@@ -558,16 +542,16 @@ div.tocify {
 <li>上田直人(卒業論文題目「サイコパシー傾向者の罰行動に伴うコストに対する飲酒の習慣の影響について」）</li>
 </ul>
 </div>
-<div id="-2" class="section level4">
+<div id="修士-2" class="section level4">
 <h4>修士</h4>
 <ul>
 <li>小田島裕佳(修士論文題目「社交不安傾向と空間周波数の低い表情画像に対する回避との関連」）</li>
 </ul>
 </div>
 </div>
-<div id="-3" class="section level3">
+<div id="年度-4" class="section level3">
 <h3>2015年度</h3>
-<div id="-3" class="section level4">
+<div id="学部-4" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>仁添未亜(卒業論文題目「イメージの視点と対人不安・抑うつの関連: 公的自己意識と不快情動喚起状況におけるイメージの内的・外的視点の観点から」）</li>
@@ -578,7 +562,7 @@ div.tocify {
 <li>土舘佳子(卒業論文題目「肯定的・否定的自己複雑性と自己受容、問題解決能力との関連」）</li>
 </ul>
 </div>
-<div id="-3" class="section level4">
+<div id="修士-3" class="section level4">
 <h4>修士</h4>
 <ul>
 <li>坂本次郎(修士論文題目「抑うつと痛みの将来予測: 階層ベイズモデルによる意思決定の検討」）</li>
@@ -587,9 +571,9 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="-4" class="section level3">
+<div id="年度-5" class="section level3">
 <h3>2014年度</h3>
-<div id="-4" class="section level4">
+<div id="学部-5" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>古川颯人(卒業論文題目「マインドワンダリングと創造性の研究」)</li>
@@ -597,16 +581,16 @@ div.tocify {
 <li>畑中勇人(卒業論文題目「マインドワンダリングとマインドフルネス特性の関係性」)</li>
 </ul>
 </div>
-<div id="-4" class="section level4">
+<div id="修士-4" class="section level4">
 <h4>修士</h4>
 <ul>
 <li>鈴木彩夏(修士論文題目「妬み感情と情動制御方略の関連 −Grossの情動制御プロセスモデルを用いて−」)</li>
 </ul>
 </div>
 </div>
-<div id="-5" class="section level3">
+<div id="年度-6" class="section level3">
 <h3>2013年度</h3>
-<div id="-5" class="section level4">
+<div id="学部-6" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>上野駿介(卒業論文題目「火のある風景描画法による攻撃性へのカタルシス効果の検討」)</li>
@@ -619,7 +603,7 @@ div.tocify {
 </div>
 
 <footer>
-  <p>Copyright &copy; 2018 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -639,6 +623,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
