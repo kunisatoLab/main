@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -88,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -237,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -265,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -408,12 +413,12 @@ div.tocify {
 </div>
 
 
-<div class="section level2">
+<div id="はじめに" class="section level2">
 <h2>はじめに</h2>
 <p>WEB実験をするには，jsPsychで作成したWEB実験用htmlファイルを，どこかのウェブサーバーにおく必要があります。サーバーの知識のある方は自前でサーバーを立てて実施できますし，有料ですがpavlovia(<a href="https://pavlovia.org/about.html" class="uri">https://pavlovia.org/about.html</a> )などのサービスを使っても実施できます。自前でサーバーを立てると，その維持費用が必要なのと，サーバーの設定や管理には結構スキルが必要です。pavloviaは，サーバーの管理は不要で，設定も簡単ですが，ある程度の予算が必要です(2019年8月現在，1名の実験につき0.2ポンド)。Googleのサービスの1つのFirebaseなら，サーバーの管理は不要で（最初に少し設定が必要です），通常のWEB実験なら無料枠内で実施できます。以下では，Firebaseを用いたWEB実験の解説をしています。</p>
 <p><br /></p>
 </div>
-<div id="firebase1" class="section level2">
+<div id="firebaseアカウントプロジェクトの作成1" class="section level2">
 <h2>Firebaseアカウント＆プロジェクトの作成<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>:</h2>
 <ul>
 <li>まずは，<a href="https://firebase.google.com/?hl=ja">Firebase</a>で，Firebaseのアカウントを作成します（Googleアカウントでログインすると使えるようになると思います）。</li>
@@ -427,7 +432,7 @@ div.tocify {
 <p><img src="fig/firebase_fig3.png" /></p>
 <p><br /></p>
 </div>
-<div id="firebase-cli" class="section level2">
+<div id="firebase-cliのインストール" class="section level2">
 <h2>Firebase CLIのインストール</h2>
 <p>　 Firebaseのサイト上のプロジェクトの設定は終わったので，次はローカルPC（手元のパソコンです）の設定をします。</p>
 <ul>
@@ -439,7 +444,7 @@ div.tocify {
 <pre><code>firebase login</code></pre>
 <p>これで，Firebase CLIを使用する準備が整いました。</p>
 <p><br /></p>
-<div id="firebase" class="section level3">
+<div id="firebaseプロジェクトの初期化" class="section level3">
 <h3>Firebaseプロジェクトの初期化</h3>
 <ul>
 <li>Firebase用のフォルダをローカルPCに作成します（フォルダ名は英語ならなんでもいいと思います。場所もどこでもいいです）。</li>
@@ -466,7 +471,7 @@ div.tocify {
 <p>これで，firebaseプロジェクトの初期化が終わりました。　</p>
 <p><br /></p>
 </div>
-<div id="database" class="section level3">
+<div id="databaseのセキュリティルールの設定" class="section level3">
 <h3>Databaseのセキュリティルールの設定</h3>
 <ul>
 <li>ブラウザ上でも設定できるのですが，せっかくローカルにデータベースの設定ファイル(database.rules.json)があるので，そっちで設定します。database.rules.jsonをテキストエディタで開きます。デフォルトでは，以下のような内容だと思います。</li>
@@ -495,7 +500,7 @@ div.tocify {
 <p><br /></p>
 </div>
 </div>
-<div id="database" class="section level2">
+<div id="databaseとアプリの設定" class="section level2">
 <h2>Databaseとアプリの設定</h2>
 <ul>
 <li>今度は，<a href="https://firebase.google.com/?hl=ja">Firebase</a>のプロジェクトのページに移動して，左側のメニューからDatabaseを選びます。 　</li>
@@ -536,7 +541,7 @@ div.tocify {
 </ul>
 <p><img src="fig/firebase_fig15.png" /></p>
 </div>
-<div id="realtime-databasejspsych" class="section level2">
+<div id="realtime-databaseにデータを保存するためのjspsychの設定" class="section level2">
 <h2>Realtime databaseにデータを保存するためのjsPsychの設定</h2>
 <ul>
 <li><p>コピーしたFirebase SDKをHTMLに挿入します。</p></li>
@@ -605,7 +610,7 @@ jsPsych.init({
 <li>上記のように設定して，実験用HTMLファイルをknitします。</li>
 </ul>
 </div>
-<div id="htmlrealtime-database" class="section level2">
+<div id="実験用htmlをホスティングしてrealtime-databaseにデータを保存する" class="section level2">
 <h2>実験用HTMLをホスティングして，Realtime Databaseにデータを保存する。</h2>
 <ul>
 <li>上記で準備し実験用HTMLファイルとjsPyschのフォルダを“public”フォルダ内におきます。以下の場合は，stroop_jp.htmlをおきました。</li>
@@ -621,7 +626,7 @@ jsPsych.init({
 </ul>
 <p><img src="fig/firebase_fig17.png" /></p>
 </div>
-<div id="realtime-database" class="section level2">
+<div id="realtime-databaseのデータを読み込む" class="section level2">
 <h2>Realtime Databaseのデータを読み込む</h2>
 <ul>
 <li>Realtime Databaseに保存されたデータは，Realtime Databaseのページの右上から，「JSONをエクスポート」をクリックすると，データが入ったJSONファイルがダウンロードされます。ダウンロードしたJSONファイルは，Rで読み込んで解析などに使えます。</li>
