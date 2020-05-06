@@ -418,10 +418,10 @@ div.tocify {
 <p>本研究室では，以下の理由から卒論・修論をRStudio上でRMarkdownを使って執筆することを推奨しています。</p>
 <ul>
 <li><p>SPSSやRで解析した結果を卒論のWordやExcelにコピー＆ペーストして整形するスタイルが多いと思います。しかし，そのコピー＆ペーストは100%合っていますか？その自信がない場合は，RMarkdown上で解析も執筆も一緒にやったほうが安心です（コピー＆ペーストが不要で，解析コードに間違いがあってもすぐに修正が反映されます）。</p></li>
-<li><p>国里が作成したRMarkdownパッケージを使えば，最終的なフォーマット調整を自動的にやってくれる（表紙，目次，ページ番号などは自動ではいる，日本語文献以外は自動で文献も綺麗にしてくれる）。</p></li>
-<li><p>国里が研究指導する場合もデータやコードをいじりつつ検討ができて，有意義な研究指導が期待できる。</p></li>
-<li><p>GitHubでのバージョン管理もRStudio上で簡単にできる。</p></li>
-<li><p>透明性の高い研究実践や仕事のやり方が身につく</p></li>
+<li><p>国里が作成したRMarkdownパッケージを使えば，最終的なフォーマット調整を自動的にやってくれるので楽です（表紙，目次，ページ番号などは自動ではいる，日本語文献以外は自動で文献も綺麗にしてくれる）。</p></li>
+<li><p>国里が研究指導する場合もデータやコードをいじりつつ検討ができて，有意義な研究指導が期待できます。</p></li>
+<li><p>GitHubでのバージョン管理もRStudio上で簡単にできます。</p></li>
+<li><p>透明性の高い研究実践や仕事のやり方が身につきます</p></li>
 <li><p>楽しい</p></li>
 </ul>
 <p><br></p>
@@ -432,7 +432,9 @@ div.tocify {
 <p><br></p>
 <div id="githubリポジトリの用意" class="section level3">
 <h3>1.GitHubリポジトリの用意</h3>
-<p>本研究室ではGitHub上でバージョン管理をします。詳しくは，<a href="https://kunisatolab.github.io/main/how-to-github.html">こちら</a>以下を参考に，国里が用意した空のリポジトリを自分の手元にもってきてください。<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>本研究室ではGitHub上でバージョン管理をします。詳しくは，<a href="https://kunisatolab.github.io/main/how-to-github.html">こちら</a>を参考に，国里が用意したGitHubリポジトリを自分の手元にもってきてください。</p>
+<p>国里が用意したGitHubリポジトリは，thesisフォルダとexerciseフォルダから構成されます。thesisフォルダには卒論や修論に関するものをいれて，exerciseフォルダにはこのあと行うjsPsychの演習やRの解析練習をいれます。今回は，卒論や修論にかんすることをやりますので，RstudioのSession → Set Working Directory → Choose Directoryを選択して，みなさんに用意したGitHubリポジトリ内のthesisフォルダをカレントディレレクトリーに選んでください（つまり，このページの以降の操作は，thesisフォルダ内で行います）。</p>
+<p><img src="fig/senshuRmd_fig10.png" /></p>
 <p><br></p>
 </div>
 <div id="senshurmdで卒論修論のパッケージ化する" class="section level3">
@@ -446,7 +448,7 @@ div.tocify {
 <li>materials　研究で用いた材料（調査票，実験課題）をおくフォルダです。</li>
 <li>README.md　これらのフォルダについて第三者（そして未来の自分）が見て，わかるように説明をREADMEに書いてください。</li>
 </ul>
-<p><br> では，早速使ってみましょう。まず，Rコンソール上でsenshuRmdを読み込みます。読み込まれない場合は，install_github()でインストールしてください。</p>
+<p><br> このフォルダ構成で作業をしてもらいますが，各自が設定するは面倒ですので，これらを設定するRのパッケージ(senshuRmd)を国里が自作しています。早速使ってみましょう。まず，Rコンソール上でlibrary()を使って，senshuRmdを読み込みます。読み込まれない場合は，install_github()でインストールしてください。</p>
 <pre><code>library(senshuRmd)
 # もしインストールされてない場合は，以下のコマンドでインストールする
 # install.packages(&quot;devtools&quot;)
@@ -461,10 +463,15 @@ div.tocify {
 <h3>3.senshuRmdで卒論・修論を執筆する</h3>
 <p>それでは，senshuRmdの卒論・修論用Rmdテンプレートを使ってみましょう。thesis(本研究室では名_姓)フォルダを開くと，thesis(本研究室では名_姓).Rmdというファイルがあるので，それを開きます。以下のような感じで，“タイトル”，“学籍番号:氏名”とあるので，まず自分の卒論タイトル（仮）と学籍番号氏名を書きましょう。以降，緑色の字で色々と注意事項が書いてあります。この注意事項は，最終的な卒論ファイルには反映されませんので，邪魔でなければそのままおいておいてください。注意事項は，卒論をすすめる上で必要となる情報が結構はいっているので，必ず読んでください。</p>
 <p><img src="fig/senshuRmd_fig2.png" /></p>
-<p>まず，練習でKnitボタンをクリックしてみましょう！しばらくRStudio上で処理がされて，PDFファイルが出力されたら成功です。PDFファイルが提出用卒論と同じフォーマットになっているか確認をしてください<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>。それでは，RStudioで楽しみながら，卒論・修論に取り組んでいきましょう。</p>
+<p>まず，練習でKnitボタンをクリックしてみましょう！しばらくRStudio上で処理がされて，PDFファイルが出力されたら成功です。PDFファイルが提出用卒論と同じフォーマットになっているか確認をしてください。</p>
 <p><br></p>
-<p>ゼミ生向け:国里が用意したサーバーで作業をしている場合，なぜかうまく行かないことがあります。その場合は，以下のコマンドでtinytexをインストールください。</p>
+<p>PDFファイルが出力されずにエラーがでる場合，なぜかうまく行かないことがあります。その場合は，以下のコマンドでtinytexをインストールください（大体うまくいきます）。tinytexのインストールでもうまくいかない場合は，<code>tinytex::tlmgr_install(‘ipaex’)</code>で日本語出力用フォントをインストールしてください。</p>
 <pre><code>tinytex::install_tinytex()</code></pre>
+<p><br></p>
+</div>
+<div id="githubを使ったバージョン管理法について" class="section level3">
+<h3>4.GitHubを使ったバージョン管理法について</h3>
+<p>実際は，国里が作った各学生用のリポジトリで作業用ブランチを作って作業をします。作業に応じて，CommitとPushを繰り返していきます。そして，国里の卒論・修論チェックのタイミングでPull requestsをしてもらって，国里がチェックをします。詳細は，ゼミの時に説明をします。</p>
 </div>
 <div id="引用文献に関する補足" class="section level3">
 <h3>引用文献に関する補足</h3>
@@ -524,13 +531,6 @@ DOI=&quot;10.24602/sjpr.62.1_88&quot;,
 <p><img src="fig/senshuRmd_fig9.png" /></p>
 <p>卒論・修論をRStudio上でRMarkdownを使って執筆することは，少し面倒くさそうに思えるかもしれませんが，卒論・修論でのフォーマット調整にかかる時間を短くすることができますし，解析と文章との距離が近くできるので，ミスもすくなる可能性が高いので，是非とも試してもらえると嬉しく思います。</p>
 </div>
-</div>
-<div class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>実際は，国里が作った各学生用のリポジトリで作業用ブランチを作って作業をします。作業に応じて，CommitとPushを繰り返していきます。そして，国里の卒論・修論チェックのタイミングでPull requestsをしてもらって，国里がチェックをします。詳細は，ゼミの時に説明をします。<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>なお，senshuRmdはtinytexを使います。最新のtinytexが入っているか確認し，<code>tinytex::tlmgr_install(‘ipaex’)</code>で日本語出力用フォントをインストールしてください。<a href="#fnref2" class="footnote-back">↩</a></p></li>
-</ol>
 </div>
 
 <footer>
