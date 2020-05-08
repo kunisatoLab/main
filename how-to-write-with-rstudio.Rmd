@@ -29,7 +29,12 @@ title: "RStudioで卒論・修論執筆"
 
 ### 1.GitHubリポジトリの用意
 
-本研究室ではGitHub上でバージョン管理をします。詳しくは，[こちら](https://kunisatolab.github.io/main/how-to-github.html)を参考に，国里が用意したGitHubリポジトリを自分の手元にもってきてください。
+本研究室ではGitHub上でバージョン管理をします。詳しくは，[こちら](https://kunisatolab.github.io/main/how-to-github.html)を参考に，国里が用意したGitHubリポジトリを自分の手元にもってきてください。そして，gitタブをクリックして，以下の赤い部分をクリックして，「draft1」を選択してください。みなさんのリポジトリには，最初にmasterとdraft1を用意していますが，みなさんが作業する場合は，draftを使うと覚えておいてください。
+
+![](fig/senshuRmd_fig11.png)
+
+draft1を選ぶと以下のような画面が出てくると思います。リポジトリから伸びた枝（branch）が
+![](fig/senshuRmd_fig12.png)
 
 国里が用意したGitHubリポジトリは，thesisフォルダとexerciseフォルダから構成されます。thesisフォルダには卒論や修論に関するものをいれて，exerciseフォルダにはこのあと行うjsPsychの演習やRの解析練習をいれます。今回は，卒論や修論にかんすることをやりますので，RstudioのSession → Set Working Directory → Choose Directoryを選択して，みなさんに用意したGitHubリポジトリ内のthesisフォルダをカレントディレレクトリーに選んでください（つまり，このページの以降の操作は，thesisフォルダ内で行います）。
 
