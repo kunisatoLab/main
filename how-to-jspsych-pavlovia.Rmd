@@ -2,4 +2,42 @@
 title: "jsPsychを用いたWEB実験の実施：Pavloviaで簡単に実施してみよう！"
 ---
 
-準備中
+## Pavlovia用の実験課題の作成
+
+jsPsychRmdを使います。
+
+```
+library(jsPsychRmd)
+# devtools::install_github("ykunisato/jsPsychRmd")
+```
+
+
+## 刺激の事前読み込み
+
+```
+var images = ['img/i1.png','img/i2.png','img/i3.png'];
+var audio = ['audio/a1.mp3','audio/a2.mp3','audio/a3.mp3'];
+var video = ['video/v1.mp4', 'video/v2.mp4', 'video/v3.mp4'];
+
+jsPsych.init({
+    timeline: timeline,
+    preload_audio: audio,
+    preload_images: images,
+    preload_video: video
+});
+```
+
+## Pavlovia側の設定
+
+
+## Pavloviaへ課題をPushする
+
+
+## Pavloviaでの課題のrun
+
+
+## PavloviaからデータをPullする
+
+
+
+

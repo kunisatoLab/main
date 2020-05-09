@@ -413,7 +413,37 @@ div.tocify {
 </div>
 
 
-<p>準備中</p>
+<div id="pavlovia用の実験課題の作成" class="section level2">
+<h2>Pavlovia用の実験課題の作成</h2>
+<p>jsPsychRmdを使います。</p>
+<pre><code>library(jsPsychRmd)
+# devtools::install_github(&quot;ykunisato/jsPsychRmd&quot;)</code></pre>
+</div>
+<div id="刺激の事前読み込み" class="section level2">
+<h2>刺激の事前読み込み</h2>
+<pre><code>var images = [&#39;img/i1.png&#39;,&#39;img/i2.png&#39;,&#39;img/i3.png&#39;];
+var audio = [&#39;audio/a1.mp3&#39;,&#39;audio/a2.mp3&#39;,&#39;audio/a3.mp3&#39;];
+var video = [&#39;video/v1.mp4&#39;, &#39;video/v2.mp4&#39;, &#39;video/v3.mp4&#39;];
+
+jsPsych.init({
+    timeline: timeline,
+    preload_audio: audio,
+    preload_images: images,
+    preload_video: video
+});</code></pre>
+</div>
+<div id="pavlovia側の設定" class="section level2">
+<h2>Pavlovia側の設定</h2>
+</div>
+<div id="pavloviaへ課題をpushする" class="section level2">
+<h2>Pavloviaへ課題をPushする</h2>
+</div>
+<div id="pavloviaでの課題のrun" class="section level2">
+<h2>Pavloviaでの課題のrun</h2>
+</div>
+<div id="pavloviaからデータをpullする" class="section level2">
+<h2>PavloviaからデータをPullする</h2>
+</div>
 
 <footer>
   <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
