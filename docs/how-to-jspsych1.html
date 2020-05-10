@@ -432,92 +432,28 @@ div.tocify {
 </div>
 <div id="jspsychを使う準備" class="section level2">
 <h2>1.jsPsychを使う準備</h2>
-<div id="jspsychのダウンロード" class="section level3">
-<h3>1.1 jsPsychのダウンロード</h3>
-<p>まず，<a href="https://github.com/jspsych/jsPsych/releases">jsPsychのリリースページ</a>にいきます。以下のようなページが出てくるので，Latest releaseのところを見ます（以下の例だとv6.1.0です）。</p>
-<p><img src="fig/jspsych1_fig1.png" /></p>
-<p>少し下の方にスクロールすると，“jspsych-X.X.X.zip”(以下の場合は，“jspsych-6.1.0.zip”です)というファイルが見えてくるので，それをクリックして，ダウンロードします。</p>
-<p><img src="fig/jspsych1_fig2.png" /></p>
-<div id="ゼミ生向けの情報" class="section level4">
-<h4>ゼミ生向けの情報</h4>
-<p>私のゼミ生の場合は，クラウド上のRstudio serverで作業をします。そのため，jsPsychを直接RStudioに読み込みますので，上記の“jspsych-X.X.X.zip”というファイルを右クリックして，このファイルへのリンクをコピーします（Chromeを使う場合は，右クリックすると以下のように出てきますので，「Copy Link Adress」をクリックください）。</p>
-<p><img src="fig/jspsych1_fig3.png" /></p>
-</div>
-</div>
-<div id="jspsych課題用のフォルダの作成" class="section level3">
-<h3>1.2 jsPsych課題用のフォルダの作成</h3>
-<p>jsPsychで認知課題を作成する際には，フォルダを作って，そこに使用するファイル一式(jsPsychライブラリ，呈示する刺激，HTML，Rmdファイルなど)を置くようにしましょう。まずは，パソコンの好きな場所に，「hello」という名前のフォルダを作ってください。</p>
-<div id="ゼミ生向けの情報-1" class="section level4">
-<h4>ゼミ生向けの情報</h4>
-<p>私のゼミ生の場合は，クラウド上のRstudio serverで作業をします。Rstudioの左下のペインの「Files」から「New Folder」をクリックして，出てきた以下のようなウィンドウに「hello」と打ち込んでください。</p>
-<p><img src="fig/jspsych1_fig4.png" /></p>
-</div>
-</div>
-<div id="jspsychライブラリの設置" class="section level3">
-<h3>1.3 jsPsychライブラリの設置</h3>
-<p>フォルダができたら，“jspsych-X.X.X.zip”を解凍・展開して，出てきた“jspsych-X.X.X”フォルダをコピーして，さきほどの「hello」フォルダにペーストします。</p>
-<div id="ゼミ生向けの情報-2" class="section level4">
-<h4>ゼミ生向けの情報</h4>
-<p>私のゼミ生の場合は，クラウド上のRstudio serverで作業をします。必ず以下の手順に従ってください。</p>
-<ul>
-<li>RStudioを開いて，さきほど作成した「hello」フォルダをワーキングディレクトリーに設定します(Rstudioの上のSession→setWorking Directory→Choose Directory…で選択)。その上で，以下をRStudioのConsole上で実行します。curl &lt;- “XXX”のXXXには，jsPsychのリンクを入れます（1.2でコピーしたものです）。なお，2019年9月の段階でjsPsychの最新が6.1.0ですので，その時の最新のものを使うようにしてください(その都度，URLを変えたり，unzipの展開先名を変えてください)。</li>
-</ul>
-<pre><code>temp &lt;- tempfile()
-curl &lt;- &quot;https://github.com/jspsych/jsPsych/releases/download/v6.1.0/jspsych-6.1.0.zip&quot;
-download.file(curl, temp, mode=&quot;wb&quot;) 
-unzip (temp, exdir = &quot;./jspsych-6.1.0&quot;)
-unlink(temp)</code></pre>
-</div>
-</div>
+<p>jsPsychを使うには，実験課題に関するフォルダを構成して，<a href="https://github.com/jspsych/jsPsych/releases">jsPsychのリリースページ</a>から最新のjsPsychをダウンロードして，そのフォルダ内に配置したりする必要があります。それらの作業を自動的にやってくれるRパッケージのjsPsychRmd(<a href="https://github.com/ykunisato/jsPsychRmd" class="uri">https://github.com/ykunisato/jsPsychRmd</a> )を国里が作成しています。これを使うと簡単に準備ができるので，以下で説明をします。</p>
 <div id="rstudioでjspsychを使う準備" class="section level3">
-<h3>1.4 RstudioでjsPsychを使う準備</h3>
-<p>本ページでは，RstudioでjsPsychを使います。早速，RStudioを起動しましょう。Rstudioが起動すると以下のような画面かと思います。</p>
+<h3>1.1 RstudioでjsPsychを使う準備</h3>
+<p>早速，RStudioを起動しましょう。Rstudioが起動すると以下のような画面かと思います。</p>
 <p><img src="fig/jspsych1_fig5.png" /></p>
-<p>左上の方の新規ファイル作成（赤い丸で囲っている）をクリックして，「R Markdown…」（青い四角で囲っている）をクリックします。</p>
-<p><img src="fig/jspsych1_fig6.png" /></p>
-<p>以下のように，なにかウィンドウが出てきますが，そのまま「OK」をクリックします。</p>
-<p><img src="fig/jspsych1_fig7.png" /></p>
-<p>R Markdownファイルが作成されて，左上のペインにでてきました。とりあえず，hello1.Rmdという名前で保存しておきます（保存マークをクリックすると保存できます）。</p>
-<p><img src="fig/jspsych1_fig8.png" /></p>
+<p>まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の<code>devtools::install_github(&quot;ykunisato/jsPsychRmd&quot;)</code>を打ち込んで，インストールしてから，<code>library(jsPsychRmd)</code>を実行してください。</p>
+<pre><code>library(jsPsychRmd)</code></pre>
+<p>次に，RstudioのSession → Set Working Directory → Choose Directoryを選択して，カレントワーキングディレクトリを実験課題の作成をする予定のフォルダに設定します（国里のゼミ生の場合は，GitHubリポジトリのexerciseフォルダを選択してください）。カレントワーキングディレクトリの設定ができたら，Consoleに以下を打ち込みます。</p>
+<pre><code>set_jsPsych(file_name = &quot;hello&quot;)</code></pre>
+<p>すると，以下のような“hello”という名前のフォルダ内に以下のようなファイルとフォルダが用意されます。</p>
+<ul>
+<li>index.Rmd: jsPsychで課題を作る際にメインのファイルとなるRmdファイルです。</li>
+<li>jspsych-6.1.0: <a href="https://www.jspsych.org/">jsPsychのオフィシャルサイト</a>からダウンロードしたjsPsychのライブラリです。</li>
+<li>stimuli: 刺激をいれるフォルダです。このままここに刺激を入れてもいいですし，imgって名前に変更して画像ファイルをいれてもいいです（チュートリアルはimgといった名前を使っているので，そっちの方が楽かも）。</li>
+</ul>
+<p><img src="fig/jspsych1_fig16.png" /></p>
 </div>
-<div id="r-markdonでjspsychを扱う" class="section level3">
-<h3>1.5 R MarkdonでjsPsychを扱う</h3>
+<div id="r-markdonとjspsychで行動課題を作る" class="section level3">
+<h3>1.2 R MarkdonとjsPsychで行動課題を作る</h3>
 <p>R Markdon(ファイルの拡張子は.Rmd)は，ざっくり言うと，文章とプログラミングコード（基本的にはRだが，JavaScriptやPyhtonも使える）をまとめてHTMLファイル(インターネットのサイトを作っているファイル)にして出力してくれるものです。R Markdownの詳細については，<a href="https://kazutan.github.io/kazutanR/Rmd_intro.html">Kazutan氏のサイト</a>が非常に勉強になると思います。R Markdownは，解析コードと文章を１つのファイルに読みやすい形でまとめられるので，解析などでも便利なものですが，ここでは，jsPsychを使うために利用します。</p>
-</div>
-<div id="jspsychを使うときのrmarkdownの設定" class="section level3">
-<h3>1.6 jsPsychを使うときのRMarkdownの設定</h3>
-<ul>
-<li>1.Rmdのyamlヘッダを以下のように変更します（タイトルは課題名とか，名前は自分や研究グループの名前を記載してください）。このyamlヘッダではインデントが重要ですので，必ず以下のインデントの構造と同じようにしてください。</li>
-</ul>
-<pre><code>---
-title: &quot;タイトル&quot;
-author: &quot;名前&quot;
-output:
-  html_document:
-    mathjax: null
-    highlight: null
-    theme: null
-    css: jspsych-X.X.X/css/jspsych.css
----</code></pre>
-<ul>
-<li>2.最初のチャンク(プログラミングコードの１まとまりのこと)を{r setup, include=FALSE}にして，以下のコードを書きます。これは，rチャンクに書き込まれたコードはHTMLにした時に表示せず(echo = FALSE),メッセージや警告がでてもHTMLに表示しない(message=FALSE, warning=FALSE)ようにすることをデフォルトとして設定しています。</li>
-</ul>
-<pre><code>knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)</code></pre>
-<ul>
-<li>3.jsPsychのプラグインの追加をします。チャンクを{r}とした上で，以下のように書きます(追加には，htmltoolsパッケージを使って，tags$script(src=’’)で必要なプラグインなどを指定します)。jsPsychを使う限り’jspsych-6/jspsych.js’は必須ですが，プラグインは，適宜使用するものを追加します（以下の例では，jspsych-html-keyboard-responseというプラグインを追加しています。これは，HTML形式の刺激の呈示とキーボードからの反応を取得するプラグインです）。なお，<a href="https://www.jspsych.org/plugins/overview/">jsPsychのプラグインの概観ページ</a>を確認すると，どういうプラグインがあるか確認できます。</li>
-</ul>
-<pre><code>library(htmltools)
-tagList(
-tags$script(src=&#39;jspsych-6/jspsych.js&#39;),
-tags$script(src=&#39;jspsych-6/plugins/jspsych-html-keyboard-response.js&#39;)
-)</code></pre>
-<p>ここまでの設定内容を画像で示すと，以下のような感じです。</p>
-<p><img src="fig/jspsych1_fig9.png" /></p>
-<ul>
-<li>4.jsPsychの本体のコードは，チャンクを{js}とする（このチャンク内でjsPsychを使ったjsコードを書く）。{js}内を書き込んだものを画像で見せると以下のような感じです。なお，まだ{js}内は書かなくても大丈夫です。</li>
-</ul>
-<p><img src="fig/jspsych1_fig10.png" /></p>
-<p>さて，準備が整ってきました。以降では，{js}内にコードを書くことで，実験用のHTMLを作っていきます。</p>
+<p>さて，上記で作成されたindex.Rmdを開いてください。以下のように，すでに書き込まれているかと思います。まずは，特に考えずに，赤い四角で囲ったKnitをクリックしてみましょう。Knitをクリックすると，RmdからHTMLファイルが作成されて，画面上に「こんにちは」というのが出てきます。それができていたら，成功です。</p>
+<p><img src="fig/jspsych1_fig17.png" /></p>
 <p><br></p>
 </div>
 </div>
@@ -526,6 +462,8 @@ tags$script(src=&#39;jspsych-6/plugins/jspsych-html-keyboard-response.js&#39;)
 <p>だいたいプログラミングの最初は，「Hello World」とか書くので，今回も「こんにちわあ」と画面に表示させることにします。</p>
 <div id="javascriptの書き込み" class="section level3">
 <h3>2.1 JavaScriptの書き込み</h3>
+<p>jsPsychの本体のコードは，チャンクを{js}とする（このチャンク内でjsPsychを使ったjsコードを書く）。{js}内を書き込んだものを画像で見せると以下のような感じです。なお，まだ{js}内は書かなくても大丈夫です。</p>
+<p><img src="fig/jspsych1_fig18.png" /></p>
 <p>先程のRmdの準備の段階で，プラグインなどの準備はできているので，JavaScriptの本体の記載に集中します。以下の画像の{js}チャンクをご自身のRmdファイルに転記してください（コピペだけだと覚えないので・・・）。</p>
 <p>コードの内容を説明すると，まずtimelineというものを準備します（これは試行の順番などを指示するものです。timelineに従って課題は進みます。なお，timeline名はtimeline以外の名前でも使えます）。「こんいちわあ」という文字を出すwelcome試行を設定して（プラグインのhtml-keyboard-responseを使用），timelineにプッシュしています（イメージするなら登録ですね）。最後に，jsPsych.initで，timelineに従って実験をするように指定しています。</p>
 <p><img src="fig/jspsych1_fig11.png" /></p>
