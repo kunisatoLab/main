@@ -58,65 +58,109 @@ set_jsPsych(file_name = "hello")
 
 ### 1.2 R MarkdonとjsPsychで行動課題を作る
 
-R Markdon(ファイルの拡張子は.Rmd)は，ざっくり言うと，文章とプログラミングコード（基本的にはRだが，JavaScriptやPyhtonも使える）をまとめてHTMLファイル(インターネットのサイトを作っているファイル)にして出力してくれるものです。R Markdownの詳細については，[Kazutan氏のサイト](https://kazutan.github.io/kazutanR/Rmd_intro.html)が非常に勉強になると思います。R Markdownは，解析コードと文章を１つのファイルに読みやすい形でまとめられるので，解析などでも便利なものですが，ここでは，jsPsychを使うために利用します。
+R Markdon(ファイルの拡張子は.Rmd)は，ざっくり言うと，文章とプログラミングコード（基本的にはRだが，JavaScriptやPyhtonも使える）をまとめてHTMLファイル(インターネットのサイトを作っているファイル)にして出力してくれるものです。R Markdownの詳細については，[Kazutan氏のサイト](https://kazutan.github.io/kazutanR/Rmd_intro.html)が非常に勉強になると思います。R Markdownは，解析コードと文章を１つのファイルに読みやすい形でまとめられるので，解析などでも便利なものですが，ここでは，jsPsychを使って行動課題をHTML出力するために利用します。
 
 
-さて，上記で作成されたindex.Rmdを開いてください。以下のように，すでに書き込まれているかと思います。まずは，特に考えずに，赤い四角で囲ったKnitをクリックしてみましょう。Knitをクリックすると，RmdからHTMLファイルが作成されて，画面上に「こんにちは」というのが出てきます。それができていたら，成功です。
+さて，上記の```set_jsPsych(file_name = "hello")```で作成されたindex.Rmdを開いてください。以下のように，すでに書き込まれているかと思います。まずは，特に考えずに，赤い四角で囲ったKnitをクリックしてみましょう。Knitをクリックすると，RmdからHTMLファイルが作成されて，画面上に「こんにちは！」というのが出てきます。それができていたら，成功です。
+
 
 ![](fig/jspsych1_fig17.png)
 
 <br>
 
-## 2. こんにちわjsPsych(文字を画面に表示)
+## 2. jsPsychで文字を画面に表示してみる。
 
-だいたいプログラミングの最初は，「Hello World」とか書くので，今回も「こんにちわあ」と画面に表示させることにします。
+#### 2.1 jsPsychをR Markdownで使うための設定
 
-### 2.1 JavaScriptの書き込み
+まず，さきほどのindex.Rmdを見てください。２行目と３行目は課題名と自分の名前を入れてください（入れなくても動作はします）。それ以外は，14行目までは基本的に変更しないでください。１６行目から２４行目にかけては，jsPsychのプラグインを指定しています。今回は，jspsych-html-keyboard-response.js（HTML形式で刺激を呈示してキーボードから反応を取るもの）とjspsych-html-button-response.js（HTML形式で刺激を呈示してマウスから反応を取るもの）と
+jspsych-fullscreen.js（全画面表示するもの）の３つのプラグインを使います。これからつくる課題によっては，別のプラグインを使うことになります。プラグインを追加する場合は，１６行目から２４行目のブロックに，```tags$script(src='jspsych-6.1.0/plugins/プラグイン名.js')```を追加します。
 
+![](fig/jspsych1_fig17.png)
 
+### 2.2 JavaScriptで課題を作る設定
 
+jsPsychの本体のコードは，チャンクを{js}とします（このチャンク内でjsPsychを使ったjsコードを書きます）。こちらがjsPsychで課題を作成する際の本体になります。jsPsychRmdで```set_jsPsych(file_name = "hello")```した場合は，以下の内容が事前に入っています。
 
+```
+/* 全画面表示化 */
+var fullscreen = {
+  type: 'fullscreen',
+  message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
+  button_label: "全画面表示に切り替え",
+  fullscreen_mode: true
+};
 
+/* 課題に関するコードを以下に書く */
+var welcome = {
+  type: "html-keyboard-response",
+  stimulus: "こんにちは！"
+};
 
+/* タイムラインの設定 */
+var timeline = [];
+//timeline.push(fullscreen);
+timeline.push(welcome);
 
+/* 課題開始 */
+jsPsych.init({
+  timeline: timeline,
+  on_finish: function() {
+    jsPsych.data.displayData();
+  }
+});
+```
 
-
-
-
-
-jsPsychの本体のコードは，チャンクを{js}とする（このチャンク内でjsPsychを使ったjsコードを書く）。{js}内を書き込んだものを画像で見せると以下のような感じです。なお，まだ{js}内は書かなくても大丈夫です。
-
-
-![](fig/jspsych1_fig18.png)
-
-先程のRmdの準備の段階で，プラグインなどの準備はできているので，JavaScriptの本体の記載に集中します。以下の画像の{js}チャンクをご自身のRmdファイルに転記してください（コピペだけだと覚えないので・・・）。
-
-コードの内容を説明すると，まずtimelineというものを準備します（これは試行の順番などを指示するものです。timelineに従って課題は進みます。なお，timeline名はtimeline以外の名前でも使えます）。「こんいちわあ」という文字を出すwelcome試行を設定して（プラグインのhtml-keyboard-responseを使用），timelineにプッシュしています（イメージするなら登録ですね）。最後に，jsPsych.initで，timelineに従って実験をするように指定しています。
-
-![](fig/jspsych1_fig11.png)
+まず```var 名前｛type: "プラグイン"｝```で，行動課題の各画面（課題の説明画面，刺激の呈示画面，反応の取得画面など）を作っていきます。今回は，fullscreen（画面を全画面にするかの教示），welcome（画面に「こんにちは！」を呈示する）を用意しています。そして，用意した画面をtimelineにどんどん入れていきます（timelineに入れた順番で画面が用意されます）。今回は，welcomeだけtimelineに入れています（fullscreenは//でコメントアウトされているのでtimelineに入りません）。最後に，jsPsych.initで，timelineに従って実験をするように指定しています。
 
 ### 2.2 RmdからHTMLファイルを出力する
 
-Rmdファイルの書き込みが完成したら，以下の緑の丸で囲った「Knit」ボタンをクリックします。これをクリックすると，RmdファイルからHTMLファイル生成されます。HTMLファイルができると，それが別ウィンドウで開かれて，画面上に「こんにちわあ」が呈示されるかと思います。それができたら成功です（上手く行かない場合は，上の画像をよく見て，記入ミスがないか確認してください）。
-
-![](fig/jspsych1_fig12.png)
+Rmdファイルの書き込みが完成したら，以下の緑の丸で囲った「Knit」ボタンをクリックします。これをクリックすると，RmdファイルからHTMLファイル生成されます。HTMLファイルができると，それが別ウィンドウで開かれて，画面上に行動課題が呈示されるかと思います。
 
 <br>
 
 #### 演習課題1
 
-- 「こんにちわあ」の代わりに「こんばんわあ」と画面に表示してみましょう。
+- 「こんにちは！」の代わりに「こんばんは！」と画面に表示してみましょう。
 
 ## 3. JavaScriptの基本
 ### 3.1 JavaScriptで変数と配列を使ってみる
 
-まず，新規にRmdファイルを作成して，hello1.Rmdの内容をコピペして，hello2.Rmdという名前で保存します。
+まず，新規にRmdファイルを作成して，index.Rmdの内容をコピペして，hello2.Rmdという名前で保存します。
 
 プログラミングをしていると，変数というのが出てきます。変数は簡単にいうと箱です。箱ですので，好きなものをいれることができます（ただ，箱によっては，入れられるものと入れられないものがあります）。JavaScriptでは，「これが変数だよ」っと宣言する場合には，varを使います。先程のコードだと，var timeline = []というのがありましたが，これは，timelineという変数に，空っぽの配列[]をいれるよという宣言です(配列については後で説明します)。
 
 変数を上手く使うことで効率よくコードが書けるので，少し練習をしてみましょう。さきほどは，"こんにちわあ"という文字を直接指定して画面に出してみましたが，今度は，textという変数に"ニイハオ"という文字をいれて，そのtextを画面に出すようにしてみましょう。以下のコードを書いて実行してください。
 
-![](fig/jspsych1_fig13.png)
+```
+/* 全画面表示化 */
+var fullscreen = {
+  type: 'fullscreen',
+  message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
+  button_label: "全画面表示に切り替え",
+  fullscreen_mode: true
+};
+
+/* 課題に関するコードを以下に書く */
+/* 呈示する文字を変数にする */
+var text = "ニイハオ"
+var welcome = {
+  type: "html-keyboard-response",
+  stimulus: text
+};
+
+/* タイムラインの設定 */
+var timeline = [];
+//timeline.push(fullscreen);
+timeline.push(welcome);
+
+/* 課題開始 */
+jsPsych.init({
+  timeline: timeline,
+  on_finish: function() {
+    jsPsych.data.displayData();
+  }
+});
+```
 
 変数に追加して覚えておくと良いのが配列です。配列は，簡単にいうと，複数の値を変数に格納したものです（箱の中に入っている物が複数ある状態です）。例えば，以下のように書くと，textの中には，"こんにちは"から始まって４つの挨拶が入っていると宣言することになります。
 
@@ -132,47 +176,66 @@ var text = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"]
 
 ### 3.2 JavaScriptでfor文を使ってみる
 
-3.1で配列を覚えました。その配列の中身４つを順番に呈示したい時，以下のように書くとそれができます。なお，さきほどまでの設定だと，なにかキーボード入力がないと次の刺激に進まないので，stimulusの後ろに"trial_duration: 1000,"を追加しています。これは刺激を1000ms(1000ミリ秒つまり1秒)呈示するという意味です。
+新規にRmdファイルを作成して，hello2.Rmdの内容をコピペして，hello3.Rmdという名前で保存します。
+3.1で配列を覚えました。その配列の中身４つを順番に呈示したい時，以下のように,welcomeを配列の中身の数だけ書くとそれができます。なお，さきほどまでの設定だと，なにかキーボード入力がないと次の刺激に進まないので，stimulusの後ろに"trial_duration: 1000,"を追加しています。これは刺激を1000ms(1000ミリ秒つまり1秒)呈示するという意味です。
 
 ```
-    /* タイムラインを用意 */
-    var timeline = [];
-    /* 呈示する文字を変数にする */
-    var text = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"]
-    /* trialで呈示する文字を設定 配列[0] */
-    var welcome = {
-      type: "html-keyboard-response",
-      stimulus: text[0],
-      trial_duration: 1000
-    };
-    timeline.push(welcome);
-    /* trialで呈示する文字を設定 配列[1]*/
-    var welcome = {
-      type: "html-keyboard-response",
-      stimulus: text[1],
-      trial_duration: 1000
-    };
-    timeline.push(welcome);
-    /* trialで呈示する文字を設定 配列[2]*/
-    var welcome = {
-      type: "html-keyboard-response",
-      stimulus: text[2],
-      trial_duration: 1000
-    };
-    timeline.push(welcome);
-    /* trialで呈示する文字を設定 配列[3]*/
-    var welcome = {
-      type: "html-keyboard-response",
-      stimulus: text[3],
-      trial_duration: 1000
-    };
-    timeline.push(welcome);
-    /* 実験開始 */
-    jsPsych.init({
-      timeline: timeline
-    });
+/* 全画面表示化 */
+var fullscreen = {
+  type: 'fullscreen',
+  message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
+  button_label: "全画面表示に切り替え",
+  fullscreen_mode: true
+};
+
+/* 呈示する文字を変数にする */
+var text = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"]
+
+/* trialで呈示する文字を設定 配列[0] */
+var welcome1 = {
+    type: "html-keyboard-response",
+    stimulus: text[0],
+    trial_duration: 1000
+};
+
+/* trialで呈示する文字を設定 配列[1]*/
+var welcome2 = {
+    type: "html-keyboard-response",
+    stimulus: text[1],
+    trial_duration: 1000
+};
+
+/* trialで呈示する文字を設定 配列[2]*/
+var welcome3 = {
+    type: "html-keyboard-response",
+    stimulus: text[2],
+    trial_duration: 1000
+};
+
+/* trialで呈示する文字を設定 配列[3]*/
+var welcome4 = {
+    type: "html-keyboard-response",
+    stimulus: text[3],
+    trial_duration: 1000
+};
+
+/* タイムラインの設定 */
+var timeline = [];
+//timeline.push(fullscreen);
+timeline.push(welcome1);
+timeline.push(welcome2);
+timeline.push(welcome3);
+timeline.push(welcome4);
+
+/* 課題開始 */
+jsPsych.init({
+  timeline: timeline,
+  on_finish: function() {
+    jsPsych.data.displayData();
+  }
+});
 ```
-これでもいいのですが，配列のインデックス以外同じコードが４回も繰り返されており，なんという無駄が多いように感じます。単純に繰り替えているだけですので，こういう場合は，繰り返し作業のためのfor文というのを使います。
+これでもいいのですが，配列のインデックス以外welcomの設定に同じコードが４回も繰り返されており，なんという無駄が多いように感じます。単純に繰り替えているだけですので，こういう場合は，繰り返し作業のためのfor文というのを使います。
 
 for文は以下のように書いて，繰り返したい内容をfor(){　  }で囲みます。そいて，for()の()内で，いつから初めていつ繰り返しをやめるのかを設定します。var i = 0; i<4; i++とすると，0からはじまって3まで繰り返します(それぞれ繰り返すたびにその値がiに代入されます)。var i = 3; i<6; i++とすると，3からはじまって5まで繰り返します。
 
@@ -182,9 +245,41 @@ for (var i = 0; i<終了したい数+1; i++) {
 }
 ```
 
-for文が分かったところで，さきほどの配列の中身４つを呈示するのは，以下のように書くことができます。for文で書くとすっきりしますね。さて，for文で書いたものを動かしてみましょう。
+for文が分かったところで，さきほどの配列の中身４つを呈示するのは，以下のように書くことができます(今回はtimelineへのpushをfor文内ですることにしたので，タイムラインの設定が最後ではなく前にきています。行動課題を作る場合は，タイムラインは後ろにある方が作りやすいかと思います)。for文で書くとすっきりしますね。さて，for文で書いたものを動かしてみましょう。
 
-![](fig/jspsych1_fig14.png)
+```
+/* 全画面表示化 */
+var fullscreen = {
+  type: 'fullscreen',
+  message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
+  button_label: "全画面表示に切り替え",
+  fullscreen_mode: true
+};
+
+/* タイムラインの設定 */
+var timeline = [];
+//timeline.push(fullscreen);
+
+/* 呈示する文字を変数にする */
+var text = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"]
+
+for (var i = 0; i<4; i++) {
+  var welcome = {
+    type: "html-keyboard-response",
+    stimulus: text[i],
+    trial_duration: 1000
+  };
+  timeline.push(welcome);
+}
+
+/* 課題開始 */
+jsPsych.init({
+  timeline: timeline,
+  on_finish: function() {
+    jsPsych.data.displayData();
+  }
+});
+```
 
 #### 演習課題3
 
@@ -192,7 +287,7 @@ for文が分かったところで，さきほどの配列の中身４つを呈�
 
 ### 3.3 JavaScriptでif文を使ってみる
 
-3.2では繰り返しのfor文を覚えました。あとは分岐のif文を覚えれば基礎は終了です。
+3.2では繰り返しのfor文を覚えました。あとは分岐のif文を覚えれば基礎は終了です。新規にRmdファイルを作成して，hello3.Rmdの内容をコピペして，hello4.Rmdという名前で保存します。
 
 for文は同じ内容を繰り返す場合に使います。そのため，ほぼ同じ内容だけど，少しだけ違う場合には使えないです。例えば，for文のインデックスが奇数の場合は配列Aから刺激を出して，偶数の場合は配列Bから刺激を出すというのは単純なfor文だとちょっと難しい。こういう時に条件分岐のif文を使えると簡単にプログラミングできます。
 
@@ -230,7 +325,45 @@ else {
 
 さて，本題に戻って，以下のように，「こんにちは」の配列のtext1と「こんばんは」の配列のtext2を用意します。そして，for文のindexが偶数(ここでは0か2です)ならtext1を，奇数ならtext2を呈示してみましょう。
 
-![](fig/jspsych1_fig15.png)
+```
+/* 全画面表示化 */
+var fullscreen = {
+  type: 'fullscreen',
+  message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
+  button_label: "全画面表示に切り替え",
+  fullscreen_mode: true
+};
+
+/* タイムラインの設定 */
+var timeline = [];
+//timeline.push(fullscreen);
+
+/* 呈示する文字を配列にする */
+var text1 = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"]
+var text2 = ["こんばんは","ワンシャンハオ","アンニョンヒジュムセヨ","グッドイーブニング"]
+/* trialで呈示する文字を設定(for文を使って配列の文字を呈示する&if文で)*/
+for( var i = 0; i<4; i++){
+  if (i==0 || i==2) {
+    var text = text1[i];
+  }else{
+    var text = text2[i];
+  }
+  var welcome = {
+    type: "html-keyboard-response",
+    stimulus: text,
+    trial_duration: 1000,
+  };
+  timeline.push(welcome);
+}
+
+/* 課題開始 */
+jsPsych.init({
+  timeline: timeline,
+  on_finish: function() {
+    jsPsych.data.displayData();
+  }
+});
+```
 
 #### 演習課題4
 - 「こんにちは」の配列のtext1と「こんばんは」の配列のtext2にそれぞれ２つ足して，要素を６つにします。さらに，各国の「おはようございます」が６つ入った配列を追加して(text3としますか)，色々な国の挨拶を朝・昼・晩と順番に6回呈示してみましょう！[^2]
