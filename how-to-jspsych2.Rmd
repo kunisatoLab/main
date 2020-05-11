@@ -372,26 +372,24 @@ timeline.push(instructions);
 timeline.push(stroop);
 ```
 
-さらに，認知課題をブラウザで実行する場合は，全画面表示で行う必要がありますので（気が散るので），そのブロックを追加します。全画面に関しては，jsPsychのプラグインにjspsych-fullscreen.jsというものがあるので，それを活用できます。ただ，jspsych-fullscreen.jsは英語表記なので，日本語化したものを作成しています。[jspsych-fullscreen_jp.js](https://github.com/kunisatoLab/main/raw/master/materials/jspsych-fullscreen_jp.zip)をクリックして，ダウンロードして解凍したjspsych-fullscreen_jp.jsをjsPsychのpluginsフォルダ内に置いてください。その上で課題のRmdの最初の方に，tags$script(src='jspsych-6.1.0/plugins/jspsych-fullscreen_jp.js')を追加ください。
+さらに，認知課題をブラウザで実行する場合は，全画面表示で行う必要があります（気が散るので）。全画面表示については，```set_jsPsych(file_name = "stroop")```で用意をすると，すでに使うプラグインとしてjspsych-fullscreen.jsが追加されていますし，以下のようなブロックが用意されています。
 
 ```
-library(htmltools)
-tagList(
-tags$script(src='jspsych-6.1.0/jspsych.js'),
-tags$script(src='jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js'),
-tags$script(src='jspsych-6.1.0/plugins/jspsych-fullscreen_jp.js')
-)
+/* 全画面表示化 */
+var fullscreen = {
+  type: 'fullscreen',
+  message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
+  button_label: "全画面表示に切り替え",
+  fullscreen_mode: true
+};
 ```
 
-最後に，timelineのwelcomeの次にfullscreenのブロックをプッシュします。これで，ウェルカムメッセージが表示されて，全画面表示ができるようになっていると思います。
+最後に，timelineのwelcomeの次にfullscreenのブロックをプッシュします（```//timeline.push(fullscreen);```となっているので，コメントアウトを取ります）。これで，ウェルカムメッセージが表示されて，全画面表示ができるようになっていると思います。
 
 ```
 var timeline = [];
 timeline.push(welcome);
-timeline.push({
-  type: 'fullscreen',
-  fullscreen_mode: true
-});
+timeline.push(fullscreen);
 timeline.push(instructions);
 timeline.push(stroop);
 ```
@@ -425,10 +423,7 @@ var debrief = {
 ```
 var timeline = [];
 timeline.push(welcome);
-timeline.push({
-  type: 'fullscreen',
-  fullscreen_mode: true
-});
+timeline.push(fullscreen);
 timeline.push(instructions);
 timeline.push(stroop);
 timeline.push(debrief);
