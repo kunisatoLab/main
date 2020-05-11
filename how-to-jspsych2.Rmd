@@ -384,7 +384,7 @@ var fullscreen = {
 };
 ```
 
-最後に，timelineのwelcomeの次にfullscreenのブロックをプッシュします（```//timeline.push(fullscreen);```となっているので，コメントアウトを取ります）。これで，ウェルカムメッセージが表示されて，全画面表示ができるようになっていると思います。
+welcomeの次にこのfullscreenブロックをtimelineにプッシュします（```//timeline.push(fullscreen);```となっているので，コメントアウトを取ります）。これで，ウェルカムメッセージが表示されて，全画面表示ができるようになっていると思います。
 
 ```
 var timeline = [];
