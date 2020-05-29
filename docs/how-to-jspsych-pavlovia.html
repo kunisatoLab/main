@@ -415,21 +415,26 @@ div.tocify {
 
 <div id="pavlovia側の設定" class="section level2">
 <h2>1.Pavlovia側の設定</h2>
-<p>Pavlovia(<a href="https://gitlab.pavlovia.org/users/sign_in" class="uri">https://gitlab.pavlovia.org/users/sign_in</a> )にログインします。</p>
-<p><img src="fig/pavlovia01.png" /></p>
+<p>Pavlovia(<a href="https://gitlab.pavlovia.org/users/sign_in" class="uri">https://gitlab.pavlovia.org/users/sign_in</a> )にログインします(アカウントを作ってない方は作成ください。なお，Pavloviaの利用には課金が必要です。詳しくはPavloviaのサイトをご確認ください)。</p>
+<p><img src="fig/pavlovia01.png" /> <br /></p>
 <p>次に，PavloviaのGitLabページ（<a href="https://gitlab.pavlovia.org/dashboard/projects" class="uri">https://gitlab.pavlovia.org/dashboard/projects</a> ）にアクセスします。以下のような感じの画面がでてくるので，「New project」をクリックして，実験を新規作成します。</p>
 <p><img src="fig/pavlovia02.png" /></p>
+<p><br /></p>
 <p>Project nameに研究名とか課題名をいれてください（参加者に見えるので名前は工夫ください）。「Create project」をクリックします。なお，１つのPavloviaアカウント下に複数の研究グループなどがある場合は，グループを設定しておくと良いかと思います（以下は，専修大学アカウント下のkunisatolabグループを設定しています）。</p>
 <p><img src="fig/pavlovia03.png" /></p>
+<p><br /></p>
 <p>プロジェクトを作ると，以下の画面が出てきます。赤色の部分（Clone with HTTP）のURLと青色の部分の情報が必要なのでコピーします。</p>
 <p><img src="fig/pavlovia04.png" /></p>
-<p>Pavloviaを個人で使っている場合はいいのですが，複数で使っている場合は，Personal Access Tokensを使うのが良いかなと思います。“gitlab Personal Access Tokens”でグーグル検索して，わかりやすそうなサイトを参考に作ると良いと思います。</p>
+<p><br /></p>
+<p>Pavloviaを研究室単位で複数人で使っている場合は，Personal Access Tokensを使うのが良いかなと思います（この後説明するRstudioを使ったPavloviaの利用でも必要になります）。“gitlab Personal Access Tokens”でグーグル検索して，わかりやすそうなサイトを参考に，Personal Access Tokensを作ってください。</p>
+<p><br /></p>
 </div>
 <div id="pavloviaのリポジトリをクローンする" class="section level2">
 <h2>Pavloviaのリポジトリをクローンする</h2>
-<p>まず，Git global setupをします。RstudioのTerminalタブで，上記の図の青色の部分をコピペして実行します。</p>
+<p>まず，Git global setupをします。Rstudioを開いて，Terminalタブで，上記の図の青色の部分をコピペして実行します。</p>
 <p>次に，RStudio上でFile → New Project→Version Control→Gitと進めます。</p>
 <p><img src="fig/github_gif3.gif" /></p>
+<p><br /></p>
 <p>このRepogitory URLに上記の図の赤色のClone with HTTPをコピペするのですが，アクセストークンを追加します。Clone with HTTPは以下のような感じです。</p>
 <ul>
 <li><a href="https://gitlab.pavlovia.org/" class="uri">https://gitlab.pavlovia.org/</a>…</li>
@@ -438,39 +443,45 @@ div.tocify {
 <ul>
 <li><a href="https://oauth2" class="uri">https://oauth2</a>:[トークン]<span class="citation">@gitlab.pavlovia.org</span>/…</li>
 </ul>
-<p>うまくクローンができたら，RStudio上からPavloviaに行動課題をPushしたり，データをPullすることができます。</p>
+<p>うまくクローンができたら，RStudio上からPavloviaに行動課題をPush（アップロード）したり，データをPull（ダウンロード）することができます。</p>
+<p><br /></p>
 </div>
 <div id="pavlovia用の実験課題の作成" class="section level2">
 <h2>Pavlovia用の実験課題の作成</h2>
-<p>次に，ここまで設定したRstudio上のPavloviaの課題リポジトリ上でR Markdownを使って行動課題を作っていきます。その際に，jsPsychRmd(<a href="https://github.com/ykunisato/jsPsychRmd)を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の" class="uri">https://github.com/ykunisato/jsPsychRmd)を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の</a><code>devtools::install_github(&quot;ykunisato/jsPsychRmd&quot;)</code>を打ち込んで，インストールしてから，<code>library(jsPsychRmd)</code>を実行してください。</p>
+<p>次に，ここまで設定したRstudio上のPavloviaの課題リポジトリ上でR Markdownを使って行動課題を作っていきます（pavloviaからクローンしたフォルダ内でR Markdownで行動課題を作ります）。その際に，jsPsychRmd(<a href="https://github.com/ykunisato/jsPsychRmd)を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の" class="uri">https://github.com/ykunisato/jsPsychRmd)を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の</a><code>devtools::install_github(&quot;ykunisato/jsPsychRmd&quot;)</code>を打ち込んで，インストールしてから，<code>library(jsPsychRmd)</code>を実行してください。</p>
 <pre><code>library(jsPsychRmd)</code></pre>
-<p>jsPsychRmdが読み込めたら，以下をConsoleに打ち込みます。以下を実行すると，jsPsychを使って行動課題のHTMLを出力するR Markdownファイル（index.Rmd），jsPsychのライブラリ，刺激をいれるstimuliフォルダを作ります。</p>
+<p>jsPsychRmdが読み込めたら，以下をConsoleに打ち込みます。以下を実行すると，jsPsychを使って行動課題のHTMLを出力するR Markdownファイル（index.Rmd），jsPsychのライブラリ(jspsych-6.1.0)，刺激をいれるstimuliフォルダを作ります。</p>
 <pre><code>set_jsPsych(file_name = &quot;stroop&quot;, folder = FALSE, pavlovia = TRUE)</code></pre>
+<p><br /></p>
 <p>index.Rmdを開いてみましょう。まずは練習で，以下の青で囲ったKnitをクリックしてみましょう。しばらくすると，HTMLファイルが出力されて（index.html），「こんにちわあ」と表示されます。あとは，ご自身の作りたい行動課題の要素を追加していくとR Markdownから行動課題のHTMLファイルが作れるようになります（jsPsych自体のチュートリアルは<a href="https://kunisatolab.github.io/main/code_tips.html">こちら</a>を確認ください）。</p>
 <p><img src="fig/pavlovia05.png" /></p>
-<p>ご自身の課題が完成したら，index.Rmd内のjsブロックのタイムラインの設定のところのpavlovia_init，fullscreen，pavlovia_finishのコメントアウトをとります（//を消します）。fullscreenは，全画面表示のためのプラグインですが，pavlovia_initとpavlovia_finishの設定がないと，Pavloviaでのデータ収集はできません。なお，pavlovia_initとpavlovia_finishをタイムラインにいれると課題はローカルでは正常動作しなくなります（Pavloviaにアップ（プッシュ）したら正常に動きます）。</p>
+<p><br /></p>
+<p>ご自身の課題が完成したら，index.Rmd内のjsブロックのタイムラインの設定のところのpavlovia_init，fullscreen（全画面表示のためのプラグイン），pavlovia_finishのコメントアウトをとります（つまり，行頭の//を消します）。pavlovia_initとpavlovia_finishの設定がないと，Pavloviaでのデータ収集はできません。なお，pavlovia_initとpavlovia_finishをタイムラインにいれると課題はローカルでは正常動作しなくなります（PavloviaにPush（アップロード）したら正常に動きます）。</p>
 <pre><code>/* タイムラインの設定（課題ができたらpavlovia_initとpavlovia_finishの//をとってください） */
 var timeline = [];
 timeline.push(pavlovia_init);
 timeline.push(fullscreen);
 timeline.push(welcome);
 timeline.push(pavlovia_finish);</code></pre>
+<p><br /></p>
 </div>
 <div id="pavloviaへ課題をpushする" class="section level2">
 <h2>Pavloviaへ課題をPushする</h2>
 <p>さて，作成した課題をPavloviaにCommitして，Pushします。まず，RstudioのGitタブを開きます。Commitをクリックします。</p>
 <p><img src="fig/pavlovia06.png" /></p>
-<p>Pushするファイルを選んで，Stageをクリックして，Commit messageにコメントを書きます（自分が分かれば何でもいいです）。Commitをクリックします。それがうまく言ったら，Pushをクリックすれば，完了です（初回は少し時間かかるかも）。</p>
+<p>Pushするファイルを選んで，Stageをクリックして，Commit messageにコメントを書きます（自分が分かれば何でもいいです）。Commitをクリックします。それがうまく言ったら，Pushをクリックすれば，完了です（初回は少し時間かかるかもしれません）。</p>
 <p><img src="fig/pavlovia07.png" /></p>
+<p><br /></p>
 </div>
 <div id="pavloviaでの課題のrun" class="section level2">
 <h2>Pavloviaでの課題のrun</h2>
-<p><a href="https://gitlab.pavlovia.org/dashboard/projects">PavloviaのGitlab</a>を確認して，一応課題がアップロードされているか確認します。ファイルが上がっていたら，次は，<a href="https://pavlovia.org">Pavlovia</a>にいって，Dashboard→Experimentsで自分の作成した課題を開きます。多分INACTIVEになっていると思うので，PILOTINGで試して，うまくいきそうなら，RUNNINGをクリックします。ためしに何度かやってみると良いです（データが保存されます）。</p>
+<p><a href="https://gitlab.pavlovia.org/dashboard/projects">PavloviaのGitlab</a>を確認して，一応課題がアップロードされているか確認します。ファイルが上がっていたら，次は，<a href="https://pavlovia.org">Pavlovia</a>にいって，Dashboard→Experimentsで自分の作成した課題を開きます。多分INACTIVEになっていると思うので，PILOTINGで試して，うまくいきそうなら，RUNNINGをクリックします。データが保存されているか確認するために，ためしに何度かやってみると良いです。</p>
+<p><br /></p>
 </div>
 <div id="pavloviaからデータをpullする" class="section level2">
 <h2>PavloviaからデータをPullする</h2>
-<p>PavloviaでRUNNINGすると，データが収集されるようになります。たまったデータは，先程課題を作ったRstudioのPavloviaプロジェクトでPullするとダウンロードされます。Pavloviaでなんどか反応をしてから，以下のGitタブのPullをクリックする。ダウンロードがはじまって，dataフォルダが作られて，その中にファイルが入っていると思います（デフォルトはcsvファイルで保存されます）。</p>
-<p><img src="fig/pavlovia06.png" /></p>
+<p>PavloviaでRUNNINGすると，データが収集されるようになります。たまったデータは，先程課題を作ったRstudioのPavloviaプロジェクトのGitタブを開いて，Pullするとダウンロードされます。Pavloviaでなんどか反応をしてから，以下のGitタブのPullをクリックする。ダウンロードがはじまって，dataフォルダが作られて，その中にファイルが入っていると思います（デフォルトはcsvファイルで保存されます）。</p>
+<p><br /></p>
 </div>
 <div id="刺激の事前読み込み" class="section level2">
 <h2>刺激の事前読み込み</h2>
