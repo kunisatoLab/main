@@ -651,6 +651,8 @@ services:
 <pre><code>sudo adduser 新規ユーザー名</code></pre>
 <p>そして，このままだと，各ユーザーが自由にRパッケージをいれられないので，以下のコマンドで，ユーザーをstaffグループにします。</p>
 <pre><code>sudo usermod -a -G staff ユーザー名</code></pre>
+<p>なお，root権限で全てのユーザーにRパッケージをいれたい場合は，Dockerコンテナに接続した状態で，以下のコマンドでRを起動してパッケージをインストールすれば，全ユーザーに当該パッケージがインストールされます。</p>
+<pre><code>sudo R</code></pre>
 <p>終わったら，以下を打ち込んで，Dockerへの接続をやめます。</p>
 <pre><code>sudo exit</code></pre>
 <p>もし，ユーザーをそのユーザーのフォルダごと削除したくなったら，以下を打ち込みます。</p>
