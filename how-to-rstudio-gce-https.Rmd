@@ -377,6 +377,13 @@ sudo docker exec -it コンテナ名 bash
 sudo adduser 新規ユーザー名
 ```
 
+そして，このままだと，各ユーザーが自由にRパッケージをいれられないので，以下のコマンドで，ユーザーをstaffグループにします。
+
+```
+sudo usermod -a -G staff ユーザー名
+```
+
+
 終わったら，以下を打ち込んで，Dockerへの接続をやめます。
 
 ```

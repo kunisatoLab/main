@@ -649,6 +649,8 @@ services:
 <pre><code>sudo docker exec -it コンテナ名 bash</code></pre>
 <p>次に，以下のコマンドで新規ユーザー登録します。パスワードを聞かれるので打ち込んで，あとはエンターキーやYをタイプします。</p>
 <pre><code>sudo adduser 新規ユーザー名</code></pre>
+<p>そして，このままだと，各ユーザーが自由にRパッケージをいれられないので，以下のコマンドで，ユーザーをstaffグループにします。</p>
+<pre><code>sudo usermod -a -G staff ユーザー名</code></pre>
 <p>終わったら，以下を打ち込んで，Dockerへの接続をやめます。</p>
 <pre><code>sudo exit</code></pre>
 <p>もし，ユーザーをそのユーザーのフォルダごと削除したくなったら，以下を打ち込みます。</p>
