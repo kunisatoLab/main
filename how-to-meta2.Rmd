@@ -1,5 +1,376 @@
 ---
 title: "メタ分析：オープンデータベースによる研究蓄積"
 ---
+## ネットワークメタ分析
 
-## 準備中
+治療Aと治療Bを直接比較した臨床試験の効果を統合するときに使用されるのがメタ分析です。ただ，治療Aと治療B，治療Aと治療Cの直接比較はあるけど，治療Bと治療Cを比較した研究はない（もしくは少ない）状況もあります。その場合に，治療Aと治療B，治療Aと治療Cの直接比較の効果から，治療Bと治療Cの間接比較の効果を検討するネットワークメタ分析という方法があります。以下では，ネットワークメタ分析についてまとめています。
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/NgwM14uepVnWpc" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-125951316" title="ネットワークメタ分析入門" target="_blank">ネットワークメタ分析入門</a> </strong> from <strong><a href="https://www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong> </div>
+
+
+<br>
+<br>
+#### はじめに
+
+この記事は，[Stan Advent Calendar 2018](https://qiita.com/advent-calendar/2018/stan)の15日目の記事です。
+
+ネットワークメタ分析は，３つ以上の治療の比較が可能なメタ分析です。これまでよく行われていたメタ分析（一対比較のメタ分析）は，２つの治療間の直接比較の結果を統合するものでした（一対比較のベイジアンメタ分析については，[こちら](https://cpp-laboratory.hatenablog.com/entry/2018/12/11/043554)を参照ください）。一方，ネットワークメタ分析では，３つ以上の治療について，直接的な比較だけでなく，間接的な比較（別の２つ以上の治療薬の効果から，検討されていない２つの治療薬間の差を推定する）も行って，治療効果の統合をします。ネットワークメタ分析の利点としては，以下の３点があります。
+
+- 間接比較ができる
+- 間接と直接比較を統合し，より精度を高められる
+- 複数の治療が比較でき，効果のランキングが作れる
+
+ネットワークメタ分析を学ぶ場合，『[asin:1118647505:title]』は，丁寧な説明がされており，おすすめの書籍です。ただ，記載されているコードはWinBUGSのものです。Mac & Stanユーザーとしては，WinBUGSはきついので，第2章で紹介されている固定効果モデルのネットワークメタ分析をStanコードで書いてみました。
+
+[asin:1118647505:detail]
+
+#### 使用するパッケージ
+
+以下のパッケージを使います。これら一式がインストールされたDockerfileも公開しているので，[こちらの記事](https://cpp-laboratory.hatenablog.com/entry/2018/12/08/080000)も参照ください。
+
+``` r
+library(rstan)
+library(tidybayes)
+library(tidyverse)
+library(bayesplot)
+library(loo)
+library(gemtc)
+library(gridExtra)
+```
+
+#### データ
+
+使用するのは，『Network Meta-Analysis for Decision-Making』の２章で紹介されている血栓溶解薬のデータです(Caldwell et la., 2005のデータ)。７つの治療薬について検討した36試験のデータです。
+
+変数名について説明します。studyは研究のID，treatmentは治療の種類，deadは死者数，sampleSizeはその治療に参加した患者数です。baselineは，当該試験のベースラインとなる治療です(今回，SKをリファレンスの治療にします。多く試験ではSKがベースラインになりますが，SKが含まれない試験もあり，その場合は他の薬剤がベースラインになります)。treatmentNameは治療薬名，studyNameは第1著者の姓か研究プロジェクト名， studyYearは論文の出版年です。治療の種類のtreatmentと治療薬名のtreatmentNameの組み合わせは以下になります。
+
+- 0 = SK
+- 1 = t_PA
+- 2 = Acc_t_PA 
+- 3 = SK_t_PA
+- 4 = r_PA
+- 5 = TNK
+- 6 = PTCA
+
+[https://gist.github.com/2bf14b3b58a4f93cd4900d0f8f670ca1:embed#network data for network meta-analysis]
+
+[network data for network meta-analysis](https://gist.github.com/2bf14b3b58a4f93cd4900d0f8f670ca1)
+
+
+以下のような感じのデータです。
+
+```
+# A tibble: 6 x 8
+  study treatment  dead sampleSize baseline treatmentName studyName studyYear
+  <dbl>     <dbl> <dbl>      <dbl>    <dbl> <chr>         <chr>         <dbl>
+1     1         0  1472      20251        0 SK            GUSTO-1        1993
+2     2         0     3         65        0 SK            ECSG           1985
+3     3         0    12        159        0 SK            TIMI-1         1987
+4     4         0     7         85        0 SK            PAIMS          1989
+5     5         0    10        135        0 SK            White          1989
+6     6         0   887      10396        0 SK            GISSI-2        1990
+```
+
+今回のデータのネットワークを書いてみます。以降では，基本的にはStanを使いますが，ネットワークは，JAGSベースのネットワークメタ分析するGeMTCパッケージを使うと簡単にプロットしてくれます。これは便利なパッケージですが，今回はプロットだけに使います。GeMTC用に少しデータセットを変えて，mtc.network()で読み込み，プロットします。
+
+``` r
+data_net <- data.frame(study,treatmentName,dead,sampleSize)
+names(data_net) <- c("study","treatment","responders","sampleSize")
+data_net_GeM <- mtc.network(data_net)
+plot(data_net_GeM)
+```
+以下のような感じです。ネットワークのノード（丸と丸をつなぐ線です）が太いほど，試験数が多いことを表しています。これをみると，SKは他の多くの治療薬と直接的に比較されていますが，TNKはSKとは直接的な比較がなされていないことが分かります。
+
+[f:id:cpp-laboratory:20181214165502p:plain]
+
+#### ネットワークメタ分析(固定効果モデル)のStanコード
+
+
+まず，data{}ブロックにおいて，使用するデータの定義をしています。教科書は行列形式でdeadやsampleSizeを読み込む形式ですが，少し今後の拡張を考えると面倒です(WinBUGSでやりやすいこととStanでやりやすいことは微妙に違ったりします)。まずlong型のデータセットにしてから（上記のデータはすでにそうなっています），各列をStanに読み込ませます。
+
+parameters{}ブロックでは，推定するパラメータとして，mu(各研究におけるベースライン，リファレンスのSKのときもあれば他の治療の時もあります)とd(各治療におけるベースラインに対する相対効果)を準備しています。
+
+model{}ブロックでは，死者数が二項分布に従うとして，死者数が，binomial_logit(試験の参加人数，死亡確率を構成する式)から生成されます。その場合の，死亡確率を構成する式（線形予測子）には，４つのパターンがあります。
+
+1. ベースラインがリファレンス(SK)でかつ，その治療がSKの時，線形予測子は，muのみ
+2. ベースラインがリファレンス(SK)でかつ，その治療がSK以外の時，線形予測子は，mu+d
+3. ベースラインがリファレンス(SK)以外でかつ，その治療がベースラインの治療の時，線形予測子は，muのみ
+4. ベースラインがリファレンス(SK)以外でかつ，その治療がベースライン以外の時，線形予測子は，mu+d(当該治療)-d(ベースライン)
+
+四番目が間接比較になります。ネットワークメタ分析では，リファレンスに対する相対効果を推定することで，最終的にランキングなどを作ることができます。この相対効果がdになります。ただ，すべての治療がリファレンスと比較されているわけではないので，間接比較が必要になります。例えば，TNKは，Acc_t_PAとのみ比較をしていますので，間接比較によって，リファレンス(SK)と比較した際のTNKの相対効果も推定する必要があります。TNKによる死亡率は，mu+d(Acc_t_PA→TNK)で計算されます。ただ，今回は，リファレンスからのTNKの相対効果を推定したいので，d(Acc_t_PA→TNK)を，d(SK→TNK)からd(SK→Acc_t_PA)を引くことで計算します（これが上記のd(当該治療)-d(ベースライン)に相当します）。こういう感じで，間接効果も組み込んだ生成モデルを作ることで，間接効果の推定を行います。
+
+なお，dとmuの事前分布としては，幅のひろーい正規分布としました。
+
+generated quantities{}ブロックでは，exp()でdのオッズ比を計算しているのですが，dの可能な組み合わせすべての計算をしています（実際に検討されてない治療間の相対効果も計算している）。その計算が，どうにもStanでスマートにできなかったので，べた書きしています・・・（今後変更できるなら，変更したいです）。最後に，モデル比較用の対数尤度(log_lik)も計算しています。
+
+[https://gist.github.com/29e0b77bc7570ca4ea6ef4139e7ed243:embed#Stan code of network data using fixed effect model]
+
+[Stan code of network data using fixed effect model](https://gist.github.com/29e0b77bc7570ca4ea6ef4139e7ed243)
+
+
+
+#### パラメータ推定
+
+Stanコードが書けましたので，早速，コンパイル＆サンプリングをします。
+
+``` r
+ld = length(study)
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+options(max.print = 99999)
+fit_fixed_net <-stan("netmeta_network_fixed_effect.stan",data=list(ld = ld, nct = 6, ns = 36, study = study, treatment = treatment, dead = dead, sampleSize = sampleSize,baseline=baseline), chains = 4, iter = 5500, warmup = 500, thin = 1)
+```
+
+
+#### 推定結果の要約
+
+結果を簡単に確認します。
+
+``` r
+print(fit_fixed_net,digit=4)
+```
+見にくいので，一部の結果のみを示します。若干ズレはありますが，教科書とほぼ同じ推定値になりました（関心のあるパラメータのみ掲載）。Rhatやn_effからもサンプリングも問題なさそうです。
+
+
+| |mean |se_mean     |sd        |2.5%        |97.5% |n_eff   |Rhat|
+|---|---|---|---|---|---|---|---|
+|d[1]            |-0.0032  |0.0002 |0.0304     |-0.0627     |0.0562 |23842 |0.9998|
+|d[2]            |-0.1567  |0.0003 |0.0434     |-0.2418     |-0.0729 |21865 |1.0001|
+|d[3]            |-0.0430  |0.0003 |0.0465     |-0.1334     |0.0465 |28616 |1.0000|
+|d[4]            |-0.1106  |0.0004 |0.0601     |-0.2289     |0.0053 |23642 |1.0000|
+|d[5]            |-0.1517  |0.0005 |0.0763     |-0.3028     |-0.0022 |22117 |1.0000|
+|d[6]            |-0.4746  |0.0006 |0.0998     |-0.6720     |-0.2797 |23850 |0.9999|
+
+なお，収束判定は以下のようなコードで可視化できます（コードのみで図は割愛します）。R hat，トレースプロット，自己相関，有効サンプルサイズの順番です。
+
+``` r
+stan_rhat(fit_fixed_net, pars = c("mu"))
+stan_trace(fit_fixed_net, pars = c("mu"),inc_warmup=T)
+stan_ac(fit_fixed_net, pars = c("mu"))
+stan_ess(fit_fixed_net, pars = c("mu"))
+stan_rhat(fit_fixed_net, pars = c("d"))
+stan_trace(fit_fixed_net, pars = c("d"),inc_warmup=T)
+stan_ac(fit_fixed_net, pars = c("d"))
+stan_ess(fit_fixed_net, pars = c("d"))
+```
+
+#### 各治療のオッズ比
+
+オッズ比は以下になります。実際は比較してないペアについても，算出できています。
+
+| |pair|mean |se_mean     |sd        |2.5%        |97.5% |n_eff   |Rhat|
+|---|---|---|---|---|---|---|---|---|
+|OR[1]|SK vs t-PA| 0.9973 | 0.0002 |0.0303      |0.9392      |1.0578 |23808 |0.9998|
+|OR[2]| SK vs Acc t-PA| 0.8558  |0.0003 |0.0371      |0.7852      |0.9297 |21908 |1.0001|
+|OR[3]| SK vs SK+t-PA | 0.9589  |0.0003 |0.0446      |0.8752      |1.0476 |28675 |1.0000|
+|OR[4]| SK vs r-PA| 0.8969  |0.0004 |0.0539      |0.7954      |1.0053 |23613 |1.0000|
+|OR[5]|SK vs TNK|0.8617  |0.0004 |0.0658      |0.7388| 0.9978 |22052 |1.0000|
+|OR[6]|SK vs PTCA|0.6252  |0.0004 |0.0625      |0.5107      |0.7560 |23889 |0.9999|
+|OR[7]| t-PA vs Acc t-PA |0.8589  |0.0003 |0.0456 |0.7730      |0.9516 |21996 |1.0001|
+|OR[8]|t-PA vs SK+t-PA|0.9624  |0.0003 |0.0537      |0.8613      |1.0717 |27188 |1.0000|
+|OR[9]|t-PA vs r-PA|0.9002  |0.0004 |0.0608      |0.7870      |1.0242 |22918 |1.0000|
+|OR[10]|t-PA vs TNK|0.8649  |0.0005 |0.0711      |0.7337      |1.0101 |22062 |1.0000|
+|OR[11]|t-PA vs PTCA|0.6276  |0.0004 |0.0657      |0.5086    |0.7656 |23999 |0.9999|
+|OR[12]|Acc t-PA vs SK+t-PA|1.1219  |0.0003 |0.0600 |1.0094  |1.2417 |36702 |0.9998|
+|OR[13]|Acc t-PA vs r-PA|1.0487  |0.0004 |0.0582  |0.9396   |1.1670 |27051 |1.0000|
+|OR[14]|Acc t-PA vs TNK|1.0070  |0.0004 |0.0638   |0.8854  |1.1366 |28794 |0.9999|
+|OR[15]| Acc t-PA vs PTCA|0.7311  |0.0005 |0.0714      |0.6010  |0.8796 |25052 |1.0000|
+|OR[16]|SK+t-PA vs r-PA|0.9370  |0.0004 |0.0669      |0.8132    |1.0741 |30885 |1.0000|
+|OR[17]| SK+t-PA vs TNK|0.9000  |0.0004 |0.0739      |0.7635   |1.0515 |29426 |0.9999|
+|OR[18]|SK+t-PA vs PTCA|0.6532  |0.0004 |0.0697     |0.5261   |0.7977 |26023 |0.9999|
+|OR[19]| r-PA vs TNK|0.9631  |0.0005 |0.0809      |0.8148      |1.1301 |28116 |1.0000|
+|OR[20]|r-PA vs PTCA|0.6991  |0.0005 |0.0770      |0.5612      |0.8609 |25952 |1.0000|
+|OR[21]|TNK vs PTCA|0.7290  |0.0005 |0.0847      |0.5774      |0.9073 |25957 |1.0000|
+
+オッズ比をプロットすると以下のようになります。
+
+``` r
+fit_fixed_net %>% 
+  spread_draws(OR[pair]) %>% 
+  ggplot(aes(x = OR,y = as.factor(pair))) +
+  geom_halfeyeh(.width = .95) +
+  ylab("Treatment") +
+  scale_y_discrete(breaks = c(1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15,16,17,
+                              18,19,20,21), 
+                   labels = c("SK vs t-PA","SK vs Acc t-PA","SK vs SK+t-PA",
+                              "SK vs r-PA","SK vs TNK","SK vs PTCA",
+                              "t-PA vs Acc t-PA","t-PA vs SK+t-PA",
+                              "t-PA vs r-PA","t-PA vs TNK","t-PA vs PTCA",
+                              "Acc t-PA vs SK+t-PA","Acc t-PA vs r-PA",
+                              "Acc t-PA vs TNK","Acc t-PA vs PTCA",
+                              "SK+t-PA vs r-PA","SK+t-PA vs TNK",
+                             "SK+t-PA vs PTCA","r-PA vs TNK","r-PA vs PTCA",
+                              "TNK vs PTCA")) 
+``` 
+[f:id:cpp-laboratory:20181215063030p:plain]
+
+#### 間接効果による精度の向上
+
+以前の記事では一対比較のベイジアンメタ分析を行いました（[こちら](https://cpp-laboratory.hatenablog.com/entry/2018/12/11/043554)を参照ください）。Acc t-PAに対するPTCAの相対効果について，一対比較(OR01,図の赤)とネットワーク(OR15,図の青)とで比較すると，ネットワークのほうが効果がやや大きくなり（オッズ比が小さくなり），その確信区間が狭くなっていることが分かります。間接効果を含めることで，事後分布の幅が狭くなっており，精度が高くなっていることが分かります。
+
+| |mean |se_mean     |sd        |2.5%        |97.5% |n_eff   |Rhat|
+|---|---|---|---|---|---|---|---|
+|一対比較|0.7967|0.0007|0.0954|0.6257|0.9974|17086|0.9999|
+|ネットワーク|0.7311  |0.0005 |0.0714      |0.6010  |0.8796 |25052 |1.0000|
+
+[f:id:cpp-laboratory:20181211044902p:plain]
+
+#### ランキング
+
+各治療のdが推定できましたので，これを使って，治療のランキングを作ります。サンプリングの結果生じたdのサンプルを使って，一回のサンプリングごとに治療のランキングを計算して，順位ごとに1か0の値を保存していきます。最終的にその平均値を計算することで各治療の順位の確率を計算します。コードが実に汎用性の低い＆冗長なものになっているので，良い案があれば，ご指摘いただけると嬉しいです。
+
+``` r
+d <- fit_fixed_net %>%
+  spread_draws(d[treatment]) %>% 
+  spread(treatment,d) %>% 
+  rename(
+    d1 = `1`,d2 = `2`, d3 = `3`, d4 = `4`, d5 = `5`, d6 = `6`
+  ) %>% 
+  mutate(d0 = 0)
+
+calNum <- length(d$d1)
+d1_rank <- matrix(0, nrow=calNum, ncol=7)
+d2_rank <- matrix(0, nrow=calNum, ncol=7)
+d3_rank <- matrix(0, nrow=calNum, ncol=7)
+d4_rank <- matrix(0, nrow=calNum, ncol=7)
+d5_rank <- matrix(0, nrow=calNum, ncol=7)
+d6_rank <- matrix(0, nrow=calNum, ncol=7)
+d0_rank <- matrix(0, nrow=calNum, ncol=7)
+for(i in 1:calNum){
+  rk_d1 <- rank(as.matrix(d[i,4:10]))[1]
+  rk_d2 <- rank(as.matrix(d[i,4:10]))[2]
+  rk_d3 <- rank(as.matrix(d[i,4:10]))[3]
+  rk_d4 <- rank(as.matrix(d[i,4:10]))[4]
+  rk_d5 <- rank(as.matrix(d[i,4:10]))[5]
+  rk_d6 <- rank(as.matrix(d[i,4:10]))[6]
+  rk_d0 <- rank(as.matrix(d[i,4:10]))[7]
+  d1_rank[i,rk_d1] <- 1
+  d2_rank[i,rk_d2] <- 1
+  d3_rank[i,rk_d3] <- 1
+  d4_rank[i,rk_d4] <- 1
+  d5_rank[i,rk_d5] <- 1
+  d6_rank[i,rk_d6] <- 1
+  d0_rank[i,rk_d0] <- 1
+}
+d1_rank <- as_data_frame(d1_rank)
+d2_rank <- as_data_frame(d2_rank)
+d3_rank <- as_data_frame(d3_rank)
+d4_rank <- as_data_frame(d4_rank)
+d5_rank <- as_data_frame(d5_rank)
+d6_rank <- as_data_frame(d6_rank)
+d0_rank <- as_data_frame(d0_rank)
+
+# SKのランクのプロット
+d0_rank_p <- d0_rank %>% 
+  gather(key = rank, value = value) %>% 
+  group_by(rank) %>% 
+  summarise(mean = mean(value),sd = sd(value)) %>%
+  mutate(rank = 1:7) %>% 
+  ggplot(aes(rank,mean)) +
+  geom_line() +
+  geom_point()+
+  scale_x_continuous(breaks=seq(1,7,by=1),limits=c(1,7)) +
+  ylim(0,1) +
+  labs(y="Probability", x="Rank of SK")
+
+# t-PAのランクのプロット
+d1_rank_p <- d1_rank %>% 
+  gather(key = rank, value = value) %>% 
+  group_by(rank) %>% 
+  summarise(mean = mean(value),sd = sd(value)) %>%
+  mutate(rank = 1:7) %>% 
+  ggplot(aes(rank,mean)) +
+  geom_line() +
+  geom_point()+
+  scale_x_continuous(breaks=seq(1,7,by=1),limits=c(1,7)) +
+  ylim(0,1) +
+  labs(y="Probability", x="Rank of t-PA")
+
+
+# Acc t-PAのランクのプロット
+d2_rank_p <- d2_rank %>% 
+  gather(key = rank, value = value) %>% 
+  group_by(rank) %>% 
+  summarise(mean = mean(value),sd = sd(value)) %>%
+  mutate(rank = 1:7) %>% 
+  ggplot(aes(rank,mean)) +
+  geom_line() +
+  geom_point()+
+  ylim(0,1) +
+  labs(y="Probability", x="Rank of Acc t-PA")
+
+
+# SK t-PAのランクのプロット
+d3_rank_p <- d3_rank %>% 
+  gather(key = rank, value = value) %>% 
+  group_by(rank) %>% 
+  summarise(mean = mean(value),sd = sd(value)) %>%
+  mutate(rank = 1:7) %>% 
+  ggplot(aes(rank,mean)) +
+  geom_line() +
+  geom_point()+
+  scale_x_continuous(breaks=seq(1,7,by=1),limits=c(1,7)) +
+  ylim(0,1) +
+  labs(y="Probability", x="Rank of SK t-PA")
+
+# r-PAのランクのプロット
+d4_rank_p <- d4_rank %>% 
+  gather(key = rank, value = value) %>% 
+  group_by(rank) %>% 
+  summarise(mean = mean(value),sd = sd(value)) %>%
+  mutate(rank = 1:7) %>% 
+  ggplot(aes(rank,mean)) +
+  geom_line() +
+  geom_point()+
+  scale_x_continuous(breaks=seq(1,7,by=1),limits=c(1,7)) +
+  ylim(0,1) +
+  labs(y="Probability", x="Rank of r-PA")
+
+# TNKのランクのプロット
+d5_rank_p <- d5_rank %>% 
+  gather(key = rank, value = value) %>% 
+  group_by(rank) %>% 
+  summarise(mean = mean(value),sd = sd(value)) %>%
+  mutate(rank = 1:7) %>% 
+  ggplot(aes(rank,mean)) +
+  geom_line() +
+  geom_point()+
+  scale_x_continuous(breaks=seq(1,7,by=1),limits=c(1,7)) +
+  ylim(0,1) +
+  labs(y="Probability", x="Rank of TNK")
+
+# PTCAのランクのプロット
+d6_rank_p <- d6_rank %>% 
+  gather(key = rank, value = value) %>% 
+  group_by(rank) %>% 
+  summarise(mean = mean(value),sd = sd(value)) %>%
+  mutate(rank = 1:7) %>% 
+  ggplot(aes(rank,mean)) +
+  geom_line() +
+  geom_point()+
+  scale_x_continuous(breaks=seq(1,7,by=1),limits=c(1,7)) +
+  ylim(0,1) +
+  labs(y="Probability", x="Rank of PTCA")
+
+# プロットを並べる
+grid.arrange(d0_rank_p, d1_rank_p, d2_rank_p, d3_rank_p, d4_rank_p, d5_rank_p,d6_rank_p,ncol = 2)
+```
+
+ランキングの結果は以下になります。PTCAが１位というのが分かりますね。
+
+[f:id:cpp-laboratory:20181215063804p:plain]
+
+
+
+
+#### モデル比較
+
+単体では意味がないですが，モデル比較をすることもあるかと思い，Stanコードでは対数尤度も計算をしています。以下のコードでWAICも算出できます。
+``` r
+log_like <- extract_log_lik(fit_fixed_net)
+waic(log_like)
+```
+
+これで，固定効果モデルのネットワークメタ分析をStanで実行できました！今回は，ネットワークメタ分析の推定だけを記事にしましたが，ネットワークメタ分析には，同質性，類似性，一貫性などの前提があります。その前提を確認する必要がありますが，これは，またの機会に書こうかと思います。
+
+<b>Enjoy!</b>

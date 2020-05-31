@@ -2,20 +2,20 @@
 title: "メタ分析：メタ分析の実施手順"
 ---
 
-メタ分析について，以下のスライドを参考に，概要をつかんでください。
-
-<br>
-
 ## メタ分析の実施手順
 
-メタ分析を実施する上での基本的な事項をスライドにまとめています。
+まず，メタ分析について，以下のスライドを参考に，概要をつかんでください。
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRD1R5yRiru8JJbm6TCvSZr16jOA01I0mZHd86v7CFDKrQ7ltoENxuik5MJ9Mz1Q7b4_AJ_E8TciptA/embed?start=false&loop=false&delayms=30000" frameborder="0" width="480" height="389" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 <br>
 <br>
 
-## GRADE
+また，以下の国里の論文を読んで，必須事項についても確認ください。
+
+- [国里愛彦 (2015) 系統的展望とメタアナリシスの必須事項　行動療法研究, 41(1), 3-12.](http://jabt.umin.ne.jp/j/activities/pdf/guideline/Kunisato_2015.pdf)
+
+## GRADEについて
 
 診療ガイドラインの作成に使用されるGRADEアプローチについてまとめています。メタ分析が医療の中でどのように活用されるのか，臨床試験の評価をどのように行うのかについて確認ください。
 
@@ -24,8 +24,166 @@ title: "メタ分析：メタ分析の実施手順"
 <br>
 <br>
 
-## ネットワークメタ分析
 
-治療Aと治療Bを直接比較した臨床試験の効果を統合するときに使用されるのがメタ分析です。ただ，治療Aと治療B，治療Aと治療Cの直接比較はあるけど，治療Bと治療Cを比較した研究はない（もしくは少ない）状況もあります。その場合に，治療Aと治療B，治療Aと治療Cの直接比較の効果から，治療Bと治療Cの間接比較の効果を検討するネットワークメタ分析という方法があります。以下では，ネットワークメタ分析についてまとめています。
+## Rstanでベイジアンメタ分析
 
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/NgwM14uepVnWpc" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-125951316" title="ネットワークメタ分析入門" target="_blank">ネットワークメタ分析入門</a> </strong> from <strong><a href="https://www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong> </div>
+メタ分析を行うRパッケージは，いろいろありますし，解説も多いので，ここでは，ベイジアンメタ分析について説明をしていきます。[『Network Meta-Analysis for Decision-Making』](https://www.amazon.co.jp/dp/1118647505/ref=cm_sw_em_r_mt_dp_U_i6l0EbR0Z21F1)
+は，ベイジアンメタ分析を学ぶ上で良い本ですが，紹介されているコードがWinBUGSだったりします（これ以外の書籍もWinBUGSが多い）。Mac & Stanユーザーとしては，WinBUGSはきついので，第2章で紹介されている一対比較(つまりネットワークメタ分析ではない)データの固定効果モデルをStanコードに書き直して説明しています。
+
+### 使用するパッケージ
+
+以下のパッケージを使います。
+
+```{r message=FALSE, warning=FALSE}
+library(rstan)
+library(tidybayes)
+library(tidyverse)
+library(bayesplot)
+library(loo)
+```
+
+
+#### データ
+
+使用するのは，『Network Meta-Analysis for Decision-Making』の２章で紹介されている血栓溶解薬のデータです(Caldwell et la., 2005のデータ)。データセット全体の中からACC t-PA(治療0,今回はこれをコントロールにする)とPTCA(治療1)を比較した11の試験を使います。つまり，一対比較(Pairwise comparison)データです。
+
+studyは研究のID，treatmentは治療の種類(0=ACC t-PA，1=PTCA)，deadは死者数，sampleSizeはその治療に参加した患者数です。studyNameは第1著者の姓か研究プロジェクト名， studyYearは論文の出版年です。
+
+```{r}
+study <-c(1,2,3,4,5,6,7,8,9,10,11,1,2,3,4,5,6,7,8,9,10,11)
+treatment <- c(0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1)
+dead <- c(3,10,40,5,5,2,19,59,5,16,8,1,3,32,5,3,3,20,52,2,12,6)
+sampleSize <- c(55,94,573,75,69,61,419,782,81,226,66,55,95,565,75,71,62,421,790,81,225,71)
+treatmentName <- c("Acc_tPA","Acc_tPA","Acc_tPA","Acc_tPA","Acc_tPA","Acc_tPA","Acc_tPA","Acc_tPA","Acc_tPA","Acc_tPA","Acc_tPA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA")
+studyName <- c("Ribichini","Garcia","GUSTO-2","Vermeer","Schomig","LeMay","Bonnefoy","Andersen","Kastrati","Aversano","Grines","Ribichini","Garcia","GUSTO-2","Vermeer","Schomig","LeMay","Bonnefoy","Andersen","Kastrati","Aversano","Grines")
+studyYear <- c(1996,1997,1997,1999,2000,2001,2002,2002,2002,2002,2002,1996,1997,1997,1999,2000,2001,2002,2002,2002,2002,2002)
+# データフレーム化
+data_pair <- data_frame(study,treatment,dead,sampleSize,treatmentName,studyName,studyYear)
+```
+
+以下のような感じのデータです。
+```{r}
+head(data_pair)
+```
+
+### 固定効果モデルのStanコード
+
+まず，data{}ブロックにおいて，使用するデータの定義をしています。教科書は行列形式でdeadやsampleSizeを読み込む形式ですが，少し今後の拡張を考えると面倒です(WinBUGSでやりやすいこととStanでやりやすいことは微妙に違ったりします)。まずlong型のデータセットにしてから（上記のデータはすでにそうなっています），各列をStanに読み込ませます。
+
+parameters{}ブロックでは，推定するパラメータとして，mu(各研究におけるベースライン=各研究での治療0の効果)とd01(治療0と治療1の差=治療0よりも治療1が優れるor劣る効果の大きさ)を準備しています。
+
+model{}ブロックでは，死者数が二項分布に従うとして，死者数が，binomial_logit(試験の参加人数，死亡確率を構成する式)から生成されます。なお，死亡確率を構成する式は，治療が0の場合，はその試験のmuのみで，治療1の場合は，その試験のmuにd01を足したものになります。d01とmuの事前分布としては，幅のひろーい正規分布としました。
+
+generated quantities{}ブロックでは，d01から治療0に対する治療1のオッズ比や有害の確率を計算したり，モデル比較用の対数尤度(log_lik)も計算しています。
+
+```
+data{
+  int ld;             // length of data
+  int nt;             // number of treatment
+  int ns;             // number of study
+  int study[ld];      // vector of the study id 
+  int treatment[ld];  //vector of the treatment id
+  int dead[ld];       // vector of the number of dead
+  int sampleSize[ld]; // vector of the number of patient
+}
+parameters{
+  real d01;
+  real mu[ns];
+}
+model{
+  for(i in 1:ld){
+    if(treatment[i]==0){
+      dead[i] ~ binomial_logit(sampleSize[i],mu[study[i]]);
+    }else{
+      dead[i] ~ binomial_logit(sampleSize[i],mu[study[i]]+d01);
+    }
+  }
+  // prior
+  d01~normal(0,10000);
+  mu~normal(0,10000);
+}
+generated quantities {
+  real OR01;
+  real Prob_harm;
+  real log_lik[ld];
+  OR01 = exp(d01);
+  Prob_harm = step(d01);
+  for(k in 1:ld){
+    if(treatment[k]==0){
+      log_lik[k] = binomial_logit_lpmf(dead[k]|sampleSize[k],mu[study[k]]);
+    }else{
+      log_lik[k] = binomial_logit_lpmf(dead[k]|sampleSize[k],mu[study[k]]+d01);
+    }
+  }
+}
+
+```
+
+
+### パラメータ推定
+
+Stanコードが書けましたので，早速，コンパイル＆サンプリングをします。
+
+```{r}
+ld = length(study)
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+options(max.print = 99999)
+```
+
+
+```{r}
+fit_fixed <- stan("netmeta_pairwise_fixed_effect.stan",data=list(ld = ld, nt = 2, ns = 11, study = study, treatment = treatment, dead = dead, sampleSize = sampleSize), chains = 4, iter = 5500, warmup = 500, thin = 1)
+```
+
+
+### 推定結果
+
+結果を簡単に確認します。
+```{r}
+print(fit_fixed,digit = 3)
+```
+
+
+見にくいので，一部の結果のみを示します。若干ズレはありますが，教科書とほぼ同じ推定値になりました（関心のあるパラメータのみ掲載）。Rhatやn_effからもサンプリングも問題なさそうです。
+
+| |mean|se_mea|sd|2.5%|97.5%|n_eff|Rhat|
+|---|---|---|---|---|---|---|---|
+|d01|-0.2344|0.0009|0.1194|-0.4689|-0.0026|17330|0.9999|
+|OR01|0.7967|0.0007|0.0954|0.6257|0.9974|17086|0.9999|
+|Prob_harm|0.0236|0.0012|0.1520|0.0000|0.0000|17264|0.9999|
+
+
+なお，収束判定は以下のように可視化してもできます（コードのみで図は割愛します）。R hat，トレースプロット，自己相関，有効サンプルサイズの順番です。
+```{r}
+stan_rhat(fit_fixed, pars = c("d01", "mu"))
+stan_trace(fit_fixed, pars = c("d01", "mu"),inc_warmup=T)
+stan_ac(fit_fixed, pars = c("d01", "mu"))
+stan_ess(fit_fixed, pars = c("d01", "mu"))
+```
+
+
+治療0に対する治療1のオッズ比をプロットしてみます。ACC t-PAと比べて，PTCAが死亡率を下げることが分かりますね。
+
+```{r}
+fit_fixed %>% 
+  spread_draws(OR01) %>% 
+  ggplot(aes(x = OR01)) +
+  stat_density(fill = "gray75") +
+  stat_pointintervalh(aes(y = -0.05), point_interval = mean_qi, .width = .95) +
+  annotate("text", label = "mean, 95% quantile intervals", x = 1.1, y = -0.05, hjust = 0, vjust = 0.3) +
+  xlim(0.5,1.45)+
+  labs(x="Odds ratio")
+```
+
+
+
+
+単体では意味がないですが，モデル比較をすることもあるかと思い，Stanコードでは対数尤度も計算をしています。以下のコードでWAICも算出できます。
+
+```{r}
+log_like <- extract_log_lik(fit_fixed)
+waic(log_like)
+```
+
+これで，メタ分析の基本形である固定効果モデルをStanで実行できました！
