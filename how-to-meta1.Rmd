@@ -11,13 +11,13 @@ title: "メタ分析：メタ分析の実施手順"
 <br>
 <br>
 
-また，以下の国里の論文を読んで，必須事項についても確認ください。
+また，以下の国里の論文を読んで，メタ分析の必須事項についても確認ください。
 
 - [国里愛彦 (2015) 系統的展望とメタアナリシスの必須事項　行動療法研究, 41(1), 3-12.](http://jabt.umin.ne.jp/j/activities/pdf/guideline/Kunisato_2015.pdf)
 
 ## GRADEについて
 
-診療ガイドラインの作成に使用されるGRADEアプローチについてまとめています。メタ分析が医療の中でどのように活用されるのか，臨床試験の評価をどのように行うのかについて確認ください。
+診療ガイドラインの作成に使用されるGRADEアプローチについてまとめています。メタ分析が医療の中でどのように活用されるのか，臨床試験の評価をどのように行うのかについても確認ください。
 
 <iframe src="//www.slideshare.net/slideshow/embed_code/key/1cUjBN4N112Vh1" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-40896238" title="介入研究の質のアセスメント" target="_blank">介入研究の質のアセスメント</a> </strong> from <strong><a href="https://www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong> </div>
 
@@ -28,7 +28,7 @@ title: "メタ分析：メタ分析の実施手順"
 ## Rstanでベイジアンメタ分析
 
 メタ分析を行うRパッケージは，いろいろありますし，解説も多いので，ここでは，ベイジアンメタ分析について説明をしていきます。[『Network Meta-Analysis for Decision-Making』](https://www.amazon.co.jp/dp/1118647505/ref=cm_sw_em_r_mt_dp_U_i6l0EbR0Z21F1)
-は，ベイジアンメタ分析を学ぶ上で良い本ですが，紹介されているコードがWinBUGSだったりします（これ以外の書籍もWinBUGSが多い）。Mac & Stanユーザーとしては，WinBUGSはきついので，第2章で紹介されている一対比較(つまりネットワークメタ分析ではない)データの固定効果モデルをStanコードに書き直して説明しています。
+は，ベイジアンメタ分析を学ぶ上で良い本ですが，紹介されているコードがWinBUGSだったりします（これ以外の書籍もWinBUGSが多い）。Mac & Stanユーザーとしては，WinBUGSはきついので，第2章で紹介されている一対比較(つまりネットワークメタ分析ではない普通の)データの固定効果モデルのコードをStanコードに書き直して説明しています。
 
 ### 使用するパッケージ
 
@@ -43,7 +43,7 @@ library(loo)
 ```
 
 
-#### データ
+### データ
 
 使用するのは，『Network Meta-Analysis for Decision-Making』の２章で紹介されている血栓溶解薬のデータです(Caldwell et la., 2005のデータ)。データセット全体の中からACC t-PA(治療0,今回はこれをコントロールにする)とPTCA(治療1)を比較した11の試験を使います。つまり，一対比較(Pairwise comparison)データです。
 
@@ -68,13 +68,15 @@ head(data_pair)
 
 ### 固定効果モデルのStanコード
 
-まず，data{}ブロックにおいて，使用するデータの定義をしています。教科書は行列形式でdeadやsampleSizeを読み込む形式ですが，少し今後の拡張を考えると面倒です(WinBUGSでやりやすいこととStanでやりやすいことは微妙に違ったりします)。まずlong型のデータセットにしてから（上記のデータはすでにそうなっています），各列をStanに読み込ませます。
+まず，data{}ブロックにおいて，使用するデータの定義をしています。教科書は行列形式でdeadやsampleSizeを読み込む形式ですが，少し今後の拡張を考えると面倒です。まずlong型のデータセットにしてから（上記のデータはすでにそうなっています），各列をStanに読み込ませます。
 
-parameters{}ブロックでは，推定するパラメータとして，mu(各研究におけるベースライン=各研究での治療0の効果)とd01(治療0と治療1の差=治療0よりも治療1が優れるor劣る効果の大きさ)を準備しています。
+parameters{}ブロックでは，推定するパラメータとして，mu(各研究におけるベースライン=ここでは治療0の効果)とd01(治療0と治療1の差=治療0よりも治療1が優れるor劣る効果の大きさ)を準備しています。
 
 model{}ブロックでは，死者数が二項分布に従うとして，死者数が，binomial_logit(試験の参加人数，死亡確率を構成する式)から生成されます。なお，死亡確率を構成する式は，治療が0の場合，はその試験のmuのみで，治療1の場合は，その試験のmuにd01を足したものになります。d01とmuの事前分布としては，幅のひろーい正規分布としました。
 
 generated quantities{}ブロックでは，d01から治療0に対する治療1のオッズ比や有害の確率を計算したり，モデル比較用の対数尤度(log_lik)も計算しています。
+
+以下のStanコードを"pairwise_fixed_effect.stan"という名前で保存します。
 
 ```
 data{
@@ -122,7 +124,7 @@ generated quantities {
 
 ### パラメータ推定
 
-Stanコードが書けましたので，早速，コンパイル＆サンプリングをします。
+Stanコードが書けましたので，早速，コンパイル＆サンプリングをします。まず，以下推定のための設定です。
 
 ```{r}
 ld = length(study)
@@ -133,7 +135,7 @@ options(max.print = 99999)
 
 
 ```{r}
-fit_fixed <- stan("netmeta_pairwise_fixed_effect.stan",data=list(ld = ld, nt = 2, ns = 11, study = study, treatment = treatment, dead = dead, sampleSize = sampleSize), chains = 4, iter = 5500, warmup = 500, thin = 1)
+fit_fixed <- stan("pairwise_fixed_effect.stan",data=list(ld = ld, nt = 2, ns = 11, study = study, treatment = treatment, dead = dead, sampleSize = sampleSize), chains = 4, iter = 5500, warmup = 500, thin = 1)
 ```
 
 
