@@ -579,6 +579,10 @@ services:
 <pre><code>sudo docker exec -it rstudio bash</code></pre>
 <p>次に，以下のコマンドで新規ユーザー登録します。パスワードを聞かれるので打ち込んで，あとはエンターキーやYをタイプします。</p>
 <pre><code>sudo adduser 新規ユーザー名</code></pre>
+<p>このままだと，各ユーザーが自由にRパッケージをいれられないので，以下のコマンドで，ユーザーをstaffグループにします。</p>
+<pre><code>sudo usermod -a -G staff ユーザー名</code></pre>
+<p>なお，root権限で全てのユーザーにRパッケージをいれたい場合は，Dockerコンテナに接続した状態で，以下のコマンドでRを起動してパッケージをインストールすれば，全ユーザーに当該パッケージがインストールされます。</p>
+<pre><code>sudo R</code></pre>
 <p>終わったら，以下を打ち込んで，Dockerコンテナへの接続をやめます。</p>
 <pre><code>exit</code></pre>
 <p>もし，ユーザーをそのユーザーのフォルダごと削除したくなったら，以下を打ち込みます。</p>
@@ -642,21 +646,6 @@ services:
 </ul>
 <p>docker imagesで確認したイメージID(IMAGE ID)を指定して，イメージを削除します。</p>
 <pre><code>sudo docker rmi イメージID</code></pre>
-<ul>
-<li>ユーザーの追加とコンテナ内での作業</li>
-</ul>
-<p>ユーザーの追加やDockerコンテナに変更を加えたい場合は，コンテナに接続します。</p>
-<pre><code>sudo docker exec -it コンテナ名 bash</code></pre>
-<p>次に，以下のコマンドで新規ユーザー登録します。パスワードを聞かれるので打ち込んで，あとはエンターキーやYをタイプします。</p>
-<pre><code>sudo adduser 新規ユーザー名</code></pre>
-<p>そして，このままだと，各ユーザーが自由にRパッケージをいれられないので，以下のコマンドで，ユーザーをstaffグループにします。</p>
-<pre><code>sudo usermod -a -G staff ユーザー名</code></pre>
-<p>なお，root権限で全てのユーザーにRパッケージをいれたい場合は，Dockerコンテナに接続した状態で，以下のコマンドでRを起動してパッケージをインストールすれば，全ユーザーに当該パッケージがインストールされます。</p>
-<pre><code>sudo R</code></pre>
-<p>終わったら，以下を打ち込んで，Dockerへの接続をやめます。</p>
-<pre><code>sudo exit</code></pre>
-<p>もし，ユーザーをそのユーザーのフォルダごと削除したくなったら，以下を打ち込みます。</p>
-<pre><code>sudo userdel -r ユーザ名</code></pre>
 </div>
 <div id="google-cloud-platformのiosアプリ" class="section level3">
 <h3>Google Cloud PlatformのiOSアプリ</h3>
