@@ -87,9 +87,9 @@ title: "Code & Tips"
 
 ## メタ分析
 
-- [rstanでメタ分析](how-to-meta1.html)　☆14
+- [メタ分析](how-to-meta1.html)　☆14
 
-- [rstanでネットワークメタ分析](how-to-meta2.html)　☆15
+- [ネットワークメタ分析](how-to-meta2.html)　☆15
 
 <br />
 

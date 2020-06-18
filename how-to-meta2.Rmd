@@ -1,5 +1,5 @@
 ---
-title: "メタ分析：オープンデータベースによる研究蓄積"
+title: "ネットワークメタ分析"
 ---
 ## ネットワークメタ分析
 
@@ -10,25 +10,23 @@ title: "メタ分析：オープンデータベースによる研究蓄積"
 
 <br>
 <br>
-#### はじめに
 
-この記事は，[Stan Advent Calendar 2018](https://qiita.com/advent-calendar/2018/stan)の15日目の記事です。
+## Rstanでベイジアンネットワークメタ分析
 
-ネットワークメタ分析は，３つ以上の治療の比較が可能なメタ分析です。これまでよく行われていたメタ分析（一対比較のメタ分析）は，２つの治療間の直接比較の結果を統合するものでした（一対比較のベイジアンメタ分析については，[こちら](https://cpp-laboratory.hatenablog.com/entry/2018/12/11/043554)を参照ください）。一方，ネットワークメタ分析では，３つ以上の治療について，直接的な比較だけでなく，間接的な比較（別の２つ以上の治療薬の効果から，検討されていない２つの治療薬間の差を推定する）も行って，治療効果の統合をします。ネットワークメタ分析の利点としては，以下の３点があります。
+ネットワークメタ分析は，３つ以上の治療の比較が可能なメタ分析です。これまでよく行われていたメタ分析（一対比較のメタ分析）は，２つの治療間の直接比較の結果を統合するものでした（一対比較のベイジアンメタ分析については，[こちら](https://kunisatolab.github.io/main/how-to-meta1.html)を参照ください）。一方，ネットワークメタ分析では，３つ以上の治療について，直接的な比較だけでなく，間接的な比較（別の２つ以上の治療薬の効果から，検討されていない２つの治療薬間の差を推定する）も行って，治療効果の統合をします。ネットワークメタ分析の利点としては，以下の３点があります。
 
 - 間接比較ができる
 - 間接と直接比較を統合し，より精度を高められる
 - 複数の治療が比較でき，効果のランキングが作れる
 
-ネットワークメタ分析を学ぶ場合，『[asin:1118647505:title]』は，丁寧な説明がされており，おすすめの書籍です。ただ，記載されているコードはWinBUGSのものです。Mac & Stanユーザーとしては，WinBUGSはきついので，第2章で紹介されている固定効果モデルのネットワークメタ分析をStanコードで書いてみました。
+ネットワークメタ分析を学ぶ場合，『Network Meta-Analysis for Decision-Making』](https://www.amazon.co.jp/dp/1118647505/ref=cm_sw_em_r_mt_dp_U_i6l0EbR0Z21F1)は，丁寧な説明がされており，おすすめの書籍です。ただ，記載されているコードはWinBUGSのものです。Mac & Stanユーザーとしては，WinBUGSはきついので，第2章で紹介されている固定効果モデルのネットワークメタ分析をStanコードで書き直したものを以下で説明します。
 
-[asin:1118647505:detail]
-
-#### 使用するパッケージ
+### 使用するパッケージ
 
 以下のパッケージを使います。これら一式がインストールされたDockerfileも公開しているので，[こちらの記事](https://cpp-laboratory.hatenablog.com/entry/2018/12/08/080000)も参照ください。
 
-``` r
+
+```{r message=FALSE, warning=FALSE}
 library(rstan)
 library(tidybayes)
 library(tidyverse)
@@ -38,7 +36,7 @@ library(gemtc)
 library(gridExtra)
 ```
 
-#### データ
+### データ
 
 使用するのは，『Network Meta-Analysis for Decision-Making』の２章で紹介されている血栓溶解薬のデータです(Caldwell et la., 2005のデータ)。７つの治療薬について検討した36試験のデータです。
 
@@ -52,39 +50,45 @@ library(gridExtra)
 - 5 = TNK
 - 6 = PTCA
 
-[https://gist.github.com/2bf14b3b58a4f93cd4900d0f8f670ca1:embed#network data for network meta-analysis]
+以下を実行して，Rにデータを読み込んでみましょう！
 
-[network data for network meta-analysis](https://gist.github.com/2bf14b3b58a4f93cd4900d0f8f670ca1)
+```{r}
+study <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,1)
 
+treatment <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,3,4,6,6,6,6,6,6,6,6,6,6,6,4,4,5,6,6,6,6,6,6,6,6,6,6,6,3)
 
-以下のような感じのデータです。
+dead <- c(1472,3,12,7,10,887,5,1455,9,4,285,11,1,8,1,4,14,9,42,2,13,2,13,356,522,3,10,40,5,5,2,19,59,5,16,8,652,3,7,4,5,929,2,1418,6,6,270,2,3,5,1,0,7,3,29,3,5,2,7,757,523,1,3,32,5,3,3,20,52,2,12,6,723)
 
+sampleSize <- c(20251,65,159,85,135,10396,63,13780,130,107,3004,149,50,58,53,45,99,41,421,44,200,56,155,4921,8488,55,94,573,75,69,61,419,782,81,226,66,10396,64,157,86,135,10372,59,13746,123,109,3006,152,50,54,47,42,101,46,429,46,195,47,169,10138,8461,55,95,565,75,71,62,421,790,81,225,71,10374)
+
+baseline <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0)
+
+treatmentName <- c("SK","SK","SK","SK","SK","SK","SK","SK","SK","SK","SK","SK","SK","SK","SK","SK","SK","SK","SK","t_PA","t_PA","t_PA","Acc_t_PA","Acc_t_PA","Acc_t_PA","Acc_t_PA","Acc_t_PA","Acc_t_PA","Acc_t_PA","Acc_t_PA","Acc_t_PA","Acc_t_PA","Acc_t_PA","Acc_t_PA","Acc_t_PA","Acc_t_PA","Acc_t_PA","t_PA","t_PA","t_PA","t_PA","t_PA","t_PA","t_PA","t_PA","SK_t_PA","r_PA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","r_PA","r_PA","TNK","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","PTCA","SK_t_PA")
+
+studyName <- c("GUSTO-1","ECSG","TIMI-1","PAIMS","White","GISSI-2","Cherng","ISIS-3","CI","KAMIT","INJECT","Zijlstra","Riberio","Grinfeld","Zijlstra","Akhras","Widimsky","DeBoer","Widimsky","DeWood","Grines","Gibbons","RAPID-2","GUSTO-3","ASSENT-2","Ribichini","Garcia","GUSTO-2","Vermeer","Schomig","LeMay","Bonnefoy","Andersen","Kastrati","Aversano","Grines","GUSTO-1","ECSG","TIMI-1","PAIMS","White","GISSI-2","Cherng","ISIS-3","CI","KAMIT","INJECT","Zijlstra","Riberio","Grinfeld","Zijlstra","Akhras","Widimsky","DeBoer","Widimsky","DeWood","Grines","Gibbons","RAPID-2","GUSTO-3","ASSENT-2","Ribichini","Garcia","GUSTO-2","Vermeer","Schomig","LeMay","Bonnefoy","Andersen","Kastrati","Aversano","Grines","GUSTO-1")
+
+studyYear <- c(1993,1985,1987,1989,1989,1990,1992,1992,1993,1991,1995,1993,1993,1996,1997,1997,2000,2002,2002,1990,1993,1993,1996,1997,1999,1996,1997,1997,1999,2000,2001,2002,2002,2002,2002,2002,1993,1985,1987,1989,1989,1990,1992,1992,1993,1991,1995,1993,1993,1996,1997,1997,2000,2002,2002,1990,1993,1993,1996,1997,1999,1996,1997,1997,1999,2000,2001,2002,2002,2002,2002,2002,1993)
+
+# データフレームにして確認
+data_net <- tibble(study,treatment,dead,sampleSize,baseline,treatmentName,studyName,studyYear)
+data_net
 ```
-# A tibble: 6 x 8
-  study treatment  dead sampleSize baseline treatmentName studyName studyYear
-  <dbl>     <dbl> <dbl>      <dbl>    <dbl> <chr>         <chr>         <dbl>
-1     1         0  1472      20251        0 SK            GUSTO-1        1993
-2     2         0     3         65        0 SK            ECSG           1985
-3     3         0    12        159        0 SK            TIMI-1         1987
-4     4         0     7         85        0 SK            PAIMS          1989
-5     5         0    10        135        0 SK            White          1989
-6     6         0   887      10396        0 SK            GISSI-2        1990
-```
+
 
 今回のデータのネットワークを書いてみます。以降では，基本的にはStanを使いますが，ネットワークは，JAGSベースのネットワークメタ分析するGeMTCパッケージを使うと簡単にプロットしてくれます。これは便利なパッケージですが，今回はプロットだけに使います。GeMTC用に少しデータセットを変えて，mtc.network()で読み込み，プロットします。
 
-``` r
+
+```{r}
 data_net <- data.frame(study,treatmentName,dead,sampleSize)
 names(data_net) <- c("study","treatment","responders","sampleSize")
 data_net_GeM <- mtc.network(data_net)
 plot(data_net_GeM)
 ```
+
 以下のような感じです。ネットワークのノード（丸と丸をつなぐ線です）が太いほど，試験数が多いことを表しています。これをみると，SKは他の多くの治療薬と直接的に比較されていますが，TNKはSKとは直接的な比較がなされていないことが分かります。
 
-[f:id:cpp-laboratory:20181214165502p:plain]
 
-#### ネットワークメタ分析(固定効果モデル)のStanコード
-
+### ネットワークメタ分析(固定効果モデル)のStanコード
 
 まず，data{}ブロックにおいて，使用するデータの定義をしています。教科書は行列形式でdeadやsampleSizeを読み込む形式ですが，少し今後の拡張を考えると面倒です(WinBUGSでやりやすいこととStanでやりやすいことは微妙に違ったりします)。まずlong型のデータセットにしてから（上記のデータはすでにそうなっています），各列をStanに読み込ませます。
 
@@ -103,17 +107,92 @@ model{}ブロックでは，死者数が二項分布に従うとして，死者�
 
 generated quantities{}ブロックでは，exp()でdのオッズ比を計算しているのですが，dの可能な組み合わせすべての計算をしています（実際に検討されてない治療間の相対効果も計算している）。その計算が，どうにもStanでスマートにできなかったので，べた書きしています・・・（今後変更できるなら，変更したいです）。最後に，モデル比較用の対数尤度(log_lik)も計算しています。
 
-[https://gist.github.com/29e0b77bc7570ca4ea6ef4139e7ed243:embed#Stan code of network data using fixed effect model]
+以下のStanコードを"netmeta_network_fixed_effect.stan"という名前で保存します。
 
-[Stan code of network data using fixed effect model](https://gist.github.com/29e0b77bc7570ca4ea6ef4139e7ed243)
+```
+data{
+  int ld;             // length of data
+  int nct;            // number of compared treatment
+  int ns;             // number of study
+  int study[ld];      // vector of the study id 
+  int treatment[ld];  // vector of the treatment id
+  int dead[ld];       // vector of the number of dead
+  int sampleSize[ld]; // vector of the number of patient
+  int baseline[ld];   // vector of baseline treatment each study
+}
+parameters{
+  real d[nct];
+  real mu[ns];
+}
+model{
+  for(i in 1:ld){
+    if(baseline[i]==0){
+      if(treatment[i]==0){
+        dead[i] ~ binomial_logit(sampleSize[i],mu[study[i]]);
+      }else{
+        dead[i] ~ binomial_logit(sampleSize[i],mu[study[i]]+d[treatment[i]]);
+      }
+    }else{
+      if(baseline[i]==treatment[i]){
+        dead[i] ~ binomial_logit(sampleSize[i],mu[study[i]]);
+      }else{
+        dead[i] ~ binomial_logit(sampleSize[i],mu[study[i]]+d[treatment[i]]-d[baseline[i]]);
+      }
+    }
+  }
+  # prior
+  d~normal(0,10000);
+  mu~normal(0,10000);
+}
+generated quantities{
+  real OR[21];
+  real log_lik[ld];
+  OR[1] = exp(d[1]);
+  OR[2] = exp(d[2]);
+  OR[3] = exp(d[3]);
+  OR[4] = exp(d[4]);
+  OR[5] = exp(d[5]);
+  OR[6] = exp(d[6]);
+  OR[7] = exp(d[2]-d[1]);
+  OR[8] = exp(d[3]-d[1]);
+  OR[9] = exp(d[4]-d[1]);
+  OR[10] = exp(d[5]-d[1]);
+  OR[11] = exp(d[6]-d[1]);
+  OR[12] = exp(d[3]-d[2]);
+  OR[13] = exp(d[4]-d[2]);
+  OR[14] = exp(d[5]-d[2]);
+  OR[15] = exp(d[6]-d[2]);
+  OR[16] = exp(d[4]-d[3]);
+  OR[17] = exp(d[5]-d[3]);
+  OR[18] = exp(d[6]-d[3]);
+  OR[19] = exp(d[5]-d[4]);
+  OR[20] = exp(d[6]-d[4]);
+  OR[21] = exp(d[6]-d[5]);
+  
+  for(k in 1:ld){
+    if(baseline[k]==0){
+      if(treatment[k]==0){
+        log_lik[k] = binomial_logit_lpmf(dead[k]|sampleSize[k],mu[study[k]]);
+      }else{
+        log_lik[k] = binomial_logit_lpmf(dead[k]|sampleSize[k],mu[study[k]]+d[treatment[k]]);
+      }
+    }else{
+      if(baseline[k]==treatment[k]){
+        log_lik[k] = binomial_logit_lpmf(dead[k]|sampleSize[k],mu[study[k]]);
+      }else{
+        log_lik[k] = binomial_logit_lpmf(dead[k]|sampleSize[k],mu[study[k]]+d[treatment[k]]-d[baseline[k]]);
+      }
+    }
+  }
+}
 
+```
 
-
-#### パラメータ推定
+### パラメータ推定
 
 Stanコードが書けましたので，早速，コンパイル＆サンプリングをします。
 
-``` r
+```{r}
 ld = length(study)
 rstan_options(auto_write = TRUE)
 options(mc.cores = parallel::detectCores())
@@ -121,14 +200,13 @@ options(max.print = 99999)
 fit_fixed_net <-stan("netmeta_network_fixed_effect.stan",data=list(ld = ld, nct = 6, ns = 36, study = study, treatment = treatment, dead = dead, sampleSize = sampleSize,baseline=baseline), chains = 4, iter = 5500, warmup = 500, thin = 1)
 ```
 
-
-#### 推定結果の要約
+### 推定結果の要約
 
 結果を簡単に確認します。
-
-``` r
+```{r}
 print(fit_fixed_net,digit=4)
 ```
+
 見にくいので，一部の結果のみを示します。若干ズレはありますが，教科書とほぼ同じ推定値になりました（関心のあるパラメータのみ掲載）。Rhatやn_effからもサンプリングも問題なさそうです。
 
 
@@ -141,9 +219,9 @@ print(fit_fixed_net,digit=4)
 |d[5]            |-0.1517  |0.0005 |0.0763     |-0.3028     |-0.0022 |22117 |1.0000|
 |d[6]            |-0.4746  |0.0006 |0.0998     |-0.6720     |-0.2797 |23850 |0.9999|
 
-なお，収束判定は以下のようなコードで可視化できます（コードのみで図は割愛します）。R hat，トレースプロット，自己相関，有効サンプルサイズの順番です。
+なお，収束判定は以下のようなコードで可視化できます。R hat，トレースプロット，自己相関，有効サンプルサイズの順番です。
 
-``` r
+```{r message=FALSE, warning=FALSE}
 stan_rhat(fit_fixed_net, pars = c("mu"))
 stan_trace(fit_fixed_net, pars = c("mu"),inc_warmup=T)
 stan_ac(fit_fixed_net, pars = c("mu"))
@@ -154,7 +232,7 @@ stan_ac(fit_fixed_net, pars = c("d"))
 stan_ess(fit_fixed_net, pars = c("d"))
 ```
 
-#### 各治療のオッズ比
+### 各治療のオッズ比
 
 オッズ比は以下になります。実際は比較してないペアについても，算出できています。
 
@@ -184,7 +262,7 @@ stan_ess(fit_fixed_net, pars = c("d"))
 
 オッズ比をプロットすると以下のようになります。
 
-``` r
+```{r}
 fit_fixed_net %>% 
   spread_draws(OR[pair]) %>% 
   ggplot(aes(x = OR,y = as.factor(pair))) +
@@ -201,25 +279,25 @@ fit_fixed_net %>%
                               "SK+t-PA vs r-PA","SK+t-PA vs TNK",
                              "SK+t-PA vs PTCA","r-PA vs TNK","r-PA vs PTCA",
                               "TNK vs PTCA")) 
-``` 
-[f:id:cpp-laboratory:20181215063030p:plain]
+```
 
-#### 間接効果による精度の向上
 
-以前の記事では一対比較のベイジアンメタ分析を行いました（[こちら](https://cpp-laboratory.hatenablog.com/entry/2018/12/11/043554)を参照ください）。Acc t-PAに対するPTCAの相対効果について，一対比較(OR01,図の赤)とネットワーク(OR15,図の青)とで比較すると，ネットワークのほうが効果がやや大きくなり（オッズ比が小さくなり），その確信区間が狭くなっていることが分かります。間接効果を含めることで，事後分布の幅が狭くなっており，精度が高くなっていることが分かります。
+### 間接効果による精度の向上
+
+[一対比較のベイジアンメタ分析の結果](https://kunisatolab.github.io/main/how-to-meta1.html)と比べた時，Acc t-PAに対するPTCAの相対効果について，一対比較とネットワークとで比較すると（下表），ネットワークのほうが効果がやや大きくなり（オッズ比が小さくなり），その確信区間が狭くなっていることが分かります。間接効果を含めることで，事後分布の幅が狭くなっており，精度が高くなっていることが分かります。
 
 | |mean |se_mean     |sd        |2.5%        |97.5% |n_eff   |Rhat|
 |---|---|---|---|---|---|---|---|
 |一対比較|0.7967|0.0007|0.0954|0.6257|0.9974|17086|0.9999|
 |ネットワーク|0.7311  |0.0005 |0.0714      |0.6010  |0.8796 |25052 |1.0000|
 
-[f:id:cpp-laboratory:20181211044902p:plain]
 
-#### ランキング
+
+### ランキング
 
 各治療のdが推定できましたので，これを使って，治療のランキングを作ります。サンプリングの結果生じたdのサンプルを使って，一回のサンプリングごとに治療のランキングを計算して，順位ごとに1か0の値を保存していきます。最終的にその平均値を計算することで各治療の順位の確率を計算します。コードが実に汎用性の低い＆冗長なものになっているので，良い案があれば，ご指摘いただけると嬉しいです。
 
-``` r
+```{r}
 d <- fit_fixed_net %>%
   spread_draws(d[treatment]) %>% 
   spread(treatment,d) %>% 
@@ -356,21 +434,15 @@ d6_rank_p <- d6_rank %>%
 grid.arrange(d0_rank_p, d1_rank_p, d2_rank_p, d3_rank_p, d4_rank_p, d5_rank_p,d6_rank_p,ncol = 2)
 ```
 
-ランキングの結果は以下になります。PTCAが１位というのが分かりますね。
+ランキングの結果からは，PTCAが１位というのが分かりますね。
 
-[f:id:cpp-laboratory:20181215063804p:plain]
-
-
-
-
-#### モデル比較
+### モデル比較
 
 単体では意味がないですが，モデル比較をすることもあるかと思い，Stanコードでは対数尤度も計算をしています。以下のコードでWAICも算出できます。
-``` r
+
+```{r}
 log_like <- extract_log_lik(fit_fixed_net)
 waic(log_like)
 ```
 
-これで，固定効果モデルのネットワークメタ分析をStanで実行できました！今回は，ネットワークメタ分析の推定だけを記事にしましたが，ネットワークメタ分析には，同質性，類似性，一貫性などの前提があります。その前提を確認する必要がありますが，これは，またの機会に書こうかと思います。
-
-<b>Enjoy!</b>
+これで，固定効果モデルのネットワークメタ分析をStanで実行できました！今回は，ネットワークメタ分析の推定だけを記事にしましたが，ネットワークメタ分析には，同質性，類似性，一貫性などの前提があります。その前提を確認する必要があります。
