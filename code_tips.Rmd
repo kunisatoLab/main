@@ -49,7 +49,7 @@ title: "Code & Tips"
 
 - [認知課題の解析データセット作成](how-to-dataHandling.html)　☆9
 
-- [オープンデータを用いた２次解析](how-to-secondary_analysis.html)
+- [オープンデータの利用法](how-to-open-data.html)
 
 - [再生可能なデータ解析入門](how-to-reproducible-analysis.html)　
 
