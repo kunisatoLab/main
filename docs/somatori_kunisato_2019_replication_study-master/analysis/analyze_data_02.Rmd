@@ -1,0 +1,34 @@
+---
+title: "アンへドニア(anhedonia)と遅延割引: SHAPSのクロンバックのα係数"
+author: "杣取恵太・国里愛彦"
+date: "`r format(Sys.time(), '%Y/%m/%d')`"
+output:
+  html_document:
+    md_extensions: -ascii_identifiers
+    theme: cosmo
+    highlight: pygments
+    toc: true
+    toc_float:
+      collapse: false
+    df_print: "kable"
+---
+
+## はじめに
+
+本コードは, 「アンへドニア(anhedonia)と遅延割引: Lempert & Pizzagalli (2010)の追試」で用いられているSHAPSの内的整合性の検討を行うためのコードである
+。匿名化処理後のSHAPSに関するデータ("data_shaps.csv")を読み込み, クロンバックのα係数の算出を行う。なお，SHAPSの内的整合性の検討のみを目的しているため，"data_shaps.csv"とメインの解析で用いた"data_anonymized.csv"は対応づけられてはいない。
+
+## 使用するRパッケージ
+```{r}
+library(psych)
+```
+
+## データの読み込み
+```{r}
+dat2 <- read.csv("../data/data_shaps.csv", header = T)
+```
+
+## SHAPSのクロンバックのα係数を算出する
+```{r}
+psych::alpha(dat2)
+```

@@ -414,7 +414,7 @@ div.tocify {
 
 
 <div id="心理学関連オープンデータのリスト" class="section level2">
-<h2>心理学関連オープンデータのリスト</h2>
+<h2>1. 心理学関連オープンデータのリスト</h2>
 <p>心理学関連オープンデータをリスト化してみました（私以外にも有志の方に追加をしてもらっています。もし，ご存知のオープンデータがありましたら，追加ください）。</p>
 <ul>
 <li><a href="https://docs.google.com/spreadsheets/d/1LMREITla_T3caRrPhGihTEB2U7QDiEn78HH4VBgQ8Rs/edit#gid=0">心理学関連オープンデータのリスト</a></li>
@@ -422,7 +422,7 @@ div.tocify {
 <p><br /></p>
 </div>
 <div id="openpsychdataパッケージ" class="section level2">
-<h2>openPsychDataパッケージ</h2>
+<h2>2. openPsychDataパッケージ</h2>
 <p>心理学関連のオープンデータの一部をRにダウンロードできる<a href="https://github.com/ykunisato/openPsychData">RパッケージopenPsychData</a>をつくりました。まだ開発途中で，本パッケージの使用に関わるトラブルについては責任は負えませんので，予めご了承ください（一緒に開発してくれる人がいれば，連絡ください）。</p>
 <div id="インストール" class="section level3">
 <h3>インストール</h3>
@@ -437,7 +437,45 @@ devtools::install_github(&quot;ykunisato/openPsychData&quot;)</code></pre>
 <p>データの読み込み データを読み込む場合は，load_openPsyData()を使ってください。「dataset_name」に使いたいデータの名前を指定ください。もし，まだカレントディレクトリにデータをダウンロードしていない場合は，自動的にダウンロードします（カレントディレクトリに「dataset_name」と同じ名前のディレクトリを作成して，データを保存します）。 codebookをTRUEにしておくと変数の説明をしたcodebookを開きます。</p>
 <pre class="r"><code>library(openPsychData)
 data &lt;- load_openPsyData(dataset_name = &quot;16PF&quot;, codebook = TRUE)</code></pre>
+<p><br /></p>
 </div>
+</div>
+<div id="open-science-frameworkのデータをrで使う" class="section level2">
+<h2>3. Open Science FrameworkのデータをRで使う</h2>
+<p>Open Science Frameworkには，有用＆貴重なデータセットが公開されています。例えば，以下のデータセットには，COVID-19が流行る前の日本における1382名の感染脆弱意識尺度への回答が収められています。</p>
+<ul>
+<li>Yamada Y, Xu H and Sasaki K. A dataset for the perceived vulnerability to disease scale in Japan before the spread of COVID-19 [version 1; peer review: awaiting peer review]. F1000Research 2020, 9:334 (<a href="https://doi.org/10.12688/f1000research.23713.1" class="uri">https://doi.org/10.12688/f1000research.23713.1</a>)</li>
+</ul>
+<p>OSFにあるデータをRで使う場合は，osfrパッケージが便利です。使うのは，tidyverseパッケージとosfrパッケージです。</p>
+<pre class="r"><code>library(tidyverse)
+library(osfr)</code></pre>
+<p>Japan PVD 2018リポジトリ(<a href="https://osf.io/qw2af/)をosf_retrieve_node" class="uri">https://osf.io/qw2af/)をosf_retrieve_node</a>()でリトリーブしてみます。 metaにいろいろな情報が入っています。</p>
+<pre class="r"><code>osf_retrieve_node(&quot;qw2af&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 3
+##   name           id    meta            
+##   &lt;chr&gt;          &lt;chr&gt; &lt;list&gt;          
+## 1 Japan PVD 2018 qw2af &lt;named list [3]&gt;</code></pre>
+<p>次に，リトリーブしたものをosf_ls_files()にいれて，リポジトリのファイルを確認します。PVDJapan2018.xlsxとDataset.txtがあるのがわかりますね。</p>
+<pre class="r"><code>osf_retrieve_node(&quot;qw2af&quot;) %&gt;% 
+  osf_ls_files()</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   name                       id                       meta            
+##   &lt;chr&gt;                      &lt;chr&gt;                    &lt;list&gt;          
+## 1 PVDJapan2018.xlsx          5ea32abf3854e2001c69dcbb &lt;named list [3]&gt;
+## 2 Description of Dataset.txt 5ea5a81176188b00da911eee &lt;named list [3]&gt;</code></pre>
+<p>最後に，osf_download()でosf_ls_files()で確認したファイルをローカルにダウンロードします。</p>
+<p><br /></p>
+</div>
+<div id="githubのデータをrで使う" class="section level2">
+<h2>4. GitHubのデータをRで使う</h2>
+<p>データやコードがOSFにある論文も多いが，データとコードがGitHubにアップロードされている論文も多いです。例えば，以下の論文のデータやコードはGitHubにアップロードされています。</p>
+<ul>
+<li>杣取恵太・国里愛彦 (2019). アンヘドニア(anhedonia)と遅延割引：Lempert &amp; Pizzagalli(2010)の追試　心理学評論, 62(3), 231-243.</li>
+</ul>
+<p><img src="fig/osf_somatori.png" /></p>
+<p>GitHubのデータやコードをRで使う場合，リポジトリのリンクを取得して，Rで読み込むと楽です。まず，以下のようにして，右クリックして，リンクアドレスをコピーします。</p>
+<p><img src="fig/github_somatori_link.png" /></p>
+<p>そして，コピーしたリンクを使って，以下のRコードを実行します（URLだけ変えればあとはコピペでいけます）。そうすると，カレントワーキングディレクトリに，データやコードが含まれたフォルダが作られます。</p>
 </div>
 
 <footer>
