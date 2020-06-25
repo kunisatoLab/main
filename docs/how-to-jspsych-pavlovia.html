@@ -426,8 +426,6 @@ div.tocify {
 <p>プロジェクトを作ると，以下の画面が出てきます。赤色の部分（Clone with HTTP）のURLと青色の部分の情報が必要なのでコピーします。</p>
 <p><img src="fig/pavlovia04.png" /></p>
 <p><br /></p>
-<p>Pavloviaを研究室単位で複数人で使っている場合は，Personal Access Tokensを使うのが良いかなと思います（この後説明するRstudioを使ったPavloviaの利用でも必要になります）。“gitlab Personal Access Tokens”でグーグル検索して，わかりやすそうなサイトを参考に，Personal Access Tokensを作ってください。</p>
-<p><br /></p>
 </div>
 <div id="pavloviaのリポジトリをクローンする" class="section level2">
 <h2>Pavloviaのリポジトリをクローンする</h2>
@@ -439,16 +437,12 @@ div.tocify {
 <ul>
 <li><a href="https://gitlab.pavlovia.org/" class="uri">https://gitlab.pavlovia.org/</a>…</li>
 </ul>
-<p>これに，以下のように，上記のURLのgitlabの前に，oauth2:[トークン]<span class="citation">@を挿入します</span>。それをRepogitory URLにいれてクローンします。</p>
-<ul>
-<li><a href="https://oauth2" class="uri">https://oauth2</a>:[トークン]<span class="citation">@gitlab.pavlovia.org</span>/…</li>
-</ul>
 <p>うまくクローンができたら，RStudio上からPavloviaに行動課題をPush（アップロード）したり，データをPull（ダウンロード）することができます。</p>
 <p><br /></p>
 </div>
 <div id="pavlovia用の実験課題の作成" class="section level2">
 <h2>Pavlovia用の実験課題の作成</h2>
-<p>次に，ここまで設定したRstudio上のPavloviaの課題リポジトリ上でR Markdownを使って行動課題を作っていきます（pavloviaからクローンしたフォルダ内でR Markdownで行動課題を作ります）。その際に，jsPsychRmd(<a href="https://github.com/ykunisato/jsPsychRmd)を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の" class="uri">https://github.com/ykunisato/jsPsychRmd)を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の</a><code>devtools::install_github(&quot;ykunisato/jsPsychRmd&quot;)</code>を打ち込んで，インストールしてから，<code>library(jsPsychRmd)</code>を実行してください。</p>
+<p>次に，ここまで設定したRstudio上のPavloviaの課題リポジトリ上でR Markdownを使って行動課題を作っていきます（pavloviaからクローンしたフォルダ内でR Markdownで行動課題を作ります）。その際に，jsPsychRmd(<a href="https://github.com/ykunisato/jsPsychRmd" class="uri">https://github.com/ykunisato/jsPsychRmd</a> )を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の<code>devtools::install_github(&quot;ykunisato/jsPsychRmd&quot;)</code>を打ち込んで，インストールしてから，<code>library(jsPsychRmd)</code>を実行してください。</p>
 <pre><code>library(jsPsychRmd)</code></pre>
 <p>jsPsychRmdが読み込めたら，以下をConsoleに打ち込みます。以下を実行すると，jsPsychを使って行動課題のHTMLを出力するR Markdownファイル（index.Rmd），jsPsychのライブラリ(jspsych-6.1.0)，刺激をいれるstimuliフォルダを作ります。</p>
 <pre><code>set_jsPsych(file_name = &quot;stroop&quot;, folder = FALSE, pavlovia = TRUE)</code></pre>

@@ -28,10 +28,6 @@ Project nameに研究名とか課題名をいれてください（参加者に�
 
 <br />
 
-Pavloviaを研究室単位で複数人で使っている場合は，Personal Access Tokensを使うのが良いかなと思います（この後説明するRstudioを使ったPavloviaの利用でも必要になります）。"gitlab Personal Access Tokens"でグーグル検索して，わかりやすそうなサイトを参考に，Personal Access Tokensを作ってください。
-
-<br />
-
 ## Pavloviaのリポジトリをクローンする
 
 まず，Git global setupをします。Rstudioを開いて，Terminalタブで，上記の図の青色の部分をコピペして実行します。
@@ -47,17 +43,13 @@ Pavloviaを研究室単位で複数人で使っている場合は，Personal Acc
 
 - https://gitlab.pavlovia.org/...
 
-これに，以下のように，上記のURLのgitlabの前に，oauth2:[トークン]@を挿入します。それをRepogitory URLにいれてクローンします。
-
-- https://oauth2:[トークン]@gitlab.pavlovia.org/...
-
 うまくクローンができたら，RStudio上からPavloviaに行動課題をPush（アップロード）したり，データをPull（ダウンロード）することができます。
 
 <br />
 
 ## Pavlovia用の実験課題の作成
 
-次に，ここまで設定したRstudio上のPavloviaの課題リポジトリ上でR Markdownを使って行動課題を作っていきます（pavloviaからクローンしたフォルダ内でR Markdownで行動課題を作ります）。その際に，jsPsychRmd(https://github.com/ykunisato/jsPsychRmd)を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の```devtools::install_github("ykunisato/jsPsychRmd")```を打ち込んで，インストールしてから，```library(jsPsychRmd)```を実行してください。
+次に，ここまで設定したRstudio上のPavloviaの課題リポジトリ上でR Markdownを使って行動課題を作っていきます（pavloviaからクローンしたフォルダ内でR Markdownで行動課題を作ります）。その際に，jsPsychRmd(https://github.com/ykunisato/jsPsychRmd )を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の```devtools::install_github("ykunisato/jsPsychRmd")```を打ち込んで，インストールしてから，```library(jsPsychRmd)```を実行してください。
 
 ```
 library(jsPsychRmd)
