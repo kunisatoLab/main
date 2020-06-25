@@ -4,7 +4,9 @@ title: "jsPsychを用いたWEB実験の実施：Pavloviaで簡単に実施して
 
 ## 1.Pavlovia側の設定
 
-Pavlovia(https://gitlab.pavlovia.org/users/sign_in )にログインします(アカウントを作ってない方は作成ください。なお，Pavloviaの利用には課金が必要です。詳しくはPavloviaのサイトをご確認ください)。
+Pavlovia(https://gitlab.pavlovia.org/users/sign_in )にログインします(アカウントを作ってない方はRegisterで登録ください）。
+
+Pavloviaの利用には課金が必要ですが（詳しくはPavloviaのサイトでご確認ください），専修大学の心理学科では機関ライセンスを購入していますので，学科のメールアドレスで登録をしてください。
 
 ![](fig/pavlovia01.png)
 <br />
@@ -15,13 +17,13 @@ Pavlovia(https://gitlab.pavlovia.org/users/sign_in )にログインします(ア
 
 <br />
 
-Project nameに研究名とか課題名をいれてください（参加者に見えるので名前は工夫ください）。「Create project」をクリックします。なお，１つのPavloviaアカウント下に複数の研究グループなどがある場合は，グループを設定しておくと良いかと思います（以下は，専修大学アカウント下のkunisatolabグループを設定しています）。
+Project nameに研究名とか課題名をいれてください（参加者に見えるので名前は工夫ください）。「Create project」をクリックします。なお，１つのPavloviaアカウント下に複数の研究グループなどがある場合は，グループを設定しておくと良いかと思います（以下では練習で，kunisatolabグループを設定してみました）。
 
 ![](fig/pavlovia03.png)
 
 <br />
 
-プロジェクトを作ると，以下の画面が出てきます。赤色の部分（Clone with HTTP）のURLと青色の部分の情報が必要なのでコピーします。
+プロジェクトを作ると，以下の画面が出てきます。赤色の部分（Clone with HTTP）のURLと青色の部分の情報（git configではじまる２行です）が必要なのでコピーして，どこかにメモしておきます。
 
 
 ![](fig/pavlovia04.png)
@@ -39,11 +41,11 @@ Project nameに研究名とか課題名をいれてください（参加者に�
 
 <br />
 
-このRepogitory URLに上記の図の赤色のClone with HTTPをコピペするのですが，アクセストークンを追加します。Clone with HTTPは以下のような感じです。
+このRepogitory URLに上記の図の赤色のClone with HTTPをコピペします。おそらくクローン（ダウンロード）がなされます。
 
-- https://gitlab.pavlovia.org/...
+次に，RStudioのTerminalというタブを探します。そして，そこに，上記の図の青色のgit configではじまる２行をコピペします。
 
-うまくクローンができたら，RStudio上からPavloviaに行動課題をPush（アップロード）したり，データをPull（ダウンロード）することができます。
+これで，RStudio上からPavloviaに行動課題をPush（アップロード）したり，データをPull（ダウンロード）することができます。
 
 <br />
 

@@ -415,15 +415,16 @@ div.tocify {
 
 <div id="pavlovia側の設定" class="section level2">
 <h2>1.Pavlovia側の設定</h2>
-<p>Pavlovia(<a href="https://gitlab.pavlovia.org/users/sign_in" class="uri">https://gitlab.pavlovia.org/users/sign_in</a> )にログインします(アカウントを作ってない方は作成ください。なお，Pavloviaの利用には課金が必要です。詳しくはPavloviaのサイトをご確認ください)。</p>
+<p>Pavlovia(<a href="https://gitlab.pavlovia.org/users/sign_in" class="uri">https://gitlab.pavlovia.org/users/sign_in</a> )にログインします(アカウントを作ってない方はRegisterで登録ください）。</p>
+<p>Pavloviaの利用には課金が必要ですが（詳しくはPavloviaのサイトでご確認ください），専修大学の心理学科では機関ライセンスを購入していますので，学科のメールアドレスで登録をしてください。</p>
 <p><img src="fig/pavlovia01.png" /> <br /></p>
 <p>次に，PavloviaのGitLabページ（<a href="https://gitlab.pavlovia.org/dashboard/projects" class="uri">https://gitlab.pavlovia.org/dashboard/projects</a> ）にアクセスします。以下のような感じの画面がでてくるので，「New project」をクリックして，実験を新規作成します。</p>
 <p><img src="fig/pavlovia02.png" /></p>
 <p><br /></p>
-<p>Project nameに研究名とか課題名をいれてください（参加者に見えるので名前は工夫ください）。「Create project」をクリックします。なお，１つのPavloviaアカウント下に複数の研究グループなどがある場合は，グループを設定しておくと良いかと思います（以下は，専修大学アカウント下のkunisatolabグループを設定しています）。</p>
+<p>Project nameに研究名とか課題名をいれてください（参加者に見えるので名前は工夫ください）。「Create project」をクリックします。なお，１つのPavloviaアカウント下に複数の研究グループなどがある場合は，グループを設定しておくと良いかと思います（以下では練習で，kunisatolabグループを設定してみました）。</p>
 <p><img src="fig/pavlovia03.png" /></p>
 <p><br /></p>
-<p>プロジェクトを作ると，以下の画面が出てきます。赤色の部分（Clone with HTTP）のURLと青色の部分の情報が必要なのでコピーします。</p>
+<p>プロジェクトを作ると，以下の画面が出てきます。赤色の部分（Clone with HTTP）のURLと青色の部分の情報（git configではじまる２行です）が必要なのでコピーして，どこかにメモしておきます。</p>
 <p><img src="fig/pavlovia04.png" /></p>
 <p><br /></p>
 </div>
@@ -433,11 +434,9 @@ div.tocify {
 <p>次に，RStudio上でFile → New Project→Version Control→Gitと進めます。</p>
 <p><img src="fig/github_gif3.gif" /></p>
 <p><br /></p>
-<p>このRepogitory URLに上記の図の赤色のClone with HTTPをコピペするのですが，アクセストークンを追加します。Clone with HTTPは以下のような感じです。</p>
-<ul>
-<li><a href="https://gitlab.pavlovia.org/" class="uri">https://gitlab.pavlovia.org/</a>…</li>
-</ul>
-<p>うまくクローンができたら，RStudio上からPavloviaに行動課題をPush（アップロード）したり，データをPull（ダウンロード）することができます。</p>
+<p>このRepogitory URLに上記の図の赤色のClone with HTTPをコピペします。おそらくクローン（ダウンロード）がなされます。</p>
+<p>次に，RStudioのTerminalというタブを探します。そして，そこに，上記の図の青色のgit configではじまる２行をコピペします。</p>
+<p>これで，RStudio上からPavloviaに行動課題をPush（アップロード）したり，データをPull（ダウンロード）することができます。</p>
 <p><br /></p>
 </div>
 <div id="pavlovia用の実験課題の作成" class="section level2">
