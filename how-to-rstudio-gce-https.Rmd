@@ -240,6 +240,59 @@ services:
 
 なお，上記のyamlのhttps-portalの設定ではSTAGE: productionとなっていますが，これは本番環境での実施を意味しています。Let's Encryptは何度も実施すると一定期間使えなくなるので，まずはSTAGE: localでちゃんと動かくか確認してから，STAGE: productionを実施することを強く勧めます。STAGE: localは自己証明なので，これで実施をするとhttps化されますがブラウザでは警告がでると思います。警告を無視してちゃんと動作しているかを確認して，大丈夫そうなら，STAGE: productionに進むと良いと思います。
 
+### オマケ
+
+以下のようにすれば，１つのサーバー上で，RStudioとJupyterを走らせることができます。ykunisato/ccp-lab-jは，jupyter/datascience-notebookをベースにjuliaやPythonのパッケージを追加したものです。別々にサーバーを建てなくてもいいので，ちょっとPythonやJuliaも使いたい場合は，便利かもしれません。
+
+```
+version: '3'
+
+services:
+  https-portal:
+    image: steveltn/https-portal:1
+    container_name: https-portal
+    ports:
+      - 80:80
+      - 443:443
+    links:
+      - rstudio
+      - jupyter
+    restart: always
+    environment:
+      DOMAINS: 'Jupyter用ドメイン名 -> http://jupyter:8888, rstudio用ドメイン名 -> http://rstudio:8787'
+      STAGE: production #local
+      WEBSOCKET: "true"
+      CLIENT_MAX_BODY_SIZE: 100M
+    volumes:
+    - ./ssl_certs:/var/lib/https-portal
+
+  jupyter:
+    image: ykunisato/ccp-lab-j
+    container_name: jupyter
+    restart: always
+    environment:
+      - VIRTUAL_HOST=Jupyter用ドメイン名
+      - JUPYTER_ENABLE_LAB=yes
+    expose:
+      - 8888
+    volumes:
+      - ./jupyter:/home/jovyan/work
+    command: start-notebook.sh --NotebookApp.token='トークン'
+
+  rstudio:
+    image: ykunisato/ccp-lab-r
+    container_name: rstudio
+    restart: always
+    environment:
+      - VIRTUAL_HOST=rstudio用ドメイン名
+      - USER=ユーザー名
+      - PASSWORD=パスワード
+    expose:
+      - 8787
+    volumes:
+      - ./rstudio:/home/rstudio
+```
+
 
 ## 7. docker-composeの実行
 

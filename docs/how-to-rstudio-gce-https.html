@@ -566,6 +566,56 @@ services:
       - ./rstudio:/home
 </code></pre>
 <p>なお，上記のyamlのhttps-portalの設定ではSTAGE: productionとなっていますが，これは本番環境での実施を意味しています。Let’s Encryptは何度も実施すると一定期間使えなくなるので，まずはSTAGE: localでちゃんと動かくか確認してから，STAGE: productionを実施することを強く勧めます。STAGE: localは自己証明なので，これで実施をするとhttps化されますがブラウザでは警告がでると思います。警告を無視してちゃんと動作しているかを確認して，大丈夫そうなら，STAGE: productionに進むと良いと思います。</p>
+<div id="オマケ" class="section level3">
+<h3>オマケ</h3>
+<p>以下のようにすれば，１つのサーバー上で，RStudioとJupyterを走らせることができます。ykunisato/ccp-lab-jは，jupyter/datascience-notebookをベースにjuliaやPythonのパッケージを追加したものです。別々にサーバーを建てなくてもいいので，ちょっとPythonやJuliaも使いたい場合は，便利かもしれません。</p>
+<pre><code>version: &#39;3&#39;
+
+services:
+  https-portal:
+    image: steveltn/https-portal:1
+    container_name: https-portal
+    ports:
+      - 80:80
+      - 443:443
+    links:
+      - rstudio
+      - jupyter
+    restart: always
+    environment:
+      DOMAINS: &#39;Jupyter用ドメイン名 -&gt; http://jupyter:8888, rstudio用ドメイン名 -&gt; http://rstudio:8787&#39;
+      STAGE: production #local
+      WEBSOCKET: &quot;true&quot;
+      CLIENT_MAX_BODY_SIZE: 100M
+    volumes:
+    - ./ssl_certs:/var/lib/https-portal
+
+  jupyter:
+    image: ykunisato/ccp-lab-j
+    container_name: jupyter
+    restart: always
+    environment:
+      - VIRTUAL_HOST=Jupyter用ドメイン名
+      - JUPYTER_ENABLE_LAB=yes
+    expose:
+      - 8888
+    volumes:
+      - ./jupyter:/home/jovyan/work
+    command: start-notebook.sh --NotebookApp.token=&#39;トークン&#39;
+
+  rstudio:
+    image: ykunisato/ccp-lab-r
+    container_name: rstudio
+    restart: always
+    environment:
+      - VIRTUAL_HOST=rstudio用ドメイン名
+      - USER=ユーザー名
+      - PASSWORD=パスワード
+    expose:
+      - 8787
+    volumes:
+      - ./rstudio:/home/rstudio</code></pre>
+</div>
 </div>
 <div id="docker-composeの実行" class="section level2">
 <h2>7. docker-composeの実行</h2>
@@ -794,8 +844,8 @@ run -e PASSWORD=パスワード -p 8787:8787 -v ~:/home/rstudio -d --name コン
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>Dockerの活用を考えると，Container-Optimized OSが良いのですが，ホスト側でGoogle Cloud SDKを使いたかったので，Container-Optimized OSを使いました。Ubuntuを使う必然性はないのですが，なんとなく前に使ったことがあるLinuxだったので選びました。<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p><a href="https://twitter.com/masaha03">林真広様</a>より，(1)ymlにrestart: alwaysを追加することで，メタデータにstartup-scriptを記載する必要がなくなること，(2)GCSに送る際にtarで圧縮することを教えていただきました。誠にありがとうございました。<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>Dockerの活用を考えると，Container-Optimized OSが良いのですが，ホスト側でGoogle Cloud SDKを使いたかったので，Container-Optimized OSを使いました。Ubuntuを使う必然性はないのですが，なんとなく前に使ったことがあるLinuxだったので選びました。<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://twitter.com/masaha03">林真広様</a>より，(1)ymlにrestart: alwaysを追加することで，メタデータにstartup-scriptを記載する必要がなくなること，(2)GCSに送る際にtarで圧縮することを教えていただきました。誠にありがとうございました。<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
@@ -852,7 +902,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
