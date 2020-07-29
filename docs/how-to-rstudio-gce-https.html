@@ -424,18 +424,15 @@ div.tocify {
 </div>
 <div id="仮想マシンvmの準備" class="section level2">
 <h2>2. 仮想マシン(VM)の準備</h2>
-<p>1.名前やマシンの構成は好みで選択してください（マシンの構成によって金額が変わるので，お財布と相談ください）。ブートディスクの設定で変更を押して，Ubuntu 18.04 LTSを選んで，ディスクサイズは30GBくらいにしておきます<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>。</p>
+<p>1.名前やマシンの構成は好みで選択してください（マシンの構成によって金額が変わるので，お財布と相談ください）。ブートディスクの設定で変更を押して，Ubuntu 18.04 LTS(Ubuntu 20.04 LTSでも動作します)を選んで，ディスクサイズは30GBくらいにしておきます<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>。</p>
 <p>2.ファイヤーウォールの設定(「HTTP トラフィックを許可する」と「HTTPS トラフィックを許可する」にチェックをいれる)</p>
 <p>※ よく使う仮想マシン構成が決まっている場合は，インスタンステンプレートを使うと便利と思います。</p>
-<p>3.VMインスタンスを作成します。勝手に立ち上がると思うので，停止します（作成したインスタンスの右端の方で停止ができます）。</p>
-<p>4.VMインスタンスは起動している間課金されるので，使わないときは停止しておきます。でも，VMインスタンスは起動のたびに外部IPが変わっちゃうので<a href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address?hl=ja">静的外部 IP アドレスの予約</a>をします。</p>
-<p>5.VMインスタンスを起動します。設定した外部IPになっているか確認します。</p>
-<p>6.このまま稼働させると，sshdに攻撃がされます（結構頻繁にアタックされます・・・）。SSHポート番号を変更しておきます。ちょっとややこしいですが，以下の手順でSSHポートは変更できます。</p>
+<p>3.VMインスタンスを作成します。勝手に作ったVMが起動します。</p>
+<p>4.VMインスタンスは起動している間課金されるので，使わないときは停止しておきます。でも，VMインスタンスは起動のたびに外部IPが変わっちゃうのが困る場合は，<a href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address?hl=ja">静的外部 IP アドレスの予約</a>をします（常時起動している場合は，気にしなくても良いと思います）。</p>
+<p>5.このまま稼働させると，sshdに攻撃がされます（結構頻繁にアタックされます・・・）。SSHポート番号を変更しておきます。ちょっとややこしいですが，以下の手順でSSHポートは変更できます。</p>
 <ul>
-<li>VMインスタンスを停止します。</li>
 <li>GCPの「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール ルールの作成」を押して新しいSSHポートを設定します。名前やターゲットタグは好きな名前にしてください。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは許可，ソースのIP範囲は， <code>0.0.0.0/0</code> とします。プロトコルは<code>tcp</code>でポートに好きなポート番号を入れます。</li>
-<li>設定した新しいファイアウォールルールを適用するため，VMインスタンスを編集して，ネットワークタグに上記で決めたターゲットタグを入れて保存します。</li>
-<li>VMインスタンスを起動します。</li>
+<li>設定した新しいファイアウォールルールを適用するため，VMインスタンスをクリックして，「編集」ボタンを押して，ネットワークタグに上記で決めたターゲットタグを入れて保存します。</li>
 <li>通常のSSH接続(22portを使用)をします（「Compute Engine」の「VMインスタンス」の当該VMインスタンスの右端にある「SSH」をクリックします）。</li>
 <li>コンソールっぽい画面が出てきたら，以下のコマンドを打って，viでsshdの設定ファイルを開きます。</li>
 </ul>
@@ -448,8 +445,8 @@ div.tocify {
 <ul>
 <li><p>ここで今22番portで開いた画面はそのままにして（閉じない），VMインスタンスの右端にある「SSH」の下矢印を押して，「ブラウザウィンドウでカスタムポートを開く」をクリックします。入力欄が出てくるので，そこに先程設定した新しいSSHのポートを入力して開きます。</p></li>
 <li><p>新しいSSHのポートでも開けたら，22番portを閉じます。もう一度，「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール ルールの作成」を押します。名前やターゲットタグは好きな名前にしてください。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは<code>拒否</code>，ソースのIP範囲は， <code>0.0.0.0/0</code> とします。プロトコルは<code>tcp</code>でポートは<code>22</code>にします。</p></li>
-<li><p>VMインスタンスを一度停止して，編集し，ネットワークタグに上記で決めたターゲットタグを入れて保存します(これで，httpのタグ，httpsのタグ，新しいsshポートのタグ，22番ポートを閉じるタグの４つがあると思います)。</p></li>
-<li><p>もう一度，VMインスタンスを起動します。通常のSSH接続(22番ポート)をしても接続できず，「ブラウザウィンドウでカスタムポートを開く」で自分で設定したSSHポートを使って接続できたら成功です。</p></li>
+<li><p>VMインスタンスをクリックして，「編集」を押し，ネットワークタグに上記で決めたターゲットタグを入れて保存します(これで，httpのタグ，httpsのタグ，新しいsshポートのタグ，22番ポートを閉じるタグの４つがあると思います)。</p></li>
+<li><p>通常のSSH接続(22番ポート)をしても接続できず，「ブラウザウィンドウでカスタムポートを開く」で自分で設定したSSHポートを使って接続できたら成功です。</p></li>
 <li><p>ちなみに，SSH接続後に以下を入力するとアクセス状況を見れます（<code>f</code>で次の画面に進んで，<code>q</code>で閉じます）。</p></li>
 </ul>
 <pre><code>sudo less /var/log/auth.log</code></pre>
@@ -463,8 +460,8 @@ div.tocify {
 <div id="仮想マシンvmにdockerをインストール" class="section level2">
 <h2>4. 仮想マシン(VM)にDockerをインストール</h2>
 <p>Compute EngineのページのVMインスタンスをみると先程設定したVMインスタンスがあると思います。こちらが起動していると接続というところの「SSH」がクリック可能になっていると思います。SSHをクリックしてください。すると，別ウィンドウが起動して，ターミナルが出現します。そこで，<a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">こちら</a>を参考に以下を打ち込んでDockerをインストールします。途中何か聞かれると思いますが，質問に従って，Yなどの返事をタイプください。</p>
-<pre><code>sudo apt-get update</code></pre>
-<pre><code>sudo apt-get install \
+<pre><code>sudo apt update</code></pre>
+<pre><code>sudo apt install \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -476,18 +473,20 @@ div.tocify {
    &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable&quot;</code></pre>
-<pre><code>sudo apt-get install docker-ce docker-ce-cli containerd.io</code></pre>
+<pre><code>sudo apt install docker-ce docker-ce-cli containerd.io</code></pre>
 </div>
 <div id="docker-composeをインストール" class="section level2">
 <h2>5. docker-composeをインストール</h2>
 <p>続けて，<a href="https://docs.docker.com/compose/install/">こちら</a>を参考にして，Docker-composeもインストールします。</p>
-<pre><code>sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</code></pre>
-<pre><code>sudo chmod +x /usr/local/bin/docker-compose</code></pre>
-<pre><code>sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</code></pre>
+<pre><code>sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</code></pre>
 <p>これで，Dockerを動かす準備ができました。</p>
-<div id="必要に応じてgoogle-cloud-sdkとfirebase-cliのインストール" class="section level3">
-<h3>＜必要に応じて＞Google Cloud SDKとFirebase CLIのインストール</h3>
-<p>私はホスト側でGoogle Cloud SDKとFirebase CLIを使いたかったので，docker-composeに続いて，それらをインストールしています。Rstudio Serverに絶対に必要ということはないですが，Rsutido serverを使っていてホスト側からGoogle Cloud Strageを使ったバックアップやアップロードをしたい場合に，Google Cloud SDKが必要です。また，ウェブ実験などで，jsPsychなどで作成したファイルを直接デプロイしたい場合はFirebase CLIが必要です。</p>
+<div id="必要に応じてgoogle-cloud-sdkのインストール" class="section level3">
+<h3>＜必要に応じて＞Google Cloud SDKのインストール</h3>
+<p>私はホスト側でGoogle Cloud SDKでバックアップしたかったので，docker-composeに続いて，それらをインストールしています(Githubなどを使ったバックアップのみの場合は，こちらは不要で６にお進みください)。Rsutido serverを使っていてホスト側からGoogle Cloud Strageを使ったバックアップやアップロードをしたい場合に，Google Cloud SDKが必要です。</p>
 <div id="google-cloud-sdkをインストール" class="section level4">
 <h4>Google Cloud SDKをインストール</h4>
 <p>詳しくは<a href="https://cloud.google.com/storage/docs/gsutil_install?hl=ja#linux">こちら</a>を参照ください。</p>
@@ -516,18 +515,6 @@ div.tocify {
 </ul>
 <pre><code>gsutil mb -l asia-northeast1 gs://保存用バケット名/</code></pre>
 </div>
-<div id="firebase-cliをインストール" class="section level4">
-<h4>Firebase CLIをインストール</h4>
-<p>詳しくは，<a href="https://firebase.google.com/docs/cli?hl=ja">こちら</a>を参照。ただ，Node.jsとnpmのインストールは，以下の方が楽（ちょっとバージョンが古くなるみたいだけど）。</p>
-<pre><code>sudo apt-get install nodejs</code></pre>
-<pre><code>sudo apt-get install npm</code></pre>
-<p>Firebase CLI をインストールします。</p>
-<pre><code>sudo npm install -g firebase-tools</code></pre>
-<p>ログインする。これだとコマンドライン上でログインができる。URLがでてくるので，ローカルのPCでもログインの手続きができる。</p>
-<pre><code>firebase login --no-localhost</code></pre>
-<p>うまくインストールできたか確認する。</p>
-<pre><code>sudo firebase list</code></pre>
-</div>
 </div>
 </div>
 <div id="docker-compose用ymlの準備" class="section level2">
@@ -536,6 +523,7 @@ div.tocify {
 <p>今回は，docker-composeを使います。これは，複数のDockerを使う場合に，それらの構成をyamlで定義して，それを元にしてDockerを用意するサービスです。今回は，<a href="https://hub.docker.com/r/ykunisato/ccp-lab-r">国里が作成したRStudio Sever用Docker(Rockerをベースに必要なソフトを色々といれたもの。Stanも使えます)</a>と<a href="https://github.com/SteveLTN/https-portal">https-portal</a>を使いますが，この２つのDockerの設定と接続などについてymalで記載をします。</p>
 <p>まずは，テキストエディタに以下の内容を貼り付けて（インデントに意味があるので崩れないようにする），ドメイン名（上で設定したもの），ユーザー名（自由につける），ユーザーパスワード（自由につける）を変更します。それを“docker-compose.yml”という名前をつけて保存します(必ず，“docker-compose.yml”という名前にしてください)。<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
 <p>ざっくり内容を説明すると， 以下のyamlでは，https-portalとrstudioの２つのサービスをそれぞれ設定しています。https-portalは，設定するとnginxというWEBサーバーを用意して，Let’s EncryptというSSL証明の認証局から証明書を自動でとってきて設定してくれます（これは１つずつ設定することを考えると驚くくらい楽です）。rstudioは，国里が用意したykunisato/ccp-lab-rから作られるRStudio Serverです。Rockerベースであれば，ykunisato/ccp-lab-rの代わりに他のDockerを使うことも可能です。https-portalとrstudioの関係としては，外のインターネットの世界とはnginxが接していて，nginxには外からHTTPSで接続がきます，そしてそこを経由して，Rstudio serverの8787番ポートに接続する感じです（8787番ポートが暗号化されずに外にでているのではなくnginxを介する＆暗号化することで安全性を高めているという理解を私はしています）。その他の細かい設定は，Dockerについて学習をすると段々とわかってくるかと思います。</p>
+<p>※<a href="https://hub.docker.com/r/ykunisato/ccp-lab-r">国里のdockerhub</a>には，R4.0.2に対応したykunisato/ccp-lab-r:4.0.2がありますが，docker-compose up時のユーザーのホームディレクトリの作成がうまく行かないのとRMarkdownの日本語入力がうまく行かない問題があります。&lt;2020/7/29&gt;</p>
 <pre><code>version: &#39;3&#39;
 
 services:
@@ -549,25 +537,24 @@ services:
       - rstudio
     restart: always
     environment:
-      DOMAINS: &#39;ドメイン名 -&gt; http://rstudio:8787&#39;
+      DOMAINS: &#39;rstudio用ドメイン名 -&gt; http://rstudio:8787&#39;
       STAGE: production #local
+      CLIENT_MAX_BODY_SIZE: 100M
+    volumes:
+    - ./ssl_certs:/var/lib/https-portal
 
   rstudio:
-    image: ykunisato/ccp-lab-r
+    image: ykunisato/ccp-lab-r:3.6.3
     container_name: rstudio
     restart: always
     environment:
-      - VIRTUAL_HOST=ドメイン名
       - USER=ユーザー名
-      - PASSWORD=ユーザーパスワード
+      - PASSWORD=パスワード
     expose:
       - 8787
     volumes:
-      - ./rstudio:/home
-</code></pre>
+      - ./rstudio:/home</code></pre>
 <p>なお，上記のyamlのhttps-portalの設定ではSTAGE: productionとなっていますが，これは本番環境での実施を意味しています。Let’s Encryptは何度も実施すると一定期間使えなくなるので，まずはSTAGE: localでちゃんと動かくか確認してから，STAGE: productionを実施することを強く勧めます。STAGE: localは自己証明なので，これで実施をするとhttps化されますがブラウザでは警告がでると思います。警告を無視してちゃんと動作しているかを確認して，大丈夫そうなら，STAGE: productionに進むと良いと思います。</p>
-<div id="オマケ" class="section level3">
-<h3>オマケ</h3>
 <p>以下のようにすれば，１つのサーバー上で，RStudioとJupyterを走らせることができます。ykunisato/ccp-lab-jは，jupyter/datascience-notebookをベースにjuliaやPythonのパッケージを追加したものです。別々にサーバーを建てなくてもいいので，ちょっとPythonやJuliaも使いたい場合は，便利かもしれません。</p>
 <pre><code>version: &#39;3&#39;
 
@@ -590,32 +577,29 @@ services:
     volumes:
     - ./ssl_certs:/var/lib/https-portal
 
-  jupyter:
-    image: ykunisato/ccp-lab-j
-    container_name: jupyter
-    restart: always
-    environment:
-      - VIRTUAL_HOST=Jupyter用ドメイン名
-      - JUPYTER_ENABLE_LAB=yes
-    expose:
-      - 8888
-    volumes:
-      - ./jupyter:/home/jovyan/work
-    command: start-notebook.sh --NotebookApp.token=&#39;トークン&#39;
-
   rstudio:
-    image: ykunisato/ccp-lab-r
+    image: ykunisato/ccp-lab-r:3.6.3
     container_name: rstudio
     restart: always
     environment:
-      - VIRTUAL_HOST=rstudio用ドメイン名
       - USER=ユーザー名
       - PASSWORD=パスワード
     expose:
       - 8787
     volumes:
-      - ./rstudio:/home/rstudio</code></pre>
-</div>
+      - ./rstudio:/home
+
+  jupyter:
+    image: ykunisato/ccp-lab-j:b90cce83f37b
+    container_name: jupyter
+    restart: always
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    expose:
+      - 8888
+    volumes:
+      - ./jupyter:/home/jovyan/work
+    command: start-notebook.sh --NotebookApp.token=&#39;トークン&#39;</code></pre>
 </div>
 <div id="docker-composeの実行" class="section level2">
 <h2>7. docker-composeの実行</h2>
@@ -637,6 +621,62 @@ services:
 <pre><code>exit</code></pre>
 <p>もし，ユーザーをそのユーザーのフォルダごと削除したくなったら，以下を打ち込みます。</p>
 <pre><code>userdel -r ユーザ名</code></pre>
+<div id="ユーザーの一括追加" class="section level3">
+<h3>ユーザーの一括追加</h3>
+<p>上記の方法でもユーザーは追加できますが，人数が多くなると途方にくれてしまいます。そこで，以下ではnewusersを使った一括登録をします。まずは，以下のような感じの情報を表計算ソフトにいれます。ユーザーごとに変更が必要なのは，ユーザー名，ユーザーID（1001から連番にするので良いと思います），パスワード，ホームディレクトリ名（homeの下にユーザー名をいれる）です。残りの，グループID（50）, フルネーム（空白），ログインシェル（/bin/sh)は全員同じで問題ありません。</p>
+<table>
+<thead>
+<tr class="header">
+<th>ユーザー名</th>
+<th>パスワード</th>
+<th>ユーザーID</th>
+<th>グループID</th>
+<th>フルネーム</th>
+<th>ホームディレクトリ</th>
+<th>ログインシェル</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>user1</td>
+<td>user1のパスワード</td>
+<td>1001</td>
+<td>50</td>
+<td></td>
+<td>/home/user1</td>
+<td>/bin/sh</td>
+</tr>
+<tr class="even">
+<td>user2</td>
+<td>user2のパスワード</td>
+<td>1002</td>
+<td>50</td>
+<td></td>
+<td>/home/user2</td>
+<td>/bin/sh</td>
+</tr>
+<tr class="odd">
+<td>user3</td>
+<td>user3のパスワード</td>
+<td>1003</td>
+<td>50</td>
+<td></td>
+<td>/home/user3</td>
+<td>/bin/sh</td>
+</tr>
+</tbody>
+</table>
+<p>なお，上記の情報は，区切りに:を使って保存します。つまりuser1については，user1:user1のパスワード:1001:50::/home/user1:/bin/shになります。この作業はいろいろな方法ができますが，上記の情報を表計算ソフトにいれて，それをcsvファイルで出力して，テキストエディタで開いて，カンマを:に変換して，一番上のヘッダー情報は削除して，最後に.txtの拡張子で保存するのが楽じゃないかなと思います。そのファイル名は，user.txtとしておきます（なんでもいいです）。</p>
+<p>user.txtが作成できたら，VMにSSH接続して，user.txtをアップロードします（ウィンドウの右上の設定っぽいボタンをクリックするとアップロードの選択肢がでてきます）。アップロードしたuser.txtをrstudioのフォルダに一時的に移動します。</p>
+<pre><code>sudo mv user.txt rstudio</code></pre>
+<p>rsutdioのコンテナに入ります。</p>
+<pre><code>sudo docker exec -it rstudio bash</code></pre>
+<p>以下を実行して，一括でユーザー登録します。これで終わりです。</p>
+<pre><code>newusers /home/user.txt</code></pre>
+<p>一応,user.txtを削除してから，コンテナから出ます。</p>
+<pre><code>rm /home/user.txt
+exit</code></pre>
+</div>
 </div>
 <div id="tips" class="section level2">
 <h2>Tips</h2>
@@ -844,8 +884,8 @@ run -e PASSWORD=パスワード -p 8787:8787 -v ~:/home/rstudio -d --name コン
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>Dockerの活用を考えると，Container-Optimized OSが良いのですが，ホスト側でGoogle Cloud SDKを使いたかったので，Container-Optimized OSを使いました。Ubuntuを使う必然性はないのですが，なんとなく前に使ったことがあるLinuxだったので選びました。<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p><a href="https://twitter.com/masaha03">林真広様</a>より，(1)ymlにrestart: alwaysを追加することで，メタデータにstartup-scriptを記載する必要がなくなること，(2)GCSに送る際にtarで圧縮することを教えていただきました。誠にありがとうございました。<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>Dockerの活用を考えると，Container-Optimized OSが良いのですが，ホスト側でGoogle Cloud SDKを使いたかったので，Container-Optimized OSを使いました。Ubuntuを使う必然性はないのですが，なんとなく前に使ったことがあるLinuxだったので選びました。<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p><a href="https://twitter.com/masaha03">林真広様</a>より，(1)ymlにrestart: alwaysを追加することで，メタデータにstartup-scriptを記載する必要がなくなること，(2)GCSに送る際にtarで圧縮することを教えていただきました。誠にありがとうございました。<a href="#fnref2" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
 
