@@ -65,6 +65,7 @@ sudo less /var/log/auth.log
 
 ![](fig/https_fig2.png)
 
+※もしjupyter notebookのdockerも走らせる場合は，カスタムリソースレコードで，rstudio.取得したドメイン名とjupyter.取得したドメイン名で２つ用意して実施すると，１つのドメインで２つのサービスを走らせられるので，便利かもしれません。
 
 ## 4. 仮想マシン(VM)にDockerをインストール
 
