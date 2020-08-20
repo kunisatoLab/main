@@ -57,7 +57,7 @@ title: "jsPsychを用いた認知課題の作成2: ストループ課題"
 
 ```
 library(jsPsychRmd)
-set_jsPsych(file_name = "stroop")
+set_jsPsych(folder = "stroop")
 ```
 
 <br>
@@ -372,7 +372,7 @@ timeline.push(instructions);
 timeline.push(stroop);
 ```
 
-さらに，認知課題をブラウザで実行する場合は，全画面表示で行う必要があります（気が散るので）。全画面表示については，```set_jsPsych(file_name = "stroop")```で用意をすると，すでに使うプラグインとしてjspsych-fullscreen.jsが追加されていますし，以下のようなブロックが用意されています。
+さらに，認知課題をブラウザで実行する場合は，全画面表示で行う必要があります（気が散るので）。全画面表示については，```set_jsPsych(folder = "stroop")```で用意をすると，すでに使うプラグインとしてjspsych-fullscreen.jsが追加されていますし，以下のようなブロックが用意されています。
 
 ```
 /* 全画面表示化 */

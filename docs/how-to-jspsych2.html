@@ -451,7 +451,7 @@ div.tocify {
 <p>さて，設計図を見るといくつかあるブロックの中で一番メインのプロックは刺激呈示をして反応を取得するブロックです。これを最もシンプルな形で作るとすれば，反応の取得はおいておいて，まずは刺激を呈示するブロックを作ることになります。ということで，以下では，早速，教示と課題のメインブロックの刺激呈示部分を作ることとにします。なぜ教示も作るかというと，教示は一般的には簡単につくれることが多いのと，教示は参加者向けのものではありますが，上記の設計図と同じ働きをして，課題の全体像を意識することにつながります。</p>
 <p>さて，ストループ課題用を作るためのjsPsychやR Markdownの準備をします。以下をコンソールに打ち込んで準備をしましょう。</p>
 <pre><code>library(jsPsychRmd)
-set_jsPsych(file_name = &quot;stroop&quot;)</code></pre>
+set_jsPsych(folder = &quot;stroop&quot;)</code></pre>
 <p><br></p>
 <div id="教示を呈示する" class="section level3">
 <h3>3.1 教示を呈示する</h3>
@@ -710,7 +710,7 @@ var welcome = {
 timeline.push(welcome);
 timeline.push(instructions);
 timeline.push(stroop);</code></pre>
-<p>さらに，認知課題をブラウザで実行する場合は，全画面表示で行う必要があります（気が散るので）。全画面表示については，<code>set_jsPsych(file_name = &quot;stroop&quot;)</code>で用意をすると，すでに使うプラグインとしてjspsych-fullscreen.jsが追加されていますし，以下のようなブロックが用意されています。</p>
+<p>さらに，認知課題をブラウザで実行する場合は，全画面表示で行う必要があります（気が散るので）。全画面表示については，<code>set_jsPsych(folder = &quot;stroop&quot;)</code>で用意をすると，すでに使うプラグインとしてjspsych-fullscreen.jsが追加されていますし，以下のようなブロックが用意されています。</p>
 <pre><code>/* 全画面表示化 */
 var fullscreen = {
   type: &#39;fullscreen&#39;,
@@ -815,7 +815,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

@@ -42,7 +42,7 @@ library(jsPsychRmd)
 次に，RstudioのSession → Set Working Directory → Choose Directoryを選択して，カレントワーキングディレクトリを実験課題の作成をする予定のフォルダに設定します（国里のゼミ生の場合は，GitHubリポジトリのexerciseフォルダを選択してください）。カレントワーキングディレクトリの設定ができたら，Consoleに以下を打ち込みます。
 
 ```
-set_jsPsych(file_name = "hello")
+set_jsPsych(folder = "hello")
 ```
 
 すると，以下のような"hello"という名前のフォルダ内に以下のようなファイルとフォルダが用意されます。
@@ -61,7 +61,7 @@ set_jsPsych(file_name = "hello")
 R Markdon(ファイルの拡張子は.Rmd)は，ざっくり言うと，文章とプログラミングコード（基本的にはRだが，JavaScriptやPyhtonも使える）をまとめてHTMLファイル(インターネットのサイトを作っているファイル)にして出力してくれるものです。R Markdownの詳細については，[Kazutan氏のサイト](https://kazutan.github.io/kazutanR/Rmd_intro.html)が非常に勉強になると思います。R Markdownは，解析コードと文章を１つのファイルに読みやすい形でまとめられるので，解析などでも便利なものですが，ここでは，jsPsychを使って行動課題をHTML出力するために利用します。
 
 
-さて，上記の```set_jsPsych(file_name = "hello")```で作成されたindex.Rmdを開いてください。以下のように，すでに書き込まれているかと思います。まずは，特に考えずに，赤い四角で囲ったKnitをクリックしてみましょう。Knitをクリックすると，RmdからHTMLファイルが作成されて，画面上に「こんにちは！」というのが出てきます。それができていたら，成功です。
+さて，上記の```set_jsPsych(folder = "hello")```で作成されたindex.Rmdを開いてください。以下のように，すでに書き込まれているかと思います。まずは，特に考えずに，赤い四角で囲ったKnitをクリックしてみましょう。Knitをクリックすると，RmdからHTMLファイルが作成されて，画面上に「こんにちは！」というのが出てきます。それができていたら，成功です。
 
 
 ![](fig/jspsych1_fig17.png)
@@ -79,7 +79,7 @@ jspsych-fullscreen.js（全画面表示するもの）の３つのプラグイ�
 
 ### 2.2 JavaScriptで課題を作る設定
 
-jsPsychの本体のコードは，チャンクを{js}とします（このチャンク内でjsPsychを使ったjsコードを書きます）。こちらがjsPsychで課題を作成する際の本体になります。jsPsychRmdで```set_jsPsych(file_name = "hello")```した場合は，以下の内容が事前に入っています。
+jsPsychの本体のコードは，チャンクを{js}とします（このチャンク内でjsPsychを使ったjsコードを書きます）。こちらがjsPsychで課題を作成する際の本体になります。jsPsychRmdで```set_jsPsych(folder = "hello")```した場合は，以下の内容が事前に入っています。
 
 ```
 /* 全画面表示化 */
