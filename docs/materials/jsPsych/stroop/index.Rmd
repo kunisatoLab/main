@@ -1,0 +1,175 @@
+---
+title: "ストループ課題"
+author: "Yoshihiko Kunisato"
+output:
+  html_document:
+    mathjax: null
+    highlight: null
+    theme: null
+    css: jspsych-6.1.0/css/jspsych.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+```
+
+```{r}
+library(htmltools)
+tagList(
+tags$script(src='jspsych-6.1.0/jspsych.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js'),
+tags$script(src='jspsych-6.1.0/plugins/jspsych-fullscreen_jp.js')
+)
+```
+
+```{js}
+/* 最初のメッセージ*/
+var welcome = {
+  type: "html-keyboard-response",
+  stimulus: "<p><span style='font-size:20pt;'>実験にお越しいただき，ありがとうございます!!!</span></p>"+
+  "<p>キーボードのキーをどれか押して，開始してください</p>"
+};
+
+/* 教示*/
+var instructions = {
+  type: "html-keyboard-response",
+  stimulus: "<p style='text-align:left'>この課題では, 以下のような色のついた単語を見ていただきます。</p>"+
+    "<p style='color:red;font-size:60pt;'>青</p>"+
+    "<p style='text-align:left'>単語の意味は無視して，それぞれの単語の「色」を以下のキーボードのキーを押して回答してください。</p>"+
+    "<p style='text-align:left'>左手の人差し指と中指でdとf，右手の人差し指と中指でjとkを押してください。</p>"+
+    "<p style='text-align:left'>・<span style='color:red'>赤色</span>の単語ならdを押す</p>"+
+    "<p style='text-align:left'>・<span style='color:blue'>青色</span>の単語ならfを押す</p>"+
+    "<p style='text-align:left'>・<span style='color:green'>緑色</span>の単語ならjを押す</p>"+
+    "<p style='text-align:left'>・<span style='color:yellow'>黄色</span>の単語ならkを押す</p>"+
+    "<p style='text-align:left'>上の例の場合だと，赤色で「青」と書いてありますので，dを押します</p>"+
+    "<p style='text-align:left'>キーボードのキーをどれか押すと課題が始まります</p>",
+  post_trial_gap: 1000
+};
+
+/*刺激の設定*/
+var stimuli = [
+  {
+    stimulus: "<p style='color:red;font-size:60pt;'>赤</p>",
+    data: { no:'1', stim_type: 'congruent', correct_key_press: '68'}
+  },
+  {
+    stimulus: "<p style='color:green;font-size:60pt;'>赤</p>",
+    data: { no:'2', stim_type: 'incongruent', correct_key_press: '74'}
+  },
+  {
+    stimulus: "<p style='color:yellow;font-size:60pt;'>赤</p>",
+    data: { no:'3', stim_type: 'incongruent', correct_key_press: '75'}
+  },
+  {
+    stimulus: "<p style='color:blue;font-size:60pt;'>赤</p>",
+    data: { no:'4', stim_type: 'incongruent', correct_key_press: '70'}
+  },
+  {
+    stimulus: "<p style='color:red;font-size:60pt;'>緑</p>",
+    data: { no:'5', stim_type: 'congruent', correct_key_press: '68'}
+  },
+  {
+    stimulus: "<p style='color:green;font-size:60pt;'>緑</p>",
+    data: { no:'6', stim_type: 'incongruent', correct_key_press: '74'}
+  },
+  {
+    stimulus: "<p style='color:yellow;font-size:60pt;'>緑</p>",
+    data: { no:'7', stim_type: 'incongruent', correct_key_press: '75'}
+  },
+  {
+    stimulus: "<p style='color:blue;font-size:60pt;'>緑</p>",
+    data: { no:'8', stim_type: 'incongruent', correct_key_press: '70'}
+  },
+  {
+    stimulus: "<p style='color:red;font-size:60pt;'>黄</p>",
+    data: { no:'9', stim_type: 'congruent', correct_key_press: '68'}
+  },
+  {
+    stimulus: "<p style='color:green;font-size:60pt;'>黄</p>",
+    data: { no:'10', stim_type: 'incongruent', correct_key_press: '74'}
+  },
+  {
+    stimulus: "<p style='color:yellow;font-size:60pt;'>黄</p>",
+    data: { no:'11', stim_type: 'incongruent', correct_key_press: '75'}
+  },
+  {
+    stimulus: "<p style='color:blue;font-size:60pt;'>黄</p>",
+    data: { no:'12', stim_type: 'incongruent', correct_key_press: '70'}
+  },
+  {
+    stimulus: "<p style='color:red;font-size:60pt;'>青</p>",
+    data: { no:'13', stim_type: 'congruent', correct_key_press: '68'}
+  },
+  {
+    stimulus: "<p style='color:green;font-size:60pt;'>青</p>",
+    data: { no:'14', stim_type: 'incongruent', correct_key_press: '74'}
+  },
+  {
+    stimulus: "<p style='color:yellow;font-size:60pt;'>青</p>",
+    data: { no:'15', stim_type: 'incongruent', correct_key_press: '75'}
+  },
+  {
+    stimulus: "<p style='color:blue;font-size:60pt;'>青</p>",
+    data: { no:'16', stim_type: 'incongruent', correct_key_press: '70'}
+  }
+];
+
+/*ストループ課題*/
+var stroop = {
+  timeline: [{
+    type: "html-keyboard-response",
+    choices: ["d","f","j","k"],
+    trial_duration: 2000,
+    response_ends_trial: true,
+    stimulus: jsPsych.timelineVariable('stimulus'),
+    prompt: '赤色ならd,  青色ならf,  緑色ならj,  黄色ならk',
+    data: jsPsych.timelineVariable('data'),
+    on_finish: function(data){
+      var correct = 0;
+      if(data.correct_key_press == data.key_press){
+        correct = 1;
+      } 
+      data.correct = correct;
+    },
+    post_trial_gap: function() {
+        return Math.floor(Math.random() * 1500) + 500;
+    }
+  }],
+  timeline_variables: stimuli,
+  sample: {type: 'fixed-repetitions',size: 2}
+};
+
+/*デブリーフィングの設定*/
+var debrief = {
+  type: "html-keyboard-response",
+  stimulus: function() {
+    var incongruent_trials = jsPsych.data.get().filter({stim_type: 'incongruent'}).count();
+    var congruent_trials = jsPsych.data.get().filter({stim_type: 'congruent'}).count();
+    var accuracy = Math.round(jsPsych.data.get().filter({correct: 1}).count() / (incongruent_trials + congruent_trials) * 100);
+    var congruent_rt = Math.round(jsPsych.data.get().filter({correct: 1, stim_type: 'congruent'}).select('rt').mean());
+    var incongruent_rt = Math.round(jsPsych.data.get().filter({correct: 1, stim_type: 'incongruent'}).select('rt').mean());
+    return "<p>あなたの正答率は，<strong>"+accuracy+"%</strong>でした。</p> " +
+    "<p>色と単語が一致していた時にボタンを押すまでにかかる時間の平均は， <strong>" + congruent_rt + "ms</strong>でした。</p>"+
+    "<p>色と単語が不一致だった時にボタンを押すまでにかかる時間の平均は， <strong>" + incongruent_rt + "ms</strong>でした。</p>"+
+    "<p>キーボードのキーをどれか押すと画面に結果の記録が表示されます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>";
+  }
+};
+
+var timeline = [];
+timeline.push(welcome);
+timeline.push({
+  type: 'fullscreen',
+  fullscreen_mode: true
+});
+timeline.push(instructions);
+timeline.push(stroop);
+timeline.push(debrief);
+
+jsPsych.init({
+    timeline: timeline,
+    on_finish: function() {
+     jsPsych.data.displayData();
+    }
+});
+```
+

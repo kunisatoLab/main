@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>jsPsychを用いたWEB実験の実施：Google Spreadsheetにデータを保存しよう！</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="site_style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Computational Clinical Psychology Lab</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="research.html">Research</a>
+</li>
+<li>
+  <a href="team.html">Team</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Publications
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="book.html">書籍</a>
+    </li>
+    <li>
+      <a href="articles.html">学術論文</a>
+    </li>
+    <li>
+      <a href="articles-japanese.html">学術論文（日本語）</a>
+    </li>
+    <li>
+      <a href="bulletin.html">紀要論文</a>
+    </li>
+    <li>
+      <a href="presentation.html">国際会議発表</a>
+    </li>
+    <li>
+      <a href="presentation-japanese.html">国内学会・研究会発表</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="code_tips.html">Code &amp; Tips</a>
+</li>
+<li>
+  <a href="education.html">Education</a>
+</li>
+<li>
+  <a href="news.html">News</a>
+</li>
+<li>
+  <a href="https://kunisatolab.github.io/english/index.html">English</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">jsPsychを用いたWEB実験の実施：Google Spreadsheetにデータを保存しよう！</h1>
+
+</div>
+
+
+<p><br /></p>
+<p>jsPsychはFirebaseやPavloviaを使って実施することができますが，Google Spreadsheet上で実施することもできます。それぞれ一長一短はありますが，Google Spreadsheetは日常的に使っている方もおられるでしょうし，サーバー費用などはかからないので，かなりお手軽に実施できます。</p>
+<p>詳しくは，<a href="https://medium.com/@shashikg.iitk/jspsychsheet-running-online-behavioral-experiments-using-jspsych-and-google-sheet-adf29fb4d1a0">jsPsychSheet: Running online behavioral experiments using jsPsych and Google Sheet</a>を読んでいただけたらとは思いますが，以下では簡単に解説をします。</p>
+<p><br /></p>
+<div id="事前準備" class="section level2">
+<h2>事前準備</h2>
+<ul>
+<li>GitHubアカウントを作成する（詳しくは<a href="https://kunisatolab.github.io/main/how-to-github.html">こちら</a>）。</li>
+<li>RStudioでjsPsychを使えるようにする（詳しくは<a href="https://kunisatolab.github.io/main/how-to-jspsych1.html">こちら</a>）。</li>
+</ul>
+<p><br /></p>
+</div>
+<div id="jspsychsheetをforkしてgithub-pageを設定する" class="section level2">
+<h2>1.jsPsychSheetをForkして，GitHub pageを設定する</h2>
+<p><a href="https://github.com/Brain2AI/jsPsychSheet">jsPsychSheetのGitHubリポジトリ</a>に移動して，Forkします(赤で囲った部分をクリックします。)。</p>
+<p><img src="fig/jspsych_gsheet01.png" /></p>
+<p><br /></p>
+<p>自分のGitHubアカウントにjsPsychSheetリポジトリがForkされたら，Settingsタブをクリックします。</p>
+<p><img src="fig/jspsych_gsheet02.png" /> <br /></p>
+<p>Settingsタブで下にスクロールして，GitHub Pagesってところにいきます。そこで，masterブランチを選んでください。「save」って出てくるので，それを押します。これで，ForkしたリポジトリのGitHub Pagesが有効になりました。</p>
+<p><img src="fig/jspsych_gsheet03.png" /> <br /></p>
+</div>
+<div id="jspsych課題の準備" class="section level2">
+<h2>2.jsPsych課題の準備</h2>
+<p>以下の赤線で囲っている部分を押して，「Clone with HTTPS」のURLをコピーする。</p>
+<p><img src="fig/jspsych_gsheet04.png" /> <br /></p>
+<p>RStudioでFile→New Project..→Version Contriol→Gitで，コピーしたURLを貼り付ける。</p>
+<p><br /></p>
+<div id="simple-reaction-time-taskの準備" class="section level3">
+<h3>Simple Reaction Time Taskの準備</h3>
+<p>jsPsychのチュートリアルにあるSimple Reaction Time Taskを作ります。jsPsychSheetのリポジトリ内のexperimentフォルダ内に課題をおきます。すでに，experimentフォルダ内には，Simple Reaction Time Taskが配置されていますが，以下では，Rmarkdownで再度作りましょう。</p>
+<ul>
+<li><p>RStudioでexperimentフォルダをカレントワーキングディレクトリにする</p></li>
+<li><p>以下をコンソールで実行</p></li>
+</ul>
+<pre><code>library(jsPsychRmd)
+set_jsPsych()</code></pre>
+<ul>
+<li><p>index.Rmdを開いて，{js}チャンク内に<a href="https://www.jspsych.org/tutorials/rt-task/#the-final-code">jsPsychチュートリアルのThe final code</a>の scriptから /scriptの内容をコピーして貼り付けします。</p></li>
+<li><p>{js}チャンクの上の{r}チャンク内を以下のようにします。</p></li>
+</ul>
+<pre><code>library(htmltools)
+tagList(
+tags$script(src=&#39;jspsych-6.1.0/jspsych.js&#39;),
+tags$script(src=&#39;jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js&#39;),
+tags$script(src=&#39;jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js&#39;),
+tags$script(src=&#39;jspsych-6.1.0/plugins/jspsych-fullscreen.js&#39;)
+)</code></pre>
+<p>ちゃんと動作するかKnitをして確かめてください。課題が動いたら，Gitでコミット＆プッシュをしてください。</p>
+<p><br /></p>
+</div>
+<div id="jspsych課題でjspsychsheetを使うための調整" class="section level3">
+<h3>jsPsych課題でjsPsychSheetを使うための調整</h3>
+<ul>
+<li>ForkしたjsPsychSheetリポジトリは，GitHub Pagesになっているので，以下のURLのいち部をユーザーアカウント名にするとアクセスできます。</li>
+</ul>
+<p><a href="https://" class="uri">https://</a><GitHubのユーザーアカウント名>.github.io/jsPsychSheet/experiment/</p>
+<ul>
+<li>上記の課題をGoogle spreadsheet上で走らせる場合に，上記のURLからファイルにアクセスをします。そこで，画像を含む刺激系のファイル，jsPsychのjsライブラリなどは，上記のURLに変更をします。具体的には以下のようにします。</li>
+</ul>
+<p><br /></p>
+<div id="修正1前rチャンク内のjsライブラリ" class="section level4">
+<h4>修正1前({r}チャンク内のjsライブラリ)</h4>
+<pre><code>library(htmltools)
+tagList(
+tags$script(src=&#39;jspsych-6.1.0/jspsych.js&#39;),
+tags$script(src=&#39;jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js&#39;),
+tags$script(src=&#39;jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js&#39;),
+tags$script(src=&#39;jspsych-6.1.0/plugins/jspsych-fullscreen.js&#39;)
+)</code></pre>
+</div>
+<div id="修正1後rチャンク内のjsライブラリ" class="section level4">
+<h4>修正1後({r}チャンク内のjsライブラリ)</h4>
+<ul>
+<li><GitHubのユーザーアカウント名>はご自身のアカウント名に変更ください。</li>
+<li>jspsychsheet.jsとjspsychsheet.cssも追加します。</li>
+</ul>
+<pre><code>library(htmltools)
+tagList(
+tags$script(src=&#39;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/jspsych-6.1.0/jspsych.js&#39;),
+tags$script(src=&#39;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js&#39;),
+tags$script(src=&#39;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js&#39;),
+tags$script(src=&#39;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-fullscreen.js&#39;),
+tags$script(src=&quot;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/jspsychsheet.js&quot;),
+tags$link(rel=&quot;stylesheet&quot;,href=&quot;https://&lt;GitHubのユーザーアカウント名&gt;.github.io.github.io/jsPsychSheet/jspsychsheet.css&quot;)
+)</code></pre>
+<p><br /></p>
+</div>
+<div id="修正2前jsチャンク内のimgの場所" class="section level4">
+<h4>修正2前({js}チャンク内のimgの場所)</h4>
+<pre><code>    var instructions = {
+      type: &quot;html-keyboard-response&quot;,
+      stimulus: &quot;&lt;p&gt;In this experiment, a circle will appear in the center &quot; +
+          &quot;of the screen.&lt;/p&gt;&lt;p&gt;If the circle is &lt;strong&gt;blue&lt;/strong&gt;, &quot; +
+          &quot;press the letter F on the keyboard as fast as you can.&lt;/p&gt;&quot; +
+          &quot;&lt;p&gt;If the circle is &lt;strong&gt;orange&lt;/strong&gt;, press the letter J &quot; +
+          &quot;as fast as you can.&lt;/p&gt;&quot; +
+          &quot;&lt;div style=&#39;width: 700px;&#39;&gt;&quot;+
+          &quot;&lt;div style=&#39;float: left;&#39;&gt;&lt;img src=&#39;img/blue.png&#39;&gt;&lt;/img&gt;&quot; +
+          &quot;&lt;p class=&#39;small&#39;&gt;&lt;strong&gt;Press the F key&lt;/strong&gt;&lt;/p&gt;&lt;/div&gt;&quot; +
+          &quot;&lt;div class=&#39;float: right;&#39;&gt;&lt;img src=&#39;img/orange.png&#39;&gt;&lt;/img&gt;&quot; +
+          &quot;&lt;p class=&#39;small&#39;&gt;&lt;strong&gt;Press the J key&lt;/strong&gt;&lt;/p&gt;&lt;/div&gt;&quot; +
+          &quot;&lt;/div&gt;&quot;+
+          &quot;&lt;p&gt;Press any key to begin.&lt;/p&gt;&quot;,
+      post_trial_gap: 2000
+    };</code></pre>
+</div>
+<div id="修正2後jsチャンク内のimgの場所" class="section level4">
+<h4>修正2後({js}チャンク内のimgの場所)</h4>
+<pre><code>    var instructions = {
+      type: &quot;html-keyboard-response&quot;,
+      stimulus: &quot;&lt;p&gt;In this experiment, a circle will appear in the center &quot; +
+          &quot;of the screen.&lt;/p&gt;&lt;p&gt;If the circle is &lt;strong&gt;blue&lt;/strong&gt;, &quot; +
+          &quot;press the letter F on the keyboard as fast as you can.&lt;/p&gt;&quot; +
+          &quot;&lt;p&gt;If the circle is &lt;strong&gt;orange&lt;/strong&gt;, press the letter J &quot; +
+          &quot;as fast as you can.&lt;/p&gt;&quot; +
+          &quot;&lt;div style=&#39;width: 700px;&#39;&gt;&quot;+
+          &quot;&lt;div style=&#39;float: left;&#39;&gt;&lt;img src=&#39;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/img/blue.png&#39;&gt;&lt;/img&gt;&quot; +
+          &quot;&lt;p class=&#39;small&#39;&gt;&lt;strong&gt;Press the F key&lt;/strong&gt;&lt;/p&gt;&lt;/div&gt;&quot; +
+          &quot;&lt;div class=&#39;float: right;&#39;&gt;&lt;img src=&#39;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/img/orange.png&#39;&gt;&lt;/img&gt;&quot; +
+          &quot;&lt;p class=&#39;small&#39;&gt;&lt;strong&gt;Press the J key&lt;/strong&gt;&lt;/p&gt;&lt;/div&gt;&quot; +
+          &quot;&lt;/div&gt;&quot;+
+          &quot;&lt;p&gt;Press any key to begin.&lt;/p&gt;&quot;,
+      post_trial_gap: 2000
+    };</code></pre>
+<p><br /></p>
+</div>
+<div id="修正3前jsチャンク内のimgの場所" class="section level4">
+<h4>修正3前({js}チャンク内のimgの場所)</h4>
+<pre><code>    /* test trials */
+    var test_stimuli = [
+      { stimulus: &quot;img/blue.png&quot;, data: { test_part: &#39;test&#39;, correct_response: &#39;f&#39; } },
+      { stimulus: &quot;img/orange.png&quot;, data: { test_part: &#39;test&#39;, correct_response: &#39;j&#39; } }
+    ];</code></pre>
+</div>
+<div id="修正3後jsチャンク内のimgの場所" class="section level4">
+<h4>修正3後({js}チャンク内のimgの場所)</h4>
+<pre><code>        /* test trials */
+    var test_stimuli = [
+      { stimulus: &quot;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/img/blue.png&quot;, data: { test_part: &#39;test&#39;, correct_response: &#39;f&#39; } },
+      { stimulus: &quot;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/img/orange.png&quot;, data: { test_part: &#39;test&#39;, correct_response: &#39;j&#39; } }
+    ];</code></pre>
+<p><br /></p>
+</div>
+<div id="修正4前結果の保存方法" class="section level4">
+<h4>修正4前(結果の保存方法)</h4>
+<pre><code>    /* start the experiment */
+    jsPsych.init({
+      timeline: timeline,
+      on_finish: function() {
+        jsPsych.data.displayData();
+      }
+    });</code></pre>
+</div>
+<div id="修正4後結果の保存方法" class="section level4">
+<h4>修正4後(結果の保存方法)</h4>
+<ul>
+<li>csv形式で保存するようにします</li>
+</ul>
+<pre><code>jsPsych.init({
+  timeline: timeline,
+  on_finish: function() {
+      jsPsychSheet.uploadData(jsPsych.data.get().csv());
+  }
+});</code></pre>
+<p>修正ができたら，knitして，Gitでコミット＆プッシュをしてください。</p>
+<p><br /></p>
+</div>
+</div>
+</div>
+<div id="google-spreadsheetの設定" class="section level2">
+<h2>3.Google Spreadsheetの設定</h2>
+<p>Google Driveで新規にスプレッドシートを作ります（名前を適当につけてください）。</p>
+<p><img src="fig/jspsych_gsheet05.png" /></p>
+<p><br /></p>
+<p>「ツール」から「スクリプトエディタ」を押してください。</p>
+<p><img src="fig/jspsych_gsheet06.png" /></p>
+<p><br /></p>
+<p>以下のような画面がでてきます。</p>
+<p><img src="fig/jspsych_gsheet07.png" /></p>
+<p><br /></p>
+<p>以下のコードをコード.gsに上書きしてください。</p>
+<pre><code>// App Script function to host the html page
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile(&#39;index&#39;);
+}
+
+// App Script function to interact with google sheet
+function addData(data) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.insertSheet(0);
+  var i;
+  for(i=0; i&lt; data.length; i++){
+    sheet.appendRow(data[i]);
+  }
+}
+
+// App Script function to interact with google sheet
+function addDataMultiBlock(data, start=0) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  if (start == 1){
+    var sheet = ss.insertSheet(0);
+  } else {
+    var sheet = ss.getActiveSheet();
+  }
+
+  var i;
+  for(i=0; i&lt; data.length; i++){
+    sheet.appendRow(data[i]);
+  }
+}</code></pre>
+<p><img src="fig/jspsych_gsheet08.png" /></p>
+<p><br /></p>
+<p>保存します。</p>
+<p><img src="fig/jspsych_gsheet09.png" /></p>
+<p><br /></p>
+<p>「ファイル」から「HTMLファイル」を押します。</p>
+<p><img src="fig/jspsych_gsheet10.png" /></p>
+<p><br /></p>
+<p>必ず，index.htmlという名前にしてから，「OK」を押してください。</p>
+<p><img src="fig/jspsych_gsheet11.png" /></p>
+<p><br /></p>
+<p>index.htmlが開くので，ここに，先程RStudio上で作成した実験課題のHTMLを貼り付けます（具体的には，HTMLファイルをクリックして，Open in Editorを選びます。その開いた内容をコピーして，貼り付けます）。</p>
+<p><img src="fig/jspsych_gsheet12.png" /></p>
+<p><br /></p>
+<p>「公開」から「ウェブアプリケーションとして導入」を押します。</p>
+<p><img src="fig/jspsych_gsheet13.png" /></p>
+<p>「who has access to the app:」では，「全ユーザー」を選んでください。Deployを押します。</p>
+<p><img src="fig/jspsych_gsheet14.png" /></p>
+<p><br /></p>
+<p>「許可を確認」を押します。</p>
+<p><img src="fig/jspsych_gsheet15.png" /></p>
+<p><br /></p>
+<p>なんか怖いメッセージがでてきます。</p>
+<p><img src="fig/jspsych_gsheet16.png" /></p>
+<p><br /></p>
+<p>「詳細」を押して，「(安全ではないページ)へ移動」を押します。</p>
+<p><img src="fig/jspsych_gsheet17.png" /></p>
+<p><br /></p>
+<p>課題が行われるウェブページのURLが出てくるのでコピーします。コピーしたURLにいくと実験課題ができます。</p>
+<p><img src="fig/jspsych_gsheet18.png" /></p>
+<p><br /></p>
+<p>課題が終わったら，以下のようにスプレッドシートにデータが保存されます。</p>
+<p><img src="fig/jspsych_gsheet19.png" /></p>
+<p>設定を丁寧にすれば，思ったよりも簡単にGoogle スプレッドシートを使って課題の実行とデータの保存ができました！</p>
+</div>
+
+<footer>
+  <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
+</footer>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
