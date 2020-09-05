@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="site_style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Computational Clinical Psychology Lab</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="research.html">Research</a>
+</li>
+<li>
+  <a href="team.html">Team</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Publications
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="book.html">書籍</a>
+    </li>
+    <li>
+      <a href="articles.html">学術論文</a>
+    </li>
+    <li>
+      <a href="articles-japanese.html">学術論文（日本語）</a>
+    </li>
+    <li>
+      <a href="bulletin.html">紀要論文</a>
+    </li>
+    <li>
+      <a href="presentation.html">国際会議発表</a>
+    </li>
+    <li>
+      <a href="presentation-japanese.html">国内学会・研究会発表</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="code_tips.html">Code &amp; Tips</a>
+</li>
+<li>
+  <a href="education.html">Education</a>
+</li>
+<li>
+  <a href="news.html">News</a>
+</li>
+<li>
+  <a href="https://kunisatolab.github.io/english/index.html">English</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法</h1>
+
+</div>
+
+
+<div id="はじめに" class="section level2">
+<h2>はじめに</h2>
+<p><a href="how-to-rstudio-gce-https.html">Docker-composeを使ってGCE上のRstudio serverをHTTPS化する方法</a>では，Google Compute Engine上でRocker(RStudio ServerのDocker)をベースにしたDockerでRStudio Serverを使う場合にHTTPS化する方法を解説しています。この場合，１つのサーバーにはRStudio serverしかおけないので，ちょっと不便です。もちろん，手動でいろいろやればできるのですが，毎回だと面倒です。そこで，サブドメインとdocker-composeとtraefikを活用して，一気に複数のサービス(Rstudio, Jupyter notebook, JATOS（ウェブ実験管理）, elabFTW（電子ラボノート）)を1つのサーバーで動かして，HTTPS化してみましょう（１サービス１サーバーだと４つ立ち上げることで負担ですが，これだと１つサーバーで４サーボスが稼働できるので，お得です！）。</p>
+<p>なお，国里は，サーバーに関して専門的な教育を受けたことはないので，間違っている部分も多いかと思います（雰囲気で動かしています）。本ページを参考に作業された結果，何らかの問題が生じた場合に，国里は責任を負えません。予めご了承ください（Google Compute Engineを使用すると課金されますので，慎重に作業ください。例えば何度もVMインスタンスを作成し，それを稼働したまま放置していたら，結構な金額になると思います）。また，お詳しい方は，誤りを見つけられましたら，ご指摘いただけましたら幸いです。</p>
+</div>
+<div id="google-compute-engineを使えるようにする" class="section level2">
+<h2>1. Google Compute Engineを使えるようにする</h2>
+<p><a href="https://cloud.google.com/compute/?hl=ja">公式のドキュメント</a>などを参考にGoogle Compute Engineを使えるように設定します（これは解説資料も多いので省略します）。</p>
+</div>
+<div id="仮想マシンvmの準備" class="section level2">
+<h2>2. 仮想マシン(VM)の準備</h2>
+<p>1.名前やマシンの構成は好みで選択してください（マシンの構成によって金額が変わるので，お財布と相談ください）。ブートディスクの設定で変更を押して，Ubuntu 20.04 LTSを選んで，ディスクサイズは30~50GBくらいにしておきます。</p>
+<p>2.ファイヤーウォールの設定(「HTTP トラフィックを許可する」と「HTTPS トラフィックを許可する」にチェックをいれる)</p>
+<p>※ よく使う仮想マシン構成が決まっている場合は，インスタンステンプレートを使うと便利と思います。</p>
+<p>3.VMインスタンスを作成します。勝手に作ったVMが起動します。</p>
+<p>4.VMインスタンスは起動している間課金されるので，使わないときは停止しておきます。でも，VMインスタンスは起動のたびに外部IPが変わっちゃうのが困る場合は，<a href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address?hl=ja">静的外部 IP アドレスの予約</a>をします（常時起動している場合は，気にしなくても良いと思います）。</p>
+<p>5.このまま稼働させると，sshdに攻撃がされます（結構頻繁にアタックされます・・・(;´Д`;)）。SSHポート番号を変更しておきます。ちょっとややこしいですが，以下の手順でSSHポートは変更できます。</p>
+<ul>
+<li>GCPの「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール ルールの作成」を押して新しいSSHポートを設定します。名前やターゲットタグは好きな名前にしてください（私は適当に“ssh-allow-port”って名前にしています）。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは許可，ソースのIP範囲は， <code>0.0.0.0/0</code> とします。プロトコルは<code>tcp</code>でポートに好きなポート番号を入れます。</li>
+<li>設定した新しいファイアウォールルールを適用するため，VMインスタンスをクリックして，「編集」ボタンを押して，ネットワークタグに上記で決めたターゲットタグを入れて保存します。</li>
+<li>通常のSSH接続(22portを使用)をします（「Compute Engine」の「VMインスタンス」の当該VMインスタンスの右端にある「SSH」をクリックします）。</li>
+<li>コンソールっぽい画面が出てきたら，以下のコマンドを打って，vimでsshdの設定ファイルを開きます。</li>
+</ul>
+<pre><code>sudo vim /etc/ssh/sshd_config</code></pre>
+<ul>
+<li><p>バンっと画面に文字が出てきてビビるかもしれませんが，落ち着いて，<code># Port 22</code>を探して，<code>i</code>をタイプします（文字が挿入できるようになります）。#をはずして，22の代わりに自分が使いたいポート番号を入れます(<code>Port 自分の使いたい番号</code>)。入力ができたら，escキーをタイプしてから，<code>:wq</code>とタイプします（保存されます）。</p></li>
+<li><p>sshdの設定を反映させるために，以下のコマンドで再起動させます。</p></li>
+</ul>
+<pre><code>sudo systemctl restart sshd</code></pre>
+<ul>
+<li><p>ここで今22番portで開いた画面はそのままにして（閉じない），VMインスタンスの右端にある「SSH」の下矢印を押して，「ブラウザウィンドウでカスタムポートを開く」をクリックします。入力欄が出てくるので，そこに先程設定した新しいSSHのポートを入力して開きます。</p></li>
+<li><p>新しいSSHのポートでも開けたら，22番portを閉じます。もう一度，「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール ルールの作成」を押します。名前やターゲットタグは好きな名前にしてください（私は適当に“disallow-ssh22”って名前にしています)。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは<code>拒否</code>，ソースのIP範囲は， <code>0.0.0.0/0</code> とします。プロトコルは<code>tcp</code>でポートは<code>22</code>にします。</p></li>
+<li><p>VMインスタンスをクリックして，「編集」を押し，ネットワークタグに上記で決めたターゲットタグを入れて保存します(これで，httpのタグ，httpsのタグ，新しいsshポートのタグ，22番ポートを閉じるタグの４つがあると思います)。</p></li>
+<li><p>通常のSSH接続(22番ポート)をしても接続できず，「ブラウザウィンドウでカスタムポートを開く」で自分で設定したSSHポートを使って接続できたら成功です。</p></li>
+<li><p>ちなみに，SSH接続後に以下を入力するとアクセス状況を見れます（<code>f</code>で次の画面に進んで，<code>q</code>で閉じます）。</p></li>
+</ul>
+<pre><code>sudo less /var/log/auth.log</code></pre>
+</div>
+<div id="ドメイン名の入手" class="section level2">
+<h2>3. ドメイン名の入手</h2>
+<p>色々とサービスがありますが，私は<a href="https://domains.google/">GoogleのDomainサービス</a>を使いました。少々お金はかかりますが（私の場合は年1400円でした）以下で必要になるます。ドメイン名はお好きなものを設定ください。ドメイン名が入手できたら，以下のように静的外部IPを使ってDNSの登録をします。</p>
+<p><img src="fig/https_fig1.png" /></p>
+<p>次に，サブドメインの設定をします。例えば，私がyoshihiko-kunisato-lab.comって名前のドメインを取得したら，その前に任意の文字を追加してサブドメインとして使えます。例えば，rstudio.yoshihiko-kunisato-lab.comって感じです。それをカスタムリソースレコード（Google domainの場合は）で設定します。＠のところに，rstudioって打ち込んで，IPv4アドレスってところに，上記の静的外部IPをいれて追加します。jupyter, note, jatosも同様に追加します。</p>
+<p><img src="fig/https_fig7.png" /></p>
+</div>
+<div id="仮想マシンvmにdockerをインストール" class="section level2">
+<h2>4. 仮想マシン(VM)にDockerをインストール</h2>
+<p>Compute EngineのページのVMインスタンスをみると先程設定したVMインスタンスがあると思います。こちらが起動していると接続というところの「SSH」がクリック可能になっていると思います。SSHをクリックしてください。すると，別ウィンドウが起動して，ターミナルが出現します。そこで，<a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">こちら</a>を参考に以下を打ち込んでDockerをインストールします。途中何か聞かれると思いますが，質問に従って，Yなどの返事をタイプください。</p>
+<pre><code>sudo apt update</code></pre>
+<pre><code>sudo apt install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common</code></pre>
+<pre><code>curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</code></pre>
+<pre><code>sudo apt-key fingerprint 0EBFCD88</code></pre>
+<pre><code>sudo add-apt-repository \
+   &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable&quot;</code></pre>
+<pre><code>sudo apt install docker-ce docker-ce-cli containerd.io</code></pre>
+</div>
+<div id="docker-composeをインストール" class="section level2">
+<h2>5. docker-composeをインストール</h2>
+<p>続けて，<a href="https://docs.docker.com/compose/install/">こちら</a>を参考にして，Docker-composeもインストールします。</p>
+<pre><code>sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</code></pre>
+<p>これで，Dockerを動かす準備ができました。</p>
+</div>
+<div id="docker-compose用ymlの準備" class="section level2">
+<h2>6. docker-compose用YMLの準備</h2>
+<p>DockerやDocker-composeについては解説をしませんので，<a href="https://knowledge.sakura.ad.jp/13265/">さくらナレッジのDocker入門</a>や<a href="https://www.amazon.co.jp/dp/4297100339/ref=cm_sw_r_tw_dp_U_x_HunBDbSJ25G3S">「Docker/Kubernetes 実践コンテナ開発入門」</a>などで別途学習をされると良いかと思います。今回は，docker-composeを使います。これは，複数のDockerを使う場合に，それらの構成をyamlで定義して，それを元にしてDockerを用意するサービスです。以下では，Https化を実現するリバースプロキシ＆ロードバランサ用<a href="https://containo.us/traefik/">Traefik</a>の導入と４つのサービスス(Rstudio, Jupyter notebook, JATOS, elabFTW)の導入に分けて説明をします（これは同時にやれますが，Traefikを単独で立ち上げて，あとからサービスの追加・削除ができたほうが便利なので分けています）。</p>
+<div id="traefikの用意" class="section level3">
+<h3>Traefikの用意</h3>
+<p>まず，以下をターミナルで実行します。１行目でdocker-composeで使うサーバー外につながるネットワークを用意します。２〜３行目でtraefik用フォルダと設定ファイルを作成します。４行目で，あとで，SSL暗号化の内容を書込み可能なように設定します。</p>
+<pre><code>sudo docker network create proxy
+sudo mkdir -p /opt/traefik
+sudo touch /opt/traefik/{traefik.toml,docker-compose.yml,acme.json}
+sudo chmod 0600 /opt/traefik/acme.json</code></pre>
+<p>traefik用のdocker-composeファイルを設定します。以下のコマンドをターミナルに打ち込みます。なんか画面が出てきますが，ほぼ空欄になっていると思います。</p>
+<pre><code>sudo vim /opt/traefik/docker-compose.yml</code></pre>
+<p>そこで，以下をコピペして貼り付けします。それから，escキーをタイプしてから，<code>:wq</code>とタイプします（保存されます）。</p>
+<pre><code>version: &#39;2&#39;
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+
+services:
+  traefik:
+    image: traefik:v1.7.18
+    command: --docker
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/traefik/traefik.toml:/traefik.toml
+      - /opt/traefik/acme.json:/acme.json
+    container_name: traefik
+    restart: always</code></pre>
+<p>次にtraefik用のtomlファイルを設定します。以下のコマンドをターミナルに打ち込みます。なんか画面が出てきますが，ほぼ空欄になっていると思います。</p>
+<pre><code>sudo vim /opt/traefik/traefik.toml</code></pre>
+<p>そこで，以下の内容を一部改変して，コピペして貼り付けします（改変はご自身のエディタですると楽かなと思います）。改変は，(1)[docker]ってところのdomainをご自身のドメイン名に変更する(上記の例だとyoshihiko-kunisato-lab.comです)，(2)[acme]ってところのemailをご自身のメールアドレスにしてください。改変した内容をコピペできたら，escキーをタイプして，<code>:wq</code>とタイプします（保存されます）。</p>
+<pre><code>defaultEntryPoints = [&quot;https&quot;,&quot;http&quot;]
+
+[entryPoints]
+  [entryPoints.http]
+  address = &quot;:80&quot;
+    [entryPoints.http.redirect]
+    entryPoint = &quot;https&quot;
+  [entryPoints.https]
+  address = &quot;:443&quot;
+  [entryPoints.https.tls]
+
+[retry]
+
+[docker]
+endpoint = &quot;unix:///var/run/docker.sock&quot;
+domain = &quot;ドメイン名&quot;
+watch = true
+exposedByDefault = false
+
+[acme]
+  email = &quot;メールアドレス&quot;
+  entryPoint = &quot;https&quot;
+  storage = &quot;acme.json&quot;
+  caServer = &quot;https://acme-v02.api.letsencrypt.org/directory&quot;
+  onHostRule = true
+  [acme.httpChallenge]
+  entryPoint = &quot;http&quot;</code></pre>
+<p>では，設定した内容を元にして，traefikを起動してみます。docker-compose upをするわけですが，設定ファイルを/opt/traefik/においていますので，以下のようにします。しばらくして，doneって出てきたら成功です。</p>
+<pre><code>sudo docker-compose -f /opt/traefik/docker-compose.yml up -d</code></pre>
+</div>
+<div id="サーバー上で稼働させるサービスの用意" class="section level3">
+<h3>サーバー上で稼働させる４サービスの用意</h3>
+<p>では，rstuio, jupyter notebook, JATOS, elabFTWの準備をしてきましょう。上記で設定したproxyという名前のネットワークを使って，traefikと各種サービスをつなげていきます。サーバーの外からHTTPS接続でtraefik経由でやりとりをします。traefikの便利なところは，上の方のやり方でtraefikを設定しておくと，後からサーバー上で動かすサービスの追加と削除ができることです。今回は，以下の４つのサービスを稼働させます。</p>
+<ul>
+<li><a href="https://hub.docker.com/r/ykunisato/paper-r">RとRstudio</a>: 国里がカスタマイズしたR用コンテナを使います。</li>
+<li><a href="https://hub.docker.com/r/ykunisato/ccp-lab-j">Jupyter notebook</a>:国里がカスタマイズしたjupyter notebookのコンテナを使います。</li>
+<li><a href="https://hub.docker.com/r/jatos/jatos">JATOS</a>: JATOSの公式コンテナを使います。</li>
+<li><a href="https://hub.docker.com/r/elabftw/elabimg">elabFTW</a>：elabFTWの公式コンテナを使います。</li>
+</ul>
+<p>まずは，テキストエディタに以下の内容を貼り付けて，“docker-compose.yml”という名前をつけて保存します(必ず，“docker-compose.yml”という名前にしてください)。次に，以下の変更を加えていきます。</p>
+<ul>
+<li>４つのサービスのtraefik.frontend.ruleのドメイン名を自分のものに変更する。</li>
+<li>rstudioのユーザーIDとパスワードを変更する。</li>
+<li>jupyterのパスワードを変更する。</li>
+<li>elabftwのDB_PASSWORDとSECRET_KEYを変更する。</li>
+<li>mysqlのMYSQL_ROOT_PASSWORDとMYSQL_PASSWORDを変更する（MYSQL_PASSWORDとDB_PASSWORDは一致させる）。</li>
+</ul>
+<p>なお，elabftwとmysqlのDB_PASSWORD，SECRET_KEY，MYSQL_ROOT_PASSWORD，MYSQL_PASSWORDの設定は，<code>curl -sL -o docker-compose.yml &quot;https://get.elabftw.net/?config&quot;</code>をローカルのターミナルで実行すると自動で設定したものが得られます（自動だと嫌な場合はご自身で設定ようにと記載されていました）。</p>
+<pre><code>version: &#39;3&#39;
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+
+services:
+  jatos:
+    image: jatos/jatos:latest
+    networks:
+      - internal
+      - proxy
+    container_name: jatos
+    volumes:
+      - ./jatos:/opt/docker/study_assets_root/
+    restart: always
+    labels:
+      - traefik.docker.network=proxy
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:jatos.ドメイン名
+      - traefik.port=9000
+      - traefik.protocol=http
+
+  rstudio:
+    image: ykunisato/paper-r:3.6.3
+    networks:
+      - proxy
+    container_name: rstudio
+    restart: always
+    environment:
+      - USER=ユーザー名
+      - PASSWORD=パスワード
+    volumes:
+      - ./rstudio:/home
+    labels:
+      - traefik.docker.network=proxy
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:rstudio.ドメイン名
+      - traefik.port=8787
+      - traefik.protocol=http
+
+  jupyter:
+    image: ykunisato/ccp-lab-j:b90cce83f37b
+    networks:
+      - proxy
+    container_name: jupyter
+    restart: always
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    volumes:
+      - ./jupyter:/home/jovyan/work
+    command: start-notebook.sh --NotebookApp.token=&#39;パスワード&#39;
+    labels:
+      - traefik.docker.network=proxy
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:jupyter.ドメイン名
+      - traefik.port=8888
+      - traefik.protocol=http
+
+  elabftw:
+    image: elabftw/elabimg:latest
+    networks:
+      - proxy
+      - internal
+    container_name: elabftw
+    restart: always
+    cap_drop:
+      - SYS_ADMIN
+      - AUDIT_WRITE
+      - MKNOD
+      - SYS_CHROOT
+      - SETFCAP
+      - NET_RAW
+      - SYS_PTRACE
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=elabftw
+      - DB_USER=elabftw
+      - DB_PASSWORD=パスワード（DB)
+      - SECRET_KEY=シークレットキー
+      - SERVER_NAME=localhost
+      - DISABLE_HTTPS=true
+      - ENABLE_LETSENCRYPT=false
+      - MAX_PHP_MEMORY=256M
+      - MAX_UPLOAD_SIZE=100M
+      - PHP_TIMEZONE=Asia/Tokyo
+      - TZ=Asia/Tokyo
+      - SET_REAL_IP=false
+      - PHP_MAX_CHILDREN=50
+      - PHP_MAX_EXECUTION_TIME=120
+      - USE_REDIS=false
+      - ENABLE_IPV6=false
+    volumes:
+      - ./elabftw/uploads:/elabftw/uploads
+    labels:
+      - traefik.docker.network=proxy
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:note.ドメイン名
+      - traefik.port=443
+      - traefik.protocol=http
+
+  mysql:
+    image: mysql:5.7
+    networks:
+      - proxy
+      - internal
+    container_name: mysql
+    restart: always
+    cap_drop:
+      - AUDIT_WRITE
+      - MKNOD
+      - SYS_CHROOT
+      - SETFCAP
+      - NET_RAW
+    environment:
+      - MYSQL_ROOT_PASSWORD=パスワード(root)
+      - MYSQL_DATABASE=elabftw
+      - MYSQL_USER=elabftw
+      - MYSQL_PASSWORD=パスワード（DB)
+      - TZ=Asia/Tokyo
+    volumes:
+      - ./elabftw/mysql:/var/lib/mysql
+    labels:
+      - traefik.port=3306</code></pre>
+<p>上記で設定したdocker-compose.ymlを実行するために，VMインスタンスにSSH接続します。ウィンドウの右上の設定っぽいボタンをクリックするとアップロードの選択肢がでてくると思うので，それを使って，さきほどの“docker-compose.yml”をアップロードします。それができたら，以下を打ち込んで，docker-compose.ymlを実行します。ダウンロードとかあるので時間がかかることがあります。しばらくして，各サービースのコンテナがdoneって表示されたら，成功です。</p>
+<pre><code>sudo docker-compose up -d</code></pre>
+<p>最後に，elbFTWを起動します（これをしないとelabFTWは動きません）。</p>
+<pre><code>sudo docker exec -it elabftw bin/install start</code></pre>
+</div>
+<div id="動作確認" class="section level3">
+<h3>動作確認</h3>
+<p>ブラウザに以下のURLを打ち込んでいって，動作確認をします。jatosはIDがadmin，パスワードがadminになっているので，ログインできたらすぐにadminのパスワードを変更ください。note(elabFTW)は，最初にログインしたユーザーがアドミンになるので，動作確認と同時に登録をなさってください。</p>
+<ul>
+<li><a href="https://jatos.ドメイン名" class="uri">https://jatos.ドメイン名</a></li>
+<li><a href="https://note.ドメイン名" class="uri">https://note.ドメイン名</a></li>
+<li><a href="https://rstudio.ドメイン名" class="uri">https://rstudio.ドメイン名</a></li>
+<li><a href="https://jupyter.ドメイン名" class="uri">https://jupyter.ドメイン名</a></li>
+</ul>
+</div>
+</div>
+<div id="tips-rstudioのユーザー追加" class="section level2">
+<h2>Tips: Rstudioのユーザー追加</h2>
+<p>docker-compose.ymlで設定した以外のユーザーを追加する場合は，VMインスタンスにSSH接続した上で，Dockerコンテナに接続してユーザーアカウントを作ります。まず，以下のコマンドで，Dockerコンテナにssh接続します。</p>
+<pre><code>sudo docker exec -it rstudio bash</code></pre>
+<p>次に，以下のコマンドで新規ユーザー登録します。パスワードを聞かれるので打ち込んで，あとはエンターキーやYをタイプします。</p>
+<pre><code>sudo adduser 新規ユーザー名</code></pre>
+<p>このままだと，各ユーザーが自由にRパッケージをいれられないので，以下のコマンドで，ユーザーをstaffグループにします。</p>
+<pre><code>sudo usermod -a -G staff ユーザー名</code></pre>
+<p>なお，root権限で全てのユーザーにRパッケージをいれたい場合は，Dockerコンテナに接続した状態で，以下のコマンドでRを起動してパッケージをインストールすれば，全ユーザーに当該パッケージがインストールされます。</p>
+<pre><code>sudo R</code></pre>
+<p>終わったら，以下を打ち込んで，Dockerコンテナへの接続をやめます。</p>
+<pre><code>exit</code></pre>
+<p>もし，ユーザーをそのユーザーのフォルダごと削除したくなったら，以下を打ち込みます。</p>
+<pre><code>userdel -r ユーザ名</code></pre>
+<div id="ユーザーの一括追加" class="section level3">
+<h3>ユーザーの一括追加</h3>
+<p>上記の方法でもユーザーは追加できますが，人数が多くなると途方にくれてしまいます。そこで，以下ではnewusersを使った一括登録をします。まずは，以下のような感じの情報を表計算ソフトにいれます。ユーザーごとに変更が必要なのは，ユーザー名，ユーザーID（1001から連番にするので良いと思います），パスワード，ホームディレクトリ名（homeの下にユーザー名をいれる）です。残りの，グループID（50）, フルネーム（空白），ログインシェル（/bin/sh)は全員同じで問題ありません。</p>
+<table>
+<thead>
+<tr class="header">
+<th>ユーザー名</th>
+<th>パスワード</th>
+<th>ユーザーID</th>
+<th>グループID</th>
+<th>フルネーム</th>
+<th>ホームディレクトリ</th>
+<th>ログインシェル</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>user1</td>
+<td>user1のパスワード</td>
+<td>1001</td>
+<td>50</td>
+<td></td>
+<td>/home/user1</td>
+<td>/bin/sh</td>
+</tr>
+<tr class="even">
+<td>user2</td>
+<td>user2のパスワード</td>
+<td>1002</td>
+<td>50</td>
+<td></td>
+<td>/home/user2</td>
+<td>/bin/sh</td>
+</tr>
+<tr class="odd">
+<td>user3</td>
+<td>user3のパスワード</td>
+<td>1003</td>
+<td>50</td>
+<td></td>
+<td>/home/user3</td>
+<td>/bin/sh</td>
+</tr>
+</tbody>
+</table>
+<p>なお，上記の情報は，区切りに:を使って保存します。つまりuser1については，user1:user1のパスワード:1001:50::/home/user1:/bin/shになります。この作業はいろいろな方法ができますが，上記の情報を表計算ソフトにいれて，それをcsvファイルで出力して，テキストエディタで開いて，カンマを:に変換して，一番上のヘッダー情報は削除して，最後に.txtの拡張子で保存するのが楽じゃないかなと思います。そのファイル名は，user.txtとしておきます（なんでもいいです）。</p>
+<p>user.txtが作成できたら，VMにSSH接続して，user.txtをアップロードします（ウィンドウの右上の設定っぽいボタンをクリックするとアップロードの選択肢がでてきます）。アップロードしたuser.txtをrstudioのフォルダに一時的に移動します。</p>
+<pre><code>sudo mv user.txt rstudio</code></pre>
+<p>rsutdioのコンテナに入ります。</p>
+<pre><code>sudo docker exec -it rstudio bash</code></pre>
+<p>以下を実行して，一括でユーザー登録します。これで終わりです。</p>
+<pre><code>newusers /home/user.txt</code></pre>
+<p>一応,user.txtを削除してから，コンテナから出ます。</p>
+<pre><code>rm /home/user.txt
+exit</code></pre>
+</div>
+</div>
+
+<footer>
+  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+</footer>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
