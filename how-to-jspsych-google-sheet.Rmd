@@ -4,7 +4,7 @@ title: "jsPsychを用いたWEB実験の実施：Google Spreadsheetにデータ�
 
 <br />
 
-jsPsychはFirebaseやPavloviaを使って実施することができますが，Google Spreadsheet上で実施することもできます。それぞれ一長一短はありますが，Google Spreadsheetは日常的に使っている方もおられるでしょうし，サーバー費用などはかからないので，かなりお手軽に実施できます。
+jsPsychはFirebaseやPavloviaを使って実施することができますが，Google Spreadsheet上で実施することもできます。それぞれ一長一短はありますが，Google Spreadsheetは日常的に使っている方もおられるでしょうし，サーバー費用などはかからないので，かなりお手軽に実施できます（ただ，Googleのサービスによって１日に作成可能なスプレッドシートの数には制限があるので，大規模なデータ収集には向かないと思います）。
 
 詳しくは，[jsPsychSheet: Running online behavioral experiments using jsPsych and Google Sheet](https://medium.com/@shashikg.iitk/jspsychsheet-running-online-behavioral-experiments-using-jspsych-and-google-sheet-adf29fb4d1a0)を読んでいただけたらとは思いますが，以下では簡単に解説をします。
 
@@ -19,7 +19,7 @@ jsPsychはFirebaseやPavloviaを使って実施することができますが，
 
 ## 1.jsPsychSheetをForkして，GitHub pageを設定する
 
-[jsPsychSheetのGitHubリポジトリ](https://github.com/Brain2AI/jsPsychSheet)に移動して，Forkします(赤で囲った部分をクリックします。)。
+[jsPsychSheetのGitHubリポジトリ](https://github.com/Brain2AI/jsPsychSheet)に移動して，Forkします(赤で囲った部分をクリックします)。
 
 ![](fig/jspsych_gsheet01.png)
 
@@ -103,17 +103,17 @@ tags$script(src='jspsych-6.1.0/plugins/jspsych-fullscreen.js')
 
 #### 修正1後({r}チャンク内のjsライブラリ)
 
-- <GitHubのユーザーアカウント名>はご自身のアカウント名に変更ください。
+- GitHubのユーザーアカウント名はご自身のアカウント名に変更ください。
 - jspsychsheet.jsとjspsychsheet.cssも追加します。
 
 ```
 library(htmltools)
 tagList(
-tags$script(src='https://<GitHubのユーザーアカウント名>.github.io/jsPsychSheet/experiment/jspsych-6.1.0/jspsych.js'),
-tags$script(src='https://<GitHubのユーザーアカウント名>.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js'),
-tags$script(src='https://<GitHubのユーザーアカウント名>.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js'),
-tags$script(src='https://<GitHubのユーザーアカウント名>.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-fullscreen.js'),
-tags$script(src="https://<GitHubのユーザーアカウント名>.github.io/jsPsychSheet/jspsychsheet.js"),
+tags$script(src='https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/jspsych-6.1.0/jspsych.js'),
+tags$script(src='https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js'),
+tags$script(src='https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js'),
+tags$script(src='https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-fullscreen.js'),
+tags$script(src="https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/jspsychsheet.js"),
 tags$link(rel="stylesheet",href="https://<GitHubのユーザーアカウント名>.github.io.github.io/jsPsychSheet/jspsychsheet.css")
 )
 ```
@@ -152,9 +152,9 @@ tags$link(rel="stylesheet",href="https://<GitHubのユーザーアカウント�
           "<p>If the circle is <strong>orange</strong>, press the letter J " +
           "as fast as you can.</p>" +
           "<div style='width: 700px;'>"+
-          "<div style='float: left;'><img src='https://<GitHubのユーザーアカウント名>.github.io/jsPsychSheet/experiment/img/blue.png'></img>" +
+          "<div style='float: left;'><img src='https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/img/blue.png'></img>" +
           "<p class='small'><strong>Press the F key</strong></p></div>" +
-          "<div class='float: right;'><img src='https://<GitHubのユーザーアカウント名>.github.io/jsPsychSheet/experiment/img/orange.png'></img>" +
+          "<div class='float: right;'><img src='https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/img/orange.png'></img>" +
           "<p class='small'><strong>Press the J key</strong></p></div>" +
           "</div>"+
           "<p>Press any key to begin.</p>",
@@ -179,8 +179,8 @@ tags$link(rel="stylesheet",href="https://<GitHubのユーザーアカウント�
 ```
         /* test trials */
     var test_stimuli = [
-      { stimulus: "https://<GitHubのユーザーアカウント名>.github.io/jsPsychSheet/experiment/img/blue.png", data: { test_part: 'test', correct_response: 'f' } },
-      { stimulus: "https://<GitHubのユーザーアカウント名>.github.io/jsPsychSheet/experiment/img/orange.png", data: { test_part: 'test', correct_response: 'j' } }
+      { stimulus: "https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/img/blue.png", data: { test_part: 'test', correct_response: 'f' } },
+      { stimulus: "https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/img/orange.png", data: { test_part: 'test', correct_response: 'j' } }
     ];
 ```
 

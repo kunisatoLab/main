@@ -414,7 +414,7 @@ div.tocify {
 
 
 <p><br /></p>
-<p>jsPsychはFirebaseやPavloviaを使って実施することができますが，Google Spreadsheet上で実施することもできます。それぞれ一長一短はありますが，Google Spreadsheetは日常的に使っている方もおられるでしょうし，サーバー費用などはかからないので，かなりお手軽に実施できます。</p>
+<p>jsPsychはFirebaseやPavloviaを使って実施することができますが，Google Spreadsheet上で実施することもできます。それぞれ一長一短はありますが，Google Spreadsheetは日常的に使っている方もおられるでしょうし，サーバー費用などはかからないので，かなりお手軽に実施できます（ただ，Googleのサービスによって１日に作成可能なスプレッドシートの数には制限があるので，大規模なデータ収集には向かないと思います）。</p>
 <p>詳しくは，<a href="https://medium.com/@shashikg.iitk/jspsychsheet-running-online-behavioral-experiments-using-jspsych-and-google-sheet-adf29fb4d1a0">jsPsychSheet: Running online behavioral experiments using jsPsych and Google Sheet</a>を読んでいただけたらとは思いますが，以下では簡単に解説をします。</p>
 <p><br /></p>
 <div id="事前準備" class="section level2">
@@ -427,7 +427,7 @@ div.tocify {
 </div>
 <div id="jspsychsheetをforkしてgithub-pageを設定する" class="section level2">
 <h2>1.jsPsychSheetをForkして，GitHub pageを設定する</h2>
-<p><a href="https://github.com/Brain2AI/jsPsychSheet">jsPsychSheetのGitHubリポジトリ</a>に移動して，Forkします(赤で囲った部分をクリックします。)。</p>
+<p><a href="https://github.com/Brain2AI/jsPsychSheet">jsPsychSheetのGitHubリポジトリ</a>に移動して，Forkします(赤で囲った部分をクリックします)。</p>
 <p><img src="fig/jspsych_gsheet01.png" /></p>
 <p><br /></p>
 <p>自分のGitHubアカウントにjsPsychSheetリポジトリがForkされたら，Settingsタブをクリックします。</p>
@@ -487,16 +487,16 @@ tags$script(src=&#39;jspsych-6.1.0/plugins/jspsych-fullscreen.js&#39;)
 <div id="修正1後rチャンク内のjsライブラリ" class="section level4">
 <h4>修正1後({r}チャンク内のjsライブラリ)</h4>
 <ul>
-<li><GitHubのユーザーアカウント名>はご自身のアカウント名に変更ください。</li>
+<li>GitHubのユーザーアカウント名はご自身のアカウント名に変更ください。</li>
 <li>jspsychsheet.jsとjspsychsheet.cssも追加します。</li>
 </ul>
 <pre><code>library(htmltools)
 tagList(
-tags$script(src=&#39;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/jspsych-6.1.0/jspsych.js&#39;),
-tags$script(src=&#39;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js&#39;),
-tags$script(src=&#39;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js&#39;),
-tags$script(src=&#39;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-fullscreen.js&#39;),
-tags$script(src=&quot;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/jspsychsheet.js&quot;),
+tags$script(src=&#39;https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/jspsych-6.1.0/jspsych.js&#39;),
+tags$script(src=&#39;https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js&#39;),
+tags$script(src=&#39;https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js&#39;),
+tags$script(src=&#39;https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/jspsych-6.1.0/plugins/jspsych-fullscreen.js&#39;),
+tags$script(src=&quot;https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/jspsychsheet.js&quot;),
 tags$link(rel=&quot;stylesheet&quot;,href=&quot;https://&lt;GitHubのユーザーアカウント名&gt;.github.io.github.io/jsPsychSheet/jspsychsheet.css&quot;)
 )</code></pre>
 <p><br /></p>
@@ -530,9 +530,9 @@ tags$link(rel=&quot;stylesheet&quot;,href=&quot;https://&lt;GitHubのユーザ�
           &quot;&lt;p&gt;If the circle is &lt;strong&gt;orange&lt;/strong&gt;, press the letter J &quot; +
           &quot;as fast as you can.&lt;/p&gt;&quot; +
           &quot;&lt;div style=&#39;width: 700px;&#39;&gt;&quot;+
-          &quot;&lt;div style=&#39;float: left;&#39;&gt;&lt;img src=&#39;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/img/blue.png&#39;&gt;&lt;/img&gt;&quot; +
+          &quot;&lt;div style=&#39;float: left;&#39;&gt;&lt;img src=&#39;https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/img/blue.png&#39;&gt;&lt;/img&gt;&quot; +
           &quot;&lt;p class=&#39;small&#39;&gt;&lt;strong&gt;Press the F key&lt;/strong&gt;&lt;/p&gt;&lt;/div&gt;&quot; +
-          &quot;&lt;div class=&#39;float: right;&#39;&gt;&lt;img src=&#39;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/img/orange.png&#39;&gt;&lt;/img&gt;&quot; +
+          &quot;&lt;div class=&#39;float: right;&#39;&gt;&lt;img src=&#39;https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/img/orange.png&#39;&gt;&lt;/img&gt;&quot; +
           &quot;&lt;p class=&#39;small&#39;&gt;&lt;strong&gt;Press the J key&lt;/strong&gt;&lt;/p&gt;&lt;/div&gt;&quot; +
           &quot;&lt;/div&gt;&quot;+
           &quot;&lt;p&gt;Press any key to begin.&lt;/p&gt;&quot;,
@@ -552,8 +552,8 @@ tags$link(rel=&quot;stylesheet&quot;,href=&quot;https://&lt;GitHubのユーザ�
 <h4>修正3後({js}チャンク内のimgの場所)</h4>
 <pre><code>        /* test trials */
     var test_stimuli = [
-      { stimulus: &quot;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/img/blue.png&quot;, data: { test_part: &#39;test&#39;, correct_response: &#39;f&#39; } },
-      { stimulus: &quot;https://&lt;GitHubのユーザーアカウント名&gt;.github.io/jsPsychSheet/experiment/img/orange.png&quot;, data: { test_part: &#39;test&#39;, correct_response: &#39;j&#39; } }
+      { stimulus: &quot;https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/img/blue.png&quot;, data: { test_part: &#39;test&#39;, correct_response: &#39;f&#39; } },
+      { stimulus: &quot;https://GitHubのユーザーアカウント名.github.io/jsPsychSheet/experiment/img/orange.png&quot;, data: { test_part: &#39;test&#39;, correct_response: &#39;j&#39; } }
     ];</code></pre>
 <p><br /></p>
 </div>
