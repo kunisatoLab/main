@@ -4,9 +4,19 @@ title: "jsPsychを用いたWEB実験の実施：JATOSでローカルでもサー
 
 作成中
 
-dockerでのローカルでの利用とjatostify
+dockerでのローカル
 
 ```
+docker run -d --name jatos -p 8080:9000 jatos/jatos:latest
+```
 
+以下にjsPsychの課題を置く場所が作られる
+
+- /opt/docker/study_assets_root
+
+
+
+```
+docker cp  Downloads/demo jatos:/opt/docker/study_assets_root/
 ```
 

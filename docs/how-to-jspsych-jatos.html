@@ -414,8 +414,13 @@ div.tocify {
 
 
 <p>作成中</p>
-<p>dockerでのローカルでの利用とjatostify</p>
-<pre><code></code></pre>
+<p>dockerでのローカル</p>
+<pre><code>docker run -d --name jatos -p 8080:9000 jatos/jatos:latest</code></pre>
+<p>以下にjsPsychの課題を置く場所が作られる</p>
+<ul>
+<li>/opt/docker/study_assets_root</li>
+</ul>
+<pre><code>docker cp  Downloads/demo jatos:/opt/docker/study_assets_root/</code></pre>
 
 <footer>
   <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
