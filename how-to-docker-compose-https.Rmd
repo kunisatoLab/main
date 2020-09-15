@@ -458,3 +458,14 @@ newusers /home/user.txt
 rm /home/user.txt
 exit
 ```
+
+## バックアップ
+
+各コンテナのフォルダを圧縮して，Google Storageに保存する（gsutilの導入が必要です）。
+
+```
+sudo tar czf backup.tar.gz rstudio jatos jupyter elabftw
+sudo gsutil cp ./backup.tar.gz gs://バケット名/`TZ=Asia/Tokyo date "+%Y_%m%d_%H%M_%S"`/
+sudo rm backup.tar.gz
+```
+

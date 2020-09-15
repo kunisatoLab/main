@@ -555,7 +555,7 @@ exposedByDefault = false
 <p>では，設定した内容を元にして，traefikを起動してみます。docker-compose upをするわけですが，設定ファイルを/opt/traefik/においていますので，以下のようにします。しばらくして，doneって出てきたら成功です。</p>
 <pre><code>sudo docker-compose -f /opt/traefik/docker-compose.yml up -d</code></pre>
 </div>
-<div id="サーバー上で稼働させるサービスの用意" class="section level3">
+<div id="サーバー上で稼働させる４サービスの用意" class="section level3">
 <h3>サーバー上で稼働させる４サービスの用意</h3>
 <p>では，rstuio, jupyter notebook, JATOS, elabFTWの準備をしてきましょう。上記で設定したproxyという名前のネットワークを使って，traefikと各種サービスをつなげていきます。サーバーの外からHTTPS接続でtraefik経由でやりとりをします。traefikの便利なところは，上の方のやり方でtraefikを設定しておくと，後からサーバー上で動かすサービスの追加と削除ができることです。今回は，以下の４つのサービスを稼働させます。</p>
 <ul>
@@ -572,7 +572,7 @@ exposedByDefault = false
 <li>elabftwのDB_PASSWORDとSECRET_KEYを変更する。</li>
 <li>mysqlのMYSQL_ROOT_PASSWORDとMYSQL_PASSWORDを変更する（MYSQL_PASSWORDとDB_PASSWORDは一致させる）。</li>
 </ul>
-<p>なお，elabftwとmysqlのDB_PASSWORD，SECRET_KEY，MYSQL_ROOT_PASSWORD，MYSQL_PASSWORDの設定は，<code>curl -sL -o docker-compose.yml &quot;https://get.elabftw.net/?config&quot;</code>をローカルのターミナルで実行すると自動で設定したものが得られます（自動だと嫌な場合はご自身で設定ようにと記載されていました）。</p>
+<p>なお，elabftwとmysqlのDB_PASSWORD，SECRET_KEY，MYSQL_ROOT_PASSWORD，MYSQL_PASSWORDの設定は，<code>curl -sL -o docker-compose.yml "https://get.elabftw.net/?config"</code>をローカルのターミナルで実行すると自動で設定したものが得られます（自動だと嫌な場合はご自身で設定ようにと記載されていました）。</p>
 <pre><code>version: &#39;3&#39;
 
 networks:
@@ -786,6 +786,13 @@ services:
 <pre><code>rm /home/user.txt
 exit</code></pre>
 </div>
+</div>
+<div id="バックアップ" class="section level2">
+<h2>バックアップ</h2>
+<p>各コンテナのフォルダを圧縮して，Google Storageに保存する（gsutilの導入が必要です）。</p>
+<pre><code>sudo tar czf backup.tar.gz rstudio jatos jupyter elabftw
+sudo gsutil cp ./backup.tar.gz gs://バケット名/`TZ=Asia/Tokyo date &quot;+%Y_%m%d_%H%M_%S&quot;`/
+sudo rm backup.tar.gz</code></pre>
 </div>
 
 <footer>
