@@ -28,6 +28,8 @@ title: "Code & Tips"
 
 - [jsPsychを用いたWEB実験(Google Spreadsheetを使う方法)](how-to-jspsych-google-sheet.html)
 
+- [jsPsychを用いたWEB実験(JATOSを使う方法)](how-to-jspsych-jatos.html)
+
 - [PsychoPyを用いた認知課題の作成 (PsychoPy3未対応,いつか対応します・・・)](how-to-psychopy.html)
 
 - [Presentationを用いた認知課題の作成](how-to-presentation.html)
