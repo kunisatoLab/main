@@ -588,8 +588,6 @@ services:
       - internal
       - proxy
     container_name: jatos
-    volumes:
-      - ./jatos:/opt/docker/study_assets_root/
     restart: always
     labels:
       - traefik.docker.network=proxy
