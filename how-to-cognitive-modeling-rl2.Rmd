@@ -167,7 +167,7 @@ model {
 Stanコードがstanファイルとして保存できたら，cmdstan_model()コンパイルします。Rは便利ですが計算は遅い言語なので，c++のような高速な計算が可能な言語にコンパイルをします。ちなみに，stanをRで使う場合は，Rstanを使うことが多かったのですが，最近は，cmdstanrが開発されており，こっちのほうがコンパイルもサンプリングも早いのでおすすめです。
 
 ```{r}
-q_non_info_single <- cmdstan_model('q_learning_non_info_single.stan')
+q_non_info_single <- cmdstan_model('rl/q_learning_non_info_single.stan')
 ```
 
 ## 最尤推定
@@ -423,7 +423,7 @@ q_learning_weak_info_single.stanを使って，パラメータリカバリを実
 
 ```{r message=FALSE, warning=FALSE}
 # モデルのコンパイル
-q_weak_info_single <- cmdstan_model('q_learning_weak_info_single.stan')
+q_weak_info_single <- cmdstan_model('rl/q_learning_weak_info_single.stan')
 alpha_true <- NULL
 beta_true <- NULL
 alpha_estimated <- NULL
@@ -485,8 +485,9 @@ parameter_recovery_mcmc2 %>%
 「強化学習モデルを使ったモデル・フィッティング１」と同じデータを使います。以下のコードで５名分のlong形式のデータセットを準備します。
 
 ```{r message=FALSE, warning=FALSE}
-setwd("data")
+setwd("rl/data")
 file_names <- list.files()
+setwd("..")
 setwd("..")
 # 確認用の図を入れる場所を確保
 plot_check <- NULL
@@ -495,7 +496,7 @@ data_long <- NULL
 
 for (i in 1:length(file_names)) {
   # file_namesのi番目のデータを読み込んで,上記の処理をして，tmp_dataに格納
-  tmp_data <- read_csv(paste("data",file_names[i], sep = "/")) %>% 
+  tmp_data <- read_csv(paste("rl/data",file_names[i], sep = "/")) %>% 
     filter(trial_type == "html-button-response") %>% 
     mutate(id = rep(i,80),
            trial = 1:80, 
@@ -749,8 +750,8 @@ generated quantities {
 
 ```{r}
 # モデルのコンパイル
-q_weak_info_single_WBIC <- cmdstan_model('q_learning_weak_info_single_WBIC.stan')
-q_non_info_single_WBIC <- cmdstan_model('q_learning_non_info_single_WBIC.stan')
+q_weak_info_single_WBIC <- cmdstan_model('rl/q_learning_weak_info_single_WBIC.stan')
+q_non_info_single_WBIC <- cmdstan_model('rl/q_learning_non_info_single_WBIC.stan')
 
 # データの読み込み
 data_individual <- data_long %>% 
