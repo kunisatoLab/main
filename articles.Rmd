@@ -6,6 +6,9 @@ title: "学術論文"
 ### in press
 
 
+- [31] Kato, A., Kunisato, Y., Katahira, K., Okimura, T., & Yamashita, Y. (in press) Computational Psychiatry Research Map (CPSYMAP): a New Database for Visualizing Research Papers. Frontiers in Psychiatry: Computational Psychiatry
+
+
 
 ### 2020
 
