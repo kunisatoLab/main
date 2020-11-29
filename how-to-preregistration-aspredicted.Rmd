@@ -1,0 +1,61 @@
+---
+title: "AsPredctedフォーマットで事前登録をしてみよう！"
+output: html_document
+---
+
+
+https://aspredicted.org/index.php
+
+https://aspredicted.org/nfj4s.pdf
+
+AsPredictedテンプレート用Rmdファイル
+
+https://github.com/ykunisato/AsPredicted_Rmd_template
+
+
+
+title: "研究のタイトル＜変更してください＞"
+author: "著者名＜変更してください＞"
+
+
+### 1.	Have any data been collected for this study already? 
+-	Yes, at least some data have been collected for this study already
+-	No, no data have been collected for this study yet
+
+
+仮説を登録する前にデータ収集をしているかどうかを聞いています。すでにデータ収集をしている場合は，Yesを選び（Noの１行を消す），そうじゃない場合はNoを選んでください(Yesの１行を消す)。
+
+
+### 2.	What's the main question being asked or hypothesis being tested in this study? 
+この研究における主な研究疑問や検証する仮説について書いてください。
+一文で書く（仮説は，「A will reduce B」のような独立変数と従属変数の関係が分かりやすい主張にする）
+仮説が複数ある場合は，-を使ってリスト化する。
+
+
+
+### 3.	Describe the key dependent variable(s) specifying how they will be measured. 
+
+
+主な従属変数（アウトカム）を書きましょう。その測定法も記載しましょう。
+複数ある場合は，-を使ってリスト化する（類似したアウトカムがある場合は主と副も決める）。
+
+
+### 4.	How many and which conditions will participants be assigned to? 
+研究で操作する条件がある場合は記載する。その割付方法も記載する。
+
+
+### 5.	Specify exactly which analyses you will conduct to examine the main question/hypothesis. 
+研究疑問や仮説の検証にあたって，行う解析法について記載してください。
+
+
+### 6.	Any secondary analyses? 
+副次的な分析方法について記載してください
+
+
+### 7.	How many observations will be collected or what will determine the sample size? No need to justify decision, but be precise about exactly how the number will be determined. 
+
+サンプルサイズについて書いてください。サンプルサイズを決めた理由は書かなくても良いですが，数は正確に書いてください。
+
+### 8.	Anything else you would like to pre-register? (e.g., data exclusions, variables collected for exploratory purposes, unusual analyses planned?) 
+上記以外で事前に登録しておきたことを記載ください（データの除外，探索的な目的でのデータ収集，一般的ではないデータ解析プランなど）
+
