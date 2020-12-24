@@ -5,12 +5,12 @@ title: "学術論文"
 
 ### in press
 
-
-- [31] Kato, A., Kunisato, Y., Katahira, K., Okimura, T., & Yamashita, Y. (in press) Computational Psychiatry Research Map (CPSYMAP): a New Database for Visualizing Research Papers. Frontiers in Psychiatry: Computational Psychiatry
-
+- [32] Shimono, Y., Hasegawa, A., Tsuchihara, K., Tanaka, K., Matsuda, Y., & Kunisato, Y.(in press) Longitudinal association between autistic traits and affinity for hikikomori in Japanese university students. Current Psychology, 
 
 
 ### 2020
+
+- [31] Kato, A., Kunisato, Y., Katahira, K., Okimura, T., & Yamashita, Y. (2020) Computational Psychiatry Research Map (CPSYMAP): a New Database for Visualizing Research Papers. Frontiers in Psychiatry, 11, 1360.[Link](https://www.frontiersin.org/articles/10.3389/fpsyt.2020.578706/full)
 
 - [30] Katahira, K., Kunisato, Y., Okimura, T., & Yamashita, Y. (2020) Retrospective surprise: A computational component for active inference. Journal of Mathematical Psychology, 96, 102347.  [Link](https://www.sciencedirect.com/science/article/abs/pii/S0022249620300286?dgcid=author)
 
