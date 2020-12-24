@@ -25,6 +25,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/icon-192x192.png">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -70,6 +81,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
@@ -470,7 +482,7 @@ div.tocify {
 <p><br></p>
 <p>PDFファイルが出力されずにエラーがでる場合，なぜかうまく行かないことがあります。その場合は，以下のコマンドでtinytexをインストールください（大体うまくいきます）。tinytexのインストールでもうまくいかない場合は，<code>tinytex::tlmgr_install(‘ipaex’)</code>で日本語出力用フォントをインストールしてください。</p>
 <pre><code>tinytex::install_tinytex()</code></pre>
-<div id="課題" class="section level4">
+<div id="課題１" class="section level4">
 <h4>課題１</h4>
 <p>自分の名前と学籍番号と適当なタイトルに変更して，KnitしてPDFを出力してみましょう！</p>
 <p><br></p>
@@ -485,7 +497,7 @@ div.tocify {
 <li>Commit messageに作業内容を書く（日本語でかまいません。「卒論の図を追加」とか分かりやすいものを追加ください）</li>
 <li>ウィンドウの右上のPushをクリックして，GitHubリポジトリに反映させる</li>
 </ol>
-<div id="課題-1" class="section level4">
+<div id="課題２" class="section level4">
 <h4>課題２</h4>
 <p>課題１で手を加えた卒論・修論のファイル，メッセージ付きでCommitして，Pushしてみましょう。</p>
 <p><br></p>
@@ -564,7 +576,7 @@ DOI=&quot;10.24602/sjpr.62.1_88&quot;,
 </div>
 
 <footer>
-  <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -577,7 +589,7 @@ DOI=&quot;10.24602/sjpr.62.1_88&quot;,
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -616,7 +628,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

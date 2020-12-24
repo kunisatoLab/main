@@ -39,6 +39,7 @@ output:
     df_print: tibble
     include:
       after_body: footer.html
+      in_header: icon.html
     css: site_style.css
     lib_dir: site_libs
     self_contained: no

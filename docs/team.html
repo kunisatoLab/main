@@ -25,6 +25,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/icon-192x192.png">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -70,6 +81,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
@@ -431,19 +443,19 @@ div.tocify {
 <li><a href="https://ksomatori.github.io/homepage/index.html">杣取恵太</a>　<a href="materials/FB/2018_somatori.pdf">参加者用研究FB</a></li>
 </ul>
 </div>
-<div id="大学院生修士年" class="section level3">
+<div id="大学院生修士２年" class="section level3">
 <h3>大学院生（修士２年）</h3>
 <ul>
 <li>井上圭右</li>
 </ul>
 </div>
-<div id="大学院生修士年-1" class="section level3">
+<div id="大学院生修士１年" class="section level3">
 <h3>大学院生（修士１年）</h3>
 <ul>
 <li>山崎　智</li>
 </ul>
 </div>
-<div id="学部生年" class="section level3">
+<div id="学部生４年" class="section level3">
 <h3>学部生（４年）</h3>
 <ul>
 <li>齋藤裕希子</li>
@@ -452,7 +464,7 @@ div.tocify {
 <li>五十嵐大知</li>
 </ul>
 </div>
-<div id="学部生年-1" class="section level3">
+<div id="学部生３年" class="section level3">
 <h3>学部生（３年）</h3>
 <ul>
 <li>澤村直樹</li>
@@ -610,7 +622,7 @@ div.tocify {
 </div>
 
 <footer>
-  <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -623,7 +635,7 @@ div.tocify {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -662,7 +674,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

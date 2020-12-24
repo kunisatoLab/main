@@ -25,6 +25,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/icon-192x192.png">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -70,6 +81,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
@@ -445,7 +457,7 @@ div.tocify {
 </div>
 <div id="jspsych-survey-html-form" class="section level2">
 <h2>1. jspsych-survey-html-form</h2>
-<p>フォームを作成するプラグインです。jspsych-survey-html-formをタグに追加した上で，以下のように，preamble:に質問文，html:でフォームの設定をします(<code>&lt;input name=&quot;food_like&quot; type=&quot;text&quot; /&gt;</code>のところがフォームのところです。nameが入力のラベルで，typeで入力する種類を指定します)。最後に，デフォルトでは”Continue”というボタンが出てくるので，button_label:を’次へ’にします。</p>
+<p>フォームを作成するプラグインです。jspsych-survey-html-formをタグに追加した上で，以下のように，preamble:に質問文，html:でフォームの設定をします(<code>&lt;input name="food_like" type="text" /&gt;</code>のところがフォームのところです。nameが入力のラベルで，typeで入力する種類を指定します)。最後に，デフォルトでは”Continue”というボタンが出てくるので，button_label:を’次へ’にします。</p>
 <pre><code>var form = {
   type: &#39;survey-html-form&#39;,
   preamble: &#39;&lt;p&gt; 以下の質問に回答してください。&lt;/p&gt;&#39;,
@@ -615,7 +627,7 @@ var multi_choice_h = {
 </div>
 
 <footer>
-  <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -628,7 +640,7 @@ var multi_choice_h = {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -667,7 +679,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

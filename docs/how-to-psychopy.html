@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -26,6 +25,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/icon-192x192.png">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -72,6 +82,7 @@ h6 {
 }
 </style>
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -88,7 +99,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -237,6 +247,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -265,6 +276,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -408,17 +425,17 @@ div.tocify {
 </div>
 
 
-<div id="psychopy320203" class="section level1">
+<div id="本ページの内容はpsychopy3に対応していません2020年3月までには修正する予定です" class="section level1">
 <h1>本ページの内容はPsychoPy3に対応していません。2020年3月までには修正する予定です。</h1>
-<div class="section level2">
+<div id="はじめに" class="section level2">
 <h2>はじめに</h2>
 <p>本資料は，専修大学人間科学部の国里ゼミで使用するPsychoPyに関するトレーニング資料になります。 本資料は，まだ完成版には程遠く，間違いも存在する可能性があります。もし誤りなどがございましたら， <a href="https://docs.google.com/forms/d/1OQ7pN-oQda1YwGvcTBga3oKkviI697uc9AQlGVhX2YI/viewform">メールフォーム</a>にて ご連絡いただけましたら幸いです。</p>
 </div>
-<div class="section level2">
+<div id="注意事項" class="section level2">
 <h2>注意事項</h2>
 <p>本ページの内容は，まだPsychoPy3に対応していません。PsychoPy3のCoderについては，<a href="https://qiita.com/snishym/items/8b52db0d901cf5744463">Qiitaのsnishymさんの記事</a>をおすすめします。なお本ページも2020年３月までにはPsychoPy3に対応予定です（サバティカル後の授業開始までに対応します・・・）。</p>
 </div>
-<div id="psychopy" class="section level2">
+<div id="psychopyとは" class="section level2">
 <h2>PsychoPyとは？</h2>
 <p>python上で動作する刺激呈示ソフトです。フリーソフトになりますが，高機能で，基本的な使用法を理解できれば，心理学・神経科学で行う認知課題のほとんどが作成可能です。以下のサイトや書籍が参考になります。</p>
 <ul>
@@ -427,15 +444,15 @@ div.tocify {
 <li><p>十河著(2017/4/20)『心理学実験プログラミング: ―Python/PsychoPyによる実験作成・データ処理―』<a href="http://amzn.asia/1JyEKlg">Amazon.co.jp</a></p></li>
 </ul>
 </div>
-<div id="0" class="section level2">
+<div id="課題0" class="section level2">
 <h2>課題0</h2>
-<div id="01" class="section level3">
+<div id="課題0の1" class="section level3">
 <h3>課題0の1</h3>
 <p>####「PsychoPyのダウンロードとインストールをしよう！」</p>
 <p>PsychoPyのサイト(<a href="http://www.psychopy.org/" class="uri">http://www.psychopy.org/</a>) からダウンロード&amp; インストールしましょう。 サイトからダウンロードしたものをダブルクリックとかすればインスールが開始されるかと思います。細かい設定とかもあるけど，まずは，気にしない。</p>
 <p><img src="materials/psychopy/fig1.png" /> <br /> <br /> <br /></p>
 </div>
-<div id="02" class="section level3">
+<div id="課題0の2" class="section level3">
 <h3>課題0の2</h3>
 <p>####「PsychoPyのCoder画面を開こう！」</p>
 <p>PsychoPyはGUIでも実験課題を作ることができる(Builderと呼ぶ)。 最初は，Builderの方が簡単なので良いかなと思うかもしれないですが， 複雑な実験課題を作る時にCoderでないと難しい時がある。 Coderは，プログラミングになる。プログラミングは，将来それを仕事に しない人も一度勉強しておくとよい。パソコンのスキルが上がるし， 複雑な作業をできるだけ単純にして，効率的に処理することができるようになる。</p>
@@ -446,7 +463,7 @@ div.tocify {
 <p>コードがかけたら，緑色のアイコン（赤い矢印で指している）をクリックするとコードが実行できます。 実行すると，下のOutput(出力)タブにその結果がでます。shell（シェル）では，Pythonコードを 確認することができます（このコードはどういう動きをするのか確認したい時に便利です）。</p>
 <p><img src="materials/psychopy/fig4.png" /> <br /> <br /> <br /></p>
 </div>
-<div id="03" class="section level3">
+<div id="課題0の3" class="section level3">
 <h3>課題0の3</h3>
 <p>####「Shellでプログラミング入門をしよう！」</p>
 <p>なぜかわからないけど，プログラミグの最初の一歩では，”Hello World”って画面に 表示させることが多い。「シェル」タブにコードを打ち込んで”Hello, Python!”と画面に表示させてみよう！</p>
@@ -458,7 +475,7 @@ print a</code></pre>
 <p><img src="materials/psychopy/fig6.png" /> <br /> <br /> <br /></p>
 </div>
 </div>
-<div class="section level2">
+<div id="課題１" class="section level2">
 <h2>課題１</h2>
 <p>####「灰色の画面上に黒字で”Hello, Python!”と３秒間表示させよう！」</p>
 <p>パソコンに強い人はPsychoPyとかでネット検索してやると力がつくと思いますが， 以下のヒントも活用ください。模範解答(task1.py)もありますが，まずはヒントをみつつ， 自分で作成しましょう。</p>
@@ -500,18 +517,18 @@ core.wait(2)</code></pre>
 <p><strong>ヒント</strong> PsychoPyはフリーズすることがあるので，こまめに保存をする。 また，psychoPyのエディタ上では，日本語入力がやりにくい。 そのため，PsychoPy上でコードを修正するよりも，なんらかのテキストエディタで作成や修正をしたほうが早い （〜.pyという名前のファイルをテキストエディタで開いて編集，PsychoPyで動作確認とすると早いです）。 エディタは，なんでも良いのだけど，<a href="https://github.com/atom/atom">Atom</a>が色々なOSで使えるし便利です。</p>
 <p><img src="materials/psychopy/fig7.png" /> <br /> <br /> <br /></p>
 </div>
-<div id="2" class="section level2">
+<div id="課題2" class="section level2">
 <h2>課題2</h2>
 <p>####「“1”，“2”，“3”，“4”，“5”の数字を１秒間ずつ画面に提示してみよう！」</p>
 <p><strong>ヒント</strong>　刺激の準備(visual.TextStim)からcore.wait(1)を繰り返します。</p>
 <p><strong>ヒント</strong>　#を使うとその部分は実行されません。プログラミングでは， かならず#などを使って，自分が行っている処理について説明を加えてください。</p>
 </div>
-<div id="-1" class="section level2">
+<div id="課題３" class="section level2">
 <h2>課題３</h2>
 <p>####「“あ”，“い”，“う”，“え”，“お”を１秒間ずつ画面に提示してみよう！」</p>
 <p><strong>ヒント</strong> 日本語の場合は，TextStimでtext = ‘あ’とするところを， text = u‘あ’と文字の前にuをいれてみましょう。日本語として処理してくれます。</p>
 </div>
-<div id="-2" class="section level2">
+<div id="課題４" class="section level2">
 <h2>課題４</h2>
 <p>####「“1”，“2”，“3”，“4”，“5”を１秒間ずつ画面に提示することを，５回繰り返してみよう！」</p>
 <p>「１」，「２」，「３」，「４」，「５」，「１」，「２」，「３」，「４」，「５」， 「１」，「２」，「３」，「４」，「５」と刺激の準備(visual.TextStim)から１秒間待つ (core.wait)を15回繰り返しても良いけど，効率がわるい。単純に繰り返すのではない方法を選びましょう。</p>
@@ -533,18 +550,18 @@ list2 = [u‘あ’,u‘い’,u‘う’,u‘え’,u‘お’]</code></pre>
     print m</code></pre>
 <p>なお，リストは，for文の前で設定をするようにしてください。</p>
 </div>
-<div id="5" class="section level2">
+<div id="課題5" class="section level2">
 <h2>課題5</h2>
 <p>####「課題４を応用して，漢字で“壱”，“弐”，“三”，“四”，“五”を１秒ずつ提示することを，５回繰り返してみよう！」</p>
 </div>
-<div id="6" class="section level2">
+<div id="課題6" class="section level2">
 <h2>課題6</h2>
 <p>####「1から９の数字をランダムにだしてみよう(1から9の数字は0.5秒間ずつ２回提示する)！」</p>
 <p><strong>ヒント</strong> numpy.random.shuffle(リスト)という関数を使います。 これを使うと，リストの中身がシャッフルされます。</p>
 </div>
-<div id="7" class="section level2">
+<div id="課題7" class="section level2">
 <h2>課題7</h2>
-<div id="7" class="section level3">
+<div id="課題7の１" class="section level3">
 <h3>課題7の１</h3>
 <p>####「課題６を使って，1から９の数字をランダムに0.5秒ずつだす（２回繰り返し）時に，色を変えて提示してみよう！」</p>
 <p><strong>ヒント</strong> 課題1でも簡単に触れましたが，visual.TextStim内のcolorとcolorSpaceで色を設定できます。</p>
@@ -560,24 +577,24 @@ list2 = [u‘あ’,u‘い’,u‘う’,u‘え’,u‘お’]</code></pre>
 </ul>
 <pre class="python"><code>myText = visual.TextStim(myWin,text = str(numList[i]),color = (-1,-1,-1),colorSpace=&#39;rgb&#39;)</code></pre>
 </div>
-<div id="7-1" class="section level3">
+<div id="課題7の２" class="section level3">
 <h3>課題7の２</h3>
 <p>####「課題６を使って，1から９の数字をランダムに0.5秒ずつだす（２回繰り返し）時に，文字の大きさを変えて提示してみよう！」</p>
 <p><strong>ヒント</strong> 以下のheightを変更すると，大きさが変わります。1だと大きいです。 色々と試してみましょう。</p>
 <pre class="python"><code>myText = visual.TextStim(myWin,text = str(numList[i]),color = (1,0.6,-0.6),height=1)</code></pre>
 </div>
-<div id="7-2" class="section level3">
+<div id="課題7の３" class="section level3">
 <h3>課題7の３</h3>
-<div id="10.5" class="section level4">
+<div id="課題６を使って1から９の数字をランダムに0.5秒ずつだす２回繰り返し時に文字の位置を変えて提示してみよう" class="section level4">
 <h4>「課題６を使って，1から９の数字をランダムに0.5秒ずつだす（２回繰り返し）時に，文字の位置を変えて提示してみよう！」</h4>
 <p><strong>ヒント</strong> 以下のposで提示する場所をきめる。pos=(x軸，y軸)であり，0が中心になる（1から-1の範囲）。 左右上下，右上，左下などに，文字を出してみましょう。</p>
 <pre class="python"><code>myText = visual.TextStim(myWin,text = str(numList[i]),pos=(-0.5,0),color = (1,0.6,-0.6),height=0.5)</code></pre>
 </div>
 </div>
 </div>
-<div id="-3" class="section level2">
+<div id="課題８" class="section level2">
 <h2>課題８</h2>
-<div class="section level4">
+<div id="ストループ課題を作ってみよう" class="section level4">
 <h4>「ストループ課題を作ってみよう！」</h4>
 <p>赤色で青と書かれた文字や黄色で赤と書かれている文字について，文字の色を答えるように言っても， 色ではなく意味の情報が干渉して，反応時間が遅くなる現象をストループ効果という。</p>
 <p>今回は，ストループ課題を作る。練習なので，あまり複雑ではない単純なストループ課題にする。 用いる色は「赤色」と「黄色」と「青色」で，用いる文字は「赤」，「黄」，「青」になる。 なので，組み合わせは以下の９パターンになる（色と文字の一致，不一致はカッコ内に）。 以下の９パターンの刺激について，刺激を１秒間提示して，その後，注視点(+)を１秒間提示する (つまり９回，刺激と注視点を繰り返す)ことを２回繰り返す。</p>
@@ -638,26 +655,26 @@ kanjiCharData = colorDic[charCondition[&#39;kanjiChar&#39;]]
 myText = visual.TextStim(myWin,text = charCondition[&#39;kanjiChar&#39;],pos=(0,0),color = colorData[&#39;rgb&#39;],height=0.2)</code></pre>
 </div>
 </div>
-<div id="-4" class="section level2">
+<div id="課題９" class="section level2">
 <h2>課題９</h2>
-<div class="section level4">
+<div id="課題８で作ったストループ課題について刺激をランダムに提示してみよう" class="section level4">
 <h4>「課題８で作ったストループ課題について，刺激をランダムに提示してみよう！」</h4>
 <p>課題８は，作成した刺激のリストを順番に提示していました。繰り返しの順番が同じというのは まずいのでランダムに提示したいと思います。その際に，charConditionListをシャッフルすると対応関係も ぐちゃぐちゃになりますので，まずいです。そこで，刺激呈示時にcharConditionListを順番に提示するリスト（r）をシャッフルすると良いです。 以下のコードを挿入する場所に気をつけてください。</p>
 <pre class="python"><code>numpy.random.shuffle(r)</code></pre>
 </div>
 </div>
-<div id="10" class="section level2">
+<div id="課題10" class="section level2">
 <h2>課題10</h2>
-<div id="9" class="section level4">
+<div id="課題9に実験教示を追加してみよう" class="section level4">
 <h4>「課題9に，実験教示を追加してみよう！」</h4>
 <p>課題９の最初に，5秒間ほど，以下のような実験の教示を出してみましょう。</p>
 <p>「今から，色のついた文字がでてきます。文字の意味ではなく，文字の色に基づいてボタン押しをしてください。 文字が赤色なら，キーボードの１を押してください。文字が黄色なら，キーボードの２を押してください。 文字が青色なら，キーボードの３を押してください。」</p>
 <p><strong>ヒント</strong>　改行をしたい場合は，<code>\n</code>を打つとできる。また，myTextでなくて，instTextにする （今後は，myTextではなくて，意味の分かりやすい名前にする。instTextは，instruction(教示)の 文章という意味です）。</p>
 </div>
 </div>
-<div id="11" class="section level2">
+<div id="課題11" class="section level2">
 <h2>課題11</h2>
-<div id="10" class="section level4">
+<div id="課題10について参加者の反応を測定してみましょう" class="section level4">
 <h4>「課題10について，参加者の反応を測定してみましょう!」</h4>
 <p>刺激を出すだけでは実験はできないので，キーボードやマウスで参加者の反応を測定する必要があります。 まずは，教示を以下のように変更してください（10秒間教示を出すのではなくて，参加者がスペースキーを 押したら，課題に進む）。</p>
 <p>「今から，色のついた文字がでてきます。文字の意味ではなく，文字の色に基づいてボタン押しをしてください。 文字が赤色なら，キーボードの１を押してください。文字が黄色なら，キーボードの２を押してください。 文字が青色なら，キーボードの３を押してください。この教示が読めたら，「スペース」キーを押して 課題を始めてください」</p>
@@ -689,9 +706,9 @@ if not Responded:
 <p>event.clearEvents()，stopwatch.reset()，Responded = Falseで反応時間や反応を リセットしてから，while関数を使って，stopwatchで測定した時間（stopwatch.getTime())が1を超えるまで， event.getKeysで反応を測定します。event.getKeysで指定した反応の測定と反応時間を計測できます。 whileとかifが出てきていますが，とりあえず，スルーして進んで下さい。</p>
 </div>
 </div>
-<div id="12" class="section level2">
+<div id="課題12" class="section level2">
 <h2>課題12</h2>
-<div id="11" class="section level4">
+<div id="課題11で測定した参加者の反応にフィードバックをしてみよう" class="section level4">
 <h4>「課題11で測定した参加者の反応にフィードバックをしてみよう!」</h4>
 <p>課題11では，参加者の反応と反応時間を測定していますが，その結果を保存したり(課題13でやります)， その結果をフィードバックしてないので，画面上は変化はありません。そこで，「刺激提示（反応計測）1秒」 →「注視点 1秒」の注視点を２秒にして，固視点の下に「正解」，「不正解」をフィードバックさせましょう。 また，「正解」か「不正解」の下に反応時間も表示しましょう。</p>
 <p><strong>ヒント</strong> “もし”参加者が正解の反応を“したら”，「正解」とフィードバックし，“もし”参加者が 不正解の反応を“したら”，「不正解」とフィードバックする。このように，“もし”のような形で 条件分岐する場合は，if文を使う。Pythonでのif文は以下のようになる(if,elif,elseと:と インデントによって，条件分岐を作る)。</p>
@@ -740,9 +757,9 @@ myWin.flip()
 core.wait(2)</code></pre>
 </div>
 </div>
-<div id="13" class="section level2">
+<div id="課題13" class="section level2">
 <h2>課題13</h2>
-<div id="12" class="section level4">
+<div id="課題12の結果を保存してみよう" class="section level4">
 <h4>「課題12の結果を保存してみよう!」</h4>
 <p>結果の保存にあたり，実験時に参加者IDをいれれるようにしておくと便利です。 以下のコードで参加者IDの入力画面が出てきます。以下のコードは，全体のtry構文の 最初に入れておくとよいです。 入力すると，expInfoに被験者IDと実行日時（例.2013_Nov_20_1646）が入ります。</p>
 <pre class="python"><code># 参加者IDの取得
@@ -805,9 +822,9 @@ for r in results:
 datafile.close()</code></pre>
 </div>
 </div>
-<div id="14" class="section level2">
+<div id="課題14" class="section level2">
 <h2>課題14</h2>
-<div class="section level4">
+<div id="画面に質問項目を呈示して反応を取得してみよう" class="section level4">
 <h4>「画面に質問項目を呈示して，反応を取得してみよう！」</h4>
 <p>psychoPyでは，RatingScaleという関数が用意されており，これをつかうとPC上で質問項目をだしてマウスで反応を取ることができる。どうせ認知課題を使うのなら， 質問紙もこれでとると記入漏れやデータ入力の手間がはぶける（記入しなおすことができない問題はありますが・・・）。</p>
 <pre class="python"><code># 評価尺度の準備（今回は１から５の５件法）
@@ -827,9 +844,9 @@ for questionNum in range(5):
         results.append([questionNum+1]+[myRatingScale.getRating()]+[myRatingScale.getRT()])</code></pre>
 </div>
 </div>
-<div id="15" class="section level2">
+<div id="課題15" class="section level2">
 <h2>課題15</h2>
-<div class="section level4">
+<div id="用意した画像刺激を呈示してみよう" class="section level4">
 <h4>「用意した画像刺激を呈示してみよう」</h4>
 <p>認知課題の多くは，なんらかの用意した画像刺激を提示することが多い。以下では，stimliフォルダ内のcard1.jpgからcard4.jpgを 順番に呈示してみましょう。文字の場合は，TextStimでしたが，画像の場合は，ImageStimを使用します。使用する画像は<a href="materials/psychopy/images.zip">こちら</a>からダウンロードしてください。</p>
 <pre class="python"><code>#画面の設定（今回は画像の関係で白い背景します）
@@ -848,9 +865,9 @@ try:
         core.wait(2)</code></pre>
 </div>
 </div>
-<div id="16" class="section level2">
+<div id="課題16" class="section level2">
 <h2>課題16</h2>
-<div class="section level4">
+<div id="音刺激を呈示してみよう" class="section level4">
 <h4>「音刺激を呈示してみよう!」</h4>
 <p>音声の出力については，まだPsychoPyでは開発途中な部分もある。今回は，PsychoPyで設定してだすビープ音と用意した音声ファイルを呈示する。 音声を扱う場合は，from psychopy importでsoundをインポートしておく。音声ファイルはmid, wav, oggをサポートしているらしい。 音刺激の準備はsound.Sound( )を用い，.setVolume()で音量調整， .play()で音をだす。使用する音声ファイルは<a href="materials/psychopy/sounds.zip">こちら</a>からダウンロードしてください。なお，今回使用した拍手の音は，<a href="http://www.kurage-kosho.info/">くらげ工匠</a>のファイルを用いています。</p>
 <pre class="python"><code>#　画面の準備（灰色の画面，マウスはallowGUI=Falseで表示されないようにしている）
@@ -879,9 +896,9 @@ applauseLarge.play()
 core.wait(10)</code></pre>
 </div>
 </div>
-<div id="17" class="section level2">
+<div id="課題17" class="section level2">
 <h2>課題17</h2>
-<div class="section level4">
+<div id="動画刺激を呈示してみよう" class="section level4">
 <h4>「動画刺激を呈示してみよう!」</h4>
 <p>動画を呈示する場合は，MovieStim( )を使います。今回は，<a href="http://mazwai.com/">mazwai.com</a>から再配布可能な動画をもってきて， 呈示します。<a href="materials/psychopy/sea.mov">こちら</a>から動画をダウンロードください。</p>
 <pre class="python"><code>#時計の準備
@@ -902,22 +919,22 @@ myWin.close()
 core.quit()</code></pre>
 </div>
 </div>
-<div id="18" class="section level2">
+<div id="課題18" class="section level2">
 <h2>課題18</h2>
-<div class="section level4">
+<div id="オリジナルのギャンプル課題を試しに作ってみよう" class="section level4">
 <h4>「オリジナルのギャンプル課題を試しに作ってみよう！」</h4>
 <p>最後に，これまで学んだことを使って，ギャンブリング課題を作ってみましょう。 画面上にcard1からcard4まで並べて置いて，4つのうち1つを選ぶとポイントのフィードバックがなされる課題を作ってみましょう。 フィードバックは，プラス10ポイントの報酬とマイナス10ポイントの罰の２種類があります。 card1は90%の確率で正解，card2は30%の確率で正解，card3は60%の確率で正解，card4は20%の確率で正解になります。 そのようなフィードバックがなされるように設定をしてください。 フィードバックの画面では，真ん中にその試行のフィードバックを出し，右下にこれまでの合計獲得ポイントを示します。 参加者は獲得ポイントが最大になるように選択をします。</p>
 <p>本課題は，２ブロックからなり，各ブロックは４０試行からなります。各ブロックの最初にビープ音を1秒鳴らします。 ブロック1とブロック2の間には，休憩として，癒しの海の動画を30秒挟んでください。 なお，ブロック2では，ブロック１とフィードバック確率が変わります。 card1は10%の確率で正解，card2は30%の確率で正解，card3は90%の確率で正解，card4は60%の確率で正解になります。 ブロック番号，試行番号，参加者の選択，反応時間などを記録して，csvファイルで保存しましょう。</p>
 </div>
 </div>
-<div class="section level2">
+<div id="さいごに" class="section level2">
 <h2>さいごに</h2>
 <p>ここまできたら，あとは上記の内容を組み合わせたり，ウェブ検索で新しい方法を取り入れることで，大体の認知課題は作成できるかと思います。 なお，課題１から課題17までのPythonコードは，<a href="materials/psychopy/code.zip">こちら</a>に置いていますので，ダウンロードして確認することもできます。</p>
 </div>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2018 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -930,7 +947,7 @@ core.quit()</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -969,7 +986,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

@@ -25,6 +25,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/icon-192x192.png">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -70,6 +81,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
@@ -421,8 +433,8 @@ div.tocify {
 <div id="口頭発表シンポジウム研究会" class="section level3">
 <h3>口頭発表・シンポジウム・研究会</h3>
 <ul>
-<li>国里愛彦 (2020). 日心企画「再現可能な心理学研究入門」企画者 日本心理学会第84回大会 東京　WEB開催　2020年11月1日<br />
-</li>
+<li><p>国里愛彦 (2020). 日心企画「再現可能な心理学研究入門」企画者 日本心理学会第84回大会 東京　WEB開催　2020年11月1日<br />
+</p></li>
 <li><p>[117] 国里愛彦・竹林由武 (2020). チュートリアル・ワークショップ「今日からできる再現可能な論文執筆」 日本心理学会第84回大会 東京　WEB開催　2020年10月31日</p></li>
 <li><p>[116] 国里愛彦 (2020). WS「臨床研究の方法論と倫理（臨床実践における倫理を含む）」　日本認知・行動療法学会第46回大会　広島　WEB開催　2020年9月11日から9月30日</p></li>
 <li><p>[115] 国里愛彦 (2020). 大会企画シンポジウム「抑うつ研究の最前線」 話題提供　日本認知・行動療法学会第46回大会　広島　WEB開催　2020年9月11日から9月30日</p></li>
@@ -844,7 +856,7 @@ div.tocify {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

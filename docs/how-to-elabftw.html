@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -26,6 +25,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/icon-192x192.png">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -71,6 +81,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
@@ -236,6 +247,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -264,6 +276,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -408,11 +426,11 @@ div.tocify {
 
 
 <p>電子ラボノートはいくつか出ていますが，心理学者が使うには少々高いです。<a href="https://www.elabftw.net/">eLabFTW</a>は，オープンソースの電子ラボノートになり，設置するサーバーさえこちらで用意すれば，<a href="https://www.elabftw.net/">eLabFTW</a>自体はフリーで導入できます（サーバー費用は別途かかります）。インストールもDokcerを使うので，難しくなく，<a href="https://doc.elabftw.net/">こちらのドキュメント</a>を参考にすれば，すんなり導入できるかと思います。</p>
-<div class="section level2">
+<div id="サーバーの準備" class="section level2">
 <h2>サーバーの準備</h2>
 <p>サーバーは各自好きなものを用意すればいいですが，ここではGoogle Compute Engineを使って，仮想マシン(VM)を使います。まず，好きな構成＆Ubuntu 18.04 LTSでインスタンスを作成します。その際に，httpとhttpsを開放しておきます。構成はご予算と相談で決めてください。また，常時稼働させるならそのままでもいいですが，ちょくちょくインスタンスを止めるなら，静的外部 IP アドレスを使うといいかと思います。また，インスタンスを立ち上げた際に得られる外部IPアドレス（もしくは静的外部IPアドレス）をご自身のもっているドメインに登録してください（セキュリティ上HTTPSが良いのでLet’s EncryptをつかってHTTPS化するのですが，その際にドメインが必要です）。</p>
 </div>
-<div id="vm" class="section level2">
+<div id="仮想マシンvmに必要なソフトをインストール" class="section level2">
 <h2>仮想マシン(VM)に必要なソフトをインストール</h2>
 <div id="docker" class="section level3">
 <h3>Docker</h3>
@@ -446,7 +464,7 @@ div.tocify {
 sudo apt-get install -y dialog git zip unzip</code></pre>
 </div>
 </div>
-<div id="elabftw" class="section level2">
+<div id="elabftwのインストール" class="section level2">
 <h2>eLabFTWのインストール</h2>
 <p><a href="https://doc.elabftw.net/">公式のドキュメント</a>に書いてあるとおり，以下を実行して，eLabFTWをインストールします。</p>
 <pre><code>curl -sL https://get.elabftw.net -o elabctl &amp;&amp; chmod +x elabctl</code></pre>
@@ -457,16 +475,16 @@ sudo apt-get install -y dialog git zip unzip</code></pre>
 <p>終わったら以下を実行して，eLabFTWを開始します。</p>
 <pre><code>sudo elabctl start</code></pre>
 </div>
-<div class="section level2">
+<div id="インストール後" class="section level2">
 <h2>インストール後</h2>
 <p>すぐにアクセスして，アドミン用のパスワードなどの設定をする。また，<a href="https://doc.elabftw.net/postinstall.html#postinstall">公式ドキュメント</a>にしたがって，eLabFTWからメールを送れるようにSMTP2GOに無料登録して設定する。</p>
 </div>
-<div class="section level2">
+<div id="バックアップ" class="section level2">
 <h2>バックアップ</h2>
 <p>以下のコマンドで，/var/backups/elabftw/にバックアップが作成される。</p>
 <pre><code>sudo elabctl backup</code></pre>
 </div>
-<div id="lets-encrypt" class="section level2">
+<div id="lets-encryptの更新" class="section level2">
 <h2>Let’s Encryptの更新</h2>
 <p>90日でLet’s Encryptの証明書が切れるので，更新する。以下のようにやればできるはずだが・・・上手くいかず・・・これはちょっと先延ばし</p>
 <pre><code># stop webserver
@@ -476,13 +494,13 @@ sudo certbot renew
 # and start the webserver again
 sudo docker exec elabftw supervisorctl start nginx</code></pre>
 </div>
-<div class="section level2">
+<div id="日本語化" class="section level2">
 <h2>日本語化</h2>
 <p>eLabFTWは，様々な国の言語に翻訳されている（各研究者がボランティアで翻訳して，それが反映される。詳細は<a href="https://doc.elabftw.net/contributing.html">こちら</a>）。日本語版については，国里が翻訳をしており，次のバージョン(現在3.3.9)で日本語化されるのではないかと期待している。翻訳には自信はないので，もし日本語化された際に，問題を見つけたら，<a href="https://docs.google.com/forms/d/e/1FAIpQLSeVb0_ti9flHyGcRQcLESQO7Tzl3eH5hbCqXyzcGh7RWLQexA/viewform">こちら</a>までご連絡ください。</p>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -495,7 +513,7 @@ sudo docker exec elabftw supervisorctl start nginx</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -534,7 +552,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

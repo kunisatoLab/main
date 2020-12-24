@@ -25,6 +25,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/icon-192x192.png">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -70,6 +81,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
@@ -665,11 +677,11 @@ result %&gt;%
 result &lt;- q_learning_ll(alpha = 0.2, beta = 5,data = data) 
 
 result$ll</code></pre>
-<pre><code>## [1] -20.82811</code></pre>
+<pre><code>## [1] -12.34553</code></pre>
 <p>alpha = 0.2, beta = 5で生成されたデータにたいして，alpha = 0.6, beta = 1の時の尤度を計算します。尤度が小さくなったかと思います。他にもαとβを変更して（生成時の値alpha = 0.2, beta = 5に近づけたり，遠ざけたりする），尤度の挙動を確認してみましょう。</p>
 <pre class="r"><code>result &lt;- q_learning_ll(alpha = 0.6, beta = 1,data = data) 
 result$ll</code></pre>
-<pre><code>## [1] -38.9125</code></pre>
+<pre><code>## [1] -35.39209</code></pre>
 <ul>
 <li>3.最良の評価を与えるパラメータを決定する →最も尤度が高くなるパラメータを探す（最適化）。最尤推定，ベイズ推定など色々な方法があるが，ここでは，単純なグリッドサーチを用いた最尤推定を行う。</li>
 </ul>
@@ -767,7 +779,7 @@ maxIndex &lt;- which.max(grid_result$calc_results$store_loglike)
 paste(&quot;最尤推定値: α =&quot;,grid_result$calc_results$store_alpha[maxIndex],
       &quot;β =&quot;,grid_result$calc_results$store_beta[maxIndex], 
       &quot;,対数尤度: Log Likelihood = &quot;,grid_result$calc_results$store_loglike[maxIndex])</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.21 β = 4.8 ,対数尤度: Log Likelihood =  -30.5971546408474&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.25 β = 7.4 ,対数尤度: Log Likelihood =  -14.4940284172919&quot;</code></pre>
 </div>
 <div id="価値と行動選択確率のプロットモデルシミュレーション" class="section level2">
 <h2>価値と行動選択確率のプロット（モデル・シミュレーション）</h2>
@@ -796,8 +808,8 @@ data_original_estimated &lt;- tibble(trial = data$trial,
 <pre class="r"><code>table(data_original_estimated$choice_original,data_original_estimated$choice_estimated)</code></pre>
 <pre><code>##    
 ##      0  1
-##   0 39  5
-##   1 21 15</code></pre>
+##   0 40 19
+##   1  4 17</code></pre>
 </div>
 </div>
 <div id="c-データ収集と行動データを確認" class="section level1">
@@ -825,7 +837,8 @@ file_names</code></pre>
 <h2>sub01のデータの確認</h2>
 <p>sub01.csvをread_csv()で読み込む</p>
 <pre class="r"><code>sub01 &lt;- read_csv(&quot;rl/data/sub01.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
 ## cols(
 ##   trial_type = col_character(),
 ##   trial_index = col_double(),
@@ -1089,13 +1102,13 @@ image.plot(x,y,grid_result1$store_3d)</code></pre>
 paste(&quot;最尤推定値: α =&quot;,grid_result1$calc_results$store_alpha[maxIndex],
       &quot;β =&quot;,grid_result1$calc_results$store_beta[maxIndex], 
       &quot;,対数尤度: Log Likelihood = &quot;,grid_result1$calc_results$store_loglike[maxIndex])</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.45 β = 7.6 ,対数尤度: Log Likelihood =  -15.7902280311961&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.31 β = 7.6 ,対数尤度: Log Likelihood =  -8.72039933229586&quot;</code></pre>
 <p>当たり前ですが，間隔を広げたり，範囲を狭めると，範囲外の推定値は求まりませんし（βは範囲外），きめが荒いので，推定値もずれます。実際は，グリッドサーチではなく，最適化手法を使って最尤推定値を求めたり，ベイズ推定で求めたりします。ただ，推定においては，狭い範囲内で最も良いだけの値（局所最適解という）をもってくる可能性があるのは気をつけないといけません。</p>
 <pre class="r"><code>maxIndex &lt;- which.max(grid_result2$calc_results$store_loglike)
 paste(&quot;最尤推定値: α =&quot;,grid_result2$calc_results$store_alpha[maxIndex],
       &quot;β =&quot;,grid_result2$calc_results$store_beta[maxIndex], 
       &quot;,対数尤度: Log Likelihood = &quot;,grid_result2$calc_results$store_loglike[maxIndex])</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.8 β = 1 ,対数尤度: Log Likelihood =  -36.4081665182014&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.6 β = 1 ,対数尤度: Log Likelihood =  -34.3540321555554&quot;</code></pre>
 <pre class="r"><code>rownames(grid_result2$store_3d) &lt;- NULL
 y &lt;- seq(0,1,0.2)
 x &lt;- seq(0,1,0.2)
@@ -1121,7 +1134,7 @@ image.plot(x,y,grid_result2$store_3d)</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

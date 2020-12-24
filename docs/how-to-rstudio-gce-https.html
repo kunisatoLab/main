@@ -25,6 +25,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/icon-192x192.png">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -70,6 +81,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
@@ -885,13 +897,13 @@ run -e PASSWORD=パスワード -p 8787:8787 -v ~:/home/rstudio -d --name コン
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>Dockerの活用を考えると，Container-Optimized OSが良いのですが，ホスト側でGoogle Cloud SDKを使いたかったので，Container-Optimized OSを使いました。Ubuntuを使う必然性はないのですが，なんとなく前に使ったことがあるLinuxだったので選びました。<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p><a href="https://twitter.com/masaha03">林真広様</a>より，(1)ymlにrestart: alwaysを追加することで，メタデータにstartup-scriptを記載する必要がなくなること，(2)GCSに送る際にtarで圧縮することを教えていただきました。誠にありがとうございました。<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>Dockerの活用を考えると，Container-Optimized OSが良いのですが，ホスト側でGoogle Cloud SDKを使いたかったので，Container-Optimized OSを使いました。Ubuntuを使う必然性はないのですが，なんとなく前に使ったことがあるLinuxだったので選びました。<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://twitter.com/masaha03">林真広様</a>より，(1)ymlにrestart: alwaysを追加することで，メタデータにstartup-scriptを記載する必要がなくなること，(2)GCSに送る際にtarで圧縮することを教えていただきました。誠にありがとうございました。<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -904,7 +916,7 @@ run -e PASSWORD=パスワード -p 8787:8787 -v ~:/home/rstudio -d --name コン
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

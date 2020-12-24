@@ -25,6 +25,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/icon-192x192.png">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -70,6 +81,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
@@ -508,8 +520,12 @@ library(tidyverse)</code></pre>
 <ul>
 <li>読み込んだJSONデータをtidyverseのas.tibble()関数を使ってデータフレームにします（データフレームなので，db_dfという名前にしました）。すると，３つの参加者が変数になって，変数の下にdata.frameができました。</li>
 </ul>
-<pre class="r"><code>db_df &lt;- as_tibble(db_list, validate = F) 
-db_df</code></pre>
+<pre class="r"><code>db_df &lt;- as_tibble(db_list, validate = F) </code></pre>
+<pre><code>## Warning: The `validate` argument of `as_tibble()` is deprecated as of tibble 2.0.0.
+## Please use the `.name_repair` argument instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
+<pre class="r"><code>db_df</code></pre>
 <pre><code>## # A tibble: 1 x 3
 ##   `2019_8_22_23_48_59_fxlmh… `2019_8_22_23_56_32_juSt… `2019_8_22_23_57_16_8Eyg…
 ##   &lt;named list&gt;               &lt;named list&gt;              &lt;named list&gt;             
@@ -644,6 +660,7 @@ db_df</code></pre>
   mutate(id = ifelse(ID == &quot;2019_8_22_23_48_59_fxlmh9SL&quot;, &quot;time1&quot;, ifelse(ID == &quot;2019_8_22_23_56_32_juStKRbZ&quot;, &quot;time2&quot;,&quot;time3&quot;))) %&gt;% 
   group_by(id,stim_type) %&gt;% 
   summarise(正答率=sum(correct2,na.rm = TRUE)/length(correct2), 平均反応時間=mean(rt,na.rm = TRUE))</code></pre>
+<pre><code>## `summarise()` regrouping output by &#39;id&#39; (override with `.groups` argument)</code></pre>
 <pre><code>## # A tibble: 6 x 4
 ##   id    stim_type   正答率 平均反応時間
 ##   &lt;chr&gt; &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;
@@ -857,8 +874,11 @@ for(i in 1:numberSubject){
 }
 #データフレーム化と結果の表示
 summaryData &lt;- as_data_frame(summaryData)</code></pre>
-<pre><code>## Warning: `as_data_frame()` is deprecated, use `as_tibble()` (but mind the new semantics).
-## This warning is displayed once per session.</code></pre>
+<pre><code>## Warning: `as_data_frame()` is deprecated as of tibble 2.0.0.
+## Please use `as_tibble()` instead.
+## The signature and semantics have changed, see `?as_tibble`.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
 <pre class="r"><code>summaryData</code></pre>
 <pre><code>## # A tibble: 4 x 3
 ##      id purpleRate correctRate
@@ -881,7 +901,7 @@ summaryData &lt;- as_data_frame(summaryData)</code></pre>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -894,7 +914,7 @@ summaryData &lt;- as_data_frame(summaryData)</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -933,7 +953,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

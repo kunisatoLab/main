@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -25,6 +25,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/icon-192x192.png">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -71,11 +82,10 @@ h6 {
 }
 </style>
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,13 +99,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -111,7 +126,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -131,6 +145,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -152,47 +203,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -206,6 +276,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -241,8 +317,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -251,6 +325,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -341,7 +425,7 @@ div.tocify {
 </div>
 
 
-<div class="section level2">
+<div id="はじめに" class="section level2">
 <h2>はじめに</h2>
 <p>卒論，修論，投稿論文，依頼論文，書籍などの執筆は，基本的には苦しいし，大変なものだと思います。そのような執筆を進めるコツは，以下の２点になります。</p>
 <ol style="list-style-type: decimal">
@@ -350,7 +434,7 @@ div.tocify {
 </ol>
 <p>このTipsは，２つ目の内容について扱います。想像すると気づくとおもうのですが，執筆した文字数や語数を毎日カウントして記録するという作業はかなり手がかかります（よほど忍耐のある人しか続かない）。そこで，このTipsでは，２つ目の作業に関して，ほぼ自動化したシステムの構築方法について説明します。</p>
 </div>
-<div id="google" class="section level2">
+<div id="googleドキュメントで論文を執筆する" class="section level2">
 <h2>Googleドキュメントで論文を執筆する</h2>
 <p>今回説明する自動執筆量記録・報告システムは，Googleドキュメントを使用していることが前提になります。 原稿を書く時にGoogleドキュメントを使わない方もおられるかもしれませんが，Googleドキュメントを使うことで，以下のようなメリットがあります。</p>
 <ul>
@@ -368,45 +452,27 @@ div.tocify {
 <li><p><a href="https://chrome.google.com/webstore/detail/translate/nejfnokhglmkjgpkjooijcddfecjggan">Translate</a>: GoogleドキュメントのサイドバーでGoogle翻訳が使える。英文執筆に便利です。</p></li>
 </ul>
 </div>
-<div class="section level2">
+<div id="自動執筆量記録報告システムの概要" class="section level2">
 <h2>自動執筆量記録・報告システムの概要</h2>
 <p>Googleドキュメントを使った自動執筆量記録・報告システムの概要は以下の図のようになります。一度設定をしておけば，ユーザーはただGoogleドキュメントで執筆をするだけで，１日の執筆量の記録とその日の進捗の報告（+リマインドメール）を受け取ることができます。</p>
-<div class="figure">
-<img src="materials/googleDoc/s1.png" />
-
+<p><img src="materials/googleDoc/s1.png" /></p>
 </div>
-</div>
-<div class="section level2">
+<div id="自動執筆量記録報告システムの設定" class="section level2">
 <h2>自動執筆量記録・報告システムの設定</h2>
-<div id="google" class="section level3">
+<div id="各原稿用のgoogleドキュメントファイルの準備" class="section level3">
 <h3>1. 各原稿用のGoogleドキュメントファイルの準備</h3>
 <p>まずは，各原稿用のGoogleドキュメントファイルを準備します。</p>
 </div>
-<div id="google" class="section level3">
+<div id="googleスプレッドシートを準備する" class="section level3">
 <h3>2. Googleスプレッドシートを準備する</h3>
-<div class="figure">
-<img src="materials/googleDoc/s2.png" />
-
+<p><img src="materials/googleDoc/s2.png" /></p>
+<p><img src="materials/googleDoc/s3.png" /></p>
+<p><img src="materials/googleDoc/s4.png" /></p>
 </div>
-<div class="figure">
-<img src="materials/googleDoc/s3.png" />
-
-</div>
-<div class="figure">
-<img src="materials/googleDoc/s4.png" />
-
-</div>
-</div>
-<div id="google-apps-script" class="section level3">
+<div id="スプレッドシートにgoogle-apps-scriptを仕込む" class="section level3">
 <h3>3.スプレッドシートにGoogle Apps Scriptを仕込む</h3>
-<div class="figure">
-<img src="materials/googleDoc/s5.png" />
-
-</div>
-<div class="figure">
-<img src="materials/googleDoc/s6.png" />
-
-</div>
+<p><img src="materials/googleDoc/s5.png" /></p>
+<p><img src="materials/googleDoc/s6.png" /></p>
 <pre><code>function autoDocRep() { 
   // スプレッドシートの読み込み
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(&quot;シート1&quot;);
@@ -478,32 +544,14 @@ function remindMail() {
   }
   GmailApp.sendEmail(sheet.getRange(1,1).getValues(),&quot;今日の執筆状況&quot;,bodyText);  //メールの送信
 }</code></pre>
-<div class="figure">
-<img src="materials/googleDoc/s7.png" />
-
+<p><img src="materials/googleDoc/s7.png" /></p>
+<p><img src="materials/googleDoc/s8.png" /></p>
+<p><img src="materials/googleDoc/s9.png" /></p>
+<p><img src="materials/googleDoc/s10.png" /></p>
+<p><img src="materials/googleDoc/s11.png" /></p>
+<p><img src="materials/googleDoc/s12.png" /></p>
 </div>
-<div class="figure">
-<img src="materials/googleDoc/s8.png" />
-
-</div>
-<div class="figure">
-<img src="materials/googleDoc/s9.png" />
-
-</div>
-<div class="figure">
-<img src="materials/googleDoc/s10.png" />
-
-</div>
-<div class="figure">
-<img src="materials/googleDoc/s11.png" />
-
-</div>
-<div class="figure">
-<img src="materials/googleDoc/s12.png" />
-
-</div>
-</div>
-<div class="section level3">
+<div id="おまけのバックアップ機能" class="section level3">
 <h3>おまけのバックアップ機能</h3>
 <p>上記の作業で自動執筆量管理はできるのですが，以下のスクリプトをコピペすれば，バックアップ機能もつけることができます。関数名は，fileBackUp() になります（こちらをコピペする場合は，fileBackUp() に対してもトリガーを設定ください）。fileBackUp() は，Googleドライブ内にBackUpWritingFileというフォルダを作成し，それにファイル名に日付時間を追加して保存します。なお，fileBackUp() は，こちらの<a href="http://rasuka-labo.blogspot.jp/2015/01/blog-post.html">ラスカの実験室</a>を参考に作成しました。</p>
 <pre><code>function autoDocRep() { 
@@ -604,7 +652,7 @@ function fileBackUp() {
   }   
 }</code></pre>
 </div>
-<div class="section level3">
+<div id="おわりに" class="section level3">
 <h3>おわりに</h3>
 <p>これで，Googleドキュメントによる自動執筆量記録・報告システムの設定が終了しました。日々の雑務でついつい後回しにしてしまう執筆について，リマインドメールと進捗報告メールなどをもとにどんどん取り組むようにしましょう！</p>
 <div id="enjoy-writing" class="section level4">
@@ -614,7 +662,7 @@ function fileBackUp() {
 </div>
 
 <footer>
-  <p>Copyright &copy; 2018 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -627,13 +675,56 @@ function fileBackUp() {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

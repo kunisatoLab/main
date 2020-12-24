@@ -25,6 +25,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/icon-192x192.png">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -70,6 +81,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
@@ -441,7 +453,7 @@ div.tocify {
 </div>
 <div id="pavlovia用の実験課題の作成" class="section level2">
 <h2>Pavlovia用の実験課題の作成</h2>
-<p>次に，ここまで設定したRstudio上のPavloviaの課題リポジトリ上でR Markdownを使って行動課題を作っていきます（pavloviaからクローンしたフォルダ内でR Markdownで行動課題を作ります）。その際に，jsPsychRmd(<a href="https://github.com/ykunisato/jsPsychRmd" class="uri">https://github.com/ykunisato/jsPsychRmd</a> )を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の<code>devtools::install_github(&quot;ykunisato/jsPsychRmd&quot;)</code>を打ち込んで，インストールしてから，<code>library(jsPsychRmd)</code>を実行してください。</p>
+<p>次に，ここまで設定したRstudio上のPavloviaの課題リポジトリ上でR Markdownを使って行動課題を作っていきます（pavloviaからクローンしたフォルダ内でR Markdownで行動課題を作ります）。その際に，jsPsychRmd(<a href="https://github.com/ykunisato/jsPsychRmd" class="uri">https://github.com/ykunisato/jsPsychRmd</a> )を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の<code>devtools::install_github("ykunisato/jsPsychRmd")</code>を打ち込んで，インストールしてから，<code>library(jsPsychRmd)</code>を実行してください。</p>
 <pre><code>library(jsPsychRmd)</code></pre>
 <p>jsPsychRmdが読み込めたら，以下をConsoleに打ち込みます。以下を実行すると，jsPsychを使って行動課題のHTMLを出力するR Markdownファイル（index.Rmd），jsPsychのライブラリ(jspsych-6.1.0)，刺激をいれるstimuliフォルダを作ります。</p>
 <pre><code>set_jsPsych(file_name = &quot;stroop&quot;, folder = FALSE, pavlovia = TRUE)</code></pre>
@@ -492,7 +504,7 @@ jsPsych.init({
 </div>
 
 <footer>
-  <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -505,7 +517,7 @@ jsPsych.init({
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -544,7 +556,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

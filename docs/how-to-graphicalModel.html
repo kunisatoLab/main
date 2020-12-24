@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -26,10 +25,21 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<script src="site_libs/viz-0.3/viz.js"></script>
+<script src="site_libs/htmlwidgets-1.5.2/htmlwidgets.js"></script>
+<script src="site_libs/viz-1.8.2/viz.js"></script>
 <link href="site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="site_libs/grViz-binding-1.0.1/grViz.js"></script>
+<script src="site_libs/grViz-binding-1.0.6.1/grViz.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/icon-192x192.png">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -75,6 +85,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
@@ -240,6 +251,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -268,6 +280,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -411,7 +429,7 @@ div.tocify {
 </div>
 
 
-<div class="section level2">
+<div id="グラフィカルモデル" class="section level2">
 <h2>グラフィカルモデル</h2>
 <p>以下のスライドにあるように，ベイジアン認知モデリングにおいて，階層モデルなどの複雑なモデルを使う場合，モデルの記述が大変になる。そこで，グラフィカルモデル（プレート表現）を用いると便利です。</p>
 <iframe src="//www.slideshare.net/slideshow/embed_code/key/dEMrpQZqlzszxS?startSlide=48" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
@@ -420,16 +438,16 @@ div.tocify {
 <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-73397771" title="ベイズ統計の基礎" target="_blank">ベイズ統計の基礎</a> </strong> from <strong><a target="_blank" href="//www.slideshare.net/YoshihikoKunisato">Senshu University</a></strong>
 </div>
 </div>
-<div id="diagrammer" class="section level2">
+<div id="diagrammerでグラフィカルモデル" class="section level2">
 <h2>DiagrammeRでグラフィカルモデル</h2>
 <p>グラフィカルモデルを描く場合，<a href="https://github.com/jluttine/tikz-bayesnet">TikZ library for drawing Bayesian networks</a>というLaTeXのライブラリもありますが，RのDiagrammeRパッケージを使って描くこともできます。解析もRstudio上で行うのであれば，モデルの記述もRStudio上で行えると良いかなあと思います。</p>
 </div>
-<div class="section level2">
+<div id="使用パッケージ" class="section level2">
 <h2>使用パッケージ</h2>
 <p>もちろん，DiagrammeRを使います。</p>
 <pre class="r"><code>library(DiagrammeR)</code></pre>
 </div>
-<div id="1" class="section level2">
+<div id="グラフィカルモデルの例1" class="section level2">
 <h2>グラフィカルモデルの例1</h2>
 <p>まず，簡単な例として，Bayesian Cognitive Modeling: A practical CourseのFig2.1を描いてみます。これは，連続的な潜在変数のθと離散的な顕在変数nから，離散的な顕在変数kが生成されるのを表すモデルになります。以下のように，grViz(“digraph dot {…}”,engine = “dot”)内に，graph []でタイトルなどを定義し，node[]でノードを定義し，edge []でエッジを定義します。中身を見てもらえば，大体どこを変更すれば良いか分かるのではないかと思います。</p>
 <pre class="r"><code>grViz(&quot;
@@ -445,8 +463,8 @@ div.tocify {
         theta -&gt; k
         n -&gt; k
     }&quot;,engine = &quot;dot&quot;)</code></pre>
-<div id="htmlwidget-97e24a7fc7afd6943a63" style="width:672px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-97e24a7fc7afd6943a63">{"x":{"diagram":"\n  digraph dot {\n    graph [compound = true, nodesep = .5, ranksep = .25,\n           color = black, label=\"Fig2.1 in Bayesian Cognitive Modeling: A practical Course\"]\n\n      node [shape = circle,style = filled,fillcolor = white,color = black,label = \"&theta;\"] theta\n      node [shape = square,style = filled,fillcolor = grey,color = black,label = \"k\"] k\n      node [shape = square,style = filled,fillcolor = grey,color = black,label = \"n\"] n\n    \n      edge [color = black]\n        theta -> k\n        n -> k\n    }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ab498d14ba6144d20e25" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ab498d14ba6144d20e25">{"x":{"diagram":"\n  digraph dot {\n    graph [compound = true, nodesep = .5, ranksep = .25,\n           color = black, label=\"Fig2.1 in Bayesian Cognitive Modeling: A practical Course\"]\n\n      node [shape = circle,style = filled,fillcolor = white,color = black,label = \"&theta;\"] theta\n      node [shape = square,style = filled,fillcolor = grey,color = black,label = \"k\"] k\n      node [shape = square,style = filled,fillcolor = grey,color = black,label = \"n\"] n\n    \n      edge [color = black]\n        theta -> k\n        n -> k\n    }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>Rmarkdownを使っている場合，LaTeX記法が使えますので，以下のように書くときれいに数式も書けます。</p>
 <pre><code>$$ 
 \theta \sim Beta(1, 1)\\
@@ -457,7 +475,7 @@ $$</code></pre>
 k \sim Binomial(\theta,n)\\
 \]</span></p>
 </div>
-<div id="2" class="section level2">
+<div id="グラフィカルモデルの例2" class="section level2">
 <h2>グラフィカルモデルの例2</h2>
 <p>もう少し複雑なモデルの例として，Linear Ballistic Accumulator Model(解説は<a href="https://ykunisato.github.io/lbaStan/lbaStan.html">こちら</a>)の１参加者用のグラフィカルモデルを描いてみます。</p>
 <p>今度は，上記に加えて，graph []にsplines = lineを追加してエッジがまっすぐになるようにしました。そして，個人内で試行数分反応時間があることから，ループをsubgraph cluster1 {}（つまりプレート）を追加することで，表現しています。</p>
@@ -487,8 +505,8 @@ k \sim Binomial(\theta,n)\\
         t -&gt; lba
         s -&gt; lba [taolport=s,headport=e]
   }&quot;,engine = &quot;dot&quot;)</code></pre>
-<div id="htmlwidget-083e162ed895de440f84" style="width:672px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-083e162ed895de440f84">{"x":{"diagram":"\n  digraph dot {\n    graph [splines = line,compound = true, nodesep = .5, ranksep = .25,\n           color = black, label=\"Linear Ballistic Accumulator Model for single participant\"]\n      node [shape = circle,style = filled,fillcolor = white,color = black,label = \"k\"] k\n      node [label = \"A\"] A\n      node [label = \"&tau;\"] t\n      node [label = \"v[1]\"] v1\n      node [label = \"v[2]\"] v2\n      node [label = \"S\"] s\n      node [label = <LBA<FONT POINT-SIZE=\"8\"><SUB>t<\/SUB><\/FONT>>] lba\n      node [fillcolor = grey,label = <RT<FONT POINT-SIZE=\"8\"><SUB>t<\/SUB><\/FONT>>] rt\n        subgraph cluster1 {\n          labelloc=b\n          label = \"Trials t = 1...T\"\n            edge [color = black]\n              lba -> rt\n        }\n      edge [color = black]\n        A -> lba\n        v1 -> lba\n        v2 -> lba\n        k -> lba\n        t -> lba\n        s -> lba [taolport=s,headport=e]\n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5820802c4da3e9ef820e" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5820802c4da3e9ef820e">{"x":{"diagram":"\n  digraph dot {\n    graph [splines = line,compound = true, nodesep = .5, ranksep = .25,\n           color = black, label=\"Linear Ballistic Accumulator Model for single participant\"]\n      node [shape = circle,style = filled,fillcolor = white,color = black,label = \"k\"] k\n      node [label = \"A\"] A\n      node [label = \"&tau;\"] t\n      node [label = \"v[1]\"] v1\n      node [label = \"v[2]\"] v2\n      node [label = \"S\"] s\n      node [label = <LBA<FONT POINT-SIZE=\"8\"><SUB>t<\/SUB><\/FONT>>] lba\n      node [fillcolor = grey,label = <RT<FONT POINT-SIZE=\"8\"><SUB>t<\/SUB><\/FONT>>] rt\n        subgraph cluster1 {\n          labelloc=b\n          label = \"Trials t = 1...T\"\n            edge [color = black]\n              lba -> rt\n        }\n      edge [color = black]\n        A -> lba\n        v1 -> lba\n        v2 -> lba\n        k -> lba\n        t -> lba\n        s -> lba [taolport=s,headport=e]\n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>数式は以下になります。今度もLaTeX記法で記載します。</p>
 <pre><code>$$ 
 k \sim Normal(.5,1)T[0,]\\
@@ -507,7 +525,7 @@ S = 1 \hspace{30pt}
 </div>
 
 <footer>
-  <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -520,7 +538,7 @@ S = 1 \hspace{30pt}
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -559,7 +577,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

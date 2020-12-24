@@ -25,6 +25,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/icon-192x192.png">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -70,6 +81,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
@@ -437,7 +449,7 @@ div.tocify {
 <h3>1.1 RstudioでjsPsychを使う準備</h3>
 <p>早速，RStudioを起動しましょう。Rstudioが起動すると以下のような画面かと思います。</p>
 <p><img src="fig/jspsych1_fig5.png" /></p>
-<p>まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の<code>devtools::install_github(&quot;ykunisato/jsPsychRmd&quot;)</code>を打ち込んで，インストールしてから，<code>library(jsPsychRmd)</code>を実行してください。</p>
+<p>まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の<code>devtools::install_github("ykunisato/jsPsychRmd")</code>を打ち込んで，インストールしてから，<code>library(jsPsychRmd)</code>を実行してください。</p>
 <pre><code>library(jsPsychRmd)</code></pre>
 <p>次に，RstudioのSession → Set Working Directory → Choose Directoryを選択して，カレントワーキングディレクトリを実験課題の作成をする予定のフォルダに設定します（国里のゼミ生の場合は，GitHubリポジトリのexerciseフォルダを選択してください）。カレントワーキングディレクトリの設定ができたら，Consoleに以下を打ち込みます。</p>
 <pre><code>set_jsPsych(folder = &quot;hello&quot;)</code></pre>
@@ -452,7 +464,7 @@ div.tocify {
 <div id="r-markdonとjspsychで行動課題を作る" class="section level3">
 <h3>1.2 R MarkdonとjsPsychで行動課題を作る</h3>
 <p>R Markdon(ファイルの拡張子は.Rmd)は，ざっくり言うと，文章とプログラミングコード（基本的にはRだが，JavaScriptやPyhtonも使える）をまとめてHTMLファイル(インターネットのサイトを作っているファイル)にして出力してくれるものです。R Markdownの詳細については，<a href="https://kazutan.github.io/kazutanR/Rmd_intro.html">Kazutan氏のサイト</a>が非常に勉強になると思います。R Markdownは，解析コードと文章を１つのファイルに読みやすい形でまとめられるので，解析などでも便利なものですが，ここでは，jsPsychを使って行動課題をHTML出力するために利用します。</p>
-<p>さて，上記の<code>set_jsPsych(folder = &quot;hello&quot;)</code>で作成されたindex.Rmdを開いてください。以下のように，すでに書き込まれているかと思います。まずは，特に考えずに，赤い四角で囲ったKnitをクリックしてみましょう。Knitをクリックすると，RmdからHTMLファイルが作成されて，画面上に「こんにちは！」というのが出てきます。それができていたら，成功です。</p>
+<p>さて，上記の<code>set_jsPsych(folder = "hello")</code>で作成されたindex.Rmdを開いてください。以下のように，すでに書き込まれているかと思います。まずは，特に考えずに，赤い四角で囲ったKnitをクリックしてみましょう。Knitをクリックすると，RmdからHTMLファイルが作成されて，画面上に「こんにちは！」というのが出てきます。それができていたら，成功です。</p>
 <p><img src="fig/jspsych1_fig17.png" /></p>
 <p><br></p>
 </div>
@@ -466,7 +478,7 @@ div.tocify {
 </div>
 <div id="javascriptで課題を作る設定" class="section level3">
 <h3>2.2 JavaScriptで課題を作る設定</h3>
-<p>jsPsychの本体のコードは，チャンクを{js}とします（このチャンク内でjsPsychを使ったjsコードを書きます）。こちらがjsPsychで課題を作成する際の本体になります。jsPsychRmdで<code>set_jsPsych(folder = &quot;hello&quot;)</code>した場合は，以下の内容が事前に入っています。</p>
+<p>jsPsychの本体のコードは，チャンクを{js}とします（このチャンク内でjsPsychを使ったjsコードを書きます）。こちらがjsPsychで課題を作成する際の本体になります。jsPsychRmdで<code>set_jsPsych(folder = "hello")</code>した場合は，以下の内容が事前に入っています。</p>
 <pre><code>/* 全画面表示化 */
 var fullscreen = {
   type: &#39;fullscreen&#39;,
@@ -493,7 +505,7 @@ jsPsych.init({
     jsPsych.data.displayData();
   }
 });</code></pre>
-<p>まず<code>var 名前｛type: &quot;プラグイン&quot;｝</code>で，行動課題の各画面（課題の説明画面，刺激の呈示画面，反応の取得画面など）を作っていきます。今回は，fullscreen（画面を全画面にするかの教示），welcome（画面に「こんにちは！」を呈示する）を用意しています。そして，用意した画面をtimelineにどんどん入れていきます（timelineに入れた順番で画面が用意されます）。今回は，welcomeだけtimelineに入れています（fullscreenは//でコメントアウトされているのでtimelineに入りません）。最後に，jsPsych.initで，timelineに従って実験をするように指定しています。</p>
+<p>まず<code>var 名前｛type: "プラグイン"｝</code>で，行動課題の各画面（課題の説明画面，刺激の呈示画面，反応の取得画面など）を作っていきます。今回は，fullscreen（画面を全画面にするかの教示），welcome（画面に「こんにちは！」を呈示する）を用意しています。そして，用意した画面をtimelineにどんどん入れていきます（timelineに入れた順番で画面が用意されます）。今回は，welcomeだけtimelineに入れています（fullscreenは//でコメントアウトされているのでtimelineに入りません）。最後に，jsPsych.initで，timelineに従って実験をするように指定しています。</p>
 </div>
 <div id="rmdからhtmlファイルを出力する" class="section level3">
 <h3>2.2 RmdからHTMLファイルを出力する</h3>
@@ -729,13 +741,13 @@ jsPsych.init({
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>本ページを作る際に，黒木先生のサイトをかなり参考にさせていただきました。特に，必要最小限のJavaScriptの知識について大変参考になりました。<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>時間が余った人は，演習課題4で３つの配列を順番に呈示した際に配列には４つ入っているのに全て使ってないことに気がついたと思います。全て使い切るにはどうすればよいでしょうか？考えて，試してみましょう。<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>本ページを作る際に，黒木先生のサイトをかなり参考にさせていただきました。特に，必要最小限のJavaScriptの知識について大変参考になりました。<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>時間が余った人は，演習課題4で３つの配列を順番に呈示した際に配列には４つ入っているのに全て使ってないことに気がついたと思います。全て使い切るにはどうすればよいでしょうか？考えて，試してみましょう。<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2019 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -748,7 +760,7 @@ jsPsych.init({
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
