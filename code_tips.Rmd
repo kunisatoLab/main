@@ -67,11 +67,6 @@ title: "Code & Tips"
 
 - [今日からできる再現可能な論文執筆(JPA2020・TWS)](https://ykunisato.github.io/jpa2020-tws-002/)
 
-<!--
-- [ベイズ統計とRstanの最初の一歩](how-to-start-rstan.html)
-準備中！スライドの修正に合わせて公開
--->
-
 
 <br />
 
@@ -88,8 +83,6 @@ title: "Code & Tips"
 - [逐次サンプリングモデル: LBA(準備中)](how-to-cognitive-modeling-ssm2.html)　☆13
 
 - [hBayesDMでベイジアン認知モデリング](how-to-hBayesDM.html)
-
-- [hBayesDMで反応時間のモデリング](how-to-hBayesDM-RT.html)
 
 - [Rを用いたグラフィカルモデルの作成](how-to-graphicalModel.html)
 
