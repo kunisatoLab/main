@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>２次分析研究</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="国里 愛彦" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# ２次分析研究
+### 国里 愛彦
+### 専修大学人間科学部心理学科
+### 2020年7月
+
+---
+
+
+
+
+
+# COVID-19下での心理学研究
+
+- COVID-19の流行により，キャンパスから学生が消えた...
+- キャンパス内での大学生対象のデータ収集は不可能に
+- データ収集しないと心理学の研究はできないのだろうか？
+
+&lt;img style="float: right;" src="pic/02.png" width="200"&gt;
+
+---
+
+# 心理学とデータ
+
+- 心理学は学問としてまとまるなかで，実証的な方法を採用
+- 実証研究ではデータが重要になるため，卒業研究でも新規にデータ収集する事が多い。
+- でも，新規のデータ収集ありきになってない？
+
+
+&lt;img style="float: right;" src="pic/01.png" width="200"&gt;
+
+---
+
+# 良い研究疑問とは？
+
+Hulley et al. (2007) のFINER
+
+1. Feasible = 実行可能である
+2. Interesting = おもしろい／興味深い
+3. Novel = 新しく独創的である
+4. Ethical = 倫理的である
+5. Relevant = 切実である（社会的意義）
+
+過去の研究の蓄積の上に少し上乗せできれば良い！
+
+&lt;img style="float: right;" src="pic/03.png" width="200"&gt;
+
+---
+
+
+# その研究疑問，既出です
+
+- 「本当に新しい研究疑問は稀」(Stewart, 2012)。大体の研究疑問は既出。
+- 既存データで検証できることは既存データを用いたほうが効率的・リソースの節約になる。
+- 卒業研究では入手が難しいようなデータも利用することができたりする(例えば，Yamada, Xu &amp; Sasaki(2020)のコロナ前の1382人の感染脆弱意識尺度データ https://osf.io/qw2af/)
+
+### ２次分析どうでしょう？
+
+---
+
+# ２次分析とは何か？ 
+
+２次分析(Secondary Data Analysis)とは，既存データ（preexisting data）に，既存研究の目的とは違う目的（視点）をもって分析することである。
+
+既存データの種類(Weston et al., 2019)
+
+1. 大規模調査のデータ（政府統計，パネル調査）
+
+2. 個別の研究データ（各研究室のデータ）
+
+3. ビッグデータ（ウェブスクレイピング，レセプト）
+
+---
+
+# ２次分析の目的
+
+- 新しい理論・仮説・数理モデルの検証，新しい領域への応用
+- 観察データから因果推論（差の差分析，回帰不連続デザイン，操作変数法，マッチング法）
+- 探索的検討による仮説生成（新たに参入する領域のデータの感覚をつかめる）
+
+&lt;img style="float: right;" src="pic/11.png" width="200"&gt;
+
+---
+
+# ２次分析の良いところ
+
+- 資金が乏しい研究者では入手できないデータを使える（例えば，数十年に渡る縦断データ，大規模なfMRIデータ）。
+- 新たにデータ収集を始めるよりもコストが小さくなり，研究資源の節約につながる。
+- 数理モデルや認知モデリングなど，すぐにデータで検証できる。
+
+&lt;img style="float: right;" src="pic/12.png" width="200"&gt;
+
+---
+
+# ２次分析の悪いところ
+
+- 関心のある変数が測定されてないor測定の信頼性に疑問がある（大規模調査の場合は，項目数を減らすために，過剰に短縮されることがある）。
+- 研究パラサイト（research parasites）という不名誉な呼び方があるように，他者の収集したデータで研究するものことを低く見る文化がある。
+
+&lt;img style="float: right;" src="pic/13.png" width="200"&gt;
+
+---
+
+# ２次分析はp-hacking天国？
+
+- 2次分析は，p-hacking，選択的アウトカム報告，サブグループ分析がやり放題？
+
+- 有名なデータは，解析前にデータの中身が既知なことも。研究者が実行した分析の数ではなく，分析する可能性があった数が重要。データを見た後での統計的検定は，α水準のインフレを制御できない。
+
+&lt;img style="float: right;" src="pic/14.png" width="200"&gt;
+
+---
+
+# ２次分析の透明性を高める
+
+1. どのようにデータにアクセスしたか（アクセス許可が必要な場合，許可前に解析を登録したか）。
+2. データの事前知識（何度アクセスしたことがあるか，どのような情報を知っているか）。
+3. 分析で用いたコードの公開（方法の再現可能性は低い。データの前処理から用いたコードを公開）。
+4. ２次分析の事前登録（データへのアクセス前や解析前に，検討する仮説や解析方法を登録し，研究者の自由度を小さくする）。研究が確認的研究か探索的研究かを明確にする。
+
+---
+
+# 方法の再現可能性
+
+- Cognition誌で解析可能なデータを公開した35論文の内，22論文だけ結果が再現された(11論文は著者の助けが必要）(Hardwicke et al., 2018)。
+
+- 事前登録されて発表された62論文の内，データと解析スクリプトが利用可能なのが36論文で，そのうち21論文だけで主要な結果が再現された(Obels et al., 2020)。
+
+- 心理学の方法の再現可能性は高くない。２次分析の再現可能性も高める必要がある(国里「再現可能な心理学研究入門」参照)。
+
+---
+
+# 事前登録: 研究情報
+
+Van den Akker et al.(2019)が，２次分析用の事前登録テンプレートを作成(https://osf.io/zmua4/ )。
+
+- Q1 研究タイトル
+- Q2 著者名
+- Q3 研究疑問（「AとBは関係するか？」など，シンプルかつ具体的な疑問にする。根拠も必要）
+- Q4 研究疑問に対応した検証可能な仮説（方向性のある仮説かそうじゃないかを明示）
+
+---
+
+# 事前登録: データ記述
+
+- Q5 データ名と内容（研究デザイン，測定項目，対象者など）
+- Q6 公開されているデータかどうか（オープンデータか，許可を得てアクセスするものか）
+- Q7 どのようにデータにアクセスできるか（DOI, URL, 入手方法など）
+- Q8 ダウンロードやアクセスした日（データが追加されていくものなら，いつDLしたかが重要）
+- Q9 データ収集方法（サンプルの特徴，どうやって収集？）
+- Q10 コードブック（提供されていればURLを。codebookなどのRパッケージもある）
+
+---
+
+# 事前登録: 変数
+
+- Q11 実験操作（介入群など，操作方法を詳細に）
+- Q12 使用する変数（測定や得点化など詳細に）
+- Q13 適格・除外基準とサンプルサイズ（事前登録段階で分からない場合は保守的な推定値）
+- Q14 欠測値とその対処，欠測を除外したサンプルサイズ（分からない場合は推定値）
+- Q15 外れ値とその対処，対処後のサンプルサイズ
+- Q16 サンプリング・ウェイト（データから重み付けをしてサンプリングする場合）
+
+---
+
+# 事前登録: データの知識
+
+- Q17 論文に関わる著者全員が過去に当該データを用いて行った発表をリストにする（過去にデータセットを使用した履歴の情報になるため。サラミ出版を防ぐことにもつながる）
+- Q18 各著者のデータについての予備知識（要約統計，分布，相関係数，データ操作経験，当該データを使った論文などを読んだ経験など。）
+
+→ データの予備知識の提供は，２次分析の事前登録の核心部分。変更可能な仮説や分析方法などが事前知識の影響を受けているかどうかが重要。
+
+---
+
+# 事前登録: 分析1
+
+- Q19 仮説の検討で使う統計モデル（ここに記載していない分析は探索的分析に。コードも含める）
+- Q20 予想した効果量（予備研究やメタ分析などを参考に）
+- Q21 検定力分析（予想した効果量，欠測・外れ値除外後のサンプルサイズを使用する）
+- Q22 統計的推論で用いる基準（効果量，信頼区間， `\(\textit{p}\)` 値，ベイズファクター，適合度指標など。片側or両側，多重比較補正）
+
+---
+
+# 事前登録: 分析2
+
+- Q23 統計モデルの仮定の違反，モデルが収束しないなどの解析の問題が生じた時の対処（天井効果があった場合，正規分布しなかった場合などの工夫を書いておく。恣意的な運用をしないように自由度を下げておく）
+- Q24 統計的検定の強さ，信頼性，頑健性の報告（研究内追試，共変量追加による感度分析，クロスバリデーション，ウェイトの使用，SEMの場合に制約の追加，過学習を防ぐ方法，シミュレーション・サンプリング・ブートストラップなど）
+- Q25 探索的検討を予定している場合に記載する
+
+---
+
+# 推論と頑健性を高める(1)
+
+以下の詳細は，Weston et al.(2019)を参照。
+
+- データブラインド分析: 天文学や臨床試験では行われている。データの一部を変更して（ノイズ追加，変数ラベルのシャッフル），分析を実施して解析方法を確定。実際のデータに戻して同じ方法で分析。
+
+- α水準の調整: α水準のインフレを抑えるために，保守的なα水準を設定する。２次分析で探索的な検討をすると，複数の検定が可能になる。偽陽性が高くならないように，多重比較補正などを工夫する。
+
+---
+
+# 推論と頑健性を高める(2)
+
+- クロスバリデーション: モデルがデータに過剰適合しないよう，データを学習セットとテストセットに分けて，学習セットでモデルに学習をさせてから，テストセットで性能評価。複数のモデルがある場合，さらに訓練データを分析データとアセスメントデータに分けてリサンプリングをして，最も性能の良いものを選ぶこともできる。
+
+- ホールドアウト:　クロスバリデーションの前に，検証用のデータ（ホールドアウトデータ）を確保しておく方法。モデル学習後にホールドアウトデータで性能評価。
+
+---
+
+# 推論と頑健性を高める(3)
+
+- 協調分析(Coordinated analysis): 複数の独立した大規模調査データがある時，研究知見の一般化可能性を検討することができる。例えば，異なる国でのコホート研究データをまとめて，サンプルが異なる場合にも同一の効果が得られるのか検討したり，効果の推定値の異質性なども検討できる。
+
+- 探索的データ分析: 探索的に検討しているのに，あたかも事前に仮説を立てていたかのように書くのが悪い。探索的分析であると明示した上で報告するのが良い（仮説検証が前提となる `\(\textit{p}\)` 値や統計的検定も省くことが推奨される）。
+
+---
+
+# 推論と頑健性を高める(4)
+
+- 感度分析: 分析モデルの一部を変更しても結果に違いがないことを確認する（共変量を追加・除外しても変わらないなど）
+
+- multiverse分析(Steegen et al., 2016):　解析データは様々な処理によって構成されているのでmultiverseと考え，処理の違いによるすべての可能性を検定。
+
+---
+
+# 推論と頑健性を高める(5)
+
+- specification-curve分析（Simonsohn et al., 2015）: 分析上の決定を網羅的に検討し，解析を実施した上で，効果の順番で並べ替えて検討（効果の中央値，有意な結果の数）。
+
+&lt;img style="float" src="pic/16.png" width="600"&gt;
+
+---
+
+# オープンデータの増加
+
+- Hardwicke et al.(2018)は，Cognition誌がオープンデータ方針を導入した2015年3月1日の前後で，論文内でのデータの利用可能性の記載の変化を回帰不連続デザインで検討。明らかに増加。
+
+&lt;img style="float" src="pic/04.jpg" width="400"&gt;
+
+---
+
+# オープンデータはどこに？
+
+- [心理学関連オープンデータリスト（国里と有志の方がまとめたもの）](https://docs.google.com/spreadsheets/d/1LMREITla_T3caRrPhGihTEB2U7QDiEn78HH4VBgQ8Rs/edit#gid=0)
+- Open Science Framework (https://osf.io/)
+- Elsevier DataSearch (https://datasearch.elsevier.com)
+- Google Dataset Search (https://datasetsearch.research.google.com/)
+- DataCite Search (https://search.datacite.org/)
+- Data Citation Index (Web of Scienceの一部で有料）
+
+※ライセンスの説明に注意。各DBは池内(2019b)参照
+
+---
+
+# オープンデータのRでの利用
+
+国里のウェブサイトにて以下の利用法の解説をしています(https://kunisatolab.github.io/main/how-to-open-data.html )。
+
+- openPsychData: 心理学関連オープンデータをダウンロードするパッケージ（国里作成パッケージ，要望に応じて徐々にデータを増やす予定）
+- osfr: Open Science FrameworkにアップロードされているデータやコードをRに読み込む。
+- GitHubにアップされているデータやコードをリンクアドレスからRに読み込む。
+
+---
+
+# どのデータを使う？
+
+- OSFにはどういうデータか謎なデータもある（授業の学生プロジェクトのデータ？など）。どういうデータを選ぶ？
+- 池内(2019a)では，データに関連した情報（著者，論文），研究手法（コードがついているか，ビデオも含む論文以上の詳細なマテリアルがある）などが選択の基準として挙げられている。
+
+→卒論では，指導教員は，データの選択について専門的知識を提供する。また，事前登録を公的にしなくとも卒論時にはそれに準じた対応をとる。
+
+---
+
+# まとめ
+
+### 既存のデータを用いた２次分析でも意義のある心理学研究はできる! データ収集の制約がなくなるぶん，自由なテーマ設定もできる。
+
+### ２次分析は，pハッキングなどの不適切な研究実践に繋がってしまう可能性がある。そのため，事前登録や解析の頑健性の検証などが必要になる。
+
+---
+
+# 引用文献
+.small[
+- 池内有為. (2019a). 研究データの信頼性―データの選択方法と質の向上. 情報の科学と技術, 69(9), 435–437.
+- 池内有為. (2019b). 研究データの検索ツール. 情報の科学と技術, 69(6), 256–258.
+- Obels, P., Lakens, D., Coles, N. A., Gottfried, J., &amp; Green, S. A. (2020). Analysis of Open Data and Computational Reproducibility in Registered Reports in Psychology. Advances in Methods and Practices in Psychological Science, 2515245920918872.
+- Simonsohn, U., Simmons, J. P., &amp; Nelson, L. D. (2019). Specification Curve: Descriptive and Inferential Statistics on All Reasonable Specifications (October 29, 2019). Available at SSRN: http://dx.doi.org/10.2139/ssrn.2694998
+- Steegen, S., Tuerlinckx, F., Gelman, A., &amp; Vanpaemel, W. (2016). Increasing Transparency Through a Multiverse Analysis. Perspectives on Psychological Science: A Journal of the Association for Psychological Science, 11(5), 702–712.
+- Stewart, D. W. (2012). Secondary analysis and archival research: Using data collected by others. In APA handbook of research methods in psychology, Vol 3: Data analysis and research publication, pp. 473–484.
+- Van den Akker, O., Weston, S. J., Campbell, L., Chopik, W. J., Damian, R. I., Davis-Kean, P., Hall, A. N., Kosie, J. E., Kruse, E. T., Olsen, J., Ritchie, S. J., Valentine, K. D., van ’t Veer, A. E., &amp; Bakker, M. (2019). Preregistration of secondary data analysis: A template and tutorial. https://doi.org/10.31234/osf.io/hvfmr
+
+]
+
+---
+
+# 引用文献
+.small[
+- Weston, S. J., Ritchie, S. J., Rohrer, J. M., &amp; Przybylski, A. K. (2019). Recommendations for Increasing the Transparency of Analysis of Preexisting Data Sets. Advances in Methods and Practices in Psychological Science, 2(3), 214–227.
+- Yamada Y, Xu H and Sasaki K. A dataset for the perceived vulnerability to disease scale in Japan before the spread of COVID-19 [version 1; peer review: awaiting peer review]. F1000Research 2020, 9:334 (https://doi.org/10.12688/f1000research.23713.1)
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
