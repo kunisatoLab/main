@@ -13,12 +13,22 @@
 
 <title>学術論文</title>
 
+<script src="site_libs/header-attrs-2.6.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,6 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +72,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -116,36 +92,6 @@ summary {
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +119,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +131,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +142,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +170,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,13 +295,13 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -416,7 +374,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -428,10 +386,16 @@ div.tocify {
 <div id="in-press" class="section level3">
 <h3>in press</h3>
 <ul>
-<li>[32] Shimono, Y., Hasegawa, A., Tsuchihara, K., Tanaka, K., Matsuda, Y., &amp; Kunisato, Y.(in press) Longitudinal association between autistic traits and affinity for hikikomori in Japanese university students. Current Psychology,</li>
+<li>[33] Shimono, Y., Hasegawa, A., Tsuchihara, K., Tanaka, K., Matsuda, Y., &amp; Kunisato, Y.(in press) Longitudinal association between autistic traits and affinity for hikikomori in Japanese university students. Current Psychology,</li>
 </ul>
 </div>
 <div id="section" class="section level3">
+<h3>2021</h3>
+<ul>
+<li>[32] van Doorn, J., van den Bergh, D., Dablander, F., van Dongen, N., Derks, K., Evans, N., Gronau, Q., Haaf, J., Kunisato, Y., Ly, A., Marsman, M., Sarafoglou, A., Stefan, A., &amp; Wagenmakers, EJ.(2011) Strong public claims may not reflect researchers’ private convictions. Significance, 18(1), 44-45.</li>
+</ul>
+</div>
+<div id="section-1" class="section level3">
 <h3>2020</h3>
 <ul>
 <li><p>[31] Kato, A., Kunisato, Y., Katahira, K., Okimura, T., &amp; Yamashita, Y. (2020) Computational Psychiatry Research Map (CPSYMAP): a New Database for Visualizing Research Papers. Frontiers in Psychiatry, 11, 1360.<a href="https://www.frontiersin.org/articles/10.3389/fpsyt.2020.578706/full">Link</a></p></li>
@@ -439,7 +403,7 @@ div.tocify {
 <li><p>[29] Katahira, K., Kunisato, Y., Yamashita, Y., &amp; Suzuki, S. (2020) Commentary: “A robust data-driven approach identifies four personality types across four large data sets”. Frontiers in Big Data, 3(8). <a href="https://www.frontiersin.org/articles/10.3389/fdata.2020.00008/full">Link</a></p></li>
 </ul>
 </div>
-<div id="section-1" class="section level3">
+<div id="section-2" class="section level3">
 <h3>2019</h3>
 <ul>
 <li><p>[28] Nishiguchi, Y., Sakamoto, J., Kunisato, Y., &amp; Takano, K. (2019) Linear Ballistic Accumulator Modeling of Attentional Bias Modification Revealed Disturbed Evidence Accumulation of Negative Information by Explicit Instruction. Frontiers in Psychology,10, 2447. <a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2019.02447/full">Link</a></p></li>
@@ -447,7 +411,7 @@ div.tocify {
 <li><p>[26] Hasegawa, A., Somatori, K., Nishimura, H., Hattori, Y., &amp; Kunisato, Y. (2019). Associations between self-reported impulsivity and a latent variable of impulsive action constructed from three laboratory tasks. Journal of Experimental Psychopathology, 10, 3. <a href="https://journals.sagepub.com/doi/full/10.1177/2043808719861894">Link</a></p></li>
 </ul>
 </div>
-<div id="section-2" class="section level3">
+<div id="section-3" class="section level3">
 <h3>2018</h3>
 <ul>
 <li><p>[25] Hasegawa, A., Kunisato, Y., Morimoto, H., Nishimura, H., &amp; Matsuda, Y. (2018). Depressive rumination and urgency have mutually enhancing relationships but both predict unique variance in future depression: A longitudinal study. Cogent Psychology, 5: 1450919.ß <a href="https://www.tandfonline.com/doi/full/10.1080/23311908.2018.1450919">Link</a></p></li>
@@ -455,28 +419,28 @@ div.tocify {
 <li><p>[23] Takagaki, K., Okamoto, Y., Jinnin, R., Mori, A., Nishiyama, Y., Yamamura, T., Yokoyama, S., Shiota, S., Okamoto, Y., Miyake, Y., Ogata, A., Kunisato, Y., Shimoda, H., Kawakami, N., Furukawa, T. A., &amp; Yamawaki. (2018). Enduring effects of a five-week behavioral activation program for subthreshold depression among late adolescents: an exploratory randomized controlled trial. Neuropsychiatric Disease and Treatment , 14, 2633-2641. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6186299/">Link</a></p></li>
 </ul>
 </div>
-<div id="section-3" class="section level3">
+<div id="section-4" class="section level3">
 <h3>2017</h3>
 <ul>
 <li><p>[22] Moriguchi, Y., Noda, T., Nakayashiki, K., Takata, Y., Setoyama, S., Kawasaki, S., Kunisato, Y., Mishima, K., Nakagome, K., Hanakawa, T. (2017). Validation of brain-derived signals in near-infrared spectroscopy through multivoxel analysis of concurrent functional magnetic resonance imaging. Human Brain Mapping, 38(10), 5274–5291. <a href="https://onlinelibrary.wiley.com/doi/full/10.1002/hbm.23734">Link</a></p></li>
 <li><p>[21] Yoshimura, S., Okamoto, Y., Matsunaga, M., Onoda, K., Okada, G., Kunisato, Y., Yoshino, A., Ueda, K., Suzuki, S., &amp; Yamawaki, S. (2017). Cognitive behavioral therapy changes functional connectivity between medial prefrontal and anterior cingulate cortices, Journal of Affective Disorders, 15(208), 610-614. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0165032716305195">Link</a></p></li>
 </ul>
 </div>
-<div id="section-4" class="section level3">
+<div id="section-5" class="section level3">
 <h3>2016</h3>
 <ul>
 <li><p>[20] Takagaki, K., Okamoto, Y., Jinnin, R., Mori, A., Nishiyama, Y., Yamamura, T., Yokoyama, S., Shiota, S., Okamoto, Y., Miyake, Y., Ogata, A., Kunisato, Y., Shimoda, H., Kawakami, N., Furukawa, A. T., &amp; Yamawaki. (2016). Behavioral activation for late adolescents with subthreshold depression: a randomized controlled trial. European Child &amp; Adolescent Psychiatry, 25(11), 1171-1182. <a href="https://link.springer.com/article/10.1007/s00787-016-0842-5">Link</a></p></li>
 <li><p>[19] Hasegawa, A., Nishimura, H., Matsuda, Y., Kunisato, Y., Morimoto, H., &amp; Adachi, M. (2016). Is trait rumination associated with the ability to generate effective problem solving strategies? Utilizing two versions of the Means-Ends Problem-Solving Test. Journal of Rational-Emotive &amp; Cognitive-Behavior Therapy, 34, 14-30. <a href="https://pubmed.ncbi.nlm.nih.gov/26900257/">Link</a></p></li>
 </ul>
 </div>
-<div id="section-5" class="section level3">
+<div id="section-6" class="section level3">
 <h3>2015</h3>
 <ul>
 <li><p>[18] Tsukue, R., Okamoto, Y., Yoshino, A., Kunisato, Y., Takagaki, K., Takebayashi, Y., Tanaka, K., Konuma, K., Tsukue, I., &amp; Yamawaki, S. (2015) Do Individuals with Alcohol Dependence Show Higher Unfairness Sensitivity? The Relationship Between Impulsivity and Unfairness Sensitivity in Alcohol-Dependent Adults. Alcoholism, clinical and experimental research, 39(10), 2016-2021. <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/acer.12832">Link</a></p></li>
 <li><p>[17] Nishiyama,Y., Okamoto, Y., Kunisato, Y., Okada, G., Yoshimura, S., Kanai, Y., Yamamura, T., Yoshino, A., Jinnin, R., Takagaki, K., Onoda, K., &amp; Yamawaki, S. (2015) fMRI Study of Social Anxiety during Social Ostracism with and without Emotional Support. PLoS ONE 10(5): e0127426. <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0127426">Link</a></p></li>
 </ul>
 </div>
-<div id="section-6" class="section level3">
+<div id="section-7" class="section level3">
 <h3>2014</h3>
 <ul>
 <li><p>[16] Machino, A., Kunisato, Y., Matsumoto, T., Yoshimura, S., Ueda, K., Yamawaki, Y., Okada, G., Okamoto, Y., &amp; Yamawaki, S (2014) Possible involvement of rumination in gray matter abnormalities in persistent symptoms of major depression: an exploratory magnetic resonance imaging voxel-based morphometry study, Journal of Affective Disorders, 168, 229-235. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0165032714003917?via%3Dihub">Link</a></p></li>
@@ -484,7 +448,7 @@ div.tocify {
 <li><p>[14] Toki, S., Okamoto, Y., Onoda, K., Matsumoto, T., Yoshimura, S., Kunisato, Y., Okada, G., Shishida, K., Kobayakawa, M., Fukumoto, T., Machino, A., Inagaki, M., Yamawaki, S. (2014). Hippocampal activation during associative encoding of word pairs and its relation to symptomatic improvement in depression: A functional and volumetric MRI study. Journal of Affective Disorder, 152, 462-467. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0165032713005892?via%3Dihub">Link</a></p></li>
 </ul>
 </div>
-<div id="section-7" class="section level3">
+<div id="section-8" class="section level3">
 <h3>2013</h3>
 <ul>
 <li><p>[13] Yoshimura, S., Okamoto, Y., Onoda, K., Matsunaga, M., Okada, G., Kunisato, Y., Yoshino, A., Ueda, K., Suzuki, S., &amp; Yamawaki, S. (2013). Cognitive behavioral therapy for depression changes medial prefrontal and ventral anterior cingulate cortex activity associated with self-referential processing. Social Cognitive and Affective Neuroscience, 9(4), 487-493. <a href="https://academic.oup.com/scan/article/9/4/487/1629777">Link</a></p></li>
@@ -492,7 +456,7 @@ div.tocify {
 <li><p>[11] Koseki, S., Noda., T., Yokoyama, S., Kunisato, Y., Ito, D., Suyama, H., Matsuda, T., Sugimura, Y., Ishihara, N., Shimizu, Y., Nakazawa, K., Yoshida, S., Arima, K., Suzuki,S. (2013). The relationship between positive and negative automatic thought and activity in the prefrontal and temporal cortices: A multi-channel near-infrared spectroscopy (NIRS) study, Journal of Affective Disorders, 151(1), 352-359. <a href="https://www.sciencedirect.com/science/article/pii/S0165032713004461">Link</a></p></li>
 </ul>
 </div>
-<div id="section-8" class="section level3">
+<div id="section-9" class="section level3">
 <h3>2012</h3>
 <ul>
 <li><p>[10] Kinoshita, A., Okamoto, Y., Okada, G., Demoto, Y., Kunisato, Y., Yoshimura, S., Onoda,K., Kamachi, M., Yamawaki, S. (2012) Sex differences in neural activation to ambiguous facial expression in happy and sad context, Perceptual and Motor Skills, 115(2), 349-359. <a href="https://journals.sagepub.com/doi/abs/10.2466/22.24.PMS.115.5.349-359">Link</a></p></li>
@@ -501,7 +465,7 @@ div.tocify {
 <li><p>[7] Demoto, Y., Okada, G., Okamoto, Y., Kunisato, Y., Aoyama, S., Onoda, K., Munakata, A., Nomura, M., Tanaka, S. C., Schweighofer, N., Doya, K., Yamawaki, S. (2012) Neural And Personality Correlates of Individual Differences Related to the Effects of Acute Tryptophan Depletion on Future Reward Evaluation, Neuropsychobiology, 65, 55-64. <a href="https://www.karger.com/Article/Abstract/328990">Link</a></p></li>
 </ul>
 </div>
-<div id="section-9" class="section level3">
+<div id="section-10" class="section level3">
 <h3>2011</h3>
 <ul>
 <li><p>[6] Okada, G., Okamoto, Y., Kunisato, Y., Aoyama, S., Nishiyama, Y., Yoshimura, S., Onoda, K., Toki, S., Yamashita, H., &amp; Yamawaki, S. (2011) The effect of negative and positive emotionality on associative memory: An fMRI study, PLoS ONE, 6(9),e24862. <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0024862">Link</a></p></li>
@@ -510,7 +474,7 @@ div.tocify {
 <li><p>[3] Kunisato,Y., Okamoto, Y., Okada, G., Aoyama, S., Demoto, Y., Munakata, A., Nomura, M., Onoda, K., Yamawaki, S. (2011) Modulation of default - mode network activity by acute tryptophan depletion is associated with mood change：A resting state functional magnetic resonance imaging study. Neuroscience Research, 69, 129-134. <a href="https://www.sciencedirect.com/science/article/pii/S016801021002835X?via%3Dihub">Link</a></p></li>
 </ul>
 </div>
-<div id="section-10" class="section level3">
+<div id="section-11" class="section level3">
 <h3>2010</h3>
 <ul>
 <li><p>[2] Matsunaga, M., Okamoto, Y., Suzuki, S., Kinoshita, A., Yoshimura, S., Yoshino, A., Kunisato, Y. &amp; Yamawaki, S. (2010). Psychosocial functioning in patients with treatment-resistant depression after group cognitive behavioral therapy. Bmc Psychiatry, 10(1), 22. <a href="https://bmcpsychiatry.biomedcentral.com/articles/10.1186/1471-244X-10-22">Link</a></p></li>
@@ -550,7 +514,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>

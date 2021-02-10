@@ -5,7 +5,11 @@ title: "学術論文"
 
 ### in press
 
-- [32] Shimono, Y., Hasegawa, A., Tsuchihara, K., Tanaka, K., Matsuda, Y., & Kunisato, Y.(in press) Longitudinal association between autistic traits and affinity for hikikomori in Japanese university students. Current Psychology, 
+- [33] Shimono, Y., Hasegawa, A., Tsuchihara, K., Tanaka, K., Matsuda, Y., & Kunisato, Y.(in press) Longitudinal association between autistic traits and affinity for hikikomori in Japanese university students. Current Psychology, 
+
+### 2021
+
+- [32] van Doorn, J., van den Bergh, D., Dablander, F., van Dongen, N., Derks, K., Evans, N., Gronau, Q., Haaf, J., Kunisato, Y., Ly, A., Marsman, M., Sarafoglou, A., Stefan, A., & Wagenmakers, EJ.(2011) Strong public claims may not reflect researchers' private convictions. Significance, 18(1), 44-45.
 
 
 ### 2020
