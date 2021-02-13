@@ -9,7 +9,7 @@ title: "学術論文"
 
 ### 2021
 
-- [32] van Doorn, J., van den Bergh, D., Dablander, F., van Dongen, N., Derks, K., Evans, N., Gronau, Q., Haaf, J., Kunisato, Y., Ly, A., Marsman, M., Sarafoglou, A., Stefan, A., & Wagenmakers, EJ.(2011) Strong public claims may not reflect researchers' private convictions. Significance, 18(1), 44-45.
+- [32] van Doorn, J., van den Bergh, D., Dablander, F., van Dongen, N., Derks, K., Evans, N., Gronau, Q., Haaf, J., Kunisato, Y., Ly, A., Marsman, M., Sarafoglou, A., Stefan, A., & Wagenmakers, EJ.(2011) Strong public claims may not reflect researchers' private convictions. Significance, 18(1), 44-45.[Pre Print](https://psyarxiv.com/pc4ad/)
 
 
 ### 2020
