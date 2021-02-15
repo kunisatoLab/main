@@ -63,7 +63,7 @@ title: "Code & Tips"
 
 - [Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法](how-to-docker-compose-https.html)
 
-- [２次分析研究](secondary_analysis.html)
+- [２次分析研究](slide_presented.html)
 
 - [今日からできる再現可能な論文執筆(JPA2020・TWS)](https://ykunisato.github.io/jpa2020-tws-002/)
 

@@ -1,0 +1,6 @@
+---
+title: "発表スライドについて"
+---
+
+## 国里が行った発表のスライドの一部は，こちらに移動しております。お手数ですが，以下のリンク先でご確認ください。
+## [https://ykunisato.github.io/ccp-lab-slide/](https://ykunisato.github.io/ccp-lab-slide/)
