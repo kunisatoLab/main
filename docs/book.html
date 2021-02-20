@@ -13,12 +13,22 @@
 
 <title>書籍</title>
 
+<script src="site_libs/header-attrs-2.6.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,6 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +72,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -116,36 +92,6 @@ summary {
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +119,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +131,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +142,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +170,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,13 +295,13 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -416,7 +374,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -426,12 +384,18 @@ div.tocify {
 
 
 <div id="section" class="section level3">
+<h3>2021</h3>
+<ul>
+<li>[26] 国里愛彦(2021). 「STROBE声明」,「STARD声明」，「CARE声明」，「CONSORT声明」，「場面見本法」，「PRISMA声明」，「PECO／PICO」，「無作為化比較試験」，「臨床試験」　『有斐閣　現代心理学辞典』有斐閣 2021年2月25日</li>
+</ul>
+</div>
+<div id="section-1" class="section level3">
 <h3>2020</h3>
 <ul>
 <li>[25] 国里愛彦(2020). 第１章「動機づけ」　『公認心理師の基礎と実践9:感情・人格心理学』pp.31-41(全197ページ). 遠見書房</li>
 </ul>
 </div>
-<div id="section-1" class="section level3">
+<div id="section-2" class="section level3">
 <h3>2019</h3>
 <ul>
 <li><p>[24]宗田卓史・国里愛彦・片平健太郎・沖村 宰・山下祐一(2019).　計算神経科学と精神医学：情報の観点から精神疾患を見る　『Power Mook 精神医学の基盤』 Vol 4 No1, pp107-117. 学樹書院</p></li>
@@ -440,7 +404,7 @@ div.tocify {
 <li><p>[21] 国里愛彦(2019). 第３章 「レスポンデント学習の理論モデル(pp.275-279)」，「レスポンデント学習の理論に基づくケースフォーミュレーション(pp.280-284)」下山晴彦・伊藤絵美・黒田美保・鈴木伸一・松田　修（編)『公認心理師技法ガイド：臨床の場で役立つ実践のすべて』文光堂 2019年3月26日　 <a href="https://www.amazon.co.jp/dp/4830636262/ref=cm_sw_em_r_mt_dp_U_DL7SCbXZFBA0R">Amazon.co.jp</a></p></li>
 </ul>
 </div>
-<div id="section-2" class="section level3">
+<div id="section-3" class="section level3">
 <h3>2018</h3>
 <ul>
 <li><p>[20] 国里愛彦(2018). 「第14章　アセスメントにおける倫理的問題と法的問題」スーザン C. ウィストン(著)石川信一・佐藤寛・高橋史（監訳）『カウンセリングにおけるアセスメントの原理と適用』，金子書房，pp.343-364. <a href="http://amzn.asia/d/7dg5Zgq">Amazon.co.jp</a></p></li>
@@ -449,7 +413,7 @@ div.tocify {
 <li><p>[17] 国里愛彦(2018). 「第5章　健康関連のパーソナリティの測定と評価」　『健康心理学の測定法・アセスメント』鈴木伸一（編）, ナカニシヤ出版, pp.66-82. <a href="http://amzn.asia/d/73OpXuw">Amazon.co.jp</a></p></li>
 </ul>
 </div>
-<div id="section-3" class="section level3">
+<div id="section-4" class="section level3">
 <h3>2017</h3>
 <ul>
 <li><p>[16] 国里愛彦(2017).「第24章　被予測変数がカウント変数の場合」』『ベイズ統計モデリング: R,JAGS, Stanによるチュートリアル 原著第2版』John K. Kruschke著，前田和寛・小杉考司監訳, 共立出版, pp.711-727.<a href="http://amzn.asia/i6FoTrJ">Amazon.co.jp</a></p></li>
@@ -457,20 +421,20 @@ div.tocify {
 <li><p>[14] 国里愛彦(2017). 「第５章　臨床心理学研究におけるサンプルサイズ設計」　『心理学のためのサンプルサイズ設計入門』　村井潤一郎・橋本貴充（共編）,　講談社，pp.86-106. <a href="http://amzn.asia/0GOsHDM">Amazon.co.jp</a></p></li>
 </ul>
 </div>
-<div id="section-4" class="section level3">
+<div id="section-5" class="section level3">
 <h3>2016</h3>
 <ul>
 <li><p>[13] 国里愛彦 (2016). 脳画像検査　『公認心理師必携　精神医療・臨床心理の知識と技法』下山晴彦・中嶋義文(編)　医学書院　pp197-198. 2016/9/1 <a href="http://amzn.asia/cWb3VuR">Amazon.co.jp</a></p></li>
 <li><p>[12] 国里愛彦 (2016). 「2.4 不適応の問題」&amp;「2.5 心理的援助（心理的介入）」　『図説　現代心理学入門 [四訂版]』金城辰夫監修、山上精次・藤岡新治・下斗米淳(共編)　培風館 pp.56-65. 2016/3/30 <a href="http://amzn.asia/3mCXXJN">Amazon.co.jp</a></p></li>
 </ul>
 </div>
-<div id="section-5" class="section level3">
+<div id="section-6" class="section level3">
 <h3>2015</h3>
 <ul>
 <li>[11] 国里愛彦(2015) 行動医学と生物統計学 p73-78「行動医学テキスト」日本行動医学会編集（編集委員：野村忍・堤明純・島津明人・中尾睦宏・吉内一浩）2015/10/25 <a href="http://amzn.asia/cpANGJ5">Amazon.co.jp</a></li>
 </ul>
 </div>
-<div id="section-6" class="section level3">
+<div id="section-7" class="section level3">
 <h3>2013</h3>
 <ul>
 <li><p>[10] 『セラピストのための行動活性化ガイドブック＜うつ病を治療する10の中核原則＞』坂井誠・大野裕（監訳）創元社，2012年（担当した章：１章「序論　行動活性化の歴史」) <a href="http://amzn.asia/9yjCNHr">Amazon.co.jp</a></p></li>
@@ -479,13 +443,13 @@ div.tocify {
 <li><p>[7] 『APA心理学大辞典』　Gary R. VandenBos (監修), 繁桝算男・四本裕子(監訳)　培風館, 2013年（一部翻訳）.<a href="http://amzn.asia/eRIahSG">Amazon.co.jp</a></p></li>
 </ul>
 </div>
-<div id="section-7" class="section level3">
+<div id="section-8" class="section level3">
 <h3>2012</h3>
 <ul>
 <li>[6] 『うつを克服するための行動活性化練習帳：認知行動療法の新しい技法』大野裕・岡本泰昌（監訳）うつの行動活性化療法研究会（訳）　創元社，2012年（担当した章：１章) <a href="http://amzn.asia/9GW1z8K">Amazon.co.jp</a></li>
 </ul>
 </div>
-<div id="section-8" class="section level3">
+<div id="section-9" class="section level3">
 <h3>2011</h3>
 <ul>
 <li><p>[5] 『さあ！やってみよう　集団認知行動療法　うつ・不安への支援のために』集団認知行動療法研究会（監修） 医学映像教育センター　2011年　（松永美希・岡本泰昌・鈴木伸一・吉村晋平・国里愛彦・山脇成人(著) 「第２章 各施設の実践例: 広島大学病院精神神経科の場合」, p 20-30) <a href="http://amzn.asia/cyzswp7">Amazon.co.jp</a></p></li>
@@ -494,7 +458,7 @@ div.tocify {
 <li><p>[2] 『うつ病治療ハンドブック　診療のコツ』　大野裕（編）　金剛出版　2011年（国里愛彦・岡本泰昌（著）「行動活性化療法」, p 264-270） <a href="http://amzn.asia/72OLvVf">Amazon.co.jp</a></p></li>
 </ul>
 </div>
-<div id="section-9" class="section level3">
+<div id="section-10" class="section level3">
 <h3>2008</h3>
 <ul>
 <li>[1] 『さあ！はじめよう　うつ病の集団認知行動療法』　秋山剛・大野裕（監修）医学映像教育センター 2008年 (松永美希・鈴木伸一・岡本泰昌・木下亜紀子・上田一貴・小野田慶一・吉野敦雄・国里愛彦・山脇成人 (著) 「広島大学病院精神科における集団認知行動療法」, p146-149) <a href="http://amzn.asia/dn1cUT7">Amazon.co.jp</a></li>
@@ -533,7 +497,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
