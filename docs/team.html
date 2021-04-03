@@ -13,12 +13,22 @@
 
 <title>研究室のメンバー</title>
 
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,6 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +72,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -112,40 +88,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +122,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +134,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +145,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +173,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,13 +298,13 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -416,7 +377,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -440,44 +401,63 @@ div.tocify {
 <div id="大学院生博士過程" class="section level3">
 <h3>大学院生（博士過程）</h3>
 <ul>
-<li><a href="https://ksomatori.github.io/homepage/index.html">杣取恵太</a>　<a href="materials/FB/2018_somatori.pdf">参加者用研究FB</a></li>
+<li><a href="https://ksomatori.github.io/homepage/index.html">杣取恵太</a></li>
+</ul>
+</div>
+<div id="大学院生修士３年" class="section level3">
+<h3>大学院生（修士３年）</h3>
+<ul>
+<li>井上圭右</li>
 </ul>
 </div>
 <div id="大学院生修士２年" class="section level3">
 <h3>大学院生（修士２年）</h3>
 <ul>
-<li>井上圭右</li>
+<li>山崎　智</li>
 </ul>
 </div>
 <div id="大学院生修士１年" class="section level3">
 <h3>大学院生（修士１年）</h3>
 <ul>
-<li>山崎　智</li>
+<li>齋藤裕希子</li>
 </ul>
 </div>
 <div id="学部生４年" class="section level3">
 <h3>学部生（４年）</h3>
-<ul>
-<li>齋藤裕希子</li>
-<li>ウ ジヒ</li>
-<li>田中遼太</li>
-<li>五十嵐大知</li>
-</ul>
-</div>
-<div id="学部生３年" class="section level3">
-<h3>学部生（３年）</h3>
 <ul>
 <li>澤村直樹</li>
 <li>朱延盛</li>
 <li>小嶺幸司</li>
 </ul>
 </div>
+<div id="学部生３年" class="section level3">
+<h3>学部生（３年）</h3>
+<ul>
+<li>藁科佳奈</li>
+<li>隅田昌孝</li>
+<li>許　懐中</li>
+<li>村口ゆら</li>
+<li>岡野真由</li>
+</ul>
+</div>
 <div id="obog" class="section level3">
 <h3>OB・OG</h3>
 </div>
 <div id="年度" class="section level3">
-<h3>2019年度</h3>
+<h3>2020年度</h3>
 <div id="学部" class="section level4">
+<h4>学部</h4>
+<ul>
+<li>齋藤裕希子 (卒業論文題目「心理学的ネットワーク解析を用いた内受容感覚及び不安や抑うつとの関係の検討」)</li>
+<li>ウ ジヒ (卒業論文題目「自己複雑性と抑うつの関連についてのメタ分析：文化差の検討」)</li>
+<li>田中遼太 (卒業論文題目「社交不安に対する注意バイアス修正の効果に対するメタ分析―文化差に注目して―」)</li>
+<li>五十嵐大知 (卒業論文題目「心理学的ネットワーク解析を用いた社交不安症と対人恐怖症の比較」)</li>
+</ul>
+</div>
+</div>
+<div id="年度-1" class="section level3">
+<h3>2019年度</h3>
+<div id="学部-1" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>菊池流那</li>
@@ -491,9 +471,9 @@ div.tocify {
 <p>※国里が在外研究中（アムステルダム大学）だったため，2019年度のゼミは，帝京大学の飯島雄大先生にご指導いただきました。</p>
 </div>
 </div>
-<div id="年度-1" class="section level3">
+<div id="年度-2" class="section level3">
 <h3>2018年度</h3>
-<div id="学部-1" class="section level4">
+<div id="学部-2" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>阿久津裕史(卒業論文題目「感情への恐れがマインドフルネス特性及びひきこもり親和性に与える影響について」）</li>
@@ -513,9 +493,9 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="年度-2" class="section level3">
+<div id="年度-3" class="section level3">
 <h3>2017年度</h3>
-<div id="学部-2" class="section level4">
+<div id="学部-3" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>福地友輔(卒業論文題目「重要他者に対する再確認傾向と表情認知及び不安の関連」）</li>
@@ -547,9 +527,9 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="年度-3" class="section level3">
+<div id="年度-4" class="section level3">
 <h3>2016年度</h3>
-<div id="学部-3" class="section level4">
+<div id="学部-4" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>山本由佳(卒業論文題目「対人場面における認知的方略の違いと抑うつの関連」）</li>
@@ -568,9 +548,9 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="年度-4" class="section level3">
+<div id="年度-5" class="section level3">
 <h3>2015年度</h3>
-<div id="学部-4" class="section level4">
+<div id="学部-5" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>仁添未亜(卒業論文題目「イメージの視点と対人不安・抑うつの関連: 公的自己意識と不快情動喚起状況におけるイメージの内的・外的視点の観点から」）</li>
@@ -590,9 +570,9 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="年度-5" class="section level3">
+<div id="年度-6" class="section level3">
 <h3>2014年度</h3>
-<div id="学部-5" class="section level4">
+<div id="学部-6" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>古川颯人(卒業論文題目「マインドワンダリングと創造性の研究」)</li>
@@ -607,9 +587,9 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="年度-6" class="section level3">
+<div id="年度-7" class="section level3">
 <h3>2013年度</h3>
-<div id="学部-6" class="section level4">
+<div id="学部-7" class="section level4">
 <h4>学部</h4>
 <ul>
 <li>上野駿介(卒業論文題目「火のある風景描画法による攻撃性へのカタルシス効果の検討」)</li>
@@ -653,7 +633,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
