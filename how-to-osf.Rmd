@@ -1,5 +1,5 @@
 ---
-title: "ゼミでのGithubの活用"
+title: "ゼミでのOSFの活用"
 ---
 ## ゼミでのGitHubの活用
 
