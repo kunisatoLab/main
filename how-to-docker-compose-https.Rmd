@@ -152,7 +152,7 @@ networks:
 
 services:
   traefik:
-    image: traefik:v1.7.18
+    image: traefik:v1.7.30
     command: --docker
     ports:
       - 80:80
@@ -222,18 +222,119 @@ sudo docker-compose -f /opt/traefik/docker-compose.yml up -d
 - [JATOS](https://hub.docker.com/r/jatos/jatos): JATOSの公式コンテナを使います。
 - [elabFTW](https://hub.docker.com/r/elabftw/elabimg)：elabFTWの公式コンテナを使います。
 
+なお，４つのサービスを一気に稼働させることもできます。しかし，多くの場合，「Rstudioだけメンテナンスしたい」，「JATOSだけストップしたい」など，それぞれのサービスを個別に動かしたり，修正したいことが多いです。そこで，以下では，それぞれ稼働させることにします。同じような作業を４回することになり少し手間ですが，メンテナンスは楽になります。
 
-まずは，テキストエディタに以下の内容を貼り付けて，"docker-compose.yml"という名前をつけて保存します(必ず，"docker-compose.yml"という名前にしてください)。次に，以下の変更を加えていきます。
+### R Studioの用意
 
-- ４つのサービスのtraefik.frontend.ruleのドメイン名を自分のものに変更する。
+まず，ホームディレクトリ内にdocker-compose.ymlを入れるdir_docker_composeディレクトリとさらにその中にrstudioディレクトリを作ります。そして，その中にvimでrstudio用のdocker-compose.ymlを作ります。以下のコマンドを実行ください。
+
+```
+sudo mkdir -p dir_docker_compose/rstudio
+sudo vim dir_docker_compose/rstudio/docker-compose.yml
+```
+
+vimで開いたdocker-compose.ymlに，以下を変更したその下のコードを貼り付けてください。改変した内容をコピペできたら，escキーをタイプして，```:wq```とタイプします（保存されます）。
+
+- traefik.frontend.ruleのドメイン名を自分のものに変更する。
 - rstudioのユーザーIDとパスワードを変更する。
+
+```
+version: '3'
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+
+  rstudio:
+    image: ykunisato/paper-r:latest
+    networks:
+      - proxy
+    container_name: rstudio
+    restart: always
+    environment:
+      - USER=ユーザー名
+      - PASSWORD=パスワード
+    volumes:
+      - ./rstudio:/home/rstudio
+    labels:
+      - traefik.docker.network=proxy
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:rstudio.ドメイン名
+      - traefik.port=8787
+      - traefik.protocol=http
+```
+
+以下を実行して，用意したコンテナを起動します。イメージのダウンロードなどにしばらく時間がかかります。doneとでてきたら，終了です。
+
+```
+sudo docker-compose -f dir_docker_compose/rstudio/docker-compose.yml up -d
+
+```
+
+### Jupyter notebookの用意
+
+まず，ホームディレクトリ内のdir_docker_compose内にjupyterディレクトリを作ります。そして，その中にvimでjupyter用のdocker-compose.ymlを作ります。以下のコマンドを実行ください。
+
+```
+sudo mkdir dir_docker_compose/jupyter
+sudo vim dir_docker_compose/jupyter/docker-compose.yml
+```
+
+vimで開いたdocker-compose.ymlに，以下を変更したその下のコードを貼り付けてください。改変した内容をコピペできたら，escキーをタイプして，```:wq```とタイプします（保存されます）。
+
+- traefik.frontend.ruleのドメイン名を自分のものに変更する。
 - jupyterのパスワードを変更する。
-- elabftwのDB_PASSWORDとSECRET_KEYを変更する。
-- mysqlのMYSQL_ROOT_PASSWORDとMYSQL_PASSWORDを変更する（MYSQL_PASSWORDとDB_PASSWORDは一致させる）。
-
-なお，elabftwとmysqlのDB_PASSWORD，SECRET_KEY，MYSQL_ROOT_PASSWORD，MYSQL_PASSWORDの設定は，```curl -sL -o docker-compose.yml "https://get.elabftw.net/?config"```をローカルのターミナルで実行すると自動で設定したものが得られます（自動だと嫌な場合はご自身で設定ようにと記載されていました）。
 
 
+```
+version: '3'
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+
+  jupyter:
+    image: ykunisato/ccp-lab-j:latest
+    networks:
+      - proxy
+    container_name: jupyter
+    restart: always
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    volumes:
+      - ./jupyter:/home/jovyan/work
+    command: start-notebook.sh --NotebookApp.token='パスワード'
+    labels:
+      - traefik.docker.network=proxy
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:jupyter.ドメイン名
+      - traefik.port=8888
+      - traefik.protocol=http
+```
+
+以下を実行して，用意したコンテナを起動します。イメージのダウンロードなどにしばらく時間がかかります。doneとでてきたら，終了です。
+
+```
+sudo docker-compose -f dir_docker_compose/jupyter/docker-compose.yml up -d
+
+```
+
+### JATOSの用意
+
+まず，ホームディレクトリ内のdir_docker_compose内にjatosディレクトリを作ります。そして，その中にvimでjatos用のdocker-compose.ymlを作ります。以下のコマンドを実行ください。
+
+```
+sudo mkdir dir_docker_compose/jatos
+sudo vim dir_docker_compose/jatos/docker-compose.yml
+```
+
+vimで開いたdocker-compose.ymlに，以下を変更したその下のコードを貼り付けてください。改変した内容をコピペできたら，escキーをタイプして，```:wq```とタイプします（保存されます）。
+
+- traefik.frontend.ruleのドメイン名を自分のものに変更する。
 
 ```
 version: '3'
@@ -258,42 +359,40 @@ services:
       - traefik.frontend.rule=Host:jatos.ドメイン名
       - traefik.port=9000
       - traefik.protocol=http
+```
 
-  rstudio:
-    image: ykunisato/paper-r:3.6.3
-    networks:
-      - proxy
-    container_name: rstudio
-    restart: always
-    environment:
-      - USER=ユーザー名
-      - PASSWORD=パスワード
-    volumes:
-      - ./rstudio:/home
-    labels:
-      - traefik.docker.network=proxy
-      - traefik.enable=true
-      - traefik.frontend.rule=Host:rstudio.ドメイン名
-      - traefik.port=8787
-      - traefik.protocol=http
+以下を実行して，用意したコンテナを起動します。イメージのダウンロードなどにしばらく時間がかかります。doneとでてきたら，終了です。
 
-  jupyter:
-    image: ykunisato/ccp-lab-j:b90cce83f37b
-    networks:
-      - proxy
-    container_name: jupyter
-    restart: always
-    environment:
-      - JUPYTER_ENABLE_LAB=yes
-    volumes:
-      - ./jupyter:/home/jovyan/work
-    command: start-notebook.sh --NotebookApp.token='パスワード'
-    labels:
-      - traefik.docker.network=proxy
-      - traefik.enable=true
-      - traefik.frontend.rule=Host:jupyter.ドメイン名
-      - traefik.port=8888
-      - traefik.protocol=http
+```
+sudo docker-compose -f dir_docker_compose/jatos/docker-compose.yml up -d
+
+```
+
+### elabFTWの用意
+
+まず，ホームディレクトリ内のdir_docker_compose内にelabftwディレクトリを作ります。そして，その中にvimでelabftw用のdocker-compose.ymlを作ります。以下のコマンドを実行ください。
+
+```
+sudo mkdir dir_docker_compose/elabftw
+sudo vim dir_docker_compose/elabftw/docker-compose.yml
+```
+
+vimで開いたdocker-compose.ymlに，以下を変更したその下のコードを貼り付けてください。改変した内容をコピペできたら，escキーをタイプして，```:wq```とタイプします（保存されます）。
+
+- traefik.frontend.ruleのドメイン名を自分のものに変更する。
+- elabftwのDB_PASSWORDとSECRET_KEYを変更する。
+- mysqlのMYSQL_ROOT_PASSWORDとMYSQL_PASSWORDを変更する（MYSQL_PASSWORDとDB_PASSWORDは一致させる）。
+
+なお，elabftwとmysqlのDB_PASSWORD，SECRET_KEY，MYSQL_ROOT_PASSWORD，MYSQL_PASSWORDの設定は，```curl -sL -o docker-compose.yml "https://get.elabftw.net/?config"```をローカルのターミナルで実行すると自動で設定したものが得られます（自動だと嫌な場合はご自身で設定ようにと記載されていました）。
+
+```
+version: '3'
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
 
   elabftw:
     image: elabftw/elabimg:latest
@@ -363,10 +462,11 @@ services:
       - traefik.port=3306
 ```
 
-上記で設定したdocker-compose.ymlを実行するために，VMインスタンスにSSH接続します。ウィンドウの右上の設定っぽいボタンをクリックするとアップロードの選択肢がでてくると思うので，それを使って，さきほどの"docker-compose.yml"をアップロードします。それができたら，以下を打ち込んで，docker-compose.ymlを実行します。ダウンロードとかあるので時間がかかることがあります。しばらくして，各サービースのコンテナがdoneって表示されたら，成功です。
+以下を実行して，用意したコンテナを起動します。イメージのダウンロードなどにしばらく時間がかかります。doneとでてきたら，終了です。
 
 ```
-sudo docker-compose up -d
+sudo docker-compose -f dir_docker_compose/elabftw/docker-compose.yml up -d
+
 ```
 
 最後に，elbFTWを起動します（これをしないとelabFTWは動きません）。
@@ -423,15 +523,15 @@ userdel -r ユーザ名
 
 ### ユーザーの一括追加
 
-上記の方法でもユーザーは追加できますが，人数が多くなると途方にくれてしまいます。そこで，以下ではnewusersを使った一括登録をします。まずは，以下のような感じの情報を表計算ソフトにいれます。ユーザーごとに変更が必要なのは，ユーザー名，ユーザーID（1001から連番にするので良いと思います），パスワード，ホームディレクトリ名（homeの下にユーザー名をいれる）です。残りの，グループID（50）, フルネーム（空白），ログインシェル（/bin/sh)は全員同じで問題ありません。
+上記の方法でもユーザーは追加できますが，人数が多くなると途方にくれてしまいます。そこで，以下ではnewusersを使った一括登録をします。まずは，以下のような感じの情報を表計算ソフトにいれます。ユーザーごとに変更が必要なのは，ユーザー名，ユーザーID（1001から連番にするので良いと思います），パスワード，ホームディレクトリ名（home/rstudioの下にユーザー名をいれる）です。残りの，グループID（50）, フルネーム（空白），ログインシェル（/bin/sh)は全員同じで問題ありません。
 
 |ユーザー名|パスワード|	ユーザーID|	グループID|	フルネーム|	ホームディレクトリ|	ログインシェル|
 |---|---|---|---|---|---|---|
-|user1|	user1のパスワード|	1001|	50|	|	/home/user1|	/bin/sh|
-|user2|	user2のパスワード|	1002|	50|	|	/home/user2|	/bin/sh|
-|user3|	user3のパスワード|	1003|	50|	|	/home/user3|	/bin/sh|
+|ユーザー1|	ユーザー1のパスワード|	1001|	50|	|	/home/rstudio/ユーザー1|	/bin/sh|
+|ユーザー2|	ユーザー2のパスワード|	1002|	50|	|	/home/rstudio/ユーザー2|	/bin/sh|
+|ユーザー3|	ユーザー3のパスワード|	1003|	50|	|	/home/rstudio/ユーザー3|	/bin/sh|
 
-なお，上記の情報は，区切りに:を使って保存します。つまりuser1については，user1:user1のパスワード:1001:50::/home/user1:/bin/shになります。この作業はいろいろな方法ができますが，上記の情報を表計算ソフトにいれて，それをcsvファイルで出力して，テキストエディタで開いて，カンマを:に変換して，一番上のヘッダー情報は削除して，最後に.txtの拡張子で保存するのが楽じゃないかなと思います。そのファイル名は，user.txtとしておきます（なんでもいいです）。
+なお，上記の情報は，区切りに:を使って保存します。つまりuser1については，ユーザー1:ユーザー1のパスワード:1001:50::/home/rstudio/ユーザー1:/bin/shになります。この作業はいろいろな方法ができますが，上記の情報を表計算ソフトにいれて，それをcsvファイルで出力して，テキストエディタで開いて，カンマを:に変換して，一番上のヘッダー情報は削除して，最後に.txtの拡張子で保存するのが楽じゃないかなと思います。そのファイル名は，user.txtとしておきます（なんでもいいです）。
 
 user.txtが作成できたら，VMにSSH接続して，user.txtをアップロードします（ウィンドウの右上の設定っぽいボタンをクリックするとアップロードの選択肢がでてきます）。アップロードしたuser.txtをrstudioのフォルダに一時的に移動します。
 
