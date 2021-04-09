@@ -13,7 +13,7 @@
 
 <title>Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法</title>
 
-<script src="site_libs/header-attrs-2.7.1/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -548,6 +548,7 @@ sudo vim dir_docker_compose/rstudio/docker-compose.yml</code></pre>
 <ul>
 <li>traefik.frontend.ruleのドメイン名を自分のものに変更する。</li>
 <li>rstudioのユーザーIDとパスワードを変更する。</li>
+<li>volumesの左側の./rstudioは，.のところをGCP上でpwdをした時にでてくるカレントディレクトにする必要があるかもしれません。</li>
 </ul>
 <pre><code>version: &#39;3&#39;
 
@@ -556,7 +557,8 @@ networks:
     external: true
   internal:
     external: false
-
+  
+services:
   rstudio:
     image: ykunisato/paper-r:latest
     networks:
@@ -587,6 +589,7 @@ sudo vim dir_docker_compose/jupyter/docker-compose.yml</code></pre>
 <ul>
 <li>traefik.frontend.ruleのドメイン名を自分のものに変更する。</li>
 <li>jupyterのパスワードを変更する。</li>
+<li>volumesの左側の./jupyterは，.のところをGCP上でpwdをした時にでてくるカレントディレクトにする必要があるかもしれません。</li>
 </ul>
 <pre><code>version: &#39;3&#39;
 
@@ -596,6 +599,7 @@ networks:
   internal:
     external: false
 
+services:
   jupyter:
     image: ykunisato/ccp-lab-j:latest
     networks:
@@ -662,6 +666,7 @@ sudo vim dir_docker_compose/elabftw/docker-compose.yml</code></pre>
 <li>traefik.frontend.ruleのドメイン名を自分のものに変更する。</li>
 <li>elabftwのDB_PASSWORDとSECRET_KEYを変更する。</li>
 <li>mysqlのMYSQL_ROOT_PASSWORDとMYSQL_PASSWORDを変更する（MYSQL_PASSWORDとDB_PASSWORDは一致させる）。</li>
+<li>volumesの左側の./elabftw/uploadsと./elabftw/mysqlは，.のところをGCP上でpwdをした時にでてくるカレントディレクトにする必要があるかもしれません。</li>
 </ul>
 <p>なお，elabftwとmysqlのDB_PASSWORD，SECRET_KEY，MYSQL_ROOT_PASSWORD，MYSQL_PASSWORDの設定は，<code>curl -sL -o docker-compose.yml "https://get.elabftw.net/?config"</code>をローカルのターミナルで実行すると自動で設定したものが得られます（自動だと嫌な場合はご自身で設定ようにと記載されていました）。</p>
 <pre><code>version: &#39;3&#39;
@@ -672,6 +677,7 @@ networks:
   internal:
     external: false
 
+services:
   elabftw:
     image: elabftw/elabimg:latest
     networks:

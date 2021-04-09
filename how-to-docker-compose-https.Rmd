@@ -237,6 +237,8 @@ vimで開いたdocker-compose.ymlに，以下を変更したその下のコー�
 
 - traefik.frontend.ruleのドメイン名を自分のものに変更する。
 - rstudioのユーザーIDとパスワードを変更する。
+- volumesの左側の./rstudioは，.のところをGCP上でpwdをした時にでてくるカレントディレクトにする必要があるかもしれません。
+
 
 ```
 version: '3'
@@ -246,7 +248,8 @@ networks:
     external: true
   internal:
     external: false
-
+  
+services:
   rstudio:
     image: ykunisato/paper-r:latest
     networks:
@@ -286,7 +289,7 @@ vimで開いたdocker-compose.ymlに，以下を変更したその下のコー�
 
 - traefik.frontend.ruleのドメイン名を自分のものに変更する。
 - jupyterのパスワードを変更する。
-
+- volumesの左側の./jupyterは，.のところをGCP上でpwdをした時にでてくるカレントディレクトにする必要があるかもしれません。
 
 ```
 version: '3'
@@ -297,6 +300,7 @@ networks:
   internal:
     external: false
 
+services:
   jupyter:
     image: ykunisato/ccp-lab-j:latest
     networks:
@@ -335,6 +339,7 @@ sudo vim dir_docker_compose/jatos/docker-compose.yml
 vimで開いたdocker-compose.ymlに，以下を変更したその下のコードを貼り付けてください。改変した内容をコピペできたら，escキーをタイプして，```:wq```とタイプします（保存されます）。
 
 - traefik.frontend.ruleのドメイン名を自分のものに変更する。
+
 
 ```
 version: '3'
@@ -382,6 +387,7 @@ vimで開いたdocker-compose.ymlに，以下を変更したその下のコー�
 - traefik.frontend.ruleのドメイン名を自分のものに変更する。
 - elabftwのDB_PASSWORDとSECRET_KEYを変更する。
 - mysqlのMYSQL_ROOT_PASSWORDとMYSQL_PASSWORDを変更する（MYSQL_PASSWORDとDB_PASSWORDは一致させる）。
+- volumesの左側の./elabftw/uploadsと./elabftw/mysqlは，.のところをGCP上でpwdをした時にでてくるカレントディレクトにする必要があるかもしれません。
 
 なお，elabftwとmysqlのDB_PASSWORD，SECRET_KEY，MYSQL_ROOT_PASSWORD，MYSQL_PASSWORDの設定は，```curl -sL -o docker-compose.yml "https://get.elabftw.net/?config"```をローカルのターミナルで実行すると自動で設定したものが得られます（自動だと嫌な場合はご自身で設定ようにと記載されていました）。
 
@@ -394,6 +400,7 @@ networks:
   internal:
     external: false
 
+services:
   elabftw:
     image: elabftw/elabimg:latest
     networks:
