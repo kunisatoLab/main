@@ -554,13 +554,13 @@ sudo docker exec -it rstudio bash
 
 以下を実行して，一括でユーザー登録します。これで終わりです。
 ```
-newusers /home/user.txt
+newusers /home/rstudio/user.txt
 ```
 
 一応,user.txtを削除してから，コンテナから出ます。
 
 ```
-rm /home/user.txt
+rm /home/rstudio/user.txt
 exit
 ```
 

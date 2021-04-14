@@ -6,10 +6,16 @@ title: "メタ分析"
 
 まず，メタ分析について，以下のスライドを参考に，概要をつかんでください。
 
-<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRD1R5yRiru8JJbm6TCvSZr16jOA01I0mZHd86v7CFDKrQ7ltoENxuik5MJ9Mz1Q7b4_AJ_E8TciptA/embed?start=false&loop=false&delayms=30000" frameborder="0" width="480" height="389" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+```{r echo=FALSE}
+library(zousan)
+embed_slide("https://ykunisato.github.io/ccp-lab-slide/spring_seminar_JSSP_2021/meta_analysis/slide.html#1")
+```
 
 <br>
 <br>
+
+
+
 
 また，以下の国里の論文を読んで，メタ分析の必須事項についても確認ください。
 
