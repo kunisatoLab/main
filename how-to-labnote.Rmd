@@ -31,6 +31,28 @@ eln4Rmd::elnjp_pdf(add_name = "april_fool_exp" , replace_day = "2021-04-01")
 
 作成したラボノートにはタイムスタンプが必要です。タイムスタンプをつけないと，その日（もしくは後日に）に記録したのかの保証ができないので，電子ラボノートとして機能させる場合は，以下のようにOSFもしくはGitHubと連携をさせてください。
 
+
+### GitHubと連携させる方法
+
+#### ラボノートの内容を書いてknitして，GitHubにアップ（コミット＆プッシュ）する
+
+- 電子ラボノートは以下の関数で作れます。内容を書いて，knitすれば，PDF形式で出力されます。
+
+``` 
+eln4Rmd::elnjp_pdf()
+```
+
+- 作成したPDFを確認してから，以下の関数を実行するとPDFという名前のフォルダを作ってそこにPDFをを保存したうえ，コミットをした上で，GitHubにプッシュしてくれます(GitHubにタイムスタンプが残ります）。
+
+``` 
+eln4Rmd::up_elnjp_git()
+```
+- 一度(1)と(2)の設定ができていれば，あとは，毎日(3)を行うだけです（関数としては２回実行するだけ）。
+- なお，elnjp_pdf()で，add_nameやreplace_dayを指定している場合は，up_elnjp_git()でも同様の指定をしてください。
+
+
+
+
 ### osfと連携させる方法
 
 #### (1) OSFのPAT(Personal Access Token)の登録
@@ -87,44 +109,3 @@ eln4Rmd::up_elnjp_osf(eln_osf = "OSFのラボノート用コンポーネント�
 - なお，elnjp_pdf()で，add_nameやreplace_dayを指定している場合は，up_elnjp_osf()でも同様の指定をしてください。
 
 
-### GitHubと連携させる方法
-
-
-#### (1) GitHubアカウントとリポジトリの作成する
-
-- GitHubアカウントを作成します。作成方法の解説は多いので，読みやすいものを参考に作成ください。
-- ラボノートをアップする用のGitHubリポジトリを作成ください。最初から公開することはないと思うので，プライベートリポジトリで作成ください。
-- 以下を参考にして，GitHubのPersonal Access Token(PAT)を作成します。PATはパスワードと同じ情報なので，厳重に管理ください。
-
-https://docs.github.com/ja/github/authenticating-to-github/creating-a-personal-access-token
-
-
-#### (2) RStudioでユーザー名，メールアドレス，PATを登録する
-
-- Rstudio上で，use_git_config()を使って，ユーザー名とメールアドレスを登録してください。
-
-``` 
-usethis::use_git_config(user.name = "Taro Yamada", user.email = "tyamada@example.com")
-```
-
-- Rstudio上で，gitcreds_set()を使って，PATを登録してください。"? Enter password or token: "と聞かれるので，上記のPATを貼り付けます。
-
-``` 
-gitcreds::gitcreds_set()
-```
-
-#### (3) ラボノートの内容を書いてknitして，GitHubにアップ（コミット＆プッシュ）する
-
-- 電子ラボノートは以下の関数で作れます。内容を書いて，knitすれば，PDF形式で出力されます。
-
-``` 
-eln4Rmd::elnjp_pdf()
-```
-
-- 作成したPDFを確認してから，以下の関数を実行するとPDFという名前のフォルダを作ってそこにPDFをを保存したうえ，コミットをした上で，GitHubにプッシュしてくれます(GitHubにタイムスタンプが残ります）。
-
-``` 
-eln4Rmd::up_elnjp_git()
-```
-- 一度(1)と(2)の設定ができていれば，あとは，毎日(3)を行うだけです（関数としては２回実行するだけ）。
-- なお，elnjp_pdf()で，add_nameやreplace_dayを指定している場合は，up_elnjp_git()でも同様の指定をしてください。
