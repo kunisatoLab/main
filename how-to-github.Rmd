@@ -11,7 +11,7 @@ title: "ゼミでのGithubの活用"
 
 ## GitHubアカウントの作成
 
-GoogleでGitHubと検索するか，[GitHub](https://github.com/)をクリックください。そして，Sign Upしてください。その際に，大学から発行された心理学科のメールアドレスを登録ください（大学のメールアドレスを使えば，教育機関向けの割引が使えます。詳細は[こちら](https://help.github.com/ja/github/teaching-and-learning-with-github-education/about-github-education-for-students)）。
+GoogleでGitHubと検索するか，[GitHub](https://github.com/)をクリックください。そして，Sign Upしてください。その際に，大学から発行された心理学科のメールアドレスを登録ください（大学のメールアドレスを使えば，教育機関向けの割引が使えます。詳細は[こちら](https://help.github.com/ja/github/teaching-and-learning-with-github-education/about-github-education-for-students)）。アカウントの用意ができたら，国里までアカウント名を知らせてください。
 
 <br />
 <br />
