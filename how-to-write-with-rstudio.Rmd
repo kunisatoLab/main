@@ -8,7 +8,7 @@ title: "RStudioで卒論・修論執筆"
 
 - SPSSやRで解析した結果を卒論のWordやExcelにコピー＆ペーストして整形するスタイルが多いと思います。しかし，そのコピー＆ペーストは100%合っていますか？その自信がない場合は，RMarkdown上で解析も執筆も一緒にやったほうが安心です（コピー＆ペーストが不要で，解析コードに間違いがあってもすぐに修正が反映されます）。
 
-- 国里が作成したRMarkdownパッケージを使えば，最終的なフォーマット調整を自動的にやってくれるので楽です（表紙，目次，ページ番号などは自動ではいる，日本語文献以外は自動で文献も綺麗にしてくれる）。
+- 国里が作成したRMarkdownパッケージを使えば，最終的なフォーマット調整も自動的にやってくれるのでめちゃくちゃ楽です（表紙，目次，ページ番号は自動に入ります。引用文献も文献情報を貼り付けておけば，自動で挿入し綺麗にフォーマットを整えてくれます）。使わない理由が謎です。
 
 - 国里が研究指導する場合もデータやコードをいじりつつ検討ができて，有意義な研究指導が期待できます。
 
@@ -23,23 +23,13 @@ title: "RStudioで卒論・修論執筆"
 
 ## senshuRmdパッケージを使ってみよう！
 
-卒論・修論をRStudio上でRMarkdownを使って執筆する上で，国里が作成した[senshuRmd](https://ykunisato.github.io/senshuRmd/index.html)が便利です。senshuRmdは，専修大学人間科学部心理学科での卒論・修論用にフォーマット調整をしたRMarkdownテンプレートになります。他の大学でも使えるかは微妙ですが，専修大学人間科学部心理学科の学生にとっては便利かと思います。
+卒論・修論をRStudio上でRMarkdownを使って執筆する上で，国里が作成した[senshuRmd](https://github.com/ykunisato/senshuRmd)が便利です。senshuRmdは，専修大学人間科学部心理学科での卒論・修論用にフォーマット調整をしたRMarkdownテンプレートになります。他の大学でも使えるかは微妙ですが，専修大学人間科学部心理学科の学生にとっては便利かと思います。
 
 <br>
 
 ### 1.GitHubリポジトリの用意
 
 本研究室ではGitHub上でバージョン管理をします。詳しくは，[こちら](https://kunisatolab.github.io/main/how-to-github.html)を参考に，国里が用意したGitHubリポジトリを自分の手元にもってきてください。そして，gitタブをクリックして，以下の赤い部分をクリックして，「draft1」を選択してください。みなさんのリポジトリには，最初にmasterとdraft1を用意していますが，みなさんが作業する場合は，draftを使うと覚えておいてください（最初は国里が用意したdraft1を使って，その後はご自身で設定してもらいます）。
-
-
-![](fig/senshuRmd_fig14.png)
-
-![](fig/senshuRmd_fig15.png)
-
-![](fig/senshuRmd_fig16.png)
-
-![](fig/senshuRmd_fig17.png)
-
 
 
 ![](fig/senshuRmd_fig11.png)
@@ -55,28 +45,6 @@ draft1を選ぶと以下のような画面が出てくると思います。リ�
 <br>
 
 
-#### (1) GitHubアカウントとリポジトリの作成する
-
-- GitHubアカウントを作成します。作成方法の解説は多いので，読みやすいものを参考に作成ください。
-- ラボノートをアップする用のGitHubリポジトリを作成ください。最初から公開することはないと思うので，プライベートリポジトリで作成ください。
-- 以下を参考にして，GitHubのPersonal Access Token(PAT)を作成します。PATはパスワードと同じ情報なので，厳重に管理ください。
-
-https://docs.github.com/ja/github/authenticating-to-github/creating-a-personal-access-token
-
-
-#### (2) RStudioでユーザー名，メールアドレス，PATを登録する
-
-- Rstudio上で，use_git_config()を使って，ユーザー名とメールアドレスを登録してください。
-
-``` 
-usethis::use_git_config(user.name = "Taro Yamada", user.email = "tyamada@example.com")
-```
-
-- Rstudio上で，gitcreds_set()を使って，PATを登録してください。"? Enter password or token: "と聞かれるので，上記のPATを貼り付けます。
-
-``` 
-gitcreds::gitcreds_set()
-```
 
 
 ### 2.senshuRmdで卒論・修論のパッケージ化する

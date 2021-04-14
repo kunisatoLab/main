@@ -13,7 +13,7 @@
 
 <title>ゼミでのGithubの活用</title>
 
-<script src="site_libs/header-attrs-2.7.1/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -401,6 +401,11 @@ div.tocify {
 <p><br /> <br /></p>
 <p><img src="fig/github_gif1.gif" /> <br /> <br /> <br /></p>
 </div>
+<div id="githubのpersonal-access-tokenpatの作成" class="section level2">
+<h2>GitHubのPersonal Access Token(PAT)の作成</h2>
+<p>以下を参考にして，GitHubのPersonal Access Token(PAT)を作成します。PATはパスワードと同じ情報なので，厳重に管理ください（個人で保管をしてください）。</p>
+<p><a href="https://docs.github.com/ja/github/authenticating-to-github/creating-a-personal-access-token" class="uri">https://docs.github.com/ja/github/authenticating-to-github/creating-a-personal-access-token</a></p>
+</div>
 <div id="ざっくりとgithubの仕組みを知ろう" class="section level2">
 <h2>ざっくりとGitHubの仕組みを知ろう！</h2>
 <p>ざっくりGitHubについて説明をすると以下のようになります。</p>
@@ -414,6 +419,14 @@ div.tocify {
 <p><img src="fig/github_fig1.png" /></p>
 <p><br /> <br /> <br /></p>
 <p>それでは，RStudioでの利用方法を説明していきます。</p>
+</div>
+<div id="rstudioでgithubを使う準備をする" class="section level2">
+<h2>RStudioでGitHubを使う準備をする</h2>
+<p>RstudioのConsoleに以下を修正して（ユーザー名とメールアドレス），コピペして，ユーザー名とメールアドレスを登録してください。</p>
+<pre><code>usethis::use_git_config(user.name = &quot;GitHubに登録したユーザー名&quot;, user.email = &quot;GitHubに登録したメールアドレス&quot;)</code></pre>
+<p>RstudioのConsoleに以下をコピペして，Personal Access Token(PAT)を登録してください。“? Enter password or token:”と聞かれるので，上記で設定したPATを貼り付けます。</p>
+<pre><code>gitcreds::gitcreds_set()</code></pre>
+<p>※なお，サーバーの再起動などをするとこの情報が消えることがあるので，もしRStudioからGithubへの接続ができない場合は，PATなどの再登録をしてください（一応，そういうエラーは出ますが，エラー読まない人多いので・・・）。</p>
 </div>
 <div id="すでにあるgithubリポジトリを自分の手元にもってくる" class="section level2">
 <h2>すでにあるGitHubリポジトリを自分の手元にもってくる</h2>

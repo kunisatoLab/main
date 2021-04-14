@@ -21,6 +21,13 @@ GoogleでGitHubと検索するか，[GitHub](https://github.com/)をクリック
 <br />
 <br />
 
+## GitHubのPersonal Access Token(PAT)の作成
+
+以下を参考にして，GitHubのPersonal Access Token(PAT)を作成します。PATはパスワードと同じ情報なので，厳重に管理ください（個人で保管をしてください）。
+
+https://docs.github.com/ja/github/authenticating-to-github/creating-a-personal-access-token
+
+
 ## ざっくりとGitHubの仕組みを知ろう！
 
 ざっくりGitHubについて説明をすると以下のようになります。
@@ -47,6 +54,28 @@ Commitで記録を残した履歴はみなさんのPCに残っているだけな
 
 
 それでは，RStudioでの利用方法を説明していきます。
+
+
+
+
+
+
+
+## RStudioでGitHubを使う準備をする
+
+RstudioのConsoleに以下を修正して（ユーザー名とメールアドレス），コピペして，ユーザー名とメールアドレスを登録してください。
+
+``` 
+usethis::use_git_config(user.name = "GitHubに登録したユーザー名", user.email = "GitHubに登録したメールアドレス")
+```
+
+RstudioのConsoleに以下をコピペして，Personal Access Token(PAT)を登録してください。"? Enter password or token: "と聞かれるので，上記で設定したPATを貼り付けます。
+
+``` 
+gitcreds::gitcreds_set()
+```
+
+※なお，サーバーの再起動などをするとこの情報が消えることがあるので，もしRStudioからGithubへの接続ができない場合は，PATなどの再登録をしてください（一応，そういうエラーは出ますが，エラー読まない人多いので・・・）。
 
 ## すでにあるGitHubリポジトリを自分の手元にもってくる
 
