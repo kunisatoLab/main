@@ -89,6 +89,8 @@ gitcreds::gitcreds_set()
 
 そして，以下のようにRStudio上でFile → New Project→Version Control→Gitと進んで，コピーしたURLと保存するフォルダの設定します。これで，Clone完了です。
 
+＊ゼミのRstudio serverを使っている場合は，"Create project as subdirectory of:"でBrowseをクリックして，Homeをchooseする必要があるかもしれません。
+
 ![](fig/github_gif3.gif)
 <br />
 <br />
