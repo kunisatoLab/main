@@ -12,15 +12,15 @@ title: "Code & Tips"
 - OSF:事前登録で使います。整理された研究内容のアップロードにも使います。
 - 場合によっては，Google DocやQualtricsを使うこともあります。
 
-## Github & OSF & R Markdown入門 
+## ゼミの準備
 
-- [ゼミでのGiHubの活用](how-to-github.html) ☆1
+- [GitHubの準備](how-to-github.html) ☆1
 
-- [ゼミでのOSFの活用](how-to-osf.html) ☆2
+- [OSFの準備](how-to-osf.html) ☆2
 
-- [RStudioで卒論・修論執筆](how-to-write-with-rstudio.html)　☆3
+- [RStudioで卒論・修論を書く準備](how-to-write-with-rstudio.html)　☆3
 
-- [研究したらラボノートを書こう](how-to-labnote.html) ☆4
+- [ラボノートの準備](how-to-labnote.html) ☆4
 
 <br />
 

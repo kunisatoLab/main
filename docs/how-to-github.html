@@ -11,7 +11,7 @@
 
 
 
-<title>ゼミでのGithubの活用</title>
+<title>GitHubの準備</title>
 
 <script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -381,80 +381,69 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">ゼミでのGithubの活用</h1>
+<h1 class="title toc-ignore">GitHubの準備</h1>
 
 </div>
 
 
 <div id="ゼミでのgithubの活用" class="section level2">
 <h2>ゼミでのGitHubの活用</h2>
-<p>本ゼミでは，GitHubを活用して，以下のことを行います。データ収集以外のゼミでの活動は，ほぼGitHubを介して行われます。</p>
+<p>本ゼミでは，GitHubを活用して，以下のことを行います。</p>
 <ul>
 <li>ラボノート</li>
 <li>演習課題</li>
 <li>卒論や修論での作業のバージョン管理</li>
 </ul>
+<p><br /> <br /></p>
 </div>
 <div id="githubアカウントの作成" class="section level2">
 <h2>GitHubアカウントの作成</h2>
-<p>GoogleでGitHubと検索するか，<a href="https://github.com/">GitHub</a>をクリックください。そして，Sign Upしてください。その際に，大学から発行された心理学科のメールアドレスを登録ください（大学のメールアドレスを使えば，教育機関向けの割引が使えます。詳細は<a href="https://help.github.com/ja/github/teaching-and-learning-with-github-education/about-github-education-for-students">こちら</a>）。アカウントの用意ができたら，国里までアカウント名を知らせてください。</p>
+<p>GoogleでGitHubと検索するか，<a href="https://github.com/" target="_blank">GitHub</a>をクリックください。そして，Sign Upをクリックしてください。</p>
+<p><img src="fig/github_fig3.png" /> <br /> <br /> <br /></p>
+<p>以下のような画面になったら，英語でユーザー名，メールアドレス，パスワードをいれてアカウントを作ってください。メールアドレスは大学から発行された心理学科のメールアドレスを登録ください。</p>
+<p><img src="fig/github_fig4.png" /></p>
 <p><br /> <br /></p>
-<p><img src="fig/github_gif1.gif" /> <br /> <br /> <br /></p>
+<p><strong>アカウントの用意ができたら，slackで国里にアカウント名を知らせてください。</strong></p>
+<p><br /> <br /></p>
 </div>
 <div id="githubのpersonal-access-tokenpatの作成" class="section level2">
 <h2>GitHubのPersonal Access Token(PAT)の作成</h2>
-<p>以下を参考にして，GitHubのPersonal Access Token(PAT)を作成します。PATはパスワードと同じ情報なので，厳重に管理ください（個人で保管をしてください）。</p>
-<p><a href="https://docs.github.com/ja/github/authenticating-to-github/creating-a-personal-access-token" class="uri">https://docs.github.com/ja/github/authenticating-to-github/creating-a-personal-access-token</a></p>
+<p>以下のサイトを参考にして，GitHubのPersonal Access Token(PAT)を作成します（説明の７は一番上のrepoにチェックするだけでいいです）。</p>
+<p><a href="https://docs.github.com/ja/github/authenticating-to-github/creating-a-personal-access-token" target="_blank">個人アクセストークンを使用する</a></p>
+<p><strong>PATはパスワードと同じなので，厳重に管理ください（個人で保管をしてください）</strong></p>
+<p><br /> <br /></p>
 </div>
 <div id="ざっくりとgithubの仕組みを知ろう" class="section level2">
 <h2>ざっくりとGitHubの仕組みを知ろう！</h2>
-<p>ざっくりGitHubについて説明をすると以下のようになります。</p>
-<p>まず，クラウド上にGitHubのリポジトリがあって，それとみなさんの手元のPCとでファイルのやり取りするのをイメージしてください。</p>
-<p>GitHubのリポジトリには，コード，データ（もちろん，GitHubなどにアップする同意を得た匿名化処理済みのデータです），卒論・修論のファイルを置きます。最初に国里がプライベート・リポジトリを作っておくので，それを活用してもらいます。</p>
-<p>まず，みなさんは，GitHubリポジトリからPull(初回時はClone)して，自分のPC上にリポジトリのファイルを落とします（簡単に言えばダウンロード）。</p>
-<p>そのPullしたファイルに加筆修正したり，ファイルを追加したりします（解析したり，論文を執筆したりなどの作業です）。ファイルに変更を加えたら，こまめにCommitをして変更履歴を残します（大きめは変更を加えたらかならずCommitする）。</p>
-<p>Commitで記録を残した履歴はみなさんのPCに残っているだけなので，これをPushしてGitHubのリポジトリに反映させます。これで１サイクルが終了です。</p>
-<p>日々の研究活動では，GitHubリポジトリからPullして自分のPCを最新の状態にして，作業したらその都度Commitし，Pushしてリポジトリも最新の状態に保つというサイクルを回していくことになります。</p>
-<p>なんだか面倒だなあという気もするかもしれませんが，変更履歴を残すことは透明性の高い研究をすすめる上での重要ですし，色々と作業をしたけど前の状態に戻したいときにも便利です。さらに，共同作業をする場合にもGitHubはとても有用です。</p>
-<p><img src="fig/github_fig1.png" /></p>
-<p><br /> <br /> <br /></p>
-<p>それでは，RStudioでの利用方法を説明していきます。</p>
+<p>簡単にいうと，手元のパソコン（もしくは私が用意したRStudioサーバー）で行った作業内容をクラウド上のGitHubのリポジトリと同期させます（バックアップするというイメージでも良いです）。</p>
+<p>(1)以降の手順としては，まず国里がGitHub上にプライベート・リポジトリを作っておくので，みなさんは自分のパソコン（もしくは私が用意したRStudioサーバー）にPull(初回時はCloneと言う。ダウンロードと同じ意味)して，リポジトリをもってきます。</p>
+<p>(2)そのリポジトリ内で作業をします。作業をすると，コード，データ（データ共有の同意を得た匿名化処理済みのデータ），卒論・修論などのファイルがリポジトリ内に追加されたり，変更が加えられると思います。ファイルに変更を加えたら，こまめにCommitをして変更履歴を残します（大きめは変更を加えたらかならずCommitする）。</p>
+<p>(3)変更履歴が残せたら，Pushしてクラウド上のGitHubのリポジトリに反映させます（Psuhはアップロードと同じ意味）。</p>
+<p>卒論・修論では，GitHubリポジトリからPullして自分のPCを最新の状態にして，作業したらその都度Commitし，Pushしてリポジトリも最新の状態に保つというサイクルを回していくことになります。なんだか面倒だなあという気もするかもしれませんが，変更履歴を残すことは透明性の高い研究をすすめる上での重要ですし，色々と作業をしたけど前の状態に戻したいときにも便利です。</p>
+<p><img src="fig/github_fig1.png" /> <br /> <br /> <br /></p>
 </div>
-<div id="rstudioでgithubを使う準備をする" class="section level2">
-<h2>RStudioでGitHubを使う準備をする</h2>
-<p>RstudioのConsoleに以下を修正して（ユーザー名とメールアドレス），コピペして，ユーザー名とメールアドレスを登録してください。</p>
+<div id="rstudioでgithubを使う準備をするアカウントとpatの登録" class="section level2">
+<h2>RStudioでGitHubを使う準備をする（アカウントとPATの登録）</h2>
+<p>以下のコードを修正して（ご自身のユーザー名とメールアドレスに変更），Rstudioの<strong>Console</strong>にコピペしてください。</p>
 <pre><code>usethis::use_git_config(user.name = &quot;GitHubに登録したユーザー名&quot;, user.email = &quot;GitHubに登録したメールアドレス&quot;)</code></pre>
-<p>RstudioのConsoleに以下をコピペして，Personal Access Token(PAT)を登録してください。“? Enter password or token:”と聞かれるので，上記で設定したPATを貼り付けます。</p>
+<p>次にRstudioの<strong>Console</strong>に以下をコピペしてください。“? Enter password or token:”と聞かれるので，上記で設定したPersonal Access Token(PAT)をコピペください。</p>
 <pre><code>gitcreds::gitcreds_set()</code></pre>
-<p>※なお，サーバーの再起動などをするとこの情報が消えることがあるので，もしRStudioからGithubへの接続ができない場合は，PATなどの再登録をしてください（一応，そういうエラーは出ますが，エラー読まない人多いので・・・）。</p>
+<p>※なお，サーバーの再起動などをするとこの情報が消えることがあるので，もしRStudioからGithubへの接続ができない場合は，PATなどの再登録をしてください。</p>
+<p><br /> <br /></p>
 </div>
-<div id="すでにあるgithubリポジトリを自分の手元にもってくる" class="section level2">
-<h2>すでにあるGitHubリポジトリを自分の手元にもってくる</h2>
-<p>すでにあるGitHubリポジトリを自分の手元にもってくる場合は，Cloneをします（一度Cloneしたら，その後は，Pullになります）。Cloneは以下のように，GitHubリポジトリにいって（ゼミ生は，国里が各自の卒論・修論用リポジトリを用意しています），左側の“Clone or Download”のボタンから，Git用のURLをコピーします。</p>
-<p><img src="fig/github_gif2.gif" /> <br /> <br /> <br /></p>
-<p>そして，以下のようにRStudio上でFile → New Project→Version Control→Gitと進んで，コピーしたURLと保存するフォルダの設定します。これで，Clone完了です。</p>
+<div id="githubリポジトリを自分の手元にもってくるclone" class="section level2">
+<h2>GitHubリポジトリを自分の手元にもってくる(Clone)</h2>
+<p><a href="https://github.com/" target="_blank">GitHub</a>に移動します。どうも自分のリポジトリ(Repositories)が見えないことがあるのですが，以下の画像の左上の赤い枠で囲った部分をクリックすると下にRepositoriesが出てきて，みなさんの名前のリポジトリが見えると思います。そのリポジトリをクリックします。</p>
+<p><img src="fig/github_fig5.png" /> <br /> <br /> <br /></p>
+<p>自分の名前のGitHubリポジトリにいって，下のような画面のHTTPSが押された状態の右端（赤で囲った部分）をクリックします。クリックすると，URLがコピーされます。</p>
+<p><img src="fig/github_fig6.png" /> <br /> <br /> <br /></p>
+<p>次に，ゼミのRStudioサーバーに移動します。以下のようにRStudio上でFile → New Project→Version Control→Gitと進んで，コピーしたURLと保存するフォルダの設定します。これで，Clone完了です。</p>
 <p>＊ゼミのRstudio serverを使っている場合は，“Create project as subdirectory of:”でBrowseをクリックして，Homeをchooseする必要があるかもしれません。</p>
 <p><img src="fig/github_gif3.gif" /> <br /> <br /> <br /></p>
 <p>一度，GitHubのプロジェクトを作っておくと，RStudioはそれを記憶しているので，以下のようにFile→Recent Projetsで作成したプロジェクトが出てくるので，それをクリックすれば，GitHubプロジェクトが開けます。</p>
 <p>RStudioのプロジェクトは，解析などで使うファイルやフォルダをひとまとめにしてくれるものです（今回の場合は，GitHubリポジトリがプロジェクトになります）。RStudioを使う場合は，必ずプロジェクトファイルを作りましょう。</p>
 <p><img src="fig/github_gif4.gif" /> <br /> <br /> <br /></p>
-<p>さて，Cloneができると最初の準備は終わりです。以降では，毎回，プロジェクトを開いたら，Pullで自分のPCのファイルを最新にして，作業したらCommmitで変更履歴を残して，PushでGitHubリポジトリも最新にしておきましょう。</p>
-</div>
-<div id="pullで手元のpcのファイルを最新の状態にする" class="section level2">
-<h2>Pullで手元のPCのファイルを最新の状態にする</h2>
-<p>以下のように，Git→Pullをクリックすれば，自動的に差分を計算して，手元のPCのファイルを最新にしてくれます。</p>
-<p><img src="fig/github_gif5.gif" /> <br /> <br /> <br /></p>
-</div>
-<div id="変更履歴をcommitで記録する" class="section level2">
-<h2>変更履歴をCommitで記録する</h2>
-<p>ファイルを変更したら，こまめにCommitをしましょう。Git→Commitをクリックして，開いたウインドウでファイルを選択したら，かならずCommit messageを記入しましょう。Commit messageにはあとでわかりやすいように行った変更のメモをしておきます（例えば，「方法に参加者の記述を加筆」とか「相関分析を追加」とか）。Commitできたら，Pushをします。Commitはこまめにしますが，Pushはある程度まとめて問題はありません（とはいえ，その日の作業の終わりにはかならずPushしてください）。</p>
-<p><img src="fig/github_gif6.gif" /> <br /> <br /> <br /></p>
-</div>
-<div id="共同作業としてのgithub" class="section level2">
-<h2>共同作業としてのGitHub</h2>
-<p>RStudioでGitHubを活用する上で，最低限の知識を説明してきました。GitHubは1人で使っても便利なものですが，その真価は共同作業において発揮します。例えば，卒論・修論では，指導教員からチェックを受けると思いますが，そのチェックをする際に，指導教員が学生のリポジトリを実際に操作して確認することもできます。そして，もし指導教員がなんらかの変更を加えた場合は，GitHub上でその変更を統合することになります。このようなやりとりをGitHubでは簡単にできます。さらに，卒論・修論のチェック時期になれば，GitHub上に卒論・修論のRMarkdownファイルをおいてけば，それを指導教員がReviewして，コメントをつけ，それをもとに修正・加筆をするなどもできます。卒論・修論執筆における活用法は，<a href="https://kunisatolab.github.io/main/how-to-write-with-rstudio.html">RStudioで卒論・修論執筆</a>を参照ください。</p>
-<p><img src="fig/github_fig2.png" /></p>
-<p>上記のように，GitHubは便利なツールなのでゼミで活用しますが，それ以上に，今後の社会において専門性をもった者が共同作業をするということが今以上に求められるようになります。その際の，基礎となるスキルや考え方として，GitHubに馴染んでおくことは決して無駄にはならないかと思います。</p>
+<p>さて，Cloneができると最初の準備は終わりです！</p>
 </div>
 
 <footer>
