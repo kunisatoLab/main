@@ -386,107 +386,20 @@ div.tocify {
 </div>
 
 
-<p>eln4Rmdは，電子ラボノートのためのRmdテンプレート用Rパッケージです。まだ開発中ですので，生暖かく見守っていただけたらと思います。</p>
-<div id="installation" class="section level2">
-<h2>Installation</h2>
-<p>インストール 以下のコマンドをRコンソールに打ち込んで，Github経由でインストールしてください(remotesがない方はinstall.packages()でインストールください)。</p>
-<pre><code># install.packages(&quot;remotes&quot;)
-remotes::install_github(&quot;ykunisato/eln4Rmd&quot;)</code></pre>
-</div>
-<div id="使用法" class="section level2">
-<h2>使用法</h2>
-<div id="電子ラボノートを作る" class="section level3">
-<h3>電子ラボノートを作る</h3>
-<p>elnjp_pdf()で日付のついた電子ラボノート用Rmdファイルが作成されます。これをknitするとPDFファイルが出力されます（markdownを出力したい場合は，elnjp_md()もありますが，こちらはOSFへのアップロードには対応していません）。</p>
-<pre><code>eln4Rmd::elnjp_pdf()</code></pre>
-<p>例えば，研究した日に記録するのを忘れていて記入忘れをしている場合は，replace_dayで日付を指定できます。以下の場合は，2021-04-01に指定しています。また，分かりやすいようにファイル名に名前を足すこともadd_nameでできます。以下の場合は，april_fool_expを指定しています。結果として，“2021-04-01_april_fool_exp.Rmd”という名前のファイルができます。</p>
-<pre><code>eln4Rmd::elnjp_pdf(add_name = &quot;april_fool_exp&quot; , replace_day = &quot;2021-04-01&quot;)</code></pre>
-<p>作成したラボノートにはタイムスタンプが必要です。タイムスタンプをつけないと，その日（もしくは後日に）に記録したのかの保証ができないので，電子ラボノートとして機能させる場合は，以下のようにOSFもしくはGitHubと連携をさせてください。</p>
-</div>
-<div id="osfと連携させる方法" class="section level3">
-<h3>osfと連携させる方法</h3>
-<div id="osfのpatpersonal-access-tokenの登録" class="section level4">
-<h4>(1) OSFのPAT(Personal Access Token)の登録</h4>
-<ul>
-<li>OSF(<a href="https://osf.io)のアカウントを作って，OSFのPAT(Personal" class="uri">https://osf.io)のアカウントを作って，OSFのPAT(Personal</a> Access Token)を以下のsettingsページで作成します。“Create Token”をクリックして，“Token name”に適当な名前を英語でつけます。Scopesのところのチェックボックスにチェックをいれます。出てきた英数字の文字列をコピーします。なお，これはOSFへのアクセスを許可するトークンですので，パスワードなどと同様に厳重に保管をしてください（パスワード管理ソフトの使用を推奨します）。</li>
-</ul>
-<p><a href="https://osf.io/settings/tokens" class="uri">https://osf.io/settings/tokens</a></p>
-<ul>
-<li>上記のOSFのPAT(Personal Access Token)を.Renvironに登録します。以下のようにusethisパッケージを使うと.Renvironがなければ作成した開いてくれます。</li>
-</ul>
-<pre><code>library(usethis)
-edit_r_environ()</code></pre>
-<ul>
-<li>以下を開いた.Renvironに貼り付けます。そして，“＜ご自身のOSFのPATに差し替えください＞”の部分を，上記で作成したOSFのPATに差し替えます。</li>
-</ul>
-<pre><code>OSF_PAT=＜ご自身のOSFのPATに差し替えください＞</code></pre>
-<ul>
-<li>PATの登録を機能させるために，以下のコードでRを再起動します。</li>
-</ul>
-<pre><code>.rs.restartR()</code></pre>
-</div>
-<div id="osfのプロジェクトページを作成してラボノートを置くコンポーネントを作る" class="section level4">
-<h4>(2) OSFのプロジェクトページを作成して，ラボノートを置くコンポーネントを作る</h4>
-<ul>
-<li>ブラウザからOSFでプロジェクトを作成します。</li>
-<li>Labnoteなどの名前でコンポーネントを作ります。そして，そのコンポーネントをクリックして，そのURLをコピーしておきます(次で使います)。</li>
-</ul>
-</div>
-<div id="ラボノートの内容を書いてknitしてosfにアップする" class="section level4">
-<h4>(3) ラボノートの内容を書いてknitして，OSFにアップする。</h4>
-<ul>
-<li>電子ラボノートは以下の関数で作れます。内容を書いて，knitすれば，PDF形式で出力されます。</li>
-</ul>
-<pre><code>eln4Rmd::elnjp_pdf()</code></pre>
-<ul>
-<li>作成したPDFを確認してから，(2)で調べたOSFでのURLをいれて，以下の関数を実行するとOSFにアップロードされます（OSFに上でタイムスタンプが押されます）。</li>
-</ul>
-<pre><code>eln4Rmd::up_elnjp_osf(eln_osf = &quot;OSFのラボノート用コンポーネントのURL&quot;)</code></pre>
-<p>さらに，OSFのラボノートコンポーネントにラボノートをアップするのと同時に，Research Compendiumの内容のバックアップをOSFにとりたい場合は，OSFにResearch Compendium用のコンポーネントを作成して，そのURLを使って以下のように実行します。なお，以下を実行する場合は，Research Compendiumをカレントディレクトリに指定して，そのサブディレクトリにlabnoteフォルダが存在することが前提になります。</p>
-<pre><code>eln4Rmd::up_elnjp_osf(eln_osf = &quot;OSFのラボノート用コンポーネントのURL&quot;, rc_osf = &quot;OSFのResearch Compendium用コンポーネントのURL&quot;)</code></pre>
-<ul>
-<li>一度(1)と(2)の設定ができていれば，あとは，毎日(3)を行うだけです（関数としては２回実行するだけ）。</li>
-<li>なお，elnjp_pdf()で，add_nameやreplace_dayを指定している場合は，up_elnjp_osf()でも同様の指定をしてください。</li>
-</ul>
-</div>
-</div>
-<div id="githubと連携させる方法" class="section level3">
-<h3>GitHubと連携させる方法</h3>
-<div id="githubアカウントとリポジトリの作成する" class="section level4">
-<h4>(1) GitHubアカウントとリポジトリの作成する</h4>
-<ul>
-<li>GitHubアカウントを作成します。作成方法の解説は多いので，読みやすいものを参考に作成ください。</li>
-<li>ラボノートをアップする用のGitHubリポジトリを作成ください。最初から公開することはないと思うので，プライベートリポジトリで作成ください。</li>
-<li>以下を参考にして，GitHubのPersonal Access Token(PAT)を作成します。PATはパスワードと同じ情報なので，厳重に管理ください。</li>
-</ul>
-<p><a href="https://docs.github.com/ja/github/authenticating-to-github/creating-a-personal-access-token" class="uri">https://docs.github.com/ja/github/authenticating-to-github/creating-a-personal-access-token</a></p>
-</div>
-<div id="rstudioでユーザー名メールアドレスpatを登録する" class="section level4">
-<h4>(2) RStudioでユーザー名，メールアドレス，PATを登録する</h4>
-<ul>
-<li>Rstudio上で，use_git_config()を使って，ユーザー名とメールアドレスを登録してください。</li>
-</ul>
-<pre><code>usethis::use_git_config(user.name = &quot;Taro Yamada&quot;, user.email = &quot;tyamada@example.com&quot;)</code></pre>
-<ul>
-<li>Rstudio上で，gitcreds_set()を使って，PATを登録してください。“? Enter password or token:”と聞かれるので，上記のPATを貼り付けます。</li>
-</ul>
-<pre><code>gitcreds::gitcreds_set()</code></pre>
-</div>
-<div id="ラボノートの内容を書いてknitしてgithubにアップコミットプッシュする" class="section level4">
-<h4>(3) ラボノートの内容を書いてknitして，GitHubにアップ（コミット＆プッシュ）する</h4>
-<ul>
-<li>電子ラボノートは以下の関数で作れます。内容を書いて，knitすれば，PDF形式で出力されます。</li>
-</ul>
-<pre><code>eln4Rmd::elnjp_pdf()</code></pre>
-<ul>
-<li>作成したPDFを確認してから，以下の関数を実行するとPDFという名前のフォルダを作ってそこにPDFをを保存したうえ，コミットをした上で，GitHubにプッシュしてくれます(GitHubにタイムスタンプが残ります）。</li>
-</ul>
-<pre><code>eln4Rmd::up_elnjp_git()</code></pre>
-<ul>
-<li>一度(1)と(2)の設定ができていれば，あとは，毎日(3)を行うだけです（関数としては２回実行するだけ）。</li>
-<li>なお，elnjp_pdf()で，add_nameやreplace_dayを指定している場合は，up_elnjp_git()でも同様の指定をしてください。</li>
-</ul>
-</div>
+<p>日々の研究の記録を丁寧に残して，実験した内容，発見や仮説などをタイムスタンプをつけて残すことは研究公正において重要になります。ただ，既存のラボノートや電子ラボノートは簡単なものでなく，心理学ではなかなか定着していない状況があります。そこで，Rから使える電子ラボノート的パッケージとして<a href="https://github.com/ykunisato/eln4Rmd">eln4Rmd</a>を作っています。インストール方法は，<a href="https://github.com/ykunisato/eln4Rmd">こちら</a>をご確認ください。</p>
+<p>eln4Rmdは，研究した日の電子ラボノートを作る機能と作ったノートをGitHub（もしくはOSF）と連携させてタイムスタンプを押す機能の２つからなります。</p>
+<div id="電子ラボノートを作る" class="section level2">
+<h2>(1)電子ラボノートを作る</h2>
+<p>R StudioのConsoleに，eln4Rmd::elnjp_pdf(rc = TRUE)をタイプすると，日付のついた電子ラボノート用Rmdファイルが作成されます。これをknitするとPDFファイルが出力されます。 なお，senshuRmdのResearch Compendiumを使っておらず，特定のフォルダに電子ラボノートを作りたい方は，rc = FALSEで実行ください。</p>
+<pre><code>eln4Rmd::elnjp_pdf(rc = TRUE)</code></pre>
+<p>基本的には上記だけで良いのですが，研究した日に記録するのを忘れて別の日に記録を残したい場合は，replace_dayで日付を指定できます（ただ，タイムスタンプは実際の作成した日にはなります）。以下の場合は，2021-04-01に指定しています。また，分かりやすいようにファイル名に名前を足すこともadd_nameでできます。以下の場合は，april_fool_expを指定しています。結果として，“2021-04-01_april_fool_exp.Rmd”という名前のファイルができます。</p>
+<pre><code>eln4Rmd::elnjp_pdf(add_name = &quot;april_fool_exp&quot; , replace_day = &quot;2021-04-01&quot;, rc = TRUE)</code></pre>
+<div id="githubと連携させてタイムスタンプを押す" class="section level3">
+<h3>(2)GitHubと連携させてタイムスタンプを押す</h3>
+<p>作成したラボノートにはタイムスタンプが必要です。タイムスタンプをつけないと，その日にちゃんと記録したのかの保証ができないので，電子ラボノートとして機能させる場合は，以下のようにGitHubもしくはOSFと連携をさせてください。</p>
+<p>作成したPDFを確認してから，以下の関数をConsoleで実行するとPDFという名前のフォルダを作ってそこにPDFを保存したうえ，コミットをした上で，GitHubにプッシュしてくれます(GitHubにタイムスタンプが残ります）。事前にGitHubの設定をしておかないといけないですが，そができていれば，以下の関数だけでタイムスタンプも押せます。</p>
+<pre><code>eln4Rmd::up_elnjp_git(rc = TRUE)</code></pre>
+<p>あとは，研究するたびに（１）と(3)を繰り返すだけです。なお，elnjp_pdf()で，add_nameやreplace_dayを指定している場合は，up_elnjp_git()でも同様の指定をしてください。</p>
 </div>
 </div>
 

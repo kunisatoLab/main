@@ -13,7 +13,7 @@
 
 <title>RStudioで卒論・修論執筆</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.7.1/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -463,17 +463,15 @@ div.tocify {
 </div>
 <div id="引用文献に関する補足" class="section level3">
 <h3>引用文献に関する補足</h3>
-<p>卒論・修論の引用文献は，ご自身で手動で打ち込むこともできます。RMarkdownでは，<code>*</code>で文字を挟むと<em>イタリック</em>，<code>**</code>で文字を挟むと<strong>ボールド体</strong>になりますので，これらを活用すると，<a href="https://psych.or.jp/manual/">日本心理学会の執筆・投稿の手びき</a>に合わせて作成できると思います。</p>
-<p>ただ，手動で打ち込むと，引用しているのに引用文献リストから向けていたり，引用をやめたのに引用文献リストに残っていたりと修正に伴う変更が反映されないということも起こります。なんらかの文献管理法を使う必要があります。本格的な文献管理は，<a href="https://paperpile.com/">Paperpile</a>や<a href="https://www.zotero.org/">Zotero</a>などがありますので，自分の趣味にあったものを活用ください。以下では，bibtexファイルを直接作成する方式で説明をします（PaperpileやZoteroで管理して，bibtex形式で出力させて使うということもできます）。</p>
-<p>senshuRmdのテンプレートをknitしてPDFを出力させると以下のような感じになります。</p>
+<p>卒論・修論の引用文献は，ご自身で手動で打ち込むこともできます。ただ，手動で打ち込むと，引用しているのに引用文献リストから向けていたり，引用をやめたのに引用文献リストに残っていたりと修正に伴う変更が反映されないということも起こります。</p>
+<p>そこで，senshuRmdでは，bibtexを使って引用文献処理を自動化しています。senshuRmdのテンプレートにはreference.bibというファイルが含まれており（paperフォルダ内にあります），そこにいくつか文献の情報が保存されています。reference.bibを開いてみましょう。RMarkdownで卒論・修論を書いている時に，文献を引用する場合は，reference.bibファイルにある引用キーを使って引用します（引用キーは＠ARTICLE{の後ろに書いてあるものです）。引用の仕方としては，Kunisato2012という名前の引用キーの文献の場合，<code>@Kunisato2012</code>と引用すると，<code>Kunisato et al.(2012)</code>というように文頭で引用する形式になります。一方，<code>[@Kunisato2012]</code>のように[]でくくると，<code>(Kunisato et al., 2012)</code>というように文末引用の形式になります（複数ある場合は，<code>[@Kunisato2012; @Machino2014]</code>のようにします）。bibファイルを使って文献管理をすれば，本文中の引用も引用文献リストもAPA形式で自動的に作ってくれます(APA形式にするために，“apa-6th-edition.csl”を使います)。このように本文中に引用キーをいれておくと，本文中に自動的に引用情報をいれて，さらに，以下のように引用文献リストも出力してくれます（便利ですね！）。</p>
 <p><img src="fig/senshuRmd_fig3.png" /></p>
-<p>senshuRmdのテンプレートにはreference.bibというファイルが含まれており，そこにいくつか文献の情報が保存されています。RMarkdownで卒論・修論を書いている時に，文献を引用する場合は，reference.bibファイルを参照して，そこから引用します。引用の仕方としては，Kunisato2012という名前の引用キーの文献の場合（bibtexでは文献の引用が簡単になるように，文献に引用キーがあり，それを使って引用できる），<code>@Kunisato2012</code>と引用すると，<code>Kunisato et al.(2012)</code>というように文頭で引用する形式になります。一方，<code>[@Kunisato2012]</code>のように[]でくくると，<code>(Kunisato et al., 2012)</code>というように文末引用の形式になります（複数ある場合は，<code>[@Kunisato2012; @Machino2014]</code>のようにします）。bibファイルを使って文献管理をすれば，本文中の引用も引用文献リストもAPA形式で自動的に作ってくれます(APA形式にするために，“apa-6th-edition.csl”を使います)。</p>
 <p>このように便利なbibファイルを作る方法について説明します。bibファイルを開くと以下のように文献情報が含まれています。そして，この形式で文献情報をbibファイルに保存していきます。 <img src="fig/senshuRmd_fig4.png" /></p>
 <p><br></p>
-<p>論文が掲載されている雑誌でも書誌情報がbibtex形式で出力できることも多いですが，簡単なのは，Google scholarで検索して，文献の右端にある“Import into BibTeX”をクリックすれば良いです。クリックするとBibTeX形式で表示されますので，それをコピーして，自分のbibファイルにペーストすればいいです。</p>
+<p>論文が掲載されている雑誌でも書誌情報がbibtex形式で出力できることも多いですが，簡単なのは，Google scholarで検索して，文献の右端にある“Import into BibTeX”をクリックすれば良いです。クリックするとBibTeX形式で表示されますので，それをコピーして，reference.bibにペーストすればいいです。</p>
 <p><img src="fig/senshuRmd_fig5.png" /></p>
 <p><br></p>
-<p>上記の検索結果の上から２つ目の文献をBibTeX形式で表示すると以下のようになります。このまま登録してもいいのですが，一番最初の引用キー（本文での引用で使うキーです）は，kunisato2011personalityとなっており，ちょっと長いです。bibファイル内に，kunisato2011が他にないようであれば，引用キーはkunisato2011で良いです。</p>
+<p>上記の検索結果の上から２つ目の文献をBibTeX形式で表示すると以下のようになります。このまま登録してもいいのですが，一番最初の引用キー（本文での引用で使うキーです）は，kunisato2011personalityとなっており，ちょっと長いです。引用キーはbibファイル内の他の引用文献と重ならなければ良いので，kunisato2011aとかにしても良いです。</p>
 <pre><code>@article{kunisato2011personality,
   title={Personality traits and the amplitude of spontaneous low-frequency oscillations during resting state},
   author={Kunisato, Yoshihiko and Okamoto, Yasumasa and Okada, Go and Aoyama, Shiori and Nishiyama, Yoshiko and Onoda, Keiichi and Yamawaki, Shigeto},
@@ -488,7 +486,7 @@ div.tocify {
 <p>日本語文献も同様に，CiNiiで検索して，引用したい論文の右側の方を見ると“BibTeXで表示”とあるので，そちらをクリックするとBibTeX形式で表示されます。これをGoogle Scholarと同様にコピー＆ペーストすればいいです。</p>
 <p><img src="fig/senshuRmd_fig6.png" /></p>
 <p><br></p>
-<p>CiNiiの場合，引用キーがあまり意味のない記号の羅列のこともあるので，自分で分かりやすいものを設定することをオススメします。以下の場合だと，引用キーが130007749836になっているので，kunisato2019などに変更して登録しておくと良いかと思います。また，日本語だと“国里, 愛彦 and 片平, 健太郎 and 沖村, 宰 and 山下, 祐一”のまま登録するとちょっとめんどくさいことになるので，“国里愛彦・片平健太郎・沖村宰・山下祐一”という感じで姓と名の間のカンマをとって，著者をナカグロでつないでおいて，登録しておくと良いです。</p>
+<p>国里の論文を適当に選んで，右の方にある「BibTeXで表示」をクリックすると以下のような内容が表示されるので，reference.bibにコピペします。</p>
 <pre><code>@article{130007749836,
 author=&quot;国里, 愛彦 and 片平, 健太郎 and 沖村, 宰 and 山下, 祐一&quot;,
 title=&quot;うつに対する計算論的アプローチ:―強化学習モデルの観点から―&quot;,
@@ -503,20 +501,27 @@ pages=&quot;88-103&quot;,
 URL=&quot;https://ci.nii.ac.jp/naid/130007749836/&quot;,
 DOI=&quot;10.24602/sjpr.62.1_88&quot;,
 }</code></pre>
+<p>CiNiiの場合，引用キーがあまり意味のない記号の羅列のこともあるので，自分で分かりやすいものを設定してもよいです（ただし，bibファイル内で重複しないようにしてください）。上の場合だと，引用キーが130007749836になっているので，kunisato2019aなどに変更して登録しておくと良いかと思います。</p>
+<p><strong>日本語文献の場合の注意：yomiを入れる</strong></p>
+<p>日本語文献と英語文献とをアルファベット順で並べる場合に，日本語著者名をアルファベットにした並び替える必要があります。そこで，authorだけでなく，yomi="“を追加します。例えば，上記の例だと，yomi =”Kunisato, Yoshihiko, kentaro, katahira, tsukasa, okimura, yuichi, yamashita"となります。</p>
+<p>上記の例に引用キーの変更とyomiの追加をすると以下のようになります。</p>
+<pre><code>@article{kunisato2019a,
+author=&quot;国里, 愛彦 and 片平, 健太郎 and 沖村, 宰 and 山下, 祐一&quot;,
+yomi = &quot;Kunisato, Yoshihiko, kentaro, katahira, tsukasa, okimura, yuichi, yamashita&quot;,
+title=&quot;うつに対する計算論的アプローチ:―強化学習モデルの観点から―&quot;,
+journal=&quot;心理学評論&quot;,
+ISSN=&quot;0386-1058&quot;,
+publisher=&quot;心理学評論刊行会&quot;,
+year=&quot;2019&quot;,
+month=&quot;&quot;,
+volume=&quot;62&quot;,
+number=&quot;1&quot;,
+pages=&quot;88-103&quot;,
+URL=&quot;https://ci.nii.ac.jp/naid/130007749836/&quot;,
+DOI=&quot;10.24602/sjpr.62.1_88&quot;,
+}</code></pre>
 <p><br></p>
-<p>このように，自分の引用したい文献のBibTeX形式の情報をbibファイルにどんどん追加していきつつ，本文で引用していくと，自動的に本文中に引用され，最後の引用文献リストにも反映されます(そして，本文での引用をやめると，引用文献リストから削除される)。なかなか便利なのですが，そのままで完璧に日本語文献が扱えるかと言うとかなり難しいです。そこで，以下のように工夫をします。</p>
-<ul>
-<li>日本語文献をbibファイルへ登録する際に“第1著者氏名・第2著者氏名”のように，姓と名の間を詰めて，著者はナカグロでつなげる（こうすると全著者が人まとまりにして登録される）。</li>
-<li>文献の引用に関する最終調整は，texファイルに手を加えて行う。</li>
-</ul>
-<p>上記の用にbibファイルを登録すると引用文献リストは良い感じになるが，本文の引用などは調整が必要になる。また，英語文献はアルファベット順になるが，日本語文献はそうはならないので，引用文献リストを並び替える必要がある。これは，RMarkdownをknitした際に出力されるtexファルに手を加えて行う。以下のように，senshuRmdのRMarkdownテンプレートをknitすると，“yoshihiko_kunisato.tex”のように，texファイルが自動的に出力されます。</p>
-<p><img src="fig/senshuRmd_fig7.png" /></p>
-<p><br> texファイルを開いたら，修正したい箇所まで移動します。以下の場合，日本語文献のDOIと順番を変更したいとします。まず，259行目を削除してDOIを削除します。次に，255行目から258行目を246行目のところに移動させます(Kunisato 2012, 国里　2019，Machino 2014の順番に変える)。こういう感じでTexファイルを修正することで細かい調整ができます。なお，修正したtexファイルは名前を変更して保存しておくと良いです。</p>
-<p><img src="fig/senshuRmd_fig8.png" /></p>
-<p><br> texファイルの修正ができたら，tinytexパッケージのxelatex関数を使って，修正したtexファイルからPDFファイルを作成します。</p>
-<pre><code>xelatex(&quot;yoshihiko_kunisato_edited.tex&quot;)</code></pre>
-<p><br> 上記の手続きで，以下のように修正できました。ちょっとした手間がかかりますが，このようにすれば，日本語文献が上手く扱えます。</p>
-<p><img src="fig/senshuRmd_fig9.png" /></p>
+<p>このように，自分の引用したい文献のBibTeX形式の情報をbibファイルにどんどん追加していきつつ，本文で引用していくと，自動的に本文中に引用され，最後の引用文献リストにも反映されます(そして，本文での引用をやめると，引用文献リストから削除される)。</p>
 <p>卒論・修論をRStudio上でRMarkdownを使って執筆することは，少し面倒くさそうに思えるかもしれませんが，卒論・修論でのフォーマット調整にかかる時間を短くすることができますし，解析と文章との距離が近くできるので，ミスもすくなる可能性が高いので，是非とも試してもらえると嬉しく思います。</p>
 </div>
 </div>
