@@ -13,12 +13,22 @@
 
 <title>jsPsychを用いた認知課題の作成2: ストループ課題</title>
 
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,6 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +72,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -112,40 +88,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +122,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +134,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +145,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +173,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,13 +298,13 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -416,7 +377,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -437,7 +398,7 @@ div.tocify {
 <li>課題のメインブロックに機能を追加をする</li>
 <li>メインブロック以外のブロックを追加していく</li>
 </ol>
-<p>1~5にまっすぐ進むわけでなく，試行錯誤しつつ，行きつ戻りつしながら進みます。特に初学者にとって大切に思うのは，1と２の課題の情報を整理して紙などに課題の設計図を書いてみること，いきなり実際に行う課題を作ろうとするのではなくメインブロックを一番シンプルな形（例えば，ストループ課題の場合は，文字を画面に出すことです）で作ることです。その後で，徐々に機能を追加していきます。いきなり完成形を作ろうとしなくても良いです。</p>
+<p>1~5にまっすぐ進むわけでなく，試行錯誤しつつ，行きつ戻りつしながら進みます。特に初学者にとって大切に思うのは，1と２の課題の情報を整理して紙などに課題の設計図を書いてみること，いきなり実際に行う課題を作ろうとするのではなくメインブロックを一番シンプルな形（例えば，ストループ課題の場合は，文字を画面に出すこと）で作ることです。その後で，徐々に機能を追加していきます。いきなり完成形を作ろうとしなくても良いです。</p>
 <p><br></p>
 </div>
 <div id="課題の情報を整理する" class="section level2">
@@ -461,9 +422,8 @@ div.tocify {
 <div id="教示と課題のメインブロックを最もシンプルな形で作る" class="section level2">
 <h2>3. 教示と課題のメインブロックを最もシンプルな形で作る</h2>
 <p>さて，設計図を見るといくつかあるブロックの中で一番メインのプロックは刺激呈示をして反応を取得するブロックです。これを最もシンプルな形で作るとすれば，反応の取得はおいておいて，まずは刺激を呈示するブロックを作ることになります。ということで，以下では，早速，教示と課題のメインブロックの刺激呈示部分を作ることとにします。なぜ教示も作るかというと，教示は一般的には簡単につくれることが多いのと，教示は参加者向けのものではありますが，上記の設計図と同じ働きをして，課題の全体像を意識することにつながります。</p>
-<p>さて，ストループ課題用を作るためのjsPsychやR Markdownの準備をします。以下をコンソールに打ち込んで準備をしましょう。</p>
-<pre><code>library(jsPsychRmd)
-set_jsPsych(folder = &quot;stroop&quot;)</code></pre>
+<p>さて，ストループ課題用を作るためのjsPsychやR Markdownの準備をします。<strong>以下をRStudioのConsoleに打ち込んで準備をしましょう。</strong>いつもどおり，フォルダとファイルが用意されて，index.Rmdファイルが開くと思います。</p>
+<pre><code>jsPsychRmd::set_jsPsych(folder = &quot;stroop&quot;, rc = TRUE)</code></pre>
 <p><br></p>
 <div id="教示を呈示する" class="section level3">
 <h3>3.1 教示を呈示する</h3>
@@ -479,7 +439,7 @@ set_jsPsych(folder = &quot;stroop&quot;)</code></pre>
 上の例の場合だと，赤色で「青」と書いてありますので，dを押します
 キーボードのキーをどれか押すと課題が始まります</code></pre>
 <p>index.Rmdを開いて，jsブロック内で課題の設定をしていきます。教示は，以下のように，“html-keyboard-response”を使って呈示します。stimulusってところで呈示する内容を指定します。post_trial_gapは，教示出してから次に移行する間の時間です。ここでは，1000msに設定します。なお，教示の説明部分は，pで挟まれた文章がありますが，これは，文字の大きさを変えたり，左揃えにする際に必要になります。そして，spanで挟まれた文章は，文字の色を変えることができます。</p>
-<p>教示の設定を書く，instructionができたら，timelineを作って，instructionにpushします。最後に，jsPsych.init()で，課題をtimelineにそって走らせましょう。on_finish: function() {jsPsych.data.displayData();}の説明をしておきます。これを追加しておくと，課題の終了時に呈示した刺激や反応などが表示されますので，便利です。</p>
+<p>教示の設定を書く，instructionができたら，timelineを作って，instructionにpushします。最後に，jsPsych.init()で，課題をtimelineにそって走らせましょう。on_finish: function() {jsPsych.data.displayData();}の説明をしておきます。これを追加しておくと，課題の終了時に呈示した刺激や反応などが表示されますので便利です。</p>
 <p><img src="fig/jspsych2_fig4.png" /></p>
 <p>ここまでできたら，「Knit」を押して，教示を出してみましょう。一番基本の教示ブロックが完成しました。</p>
 <p><br></p>
@@ -506,7 +466,7 @@ set_jsPsych(folder = &quot;stroop&quot;)</code></pre>
   {stimulus: &quot;&lt;p style=&#39;color:yellow;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;},
   {stimulus: &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;}
 ];</code></pre>
-<p>さて，このstimliを呈示していくわけですが，前に学んだようにfor文で呈示することもできますが，jsPsychでは，「Timeline variables」を使って，もう少し簡単に書くこともできます(Timeline variablesの詳細は，<a href="https://www.jspsych.org/overview/timeline/">こちら</a>を参照ください)。教示をhtml-keyborad-responseで呈示しましたが，それは１回だけでした。jsPsychでは，instructionや以下のstroopといったオブジェクトの中にもtimelineを作ることができます（なんだかよくわからないと思いますが，stroopの中に16個の刺激を呈示するtimelineを持つことができて，これができるとコードがすっきりします）。var stroop ={の後ろにtimeline:[{}]を作ります。timeline:[{}]内で，type, trial_duration, stimulus, promptを指定します。そして，。timeline:[{}]の後ろに，timeline_variablesで先程作ったstimuliを指定します。なお，今回は，stimulusを入れ替えて呈示するので，jsPsych.timelineVariable()を使って，timeline_variablesで指定したstimliの中のstimulusをstimulus: jsPsych.timelineVariable(‘stimulus’)と指定します。このように，timeline_variablesに16個のストループ刺激が入ったstimuliを指定したので，timeline:[{}]のstimulusをstimuliのstimulusを使って変更しつつ16回呈示します。</p>
+<p>さて，このstimliを呈示していくわけですが，前に学んだようにfor文で呈示することもできますが，jsPsychでは，「Timeline variables」を使って，もう少し簡単に書くこともできます(Timeline variablesの詳細は，<a href="https://www.jspsych.org/overview/timeline/" target="_blank">こちら</a>を参照ください)。教示をhtml-keyborad-responseで呈示しましたが，それは１回だけでした。jsPsychでは，instructionや以下のstroopといったオブジェクトの中にもtimelineを作ることができます（なんだかよくわからないと思いますが，stroopの中に16個の刺激を呈示するtimelineを持つことができて，これができるとコードがすっきりします）。var stroop ={の後ろにtimeline:[{}]を作ります。timeline:[{}]内で，type, trial_duration, stimulus, promptを指定します。そして，。timeline:[{}]の後ろに，timeline_variablesで先程作ったstimuliを指定します。なお，今回は，stimulusを入れ替えて呈示するので，jsPsych.timelineVariable()を使って，timeline_variablesで指定したstimliの中のstimulusをstimulus: jsPsych.timelineVariable(‘stimulus’)と指定します。このように，timeline_variablesに16個のストループ刺激が入ったstimuliを指定したので，timeline:[{}]のstimulusをstimuliのstimulusを使って変更しつつ16回呈示します。</p>
 <p>ちょっと分かりにくいですが，呈示したい刺激のリストを作って，それをtimeline_variablesに入れます。そうすると，jsPsych.timelineVariable()を使って，その前のtimeline内の内容を変更することができます（今回の場合は，stimulusを施行ごとに変更しています）。これを上手く使うと，シンプルかつ柔軟に課題を作ることができます。</p>
 <p><img src="fig/jspsych2_fig5.png" /></p>
 <p>これで，作成したリストの順番でストループ刺激が呈示されるかと思います。試してみましょう。</p>
@@ -522,7 +482,7 @@ set_jsPsych(folder = &quot;stroop&quot;)</code></pre>
 <div id="デバッグについて" class="section level3">
 <h3>デバッグについて</h3>
 <p>さて，ここまで上手く作れたでしょうか？なかなか動かなくて困った人もいるかもしれません。RmdファイルからHTMLは作れるけど，ちゃんと動作しないことも多いです。その時に，以下の方法でバグを探すと良いです。</p>
-<p>上手く動作しないときは，タイトルと作者だけ表示されることが多いですが，その上手く動いていないHTMLファイルをブラウザ（Chrome）で開きます。そして，右クリックをしてメニューをだして，Inspectをクリックします。そうすると以下の右側のような画面がでてくるので，そのConsoleあたりをみるとエラーが出ています。エラーをみると，コードのどこに問題があるか確認できます。これにしたがって，コードを修正していくと，ちゃんと走るかと思います。</p>
+<p>上手く動作しないときは，タイトルと作者だけ表示されることが多いですが，その上手く動いていないHTMLファイルをブラウザ（Chrome）で開きます。そして，右クリックをしてメニューをだして，Inspect(Chromeが日本語版なら「検証」)をクリックします。そうすると以下の右側のような画面がでてくるので，そのConsoleあたりをみるとエラーが出ています。エラーをみると，コードのどこに問題があるか確認できます。これにしたがって，コードを修正していくと，ちゃんと走るかと思います。</p>
 <p><img src="fig/jspsych2_fig6.png" /></p>
 <p><br></p>
 </div>
@@ -565,7 +525,7 @@ set_jsPsych(folder = &quot;stroop&quot;)</code></pre>
 </div>
 <div id="ボタン押しの記録と正誤判定" class="section level3">
 <h3>4.2 ボタン押しの記録と正誤判定</h3>
-<p>今回作成しているストループ課題では，キーボードのタイピングで反応を取得します(d,f,j,k)。なお，Java Script内で処理する際に文字よりも数字のコードのほうが便利です。そこで，キーボードのそれぞれ割り振られたコード使います。それぞれのキーボードにどういうコードが割り振られているかは，<a href="https://keycode.info/">https://keycode.info/</a>で簡単に確認できます。なお，今回使う，d,f,j,kの場合は，以下のようになります。</p>
+<p>今回作成しているストループ課題では，キーボードのタイピングで反応を取得します(d,f,j,k)。なお，Java Script内で処理する際に文字よりも数字のコードのほうが便利です。そこで，キーボードのそれぞれ割り振られたコード使います。それぞれのキーボードにどういうコードが割り振られているかは，<a href="https://keycode.info/" target="_blank">https://keycode.info/</a>で簡単に確認できます。なお，今回使う，d,f,j,kの場合は，以下のようになります。</p>
 <ul>
 <li>赤色の単語ならdを押す = 68</li>
 <li>緑色の単語ならjを押す = 74</li>
@@ -806,7 +766,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>

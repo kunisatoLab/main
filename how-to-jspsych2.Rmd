@@ -16,7 +16,7 @@ title: "jsPsychを用いた認知課題の作成2: ストループ課題"
 4. 課題のメインブロックに機能を追加をする
 5. メインブロック以外のブロックを追加していく
 
-1~5にまっすぐ進むわけでなく，試行錯誤しつつ，行きつ戻りつしながら進みます。特に初学者にとって大切に思うのは，1と２の課題の情報を整理して紙などに課題の設計図を書いてみること，いきなり実際に行う課題を作ろうとするのではなくメインブロックを一番シンプルな形（例えば，ストループ課題の場合は，文字を画面に出すことです）で作ることです。その後で，徐々に機能を追加していきます。いきなり完成形を作ろうとしなくても良いです。
+1~5にまっすぐ進むわけでなく，試行錯誤しつつ，行きつ戻りつしながら進みます。特に初学者にとって大切に思うのは，1と２の課題の情報を整理して紙などに課題の設計図を書いてみること，いきなり実際に行う課題を作ろうとするのではなくメインブロックを一番シンプルな形（例えば，ストループ課題の場合は，文字を画面に出すこと）で作ることです。その後で，徐々に機能を追加していきます。いきなり完成形を作ろうとしなくても良いです。
 
 <br>
 
@@ -53,7 +53,7 @@ title: "jsPsychを用いた認知課題の作成2: ストループ課題"
 さて，設計図を見るといくつかあるブロックの中で一番メインのプロックは刺激呈示をして反応を取得するブロックです。これを最もシンプルな形で作るとすれば，反応の取得はおいておいて，まずは刺激を呈示するブロックを作ることになります。ということで，以下では，早速，教示と課題のメインブロックの刺激呈示部分を作ることとにします。なぜ教示も作るかというと，教示は一般的には簡単につくれることが多いのと，教示は参加者向けのものではありますが，上記の設計図と同じ働きをして，課題の全体像を意識することにつながります。
 
 
-さて，ストループ課題用を作るためのjsPsychやR Markdownの準備をします。以下をRStudioのConsoleに打ち込んで準備をしましょう。
+さて，ストループ課題用を作るためのjsPsychやR Markdownの準備をします。**以下をRStudioのConsoleに打ち込んで準備をしましょう。**いつもどおり，フォルダとファイルが用意されて，index.Rmdファイルが開くと思います。
 
 ```
 jsPsychRmd::set_jsPsych(folder = "stroop", rc = TRUE)
@@ -80,7 +80,7 @@ jsPsychRmd::set_jsPsych(folder = "stroop", rc = TRUE)
 
 index.Rmdを開いて，jsブロック内で課題の設定をしていきます。教示は，以下のように，"html-keyboard-response"を使って呈示します。stimulusってところで呈示する内容を指定します。post_trial_gapは，教示出してから次に移行する間の時間です。ここでは，1000msに設定します。なお，教示の説明部分は，pで挟まれた文章がありますが，これは，文字の大きさを変えたり，左揃えにする際に必要になります。そして，spanで挟まれた文章は，文字の色を変えることができます。
 
-教示の設定を書く，instructionができたら，timelineを作って，instructionにpushします。最後に，jsPsych.init()で，課題をtimelineにそって走らせましょう。on_finish: function() {jsPsych.data.displayData();}の説明をしておきます。これを追加しておくと，課題の終了時に呈示した刺激や反応などが表示されますので，便利です。
+教示の設定を書く，instructionができたら，timelineを作って，instructionにpushします。最後に，jsPsych.init()で，課題をtimelineにそって走らせましょう。on_finish: function() {jsPsych.data.displayData();}の説明をしておきます。これを追加しておくと，課題の終了時に呈示した刺激や反応などが表示されますので便利です。
 
 ![](fig/jspsych2_fig4.png)
 
@@ -115,7 +115,7 @@ var stimuli = [
 ];
 ```
 
-さて，このstimliを呈示していくわけですが，前に学んだようにfor文で呈示することもできますが，jsPsychでは，「Timeline variables」を使って，もう少し簡単に書くこともできます(Timeline variablesの詳細は，[こちら](https://www.jspsych.org/overview/timeline/)を参照ください)。教示をhtml-keyborad-responseで呈示しましたが，それは１回だけでした。jsPsychでは，instructionや以下のstroopといったオブジェクトの中にもtimelineを作ることができます（なんだかよくわからないと思いますが，stroopの中に16個の刺激を呈示するtimelineを持つことができて，これができるとコードがすっきりします）。var stroop ={の後ろにtimeline:[{}]を作ります。timeline:[{}]内で，type, trial_duration, stimulus, promptを指定します。そして，。timeline:[{}]の後ろに，timeline_variablesで先程作ったstimuliを指定します。なお，今回は，stimulusを入れ替えて呈示するので，jsPsych.timelineVariable()を使って，timeline_variablesで指定したstimliの中のstimulusをstimulus: jsPsych.timelineVariable('stimulus')と指定します。このように，timeline_variablesに16個のストループ刺激が入ったstimuliを指定したので，timeline:[{}]のstimulusをstimuliのstimulusを使って変更しつつ16回呈示します。
+さて，このstimliを呈示していくわけですが，前に学んだようにfor文で呈示することもできますが，jsPsychでは，「Timeline variables」を使って，もう少し簡単に書くこともできます(Timeline variablesの詳細は，<a href="https://www.jspsych.org/overview/timeline/" target="_blank">こちら</a>を参照ください)。教示をhtml-keyborad-responseで呈示しましたが，それは１回だけでした。jsPsychでは，instructionや以下のstroopといったオブジェクトの中にもtimelineを作ることができます（なんだかよくわからないと思いますが，stroopの中に16個の刺激を呈示するtimelineを持つことができて，これができるとコードがすっきりします）。var stroop ={の後ろにtimeline:[{}]を作ります。timeline:[{}]内で，type, trial_duration, stimulus, promptを指定します。そして，。timeline:[{}]の後ろに，timeline_variablesで先程作ったstimuliを指定します。なお，今回は，stimulusを入れ替えて呈示するので，jsPsych.timelineVariable()を使って，timeline_variablesで指定したstimliの中のstimulusをstimulus: jsPsych.timelineVariable('stimulus')と指定します。このように，timeline_variablesに16個のストループ刺激が入ったstimuliを指定したので，timeline:[{}]のstimulusをstimuliのstimulusを使って変更しつつ16回呈示します。
 
 ちょっと分かりにくいですが，呈示したい刺激のリストを作って，それをtimeline_variablesに入れます。そうすると，jsPsych.timelineVariable()を使って，その前のtimeline内の内容を変更することができます（今回の場合は，stimulusを施行ごとに変更しています）。これを上手く使うと，シンプルかつ柔軟に課題を作ることができます。
 
@@ -136,7 +136,7 @@ var stimuli = [
 
 さて，ここまで上手く作れたでしょうか？なかなか動かなくて困った人もいるかもしれません。RmdファイルからHTMLは作れるけど，ちゃんと動作しないことも多いです。その時に，以下の方法でバグを探すと良いです。
 
-上手く動作しないときは，タイトルと作者だけ表示されることが多いですが，その上手く動いていないHTMLファイルをブラウザ（Chrome）で開きます。そして，右クリックをしてメニューをだして，Inspectをクリックします。そうすると以下の右側のような画面がでてくるので，そのConsoleあたりをみるとエラーが出ています。エラーをみると，コードのどこに問題があるか確認できます。これにしたがって，コードを修正していくと，ちゃんと走るかと思います。
+上手く動作しないときは，タイトルと作者だけ表示されることが多いですが，その上手く動いていないHTMLファイルをブラウザ（Chrome）で開きます。そして，右クリックをしてメニューをだして，Inspect(Chromeが日本語版なら「検証」)をクリックします。そうすると以下の右側のような画面がでてくるので，そのConsoleあたりをみるとエラーが出ています。エラーをみると，コードのどこに問題があるか確認できます。これにしたがって，コードを修正していくと，ちゃんと走るかと思います。
 
 ![](fig/jspsych2_fig6.png)
 
@@ -191,7 +191,7 @@ var stroop = {
 
 ### 4.2 ボタン押しの記録と正誤判定
 
-今回作成しているストループ課題では，キーボードのタイピングで反応を取得します(d,f,j,k)。なお，Java Script内で処理する際に文字よりも数字のコードのほうが便利です。そこで，キーボードのそれぞれ割り振られたコード使います。それぞれのキーボードにどういうコードが割り振られているかは，[https://keycode.info/](https://keycode.info/)で簡単に確認できます。なお，今回使う，d,f,j,kの場合は，以下のようになります。
+今回作成しているストループ課題では，キーボードのタイピングで反応を取得します(d,f,j,k)。なお，Java Script内で処理する際に文字よりも数字のコードのほうが便利です。そこで，キーボードのそれぞれ割り振られたコード使います。それぞれのキーボードにどういうコードが割り振られているかは，<a href="https://keycode.info/" target="_blank">https://keycode.info/</a>で簡単に確認できます。なお，今回使う，d,f,j,kの場合は，以下のようになります。
 
 - 赤色の単語ならdを押す = 68
 - 緑色の単語ならjを押す = 74
