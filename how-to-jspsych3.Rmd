@@ -107,10 +107,13 @@ jsPsychRmd::set_jsPsych(folder = "RL", rc = TRUE)
 
 ### 3.2 メインブロック：２つの画像刺激を呈示する
 
-さて，メインブロックを作りましょう。以下の"s1.jpeg"（黄色の縦線）と"s2.jpeg"(青の横線)を呈示する刺激に使いましょう。画像刺激は[こちら](https://github.com/kunisatoLab/main/raw/master/materials/jsPsych/img.zip)からダウンロードください。
+さて，メインブロックを作りましょう。以下の"s1.jpeg"（黄色の縦線）と"s2.jpeg"(青の横線)を呈示する刺激に使いましょう。画像刺激は[こちら]()からダウンロードください。
 
 ```
-jsPsychRmd::set_jsPsych(folder = "RL", rc = TRUE)
+temp <- tempfile()
+download.file("https://github.com/kunisatoLab/main/raw/master/materials/jsPsych/img.zip",temp)
+unzip(temp, exdir = paste0(getwd(),"/exercises/RL/stimuli/"))
+unlink(temp)
 ```
 
 
