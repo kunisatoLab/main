@@ -11,9 +11,9 @@
 
 
 
-<title>研究したらラボノートを書こう</title>
+<title>ラボノートの準備</title>
 
-<script src="site_libs/header-attrs-2.7.1/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -381,26 +381,28 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">研究したらラボノートを書こう</h1>
+<h1 class="title toc-ignore">ラボノートの準備</h1>
 
 </div>
 
 
-<p>日々の研究の記録を丁寧に残して，実験した内容，発見や仮説などをタイムスタンプをつけて残すことは研究公正において重要になります。ただ，既存のラボノートや電子ラボノートは簡単なものでなく，心理学ではなかなか定着していない状況があります。そこで，Rから使える電子ラボノート的パッケージとして<a href="https://github.com/ykunisato/eln4Rmd">eln4Rmd</a>を作っています。インストール方法は，<a href="https://github.com/ykunisato/eln4Rmd">こちら</a>をご確認ください。</p>
+<p>日々の研究の記録を丁寧に残して，実験した内容，発見や仮説などをタイムスタンプをつけて残すことは研究公正において重要になります。ただ，既存のラボノートや電子ラボノートは簡単なものでなく，心理学ではなかなか定着していない状況があります。そこで，Rから使える電子ラボノート的パッケージとして<a href="https://github.com/ykunisato/eln4Rmd" target="_blank">eln4Rmd</a>を作っています（国里ゼミのRstudio serverには既にインストールされていますが，インストール方法は，<a href="https://github.com/ykunisato/eln4Rmd" target="_blank">eln4Rmd</a>をご確認ください）。</p>
 <p>eln4Rmdは，研究した日の電子ラボノートを作る機能と作ったノートをGitHub（もしくはOSF）と連携させてタイムスタンプを押す機能の２つからなります。</p>
-<div id="電子ラボノートを作る" class="section level2">
-<h2>(1)電子ラボノートを作る</h2>
-<p>R StudioのConsoleに，eln4Rmd::elnjp_pdf(rc = TRUE)をタイプすると，日付のついた電子ラボノート用Rmdファイルが作成されます。これをknitするとPDFファイルが出力されます。 なお，senshuRmdのResearch Compendiumを使っておらず，特定のフォルダに電子ラボノートを作りたい方は，rc = FALSEで実行ください。</p>
+<p><br /></p>
+<div id="電子ラボノートを作る" class="section level3">
+<h3>(1)電子ラボノートを作る</h3>
+<p><strong>R StudioのConsoleに，eln4Rmd::elnjp_pdf(rc = TRUE)をタイプすると，日付のついた電子ラボノート用Rmdファイルが作成されます。</strong>これをknitするとPDFファイルが出力されます。</p>
 <pre><code>eln4Rmd::elnjp_pdf(rc = TRUE)</code></pre>
-<p>基本的には上記だけで良いのですが，研究した日に記録するのを忘れて別の日に記録を残したい場合は，replace_dayで日付を指定できます（ただ，タイムスタンプは実際の作成した日にはなります）。以下の場合は，2021-04-01に指定しています。また，分かりやすいようにファイル名に名前を足すこともadd_nameでできます。以下の場合は，april_fool_expを指定しています。結果として，“2021-04-01_april_fool_exp.Rmd”という名前のファイルができます。</p>
+<p>senshuRmdのResearch Compendiumを使っておらず，特定のフォルダに電子ラボノートを作りたい方は，rc = FALSEで実行ください。もし研究した日に記録するのを忘れて別の日に記録を残したい場合は，replace_dayで日付を指定できます（ただ，タイムスタンプは実際の作成した日にはなります）。以下の場合は，2021-04-01に指定しています。また，分かりやすいようにファイル名に名前を足すこともadd_nameでできます。以下の場合は，april_fool_expを指定しています。結果として，“2021-04-01_april_fool_exp.Rmd”という名前のファイルができます。ただ，<strong>基本的には，上記のeln4Rmd::elnjp_pdf(rc = TRUE)を使うようにしてください。</strong></p>
 <pre><code>eln4Rmd::elnjp_pdf(add_name = &quot;april_fool_exp&quot; , replace_day = &quot;2021-04-01&quot;, rc = TRUE)</code></pre>
+<p><br /></p>
+</div>
 <div id="githubと連携させてタイムスタンプを押す" class="section level3">
 <h3>(2)GitHubと連携させてタイムスタンプを押す</h3>
-<p>作成したラボノートにはタイムスタンプが必要です。タイムスタンプをつけないと，その日にちゃんと記録したのかの保証ができないので，電子ラボノートとして機能させる場合は，以下のようにGitHubもしくはOSFと連携をさせてください。</p>
-<p>作成したPDFを確認してから，以下の関数をConsoleで実行するとPDFという名前のフォルダを作ってそこにPDFを保存したうえ，コミットをした上で，GitHubにプッシュしてくれます(GitHubにタイムスタンプが残ります）。事前にGitHubの設定をしておかないといけないですが，そができていれば，以下の関数だけでタイムスタンプも押せます。</p>
+<p>作成したラボノートにはタイムスタンプが必要です。タイムスタンプをつけないと，その日にちゃんと記録したのかの保証ができないので，電子ラボノートとして機能させる場合は，以下のようにGitHubと連携をさせてください。</p>
+<p><strong>作成したPDFを確認してから，以下の関数をConsoleで実行するとPDFという名前のフォルダを作ってそこにPDFを保存したうえ，コミットをした上で，GitHubにプッシュしてくれます</strong>(GitHubにタイムスタンプが残ります）。事前にGitHubの設定をしておかないといけないですが，そができていれば，以下の関数だけでタイムスタンプも押せます。</p>
 <pre><code>eln4Rmd::up_elnjp_git(rc = TRUE)</code></pre>
-<p>あとは，研究するたびに（１）と(3)を繰り返すだけです。なお，elnjp_pdf()で，add_nameやreplace_dayを指定している場合は，up_elnjp_git()でも同様の指定をしてください。</p>
-</div>
+<p>研究するたびに（１）と(2)を繰り返すだけです。なお，elnjp_pdf()で，add_nameやreplace_dayを指定している場合は，up_elnjp_git()でも同様の指定をしてください。</p>
 </div>
 
 <footer>

@@ -11,9 +11,9 @@
 
 
 
-<title>RStudioで卒論・修論執筆</title>
+<title>RStudioで卒論・修論を書く準備</title>
 
-<script src="site_libs/header-attrs-2.7.1/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -381,91 +381,90 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">RStudioで卒論・修論執筆</h1>
+<h1 class="title toc-ignore">RStudioで卒論・修論を書く準備</h1>
 
 </div>
 
 
-<div id="なぜ卒論修論をrstudio上で執筆するのか" class="section level2">
-<h2>なぜ卒論・修論をRStudio上で執筆するのか？</h2>
-<p>本研究室では，以下の理由から卒論・修論をRStudio上でRMarkdownを使って執筆することを推奨しています。</p>
+<div id="卒論修論をrstudio上で執筆する理由" class="section level2">
+<h2>卒論・修論をRStudio上で執筆する理由</h2>
 <ul>
-<li><p>SPSSやRで解析した結果を卒論のWordやExcelにコピー＆ペーストして整形するスタイルが多いと思います。しかし，そのコピー＆ペーストは100%合っていますか？その自信がない場合は，RMarkdown上で解析も執筆も一緒にやったほうが安心です（コピー＆ペーストが不要で，解析コードに間違いがあってもすぐに修正が反映されます）。</p></li>
-<li><p>国里が作成したRMarkdownパッケージを使えば，最終的なフォーマット調整も自動的にやってくれるのでめちゃくちゃ楽です（表紙，目次，ページ番号は自動に入ります。引用文献も文献情報を貼り付けておけば，自動で挿入し綺麗にフォーマットを整えてくれます）。使わない理由が謎です。</p></li>
-<li><p>国里が研究指導する場合もデータやコードをいじりつつ検討ができて，有意義な研究指導が期待できます。</p></li>
-<li><p>GitHubでのバージョン管理もRStudio上で簡単にできます。</p></li>
-<li><p>透明性の高い研究実践や仕事のやり方が身につきます</p></li>
-<li><p>楽しい</p></li>
+<li>SPSSなどの解析結果をWordやExcelにコピー＆ペーストするやり方だとどこかでミスが生じることがあります（間違った数値をコピペしてしまうなど）。R Markdown上で解析も執筆も一緒にやってしまえば，このようなミスはなくなります。</li>
+<li>解析に修正が必要になった時に，R Markdown上で解析も執筆も一緒にやっておけば，すぐに修正が反映されて，ミスが減ります。</li>
+<li>国里が作成した<a href="https://github.com/ykunisato/senshuRmd" target="_blank">senshuRmd</a>パッケージを使えば，最終的なフォーマット調整も引用文献処理も自動的にやってくれるので楽です。</li>
+<li>研究指導でも，データやコードをいじりつつ検討ができて，有意義な研究指導が期待できます。</li>
+<li>GitHubでのバージョン管理もRStudio上で簡単にできます。</li>
+<li>透明性の高い研究実践や仕事のやり方が身につきます</li>
 </ul>
 <p><br></p>
 </div>
 <div id="senshurmdパッケージを使ってみよう" class="section level2">
 <h2>senshuRmdパッケージを使ってみよう！</h2>
-<p>卒論・修論をRStudio上でRMarkdownを使って執筆する上で，国里が作成した<a href="https://github.com/ykunisato/senshuRmd">senshuRmd</a>が便利です。senshuRmdは，専修大学人間科学部心理学科での卒論・修論用にフォーマット調整をしたRMarkdownテンプレートになります。他の大学でも使えるかは微妙ですが，専修大学人間科学部心理学科の学生にとっては便利かと思います。</p>
+<p><a href="https://github.com/ykunisato/senshuRmd" target="_blank">senshuRmd</a>は，専修大学人間科学部心理学科での卒論・修論用にフォーマット調整をしたRMarkdownテンプレートになります。以下では，senshuRmdを既にインストールし(国里ゼミのRstudio serverには最初からインストールされています)，<a href="https://kunisatolab.github.io/main/how-to-github.html" target="_blank">GitHubの準備</a>もできているという前提ですすめます。</p>
 <p><br></p>
-<div id="githubリポジトリの用意" class="section level3">
-<h3>1.GitHubリポジトリの用意</h3>
-<p>本研究室ではGitHub上でバージョン管理をします。詳しくは，<a href="https://kunisatolab.github.io/main/how-to-github.html">こちら</a>を参考に，国里が用意したGitHubリポジトリを自分の手元にもってきてください。</p>
-</div>
 <div id="senshurmdで卒論修論のパッケージ化する" class="section level3">
-<h3>2.senshuRmdで卒論・修論のパッケージ化する</h3>
-<p>RStudio上でRMarkdownを使って卒論・修論を執筆する上で，卒論・修論のパッケージ化をすすめていくのが良いです。ファイルやフォルダが雑然とあるとわけがわからなくなるので，できるだけルールに従ってパッケージ化して作業をすすめていきます。詳しくは，国里が書いた<a href="https://psyarxiv.com/x8js5/">再現可能な心理学研究入門</a>の「4.2解析のパッケージ化」を読んでください。パッケージ化に決まりは無いですが，本研究室では，以下のようなフォルダ構成で作業をすすめます。</p>
+<h3>1.senshuRmdで卒論・修論のパッケージ化する</h3>
+<p>卒論・修論をやっているとたくさんファイルができちゃって混乱しますので，できるだけルールに従って卒論・修論をパッケージ化して作業をすすめていきます。(詳しくは，国里の<a href="https://psyarxiv.com/x8js5/" target="_blank">再現可能な心理学研究入門</a>の「4.2解析のパッケージ化」に書いてあるので，どこかで読んでおいてください)。フォルダ構成を決めた上で研究実施のパッケージ化をすることをResearch Compendiumと言います。本研究室では，以下のような，Research Compendiumを使います。</p>
 <p><strong>研究室用Research Compendium</strong></p>
 <ul>
 <li>paper:卒論・修論用のRmdファイルが用意されています。</li>
-<li>analysis：解析用ファイルを入れる用のフォルダです。。行う解析の順番がわかるようにファイル名をつけましょう(analysis_01.Rmd,analysis_02.Rmdなど)。なお，解析結果の図表を作るうえで必要なデータや出力は，上記のpaperフォルダに出力されるように設定しましょう</li>
-<li>(analysis内) data：解析用データを入れるフォルダです。公開に関する同意と匿名化処理をしたデータを置くフォルダです。匿名化処理したデータだけでなく，その後前処理した後のデータ，長くかかる推定結果（その後さらに処理する予定のあるもの）もここにおきます。それぞれがどういうデータかわかるように名前をつけましょう（anonymized_data.csv，anonimized_preprocessed_data.csv，estimated_parameter.csvなど）。</li>
-<li>(analysis内) function：解析用Rの関数を入れるフォルダです。analysisフォルダには，卒論・修論で行う解析を順番に行えるように本筋の解析コードをおきますが，このfunctionフォルダには，analysisフォルダに書くには煩雑だったり，繰り返し使うような関数をおいておきます。これによって，analysisフォルダのコードが読みやすくなります。</li>
+<li>analysis：解析用ファイルを入れる用のフォルダです。解析を実施する順番がわかるようにファイル名をつけましょう(analysis_01.Rmd,analysis_02.Rmdなど)。</li>
+<li>(analysis内) data：データ共有に関する同意と匿名化処理をした解析データを置くフォルダです。データだけでなく，その後前処理した後のデータ，長くかかる推定結果もここにおきます。どういうデータかわかるように名前をつけましょう（anonymized_data.csv，anonimized_preprocessed_data.csv，estimated_parameter.csvなど）。</li>
+<li>(analysis内) function：解析用Rの関数を入れるフォルダです。analysisフォルダ内のRmd内に書くには煩雑だったり，繰り返し使うような関数をおいておきます。これによって，analysisフォルダのコードが読みやすくなります。</li>
 <li>materials：研究で使った材料（調査票，実験課題）を入れるフォルダです。</li>
 <li>exercises：ゼミで行う演習課題用のフォルダです。</li>
 <li>labnote：ラボノートを保管するフォルダです。</li>
 </ul>
-<p><br> このフォルダ構成で作業をしてもらいますが，各自が設定するは面倒ですので，これらを設定するRのパッケージ(senshuRmd)を国里が自作しています。早速使ってみましょう。RstudioのConsoleに以下をコピペしてみましょう。</p>
+<p><br> 上記の設定を手動でするは面倒なので，senshuRmdが自動でやってくれます。<strong>RstudioのConsoleに以下のコードをコピペして実行してみましょう。</strong></p>
 <pre><code>senshuRmd::set_rc_ccp()</code></pre>
 <p>以下のような感じでフォルダができます。ゼミでは，このフォルダ構成を維持しつつ作業を行います。なんかいじっちゃってよくわからなくなったら，上記の研究室用Research Compendiumを確認ください。</p>
 <p><img src="fig/senshuRmd_fig1.png" /></p>
-<p><br></p>
+<p><br> <br></p>
 </div>
 <div id="senshurmdで卒論修論を執筆する" class="section level3">
-<h3>3.senshuRmdで卒論・修論を執筆する</h3>
-<p>set_rc_ccp()を実行すると，README.mdとpaper.Rmdファイルが開くと思います。このREADME.mdは結構便利でして，ここから色々なゼミで使う関数が実行できたりします。あとで見ておいてください。paper.Rmdファイルをみると，謎のオレンジの波線がついています。これは，英語のスペルチェックが日本にかかってしまっているので，英語のスペルチェックをとります。Tools →　Global Options → SpellingのUse real time spell-checkingのチェックをとります。これで日本語も問題なく使えます。</p>
+<h3>2.senshuRmdで卒論・修論を執筆する</h3>
+<p>set_rc_ccp()を実行すると，README.mdとpaper.Rmdファイルが開くと思います。このREADME.mdは結構便利で，ここから色々なゼミで使う関数が実行できたりします。次にpaper.Rmdファイルをみると，謎のオレンジの波線がついています。これは，英語のスペルチェックが日本語にかかってしまっているので，英語のスペルチェックをとります。<strong>Tools →　Global Options → SpellingのUse real time spell-checkingのチェックをとります。</strong>これで日本語も問題なく使えます。</p>
 <p><img src="fig/senshuRmd_fig2.png" /></p>
 <p><br></p>
-<p>それでは，senshuRmdの卒論・修論用Rmdテンプレートを使ってみましょう。既に開いてあるpaper.Rmdファイル(これはpaperフォルダ内にあります）を見ましょう。以下のような感じで，“タイトル”，“学籍番号:氏名”とあるので，まず自分の卒論タイトル（仮）と学籍番号氏名を書きましょう。以降，緑色の字で色々と注意事項が書いてあります。この注意事項は，最終的な卒論ファイルには反映されませんので，邪魔でなければそのままおいておいてください。注意事項は，卒論をすすめる上で必要となる情報が結構はいっているので，必ず読んでください。</p>
-<p>“タイトル”，“学籍番号:氏名”を自分のものに書き換えられたら，以下で赤く囲われたKnitボタンをクリックしてみましょう！しばらくRStudio上で処理がされます（初回はめちゃくちゃかかります）。</p>
+<p>それでは，senshuRmdの卒論・修論用Rmdテンプレートを使ってみましょう。既に開いてあるpaper.Rmdファイル(これはpaperフォルダ内にあります）を見ましょう。<strong>以下のような感じで，“タイトル”，“学籍番号:氏名”とあるので，まず自分の卒論タイトル（仮）と学籍番号氏名を書きましょう。</strong>以降，緑色の字で色々と注意事項が書いてあります。この注意事項は，最終的な卒論ファイルには反映されませんので，邪魔でなければそのままおいておいてください。注意事項は，卒論をすすめる上で必要となる情報が結構はいっているので，必ず読んでください。</p>
+<p><strong>“タイトル”，“学籍番号:氏名”を自分のものに書き換えられたら，以下で赤く囲われたKnitボタンをクリックしてみましょう！</strong>しばらくRStudio上で処理がされます（初回はめちゃくちゃかかります）。</p>
 <p><img src="fig/senshuRmd_fig14.png" /></p>
 <p><br></p>
-<p>以下の右の赤で囲われた部分を見てください。このように，paperフォルダ内にPDFファイルが出力された成功になります（左側のようになんか赤字のエラー出ますが，問題ないです）。開いてみてください。それっぽいのが出力されているでしょう？以降は，このpaper.Rmdに書き込んでいって卒論・修論を完成させてください。</p>
-<p><img src="fig/senshuRmd_fig15.png" /> <br></p>
+<p>以下の右側の赤で囲ったように，paperフォルダ内にPDFファイルが出力されたら，成功です（左側のConsoleには，なんか赤字のエラー出ますが，問題ないです）。pape.pdfを開いてみてください。卒論・修論っぽいものができていると思います。以降は，このpaper.Rmdに書き込んでいって卒論・修論を完成させてください。</p>
+<p><img src="fig/senshuRmd_fig15.png" /> <br> <br></p>
 <p>PDFファイルが出力されずにエラーがでる場合，なぜかうまく行かないことがあります。その場合は，以下のコマンドでtinytexをインストールください（大体うまくいきます）。tinytexのインストールでもうまくいかない場合は，<code>tinytex::tlmgr_install(‘ipaex’)</code>で日本語出力用フォントをインストールしてください。</p>
 <pre><code>tinytex::install_tinytex()</code></pre>
+<p><br></p>
 </div>
 <div id="githubを使ったバージョン管理法について" class="section level3">
-<h3>4.GitHubを使ったバージョン管理法について</h3>
+<h3>3.GitHubを使ったバージョン管理法について</h3>
 <p>ゼミでは，Githubを使ったバージョン管理を行っています。上記の作業をすると，Rstudioのgitというタブが以下のような感じになっていると思います。赤で囲われたCommitをクリックしてください。</p>
 <p><img src="fig/senshuRmd_fig16.png" /> <br></p>
 <p>以下のようなウィンドウが開かれたと思います。左側の赤で囲われたファイルやフォルダを全て選択してください。そのうえで，緑で囲われたStageをクリックします。</p>
 <p><img src="fig/senshuRmd_fig17.png" /> <br></p>
 <p>以下のような感じになったら，赤で囲われた場所にcommit messageを書いて，commitをしてください。</p>
 <p><img src="fig/senshuRmd_fig18.png" /> <br></p>
-<p>上手くいって，左側にファイルやフォルダがなくなったら，以下の赤で囲われた場所のPushをクリックします。適切にGithubの設定ができていたら，以下のような画面になるかと思います。これで，Rstudio serverでの作業内容がGithubにコミット＆プッシュでききました。</p>
+<p>上手くいって，左側にファイルやフォルダがなくなったら，以下の赤で囲われた場所のPushをクリックします。適切にGithubの設定ができていたら，以下のような画面になるかと思います。これで，Rstudio serverでの作業内容がGithubにコミット＆プッシュできました。</p>
 <p><img src="fig/senshuRmd_fig19.png" /> <br></p>
-<p>Githubで確認すると以下のような感じになっているかと思います。確認をしてみてください。</p>
+<p>Githubでリポジトリを確認すると以下のような感じになっているかと思います。確認をしてみてください。</p>
 <p><img src="fig/senshuRmd_fig20.png" /> <br></p>
 <p>Gitの作業をまとめると以下のような感じです。少し面倒にも感じるかもしれませんが，作業しているファイルのバージョンを管理して，いつでも戻れるように作業をすすめること，複数人で作業をするめるためのファイル管理法を学ぶことは，今後も重要になりますので，卒論・修論でぜひとも身につけてください。</p>
 <ul>
-<li>GitタブのCommitをクリック</li>
-<li>出てきたウィンドウでファイルを選んで，Stageをクリック</li>
-<li>Commit messageに作業内容を書く（日本語でかまいません。「卒論の図を追加」とか分かりやすいものを追加ください）</li>
-<li>ウィンドウの右上のPushをクリックして，GitHubリポジトリに反映させる</li>
+<li><strong>作業開始時にGitタブのPull（下向きの矢印）をクリック</strong>(Rstudio serverのファイルを最新にする)</li>
+<li>Rstudio serverで作業する</li>
+<li><strong>GitタブのCommitをクリック</strong></li>
+<li><strong>出てきたウィンドウでファイルを選んで，Stageをクリック</strong></li>
+<li><strong>Commit messageに作業内容を書く</strong>（日本語でかまいません。「卒論の図を追加」とか分かりやすいものを追加ください）</li>
+<li><strong>その日の作業終了時にウィンドウの右上のPushをクリック</strong>して，GitHubリポジトリに反映させる</li>
 </ul>
 <p><br></p>
 </div>
 <div id="引用文献に関する補足" class="section level3">
-<h3>引用文献に関する補足</h3>
+<h3>4.引用文献に関する補足</h3>
 <p>卒論・修論の引用文献は，ご自身で手動で打ち込むこともできます。ただ，手動で打ち込むと，引用しているのに引用文献リストから向けていたり，引用をやめたのに引用文献リストに残っていたりと修正に伴う変更が反映されないということも起こります。</p>
-<p>そこで，senshuRmdでは，bibtexを使って引用文献処理を自動化しています。senshuRmdのテンプレートにはreference.bibというファイルが含まれており（paperフォルダ内にあります），そこにいくつか文献の情報が保存されています。reference.bibを開いてみましょう。RMarkdownで卒論・修論を書いている時に，文献を引用する場合は，reference.bibファイルにある引用キーを使って引用します（引用キーは＠ARTICLE{の後ろに書いてあるものです）。引用の仕方としては，Kunisato2012という名前の引用キーの文献の場合，<code>@Kunisato2012</code>と引用すると，<code>Kunisato et al.(2012)</code>というように文頭で引用する形式になります。一方，<code>[@Kunisato2012]</code>のように[]でくくると，<code>(Kunisato et al., 2012)</code>というように文末引用の形式になります（複数ある場合は，<code>[@Kunisato2012; @Machino2014]</code>のようにします）。bibファイルを使って文献管理をすれば，本文中の引用も引用文献リストもAPA形式で自動的に作ってくれます(APA形式にするために，“apa-6th-edition.csl”を使います)。このように本文中に引用キーをいれておくと，本文中に自動的に引用情報をいれて，さらに，以下のように引用文献リストも出力してくれます（便利ですね！）。</p>
+<p>senshuRmdでは，bibtexを使って引用文献処理を自動化しています。senshuRmdのテンプレートにはreference.bibというファイルが含まれており（paperフォルダ内にあります），そこに文献の情報が保存されています。reference.bibを開いてみましょう。RMarkdownで卒論・修論を書いている時に，文献を引用する場合は，reference.bibファイルにある引用キーを使って引用します（引用キーは＠ARTICLE{の後ろに書いてあるものです）。引用の仕方としては，Kunisato2012という名前の引用キーの文献の場合，<code>@Kunisato2012</code>と引用すると，<code>Kunisato et al.(2012)</code>というように文頭で引用する形式になります。一方，<code>[@Kunisato2012]</code>のように[]でくくると，<code>(Kunisato et al., 2012)</code>というように文末引用の形式になります（複数ある場合は，<code>[@Kunisato2012; @Machino2014]</code>のようにします）。bibファイルを使って文献管理をすれば，本文中の引用も引用文献リストもAPA形式で自動的に作ってくれます(APA形式にするために，“apa-6th-edition.csl”を使います)。このように本文中に引用キーをいれておくと，本文中に自動的に引用情報をいれて，さらに，以下のように引用文献リストも出力してくれます。</p>
 <p><img src="fig/senshuRmd_fig3.png" /></p>
+<p><br></p>
 <p>このように便利なbibファイルを作る方法について説明します。bibファイルを開くと以下のように文献情報が含まれています。そして，この形式で文献情報をbibファイルに保存していきます。 <img src="fig/senshuRmd_fig4.png" /></p>
 <p><br></p>
 <p>論文が掲載されている雑誌でも書誌情報がbibtex形式で出力できることも多いですが，簡単なのは，Google scholarで検索して，文献の右端にある“Import into BibTeX”をクリックすれば良いです。クリックするとBibTeX形式で表示されますので，それをコピーして，reference.bibにペーストすればいいです。</p>
@@ -501,7 +500,7 @@ pages=&quot;88-103&quot;,
 URL=&quot;https://ci.nii.ac.jp/naid/130007749836/&quot;,
 DOI=&quot;10.24602/sjpr.62.1_88&quot;,
 }</code></pre>
-<p>CiNiiの場合，引用キーがあまり意味のない記号の羅列のこともあるので，自分で分かりやすいものを設定してもよいです（ただし，bibファイル内で重複しないようにしてください）。上の場合だと，引用キーが130007749836になっているので，kunisato2019aなどに変更して登録しておくと良いかと思います。</p>
+<p>ただし，CiNiiの場合，引用キーがあまり意味のない記号の羅列のこともあるので，自分で分かりやすいものを設定してもよいです（bibファイル内で重複しないようにしてください）。上の場合だと，引用キーが130007749836になっているので，kunisato2019aなどに変更して登録しておくと良いかと思います。</p>
 <p><strong>日本語文献の場合の注意：yomiを入れる</strong></p>
 <p>日本語文献と英語文献とをアルファベット順で並べる場合に，日本語著者名をアルファベットにした並び替える必要があります。そこで，authorだけでなく，yomi="“を追加します。例えば，上記の例だと，yomi =”Kunisato, Yoshihiko, kentaro, katahira, tsukasa, okimura, yuichi, yamashita"となります。</p>
 <p>上記の例に引用キーの変更とyomiの追加をすると以下のようになります。</p>
