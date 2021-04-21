@@ -428,6 +428,8 @@ div.tocify {
 <pre><code>usethis::use_git_config(user.name = &quot;GitHubに登録したユーザー名&quot;, user.email = &quot;GitHubに登録したメールアドレス&quot;)</code></pre>
 <p>次にRstudioの<strong>Console</strong>に以下をコピペしてください。“? Enter password or token:”と聞かれるので，上記で設定したPersonal Access Token(PAT)をコピペください。</p>
 <pre><code>gitcreds::gitcreds_set()</code></pre>
+<p>最後に，Terminalに以下をコピペしてください。これで，登録したPATが一年ほど保持されます。</p>
+<pre><code>git config --global credential.helper &#39;cache --timeout=30000000&#39;</code></pre>
 <p>※なお，サーバーの再起動などをするとこの情報が消えることがあるので，もしRStudioからGithubへの接続ができない場合は，PATなどの再登録をしてください。</p>
 <p><br /> <br /></p>
 </div>

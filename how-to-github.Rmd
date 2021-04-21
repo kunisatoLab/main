@@ -77,6 +77,12 @@ usethis::use_git_config(user.name = "GitHubに登録したユーザー名", user
 gitcreds::gitcreds_set()
 ```
 
+最後に，Terminalに以下をコピペしてください。これで，登録したPATが一年ほど保持されます。
+
+``` 
+git config --global credential.helper 'cache --timeout=30000000'
+```
+
 ※なお，サーバーの再起動などをするとこの情報が消えることがあるので，もしRStudioからGithubへの接続ができない場合は，PATなどの再登録をしてください。
 
 <br />
