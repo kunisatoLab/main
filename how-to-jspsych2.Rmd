@@ -59,6 +59,8 @@ title: "jsPsychを用いた認知課題の作成2: ストループ課題"
 jsPsychRmd::set_jsPsych(folder = "stroop", rc = TRUE)
 ```
 
+＊国里ゼミ以外でResearch Compendiumを使ってない場合は，", rc = TRUE"を削除して実行してください。
+
 <br>
 
 ### 3.1 教示を呈示する

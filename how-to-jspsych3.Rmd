@@ -103,6 +103,8 @@ Cools et al.(2002)は，様々な研究で使用されています。以下のWa
 jsPsychRmd::set_jsPsych(folder = "RL", rc = TRUE)
 ```
 
+＊国里ゼミ以外でResearch Compendiumを使ってない場合は，", rc = TRUE"を削除して実行してください。
+
 それから，ストループ課題を参考に，上記の教示を出してみましょう！
 
 ### 3.2 メインブロック：２つの画像刺激を呈示する
@@ -117,6 +119,7 @@ unzip(temp, exdir = paste0(getwd(),"/exercises/RL/"))
 unlink(temp)
 ```
 
+＊国里ゼミ以外でResearch Compendiumを使ってない場合は，```unzip(temp, exdir = paste0(getwd(),"/RL/"))```を実行してください。
 
 <img src="fig/reversal_learning_fig2.jpeg" width="200">　 <img src="fig/reversal_learning_fig3.jpeg" width="200">
 

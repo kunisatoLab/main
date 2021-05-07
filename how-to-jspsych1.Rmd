@@ -44,6 +44,8 @@ jsPsychを使うには，実験課題に関するフォルダを作って，最�
 jsPsychRmd::set_jsPsych(folder = "hello", rc = TRUE)
 ```
 
+＊国里ゼミ以外でResearch Compendiumを使ってない場合は，", rc = TRUE"を削除して実行してください。
+
 "hello"フォルダ内の説明をすると以下のようなファイルとフォルダが用意されます。
 
 - index.Rmd: jsPsychで課題を作る際にメインのファイルとなるRmdファイルです。

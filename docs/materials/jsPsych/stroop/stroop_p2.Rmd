@@ -42,67 +42,67 @@ var instructions = {
 var stimuli = [
   {
     stimulus: "<p style='color:red;font-size:60pt;'>赤</p>",
-    data: { no:'1', stim_type: 'congruent', correct_key_press: '68'}
+    data: { no:'1', stim_type: 'congruent', correct_key_press: 'd'}
   },
   {
     stimulus: "<p style='color:green;font-size:60pt;'>赤</p>",
-    data: { no:'2', stim_type: 'incongruent', correct_key_press: '74'}
+    data: { no:'2', stim_type: 'incongruent', correct_key_press: 'j'}
   },
   {
     stimulus: "<p style='color:yellow;font-size:60pt;'>赤</p>",
-    data: { no:'3', stim_type: 'incongruent', correct_key_press: '75'}
+    data: { no:'3', stim_type: 'incongruent', correct_key_press: 'k'}
   },
   {
     stimulus: "<p style='color:blue;font-size:60pt;'>赤</p>",
-    data: { no:'4', stim_type: 'incongruent', correct_key_press: '70'}
+    data: { no:'4', stim_type: 'incongruent', correct_key_press: 'f'}
   },
   {
     stimulus: "<p style='color:red;font-size:60pt;'>緑</p>",
-    data: { no:'5', stim_type: 'congruent', correct_key_press: '68'}
+    data: { no:'5', stim_type: 'congruent', correct_key_press: 'd'}
   },
   {
     stimulus: "<p style='color:green;font-size:60pt;'>緑</p>",
-    data: { no:'6', stim_type: 'incongruent', correct_key_press: '74'}
+    data: { no:'6', stim_type: 'incongruent', correct_key_press: 'j'}
   },
   {
     stimulus: "<p style='color:yellow;font-size:60pt;'>緑</p>",
-    data: { no:'7', stim_type: 'incongruent', correct_key_press: '75'}
+    data: { no:'7', stim_type: 'incongruent', correct_key_press: 'k'}
   },
   {
     stimulus: "<p style='color:blue;font-size:60pt;'>緑</p>",
-    data: { no:'8', stim_type: 'incongruent', correct_key_press: '70'}
+    data: { no:'8', stim_type: 'incongruent', correct_key_press: 'f'}
   },
   {
     stimulus: "<p style='color:red;font-size:60pt;'>黄</p>",
-    data: { no:'9', stim_type: 'congruent', correct_key_press: '68'}
+    data: { no:'9', stim_type: 'congruent', correct_key_press: 'd'}
   },
   {
     stimulus: "<p style='color:green;font-size:60pt;'>黄</p>",
-    data: { no:'10', stim_type: 'incongruent', correct_key_press: '74'}
+    data: { no:'10', stim_type: 'incongruent', correct_key_press: 'j'}
   },
   {
     stimulus: "<p style='color:yellow;font-size:60pt;'>黄</p>",
-    data: { no:'11', stim_type: 'incongruent', correct_key_press: '75'}
+    data: { no:'11', stim_type: 'incongruent', correct_key_press: 'k'}
   },
   {
     stimulus: "<p style='color:blue;font-size:60pt;'>黄</p>",
-    data: { no:'12', stim_type: 'incongruent', correct_key_press: '70'}
+    data: { no:'12', stim_type: 'incongruent', correct_key_press: 'f'}
   },
   {
     stimulus: "<p style='color:red;font-size:60pt;'>青</p>",
-    data: { no:'13', stim_type: 'congruent', correct_key_press: '68'}
+    data: { no:'13', stim_type: 'congruent', correct_key_press: 'd'}
   },
   {
     stimulus: "<p style='color:green;font-size:60pt;'>青</p>",
-    data: { no:'14', stim_type: 'incongruent', correct_key_press: '74'}
+    data: { no:'14', stim_type: 'incongruent', correct_key_press: 'j'}
   },
   {
     stimulus: "<p style='color:yellow;font-size:60pt;'>青</p>",
-    data: { no:'15', stim_type: 'incongruent', correct_key_press: '75'}
+    data: { no:'15', stim_type: 'incongruent', correct_key_press: 'k'}
   },
   {
     stimulus: "<p style='color:blue;font-size:60pt;'>青</p>",
-    data: { no:'16', stim_type: 'incongruent', correct_key_press: '70'}
+    data: { no:'16', stim_type: 'incongruent', correct_key_press: 'f'}
   }
 ];
 
@@ -118,7 +118,7 @@ var stroop = {
     data: jsPsych.timelineVariable('data'),
     on_finish: function(data){
       var correct = 0;
-      if(data.correct_key_press == data.key_press){
+      if(data.correct_key_press == data.response){
         correct = 1;
       } 
       data.correct = correct;
