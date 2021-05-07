@@ -525,78 +525,73 @@ div.tocify {
 </div>
 <div id="ボタン押しの記録と正誤判定" class="section level3">
 <h3>4.2 ボタン押しの記録と正誤判定</h3>
-<p>今回作成しているストループ課題では，キーボードのタイピングで反応を取得します(d,f,j,k)。なお，Java Script内で処理する際に文字よりも数字のコードのほうが便利です。そこで，キーボードのそれぞれ割り振られたコード使います。それぞれのキーボードにどういうコードが割り振られているかは，<a href="https://keycode.info/" target="_blank">https://keycode.info/</a>で簡単に確認できます。なお，今回使う，d,f,j,kの場合は，以下のようになります。</p>
-<ul>
-<li>赤色の単語ならdを押す = 68</li>
-<li>緑色の単語ならjを押す = 74</li>
-<li>黄色の単語ならkを押す = 75</li>
-<li>青色の単語ならfを押す = 70</li>
-</ul>
-<p>この情報も踏まえて，stimuliのリストに手を加えます。先程は，stimulusのみを書いていましたが，その後の正誤判定のためや解析で使えるように，dataにno（項目番号）,stim_type（一致か不一致か）,correct_key_press（正答のキーボードのキーのコード）を以下のように追加します。</p>
+<p>今回作成しているストループ課題では，キーボードのタイピングで反応を取得します(d,f,j,k)。</p>
+<p>この情報も踏まえて，上のstimuliのリストに手を加えます。先程は，stimulusのみを書いていましたが，その後の正誤判定のためや解析で使えるように，dataにno（項目番号）,stim_type（一致か不一致か）,correct_key_press（正答のキーボードのキーのコード）を以下のように追加します。</p>
+<p>*なお，jsPsychのv6.2.0までは.key_pressでキーボードの反応をとっていましたが，v6.3.0以降はresponseを使うようになっています。key_pressの場合は，直接キーボードを指定できず，キーボードのそれぞれ割り振られたコード<a href="https://keycode.info/" target="_blank">https://keycode.info/</a> で確認して，そのコードを使っていました。v6.2.0以前のバージョンを使う場合は，ご注意ください。</p>
 <pre><code>var stimuli = [
   {
     stimulus: &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot;,
-    data: { no:&#39;1&#39;, stim_type: &#39;congruent&#39;, correct_key_press: &#39;68&#39;}
+    data: { no:&#39;1&#39;, stim_type: &#39;congruent&#39;, correct_key_press: &#39;d&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot;,
-    data: { no:&#39;2&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;74&#39;}
+    data: { no:&#39;2&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;j&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:yellow;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot;,
-    data: { no:&#39;3&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;75&#39;}
+    data: { no:&#39;3&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;k&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;赤&lt;/p&gt;&quot;,
-    data: { no:&#39;4&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;70&#39;}
+    data: { no:&#39;4&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;f&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;緑&lt;/p&gt;&quot;,
-    data: { no:&#39;5&#39;, stim_type: &#39;congruent&#39;, correct_key_press: &#39;68&#39;}
+    data: { no:&#39;5&#39;, stim_type: &#39;congruent&#39;, correct_key_press: &#39;d&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;緑&lt;/p&gt;&quot;,
-    data: { no:&#39;6&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;74&#39;}
+    data: { no:&#39;6&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;j&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:yellow;font-size:60pt;&#39;&gt;緑&lt;/p&gt;&quot;,
-    data: { no:&#39;7&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;75&#39;}
+    data: { no:&#39;7&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;k&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;緑&lt;/p&gt;&quot;,
-    data: { no:&#39;8&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;70&#39;}
+    data: { no:&#39;8&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;f&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;黄&lt;/p&gt;&quot;,
-    data: { no:&#39;9&#39;, stim_type: &#39;congruent&#39;, correct_key_press: &#39;68&#39;}
+    data: { no:&#39;9&#39;, stim_type: &#39;congruent&#39;, correct_key_press: &#39;d&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;黄&lt;/p&gt;&quot;,
-    data: { no:&#39;10&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;74&#39;}
+    data: { no:&#39;10&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;j&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:yellow;font-size:60pt;&#39;&gt;黄&lt;/p&gt;&quot;,
-    data: { no:&#39;11&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;75&#39;}
+    data: { no:&#39;11&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;k&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;黄&lt;/p&gt;&quot;,
-    data: { no:&#39;12&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;70&#39;}
+    data: { no:&#39;12&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;f&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:red;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;,
-    data: { no:&#39;13&#39;, stim_type: &#39;congruent&#39;, correct_key_press: &#39;68&#39;}
+    data: { no:&#39;13&#39;, stim_type: &#39;congruent&#39;, correct_key_press: &#39;d&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:green;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;,
-    data: { no:&#39;14&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;74&#39;}
+    data: { no:&#39;14&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;j&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:yellow;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;,
-    data: { no:&#39;15&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;75&#39;}
+    data: { no:&#39;15&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;k&#39;}
   },
   {
     stimulus: &quot;&lt;p style=&#39;color:blue;font-size:60pt;&#39;&gt;青&lt;/p&gt;&quot;,
-    data: { no:&#39;16&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;70&#39;}
+    data: { no:&#39;16&#39;, stim_type: &#39;incongruent&#39;, correct_key_press: &#39;f&#39;}
   }
 ];</code></pre>
 <p>そして，以下のようにstroopブロックに追加をしていきます。</p>
@@ -622,9 +617,9 @@ div.tocify {
   timeline_variables: stimuli,
   sample: {type: &#39;fixed-repetitions&#39;,size: 2}
 };</code></pre>
-<p>さて，その後の解析なども含めて，反応の正誤判定をしておくと便利です。stimuliのリストのアイテムの正答反応を意味するcorrect_key_pressと実際の反応が記録されdataに保存されたdata.key_pressとが一致していれば，その試行の反応は正答です。それをif文を使って表現すると以下になります。基本的にはcorrectは0としておいて，もしアイテムの正答反応と反応が一致したら，correctを1にして，dataに保存します。</p>
+<p>さて，その後の解析なども含めて，反応の正誤判定をしておくと便利です。stimuliのリストのアイテムの正答反応を意味するcorrect_key_pressと実際の反応が記録されdataに保存されたdata.responseとが一致していれば，その試行の反応は正答です。それをif文を使って表現すると以下になります。基本的にはcorrectは0としておいて，もしアイテムの正答反応と反応が一致したら，correctを1にして，dataに保存します。</p>
 <pre><code>var correct = 0;
-if(data.correct_key_press == data.key_press){
+if(data.correct_key_press == data.response){
   correct = 1;
 } 
 data.correct = correct;</code></pre>
@@ -641,7 +636,7 @@ var stroop = {
     data: jsPsych.timelineVariable(&#39;data&#39;),
     on_finish: function(data){
       var correct = 0;
-      if(data.correct_key_press == data.key_press){
+      if(data.correct_key_press == data.response){
         correct = 1;
       } 
       data.correct = correct;
