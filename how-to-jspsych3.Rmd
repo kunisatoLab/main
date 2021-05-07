@@ -2,7 +2,7 @@
 title: "jsPsychを用いた認知課題の作成3：確率的逆転学習課題"
 ---
 
-認知的柔軟性を測る課題として確率的逆転学習課題とうものがあります。名前の通り，途中でルールが逆転する課題で，その逆転に柔軟に対応できるかを測定することができます。また，確率的逆転学習課題は，その後の強化学習モデルの演習でも活用です。それでは，確率的逆転学習課題を作ってみましょう。今回も，以下の手順に従っていきましょう。
+認知的柔軟性を測る課題として確率的逆転学習課題とうものがあります。名前の通り，途中でルールが逆転する課題で，その逆転に柔軟に対応できるかを測定することができます。また，確率的逆転学習課題は，その後の強化学習モデルの演習でも活用します。それでは，確率的逆転学習課題を作ってみましょう。今回も，以下の手順に従っていきましょう。
 
 1. 課題の情報を整理する
 2. 課題の設計図を作る
@@ -119,7 +119,13 @@ unzip(temp, exdir = paste0(getwd(),"/exercises/RL/"))
 unlink(temp)
 ```
 
-＊国里ゼミ以外でResearch Compendiumを使ってない場合は，```unzip(temp, exdir = paste0(getwd(),"/RL/"))```を実行してください。
+＊国里ゼミ以外でResearch Compendiumを使ってない場合は，以下を実行してください。
+```
+temp <- tempfile()
+download.file("https://github.com/kunisatoLab/main/raw/master/materials/stimuli.zip",temp)
+unzip(temp, exdir = paste0(getwd(),"/RL/"))
+unlink(temp)
+```
 
 <img src="fig/reversal_learning_fig2.jpeg" width="200">　 <img src="fig/reversal_learning_fig3.jpeg" width="200">
 
@@ -133,8 +139,8 @@ jspsych-html-button-responseプラグインは，以下のように使います�
 var choice = {
     stimulus: '',
     type: 'html-button-response',
-    choices: ['<div style="position: absolute; top: 50%; left: 20%"><img src="img/s1.jpeg" width="200px"/></div>',
-    '<div style="position: absolute; top: 50%; right: 20%"><img src="img/s2.jpeg" width="200px"/></div>'],
+    choices: ['<div style="position: absolute; top: 50%; left: 20%"><img src="stimuli/s1.jpeg" width="200px"/></div>',
+    '<div style="position: absolute; top: 50%; right: 20%"><img src="stimuli/s2.jpeg" width="200px"/></div>'],
     button_html: '%choice%',
     trial_duration: 2000
 };

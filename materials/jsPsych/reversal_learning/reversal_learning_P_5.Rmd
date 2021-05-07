@@ -6,8 +6,10 @@ output:
     mathjax: null
     highlight: null
     theme: null
-    css: jspsych-6.1.0/css/jspsych.css
+    css: jspsych-6.3.1/css/jspsych.css
 ---
+
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
