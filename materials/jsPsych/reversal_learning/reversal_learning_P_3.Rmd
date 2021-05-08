@@ -10,15 +10,16 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ```{r}
 library(htmltools)
 tagList(
-tags$script(src='jspsych-6.1.0/jspsych.js'),
-tags$script(src='jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js'),
-tags$script(src='jspsych-6.1.0/plugins/jspsych-html-button-response.js')
+tags$script(src='jspsych-6.3.1/jspsych.js'),
+tags$script(src='jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js'),
+tags$script(src='jspsych-6.3.1/plugins/jspsych-html-button-response.js'),
+tags$script(src='jspsych-6.3.1/plugins/jspsych-fullscreen.js'),
 )
 ```
 
@@ -136,7 +137,8 @@ var instructions = {
     "<p style='text-align:left'>一方の図形はポジティブな反応が出やすく，もう一方はそうではありません。</p>"+
     "<p style='text-align:left'>できるだけ，ポジティブな反応が得られるように，選択をしてください。</p>"+
     "<p style='text-align:left'>なお，図形とそれに対する反応との関係は途中で変わることがあります。</p>"+
-    "<p style='text-align:left'>また，図形の出る位置（左右）は頻繁に変わります。</p>",
+    "<p style='text-align:left'>また，図形の出る位置（左右）は頻繁に変わります。</p>"+
+    "<p style='text-align:left'>キーボードのキーをどれか押すと課題が始まります。</p>",
   post_trial_gap: 1000
 };
 
@@ -146,7 +148,8 @@ var choice = {
       type: 'html-button-response',
       choices: jsPsych.timelineVariable('stimulus'),
       button_html: '%choice%',
-      trial_duration: 2000
+      trial_duration: 2000,
+      data: jsPsych.timelineVariable('data')
     }],
     timeline_variables: stimuli
 };
@@ -161,4 +164,5 @@ jsPsych.init({
      jsPsych.data.displayData();
     }
 });
+
 ```

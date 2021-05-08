@@ -6,20 +6,23 @@ output:
     mathjax: null
     highlight: null
     theme: null
-    css: jspsych-6.1.0/css/jspsych.css
+    css: jspsych-6.3.1/css/jspsych.css
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ```{r}
 library(htmltools)
 tagList(
-tags$script(src='jspsych-6.1.0/jspsych.js'),
-tags$script(src='jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js')
+tags$script(src='jspsych-6.3.1/jspsych.js'),
+tags$script(src='jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js'),
+tags$script(src='jspsych-6.3.1/plugins/jspsych-html-button-response.js'),
+tags$script(src='jspsych-6.3.1/plugins/jspsych-fullscreen.js'),
 )
 ```
+
 
 ```{js}
 var instructions = {
@@ -43,4 +46,5 @@ jsPsych.init({
      jsPsych.data.displayData();
     }
 });
+
 ```

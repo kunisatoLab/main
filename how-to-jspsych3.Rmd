@@ -197,7 +197,7 @@ var choice = {
 
 さて，ここからが少し大変になってきます。先程のstimuliのリストを長くしていって，80試行分準備すればよいのですが，かなり長いですし，おそらくミスも生じるかと思います。また，刺激を左右にランダムに出したり，報酬の確率を80%などにするのは手作業では難しいです。そこで，それらの作業をRを使って実行し(こういう操作をする上ではRは便利です)，Rで作ったリストをjsPsych側に読み込ませて，刺激呈示することにしましょう。
 
-早速，Rで作業ができるように，RMarkdownにRチャンクを追加します。その際に，「r, results="asis"」を必ず入れるようにしましょう（通常はrだけが入っています）。
+早速，Rで作業ができるように，RMarkdownにRチャンクを追加します。その際に，**「r, results="asis"」**を必ず入れるようにしましょう（通常はrだけが入っています）。
 
 <img src="fig/reversal_learning_fig5.png" width="750">
 
@@ -205,7 +205,7 @@ var choice = {
 
 #### 画像を左右のどちらに出すのかに関するリストの作成
 
-s1刺激を左右のどちらに出すのかのリスト(left_right_s1)とs2刺激を左右のどちらに出すのかのリスト（left_right_s1）を作ります。やり方はシンプルで，1=left, 2= rightとした上で，1と2を５個ずつ用意した10試行分を1ブロックにして，シャッフルするのを８回行って，最終的に80試行分の左右の呈示情報リストを作成します。1と2を40個ずつ用意して，一気に80試行をシャッフルすることも考えたかもしれませんが，そうすると，すごい偏ることがあります（20試行s1が右ということも生じ得ます）。そうすると，そこに意図が発生してしまって思わぬ結果になるかもしれません。そこで，今回は疑似ランダム化として，80試行を10試行で１ブロックにして，ブロックごとにシャッフルすることにしました。以下のコードを順番に読んで，for文で8回繰り返し，sample()でシャッフルし，c()で２つのリストをつなげているのを理解ください。最後に，1や２みたいな数字ではなく，"left","right"という情報もあとで使うので，ifelse文でleft_right_s1_text, left_right_s2_textというものも作成しています。以下の内容をjsPSych用のR Markdownファイルにコピペしてもいいですが，まずは，Consoleにコピペして，動作確認をしましょう。
+s1刺激を左右のどちらに出すのかのリスト(left_right_s1)とs2刺激を左右のどちらに出すのかのリスト（left_right_s1）を作ります。やり方はシンプルで，1=left, 2= rightとした上で，1と2を５個ずつ用意した10試行分を1ブロックにして，シャッフルするのを８回行って，最終的に80試行分の左右の呈示情報リストを作成します。1と2を40個ずつ用意して，一気に80試行をシャッフルすることも考えたかもしれませんが，そうすると，すごい偏ることがあります（20試行s1が右ということも生じ得ます）。そうすると，そこに意図が発生してしまって思わぬ結果になるかもしれません。そこで，今回は疑似ランダム化として，80試行を10試行で１ブロックにして，ブロックごとにシャッフルすることにしました。以下のコードを順番に読んで，for文で8回繰り返し，sample()でシャッフルし，c()で２つのリストをつなげているのを理解ください。最後に，1や２みたいな数字ではなく，"left","right"という情報もあとで使うので，ifelse文でleft_right_s1_text, left_right_s2_textというものも作成しています。**まずは，R Markdownファイルにではなく，Consoleにコピペして，動作確認をしましょう。**
 
 ```{r}
 #### 呈示される２つの刺激(s1とs2)が左右のどっちに出るかを決めるリストを作る(２つの刺激がどっちにでるかはランダム)
@@ -228,7 +228,7 @@ left_right_s1_text <- ifelse(left_right_s1==1, "left", "right")
 left_right_s2_text <- ifelse(left_right_s2==1, "left", "right")
 ```
 
-上記をConseleで実行できたら，以下のコードも実行して，left_right_s1とleft_right_s2が上手く設定できているか確認をしてみましょう。なお，以下のplot()は動作確認用ですので，R Markdownにはコピペしないでください。大きな偏りなくランダムにleft(1)やright(2)になっているので，良さそうですね。問題なさそうなら，R Markdownの「r, results="asis"」チャンクに，確認用plot以外をコピペして追加ください。
+上記をConseleで実行できたら，以下のコードも実行して，left_right_s1とleft_right_s2が上手く設定できているか確認をしてみましょう。なお，以下のplot()は動作確認用ですので，R Markdownにはコピペしないでください。大きな偏りなくランダムにleft(1)やright(2)になっているので，良さそうですね。**問題なさそうなら，R Markdownの「r, results="asis"」チャンクに，上記のRコードコピペして追加ください(確認用のplotはコピペしない)。**
 
 ```{r}
 plot(left_right_s1)
@@ -265,7 +265,7 @@ for (i in 1:repeat_shuffle) {
 }
 ```
 
-上記をConseleで実行できたら，以下のコードも実行して，reward_s1とreward_s2が上手く設定できているか確認をしてみましょう。なお，以下のplot()は動作確認用ですので，R Markdownにはコピペしないでください。真ん中くらいで1と0の出てくる頻度が変わっていますね。問題なさそうなら，R Markdownの「r, results="asis"」チャンクに，確認用plot以外をコピペして追加ください。
+**上記をConseleで実行してから，以下のplot用のコードも実行して，reward_s1とreward_s2が上手く設定できているか確認をしてみましょう。**なお，以下のplot()は動作確認用ですので，R Markdownにはコピペしないでください。真ん中くらいで1と0の出てくる頻度が変わっていますね。問題なさそうなら，R Markdownの「r, results="asis"」チャンクに，確認用plot以外をコピペして追加ください。
 
 ```{r}
 plot(reward_s1)
@@ -358,11 +358,11 @@ for (i in 1:nrow(RL_stim)) {
 ... 
 ```
 
-さて，ここまできたら，jsチャンク内を以下のようにします（3.3で設定したstimuliを削除して，data: jsPsych.timelineVariable('data')を追加するだけです）。刺激リストの作成でかなり労力を使いましたが，jsチャンク内はスッキリしました。これでメインブロックの(1)刺激リストを用意して，(2)画像を呈示して，(3)マウスで反応をとるができました。
+さて，ここまできたら，jsチャンク内を以下のようにします（3.3で設定したstimuliを削除して，```data: jsPsych.timelineVariable('data')```を追加するだけです）。刺激リストの作成でかなり労力を使いましたが，jsチャンク内はスッキリしました。これでメインブロックの(1)刺激リストを用意して，(2)画像を呈示して，(3)マウスで反応をとるができました。
 
 <img src="fig/reversal_learning_fig6.png" width="750">
 
-※ Rへの本格入門の前にこの内容はキツイかなと思いますが，後で段々と理解できると思います。jsPsychrパッケージを使うとストループ刺激のような文字刺激のリスト化はかなり簡単にできるようになりますが，今回のようにちょっと画像刺激を出してマウスで選択するような方法だと自分でコードをかかないといけません。
+※ Rに慣れてないと，この内容はキツイかなと思いますが，後で段々と理解できると思います。
 
 #### 演習課題3
 
@@ -381,7 +381,7 @@ for (i in 1:nrow(RL_stim)) {
 ```
 library(htmltools)
 tagList(
-tags$body(bgcolor="#000000", text="#ffffff")
+tags$body(bgcolor="#000000", text="#ffffff"),
 tags$script(src='jspsych-6.3.1/jspsych.js'),
 tags$script(src='jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js'),
 tags$script(src='jspsych-6.3.1/plugins/jspsych-html-button-response.js')
@@ -395,7 +395,7 @@ tags$script(src='jspsych-6.3.1/plugins/jspsych-html-button-response.js')
 それでは，選択した画像の方にオレンジの枠で囲った画像(s1s.jpegかs2s.jpeg)が呈示されるようにしていきましょう。
 
 
-まず，3.4で作ったchoiceブロックを以下のように変更してみます。なんだか長くなっていますが，最初は3.4と同じで，それに続けて，選択した画像を画面に呈示する試行を追加しています("{type: 'html-keyboard-response'"以降の内容です)。選択した画像を呈示する試行では，stimulus:に参加者の選択時応じた画像刺激をセットし，trial_duration: 500 (試行は500ms),response_ends_trial: false(選択によって画像呈示が終わらないようにしています)とします。stimulus:が重要ですが，ここでは，jsPsych.data.get().last(1).values()[0]を使って１つ前の試行（つまり選択試行です）からbutton_pressedで選択結果，left_right_s1でs1が左と右のどちらかに呈示されたかを取得します(それぞれ，last_selectとlast_left_right_s1に入る)。ちなみに，jsPsych.data.get().last(1).values()[0]のlast内の数字でいくつ前の施行かを指定します（数字によって2試行前のデータをもってくることもできます）。そして以下の5パターンで処理をします。
+まず，3.4で作ったchoiceブロックを以下のように変更してみます。なんだか長くなっていますが，最初は3.4と同じで，それに続けて，選択した画像を画面に呈示する試行を追加しています("{type: 'html-keyboard-response'"以降の内容です)。選択した画像を呈示する試行では，stimulus:に参加者の選択時応じた画像刺激をセットし，trial_duration: 500 (試行は500ms),response_ends_trial: false(選択によって画像呈示が終わらないようにしています)とします。stimulus:が重要ですが，ここでは，jsPsych.data.get().last(1).values()[0]を使って１つ前の試行（つまり選択試行です）から.responseで選択結果，.left_right_s1でs1が左と右のどちらかに呈示されたかを取得します(それぞれ，last_selectとlast_left_right_s1に入る)。ちなみに，jsPsych.data.get().last(1).values()[0]のlast内の数字でいくつ前の施行かを指定します（数字によって2試行前のデータをもってくることもできます）。そして以下の5パターンで処理をします。
 
 - last_select==0 && last_left_right_s1 == 1の場合，ボタン押しのlast_selectが0なのでs1を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを左に呈示します。
 
@@ -419,7 +419,7 @@ var choice = {
     },{
       type: 'html-keyboard-response',
       stimulus: function(){
-        var last_select = jsPsych.data.get().last(1).values()[0].button_pressed;
+        var last_select = jsPsych.data.get().last(1).values()[0].response;
         var last_left_right_s1 = jsPsych.data.get().last(1).values()[0].left_right_s1;
         if (last_select==0 && last_left_right_s1 == 1){
            return "<p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p>"
@@ -477,7 +477,7 @@ var choice = {
 {
       type: 'html-keyboard-response',
       stimulus: function(){
-        var last_select = jsPsych.data.get().last(2).values()[0].button_pressed;
+        var last_select = jsPsych.data.get().last(2).values()[0].response;
         var last_left_right_s1 = jsPsych.data.get().last(2).values()[0].left_right_s1;
         var last_reward_s1 = jsPsych.data.get().last(2).values()[0].reward_s1;
         var last_reward_s2 = jsPsych.data.get().last(2).values()[0].reward_s2;
@@ -494,9 +494,9 @@ var choice = {
         } else if (last_select==1 && last_left_right_s1 == 1 && last_reward_s2==0){
            return "<p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='stimuli/punishment.jpeg' width='200px'/></p>"
         }else if (last_select==1 && last_left_right_s1 == 2 && last_reward_s2==1){
-           return "<p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='stimuli/punishment.jpeg' width='200px'/></p>"
-        } else if (last_select==1 && last_left_right_s1 == 2 && last_reward_s2==0){
            return "<p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='stimuli/reward.jpeg' width='200px'/></p>"
+        } else if (last_select==1 && last_left_right_s1 == 2 && last_reward_s2==0){
+           return "<p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='stimuli/punishment.jpeg' width='200px'/></p>"
         } else {
            return '<p style="font-size: 48px">時間内に選択を行ってください</p>'
         }
@@ -584,10 +584,7 @@ var debrief = {
 
 var timeline = [];
 timeline.push(welcome);
-timeline.push({
-  type: 'fullscreen',
-  fullscreen_mode: true
-});
+timeline.push(fullscreen);
 timeline.push(instructions);
 timeline.push(choice);
 timeline.push(debrief);

@@ -6,20 +6,21 @@ output:
     mathjax: null
     highlight: null
     theme: null
-    css: jspsych-6.1.0/css/jspsych.css
+    css: jspsych-6.3.1/css/jspsych.css
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ```{r}
 library(htmltools)
 tagList(
 tags$body(bgcolor="#000000", text="#ffffff"),
-tags$script(src='jspsych-6.1.0/jspsych.js'),
-tags$script(src='jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js'),
-tags$script(src='jspsych-6.1.0/plugins/jspsych-html-button-response.js')
+tags$script(src='jspsych-6.3.1/jspsych.js'),
+tags$script(src='jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js'),
+tags$script(src='jspsych-6.3.1/plugins/jspsych-html-button-response.js'),
+tags$script(src='jspsych-6.3.1/plugins/jspsych-fullscreen.js'),
 )
 ```
 
@@ -76,14 +77,14 @@ for (i in 1:repeat_shuffle) {
 #### 左右以外の上下の位置(topから50%の位置に刺激を呈示する)や使う画像のパスの情報（今回は全施行で以下は変わらない）
 # s1の設定
 top_bottom_s1 = "top"
-top_bottom_position_s1 = 35
-image_path_s1 = "img/s1.jpeg"
+top_bottom_position_s1 = 40
+image_path_s1 = "stimuli/s1.jpeg"
 image_width_s1 = 200
 left_right_position_s1 <- 20
 # s2の設定
 top_bottom_s2 = "top"
-top_bottom_position_s2 = 35
-image_path_s2 = "img/s2.jpeg"
+top_bottom_position_s2 = 40
+image_path_s2 = "stimuli/s2.jpeg"
 image_width_s2 = 200
 left_right_position_s2 <- 20
 
@@ -130,16 +131,16 @@ for (i in 1:nrow(RL_stim)) {
 }
 ```
 
-
 ```{js}
 var instructions = {
   type: "html-keyboard-response",
   stimulus: "<p style='text-align:left'>画面に２つの図形がでてきますので，どちらかの図形を選択してください。</p>"+
-    "<p style='text-align'>あなたの選択に対して，ポジティブな反応（緑色の笑顔）かネガティブな反応（赤色の悲しい顔）が出ます。</p>"+
+    "<p style='text-align:left'>あなたの選択に対して，ポジティブな反応（緑色の笑顔）かネガティブな反応（赤色の悲しい顔）が出ます。</p>"+
     "<p style='text-align:left'>一方の図形はポジティブな反応が出やすく，もう一方はそうではありません。</p>"+
     "<p style='text-align:left'>できるだけ，ポジティブな反応が得られるように，選択をしてください。</p>"+
     "<p style='text-align:left'>なお，図形とそれに対する反応との関係は途中で変わることがあります。</p>"+
-    "<p style='text-align:left'>また，図形の出る位置（左右）は頻繁に変わります。</p>",
+    "<p style='text-align:left'>また，図形の出る位置（左右）は頻繁に変わります。</p>"+
+    "<p style='text-align:left'>キーボードのキーをどれか押すと課題が始まります。</p>",
   post_trial_gap: 1000
 };
 
@@ -154,16 +155,16 @@ var choice = {
     },{
       type: 'html-keyboard-response',
       stimulus: function(){
-        var last_select = jsPsych.data.get().last(1).values()[0].button_pressed;
+        var last_select = jsPsych.data.get().last(1).values()[0].response;
         var last_left_right_s1 = jsPsych.data.get().last(1).values()[0].left_right_s1;
         if (last_select==0 && last_left_right_s1 == 1){
-           return "<p style='position: absolute; top: 35%;left: 20%'><img src='img/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 20%'><img src='img/s2.jpeg' width='200px'/></p>"
+           return "<p style='position: absolute; top: 35%;left: 20%'><img src='stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p>"
         } else if (last_select==0 && last_left_right_s1 == 2){
-           return "<p style='position: absolute; top: 35%;right: 20%'><img src='img/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;left: 20%'><img src='img/s2.jpeg' width='200px'/></p>"
+           return "<p style='position: absolute; top: 35%;right: 20%'><img src='stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;left: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p>"
         } else if (last_select==1 && last_left_right_s1 == 1){
-           return "<p style='position: absolute; top: 35%;left: 20%'><img src='img/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 20%'><img src='img/s2s.jpeg' width='200px'/></p>"
+           return "<p style='position: absolute; top: 35%;left: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p>"
         } else if (last_select==1 && last_left_right_s1 == 2){
-           return "<p style='position: absolute; top: 35%;right: 20%'><img src='img/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;left: 20%'><img src='img/s2s.jpeg' width='200px'/></p>"
+           return "<p style='position: absolute; top: 35%;right: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;left: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p>"
         } else {
            return '<p style="font-size: 48px">時間内に選択を行ってください</p>'
         }
@@ -173,26 +174,26 @@ var choice = {
     },{
       type: 'html-keyboard-response',
       stimulus: function(){
-        var last_select = jsPsych.data.get().last(2).values()[0].button_pressed;
+        var last_select = jsPsych.data.get().last(2).values()[0].response;
         var last_left_right_s1 = jsPsych.data.get().last(2).values()[0].left_right_s1;
         var last_reward_s1 = jsPsych.data.get().last(2).values()[0].reward_s1;
         var last_reward_s2 = jsPsych.data.get().last(2).values()[0].reward_s2;
         if (last_select==0 && last_left_right_s1 == 1 && last_reward_s1==1){
-           return "<p style='position: absolute; top: 35%;left: 20%'><img src='img/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 20%'><img src='img/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='img/reward.jpeg' width='200px'/></p>"
+           return "<p style='position: absolute; top: 35%;left: 20%'><img src='stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='stimuli/reward.jpeg' width='200px'/></p>"
         } else if (last_select==0 && last_left_right_s1 == 1 && last_reward_s1==0){
-           return "<p style='position: absolute; top: 35%;left: 20%'><img src='img/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 20%'><img src='img/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='img/punishment.jpeg' width='200px'/></p>"
+           return "<p style='position: absolute; top: 35%;left: 20%'><img src='stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='stimuli/punishment.jpeg' width='200px'/></p>"
         }else if (last_select==0 && last_left_right_s1 == 2 && last_reward_s1==1){
-           return "<p style='position: absolute; top: 35%;right: 20%'><img src='img/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;left: 20%'><img src='img/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='img/reward.jpeg' width='200px'/></p>"
+           return "<p style='position: absolute; top: 35%;right: 20%'><img src='stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;left: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='stimuli/reward.jpeg' width='200px'/></p>"
         } else if (last_select==0 && last_left_right_s1 == 2 && last_reward_s1==0){
-           return "<p style='position: absolute; top: 35%;right: 20%'><img src='img/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;left: 20%'><img src='img/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='img/punishment.jpeg' width='200px'/></p>"
+           return "<p style='position: absolute; top: 35%;right: 20%'><img src='stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;left: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='stimuli/punishment.jpeg' width='200px'/></p>"
         } else if (last_select==1 && last_left_right_s1 == 1 && last_reward_s2==1){
-           return "<p style='position: absolute; top: 35%;left: 20%'><img src='img/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 20%'><img src='img/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='img/reward.jpeg' width='200px'/></p>"
+           return "<p style='position: absolute; top: 35%;left: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='stimuli/reward.jpeg' width='200px'/></p>"
         } else if (last_select==1 && last_left_right_s1 == 1 && last_reward_s2==0){
-           return "<p style='position: absolute; top: 35%;left: 20%'><img src='img/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 20%'><img src='img/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='img/punishment.jpeg' width='200px'/></p>"
+           return "<p style='position: absolute; top: 35%;left: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='stimuli/punishment.jpeg' width='200px'/></p>"
         }else if (last_select==1 && last_left_right_s1 == 2 && last_reward_s2==1){
-           return "<p style='position: absolute; top: 35%;right: 20%'><img src='img/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;left: 20%'><img src='img/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='img/punishment.jpeg' width='200px'/></p>"
+           return "<p style='position: absolute; top: 35%;right: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;left: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='stimuli/reward.jpeg' width='200px'/></p>"
         } else if (last_select==1 && last_left_right_s1 == 2 && last_reward_s2==0){
-           return "<p style='position: absolute; top: 35%;right: 20%'><img src='img/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;left: 20%'><img src='img/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='img/reward.jpeg' width='200px'/></p>"
+           return "<p style='position: absolute; top: 35%;right: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;left: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 35%;right: 45%'><img src='stimuli/punishment.jpeg' width='200px'/></p>"
         } else {
            return '<p style="font-size: 48px">時間内に選択を行ってください</p>'
         }
@@ -200,13 +201,13 @@ var choice = {
       trial_duration: 1000,
       response_ends_trial: false,
     },{
-      type: 'html-keyboard-response',
+    　type: 'html-keyboard-response',
       stimulus: '<p style="font-size: 48px">+</p>',
       trial_duration: function() {
         return Math.floor(Math.random() * 1000) + 500;
       },
       response_ends_trial: false,
-    }],
+}],
     timeline_variables: stimuli
 };
 
@@ -220,4 +221,5 @@ jsPsych.init({
      jsPsych.data.displayData();
     }
 });
+
 ```
