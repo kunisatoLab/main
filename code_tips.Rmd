@@ -86,7 +86,7 @@ title: "Code & Tips"
 
 ## 認知モデリング
 
-- [強化学習モデル: 最尤推定(準備中)](how-to-cognitive-modeling-rl1.html)　☆12
+- [強化学習モデル: 最尤推定](how-to-cognitive-modeling-rl1.html)　☆12
 
 - [強化学習モデル: ベイズ推定(準備中)](how-to-cognitive-modeling-rl2.html)　☆13
 
