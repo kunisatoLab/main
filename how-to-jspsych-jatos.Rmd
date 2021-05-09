@@ -2,21 +2,108 @@
 title: "jsPsychを用いたWEB実験の実施：JATOSでローカルでもサーバーでも実施してみよう！"
 ---
 
-作成中
+以下では，[JSTOS(Just Another Tool for Online Studies)](https://www.jatos.org/)を用いて，jsPsychで作成した実験課題をローカルもしくはオンラインで実施してみましょう。
 
-dockerでのローカル
+### JATOSで用いるためにjsPsychのコードを修正する
+
+JATOSで用いるためにjsPsychのコードを修正します。詳細は，[こちら](https://www.jatos.org/Adapt-Pre-written-Code-to-run-it-in-JATOS.html)を確認ください。
+
+- HTMLファイルの<head>に以下を追加する。JATOSで動作するjsライブラリを読み込みます。
 
 ```
-docker run -d --name jatos -p 8080:9000 jatos/jatos:latest
+<script src="jatos.js"></script>
 ```
+
+- jsPsych.initをjatos.onLoad内にいれ，データをJATOSに保存できるようにする。以下のように，var resultJson = jsPsych.data.get().json()と jatos.submitResultData(resultJson, jatos.startNextComponent)を追加することで，jsPsychの結果をJATOSに保存できるようになります。
+
+```
+jatos.onLoad(function() {
+  jsPsych.init( {
+    // ...
+    on_finish: function() {
+      var resultJson = jsPsych.data.get().json();
+      jatos.submitResultData(resultJson, jatos.startNextComponent);
+    }
+  });
+});
+```
+
+### ローカルのJATOSでjsPsychを使えるようにする
+
+```
+docker run -d -p 9000:9000 --name jatos jatos/jatos:latest
+```
+
+ブラウザ上に```localhost:9000```
+
+
+
+Usernameに```admin```,Passwordに```admin```をいれる。
+
+<img src="fig/jatos_fig1.png" width="600">
+
+Create the study in your local JATOS
+Create a new study with the ‘New Study’ button in JATOS’ header. Choose a study title and a folder name. Leave the other fields empty for now and click ‘Create’. JATOS will have created a new folder within your assets root folder (default is /path_to_your_JATOS/study_assets_root/).
+Copy all your files (HTML, JavaScripts, images, audio, …) into your new study folder.
+Back in the JATOS GUI, and within the newly created study, create a new component by clicking ‘Components’ and then ‘New’. Choose a component title and set the HTML file name, to the name of the HTML file you just copied into the study folder.
+
+
+
+<img src="fig/jatos_fig2.png" width="600">
+
+
+<img src="fig/jatos_fig3.png" width="600">
+
 
 以下にjsPsychの課題を置く場所が作られる
 
-- /opt/docker/study_assets_root
+/opt/docker/study_assets_root
 
+```
+docker cp  Downloads/rl/ jatos:/opt/docker/study_assets_root/
+
+```
 
 
 ```
-docker cp  Downloads/demo jatos:/opt/docker/study_assets_root/
+docker exec -i -t jatos bash
 ```
+
+```
+ls study_assets_root/rl
+```
+
+```
+exit
+```
+
+<img src="fig/jatos_fig4.png" width="600">
+
+
+登録
+<img src="fig/jatos_fig5.png" width="600">
+
+run
+<img src="fig/jatos_fig6.png" width="600">
+
+
+Export
+<img src="fig/jatos_fig7.png" width="600">
+
+### JATOSサーバー上でjsPsychを使えるようにする
+
+
+<img src="fig/jatos_fig8.png" width="600">
+
+<img src="fig/jatos_fig9.png" width="600">
+
+<img src="fig/jatos_fig10.png" width="600">
+
+<img src="fig/jatos_fig11.png" width="600">
+
+<img src="fig/jatos_fig12.png" width="600">
+
+<img src="fig/jatos_fig13.png" width="600">
+
+
 
