@@ -4,7 +4,7 @@ title: "強化学習モデル: 最尤推定"
 
 ## 認知モデリングの推奨実践法
 
-- Busemeyer & Diederich(2010), Heathcote (2015), Palminteri et al.(2017)を参考にまとめると，以下のような感じになります。
+Busemeyer & Diederich(2010), Heathcote (2015), Palminteri et al.(2017)を参考に，認知モデリングの推奨実践法をまとめると，以下のようになります。
 
 - A 認知課題と認知モデルを準備
 - B 人工データ生成とパラメータリカバリーを確認（モデルや課題の修正）
@@ -15,17 +15,15 @@ title: "強化学習モデル: 最尤推定"
 
 以降は，上記に従って進めていきます。
 
-- Busemeyer, J. R., & Diederich, A. (2010). Cognitive Modeling. SAGE.
-- Heathcote, A., Brown, S. D., & Wagenmakers, E.-J. (2015). An Introduction to Good Practices in Cognitive Modeling. In B. U. Forstmann & E.-J. Wagenmakers (Eds.), An Introduction to Model-Based Cognitive Neuroscience (pp. 25–48). Springer New York.
-- Palminteri, S., Wyart, V., & Koechlin, E. (2017). The Importance of Falsification in Computational Cognitive Modeling. Trends in Cognitive Sciences, 21(6), 425–433.
-
-
 ### 使用するRパッケージ
+
+以降で使用するRパッケージは以下になります。
 
 ```{r message=FALSE, warning=FALSE}
 rm(list = ls())
 library(tidyverse)
 library(fields)
+library(pso)
 ```
 
 ## A 認知課題と認知モデルを準備
@@ -41,9 +39,11 @@ library(fields)
 
 - Waegeman et al.(2014)を参考に，最大2000ms選択画面を呈示する（押したら次に進む），選択した刺激を枠で囲って500ms呈示し，フィードバックを500ms呈示し，500ms-1500ms固視点(+)を呈示する。
 
-### 逆転学習課題の構造の確認
+この逆転学習課題をjsPsychで作る方法は，[jsPsychを用いた認知課題の作成3：確率的逆転学習課題](https://kunisatolab.github.io/main/how-to-jspsych3.html)にあります。
 
-s1は，前半40試行において20％の確率で報酬のフィードバックがなされ，後半40試行で80%の確率でフィードバックがなされます（s2はその逆になる）。prob_s1とprob_s2に確率を設定して，reward_s1とreward_s2でランダムに80%や20%の確率で報酬が出てくるのを設定します。
+#### 逆転学習課題の構造の確認
+
+s1は，前半40試行において20％の確率で報酬のフィードバックがなされ，後半40試行で80%の確率でフィードバックがなされます（s2はその逆になる）。prob_s1とprob_s2に確率を設定して，reward_s1とreward_s2でランダムに80%や20%の確率で報酬が出てくるのを設定します。なお，報酬は１，罰は０としています。
 
 ```{r}
 sim_data <- tibble(trial = 1:80,
@@ -94,7 +94,7 @@ $$
 P\left(a_{i} \mid s\right)=\frac{\exp \left[\beta Q\left(s, a_{i}\right)\right]}{\sum_{j=1}^{m} \exp \left[\beta Q\left(s, a_{j}\right)\right]}
 $$
 
-- もし選択肢が２の場合は以下のように書けます（今回は状態もかわらないので，sやaも省略した）。選択肢AとBがあった場合，Aを選択する確率は,指数関数（β×Aの価値）を{指数関数（β×Aの価値）＋指数関数（β×Bの価値）}で割ったものになります。
+- もし選択肢が２つの場合は以下のように書けます（今回は状態もかわらないので，sやaも省略しています）。選択肢AとBがあった場合，Aを選択する確率は,指数関数（β×Aの価値）を{指数関数（β×Aの価値）＋指数関数（β×Bの価値）}で割ったものになります。
 
 - βは0に近づくほど、選択確率は0.5に近づきます（価値の差が選択に反映されなくなります）
 
@@ -103,7 +103,7 @@ $$
 P(A)=\frac{\exp(\beta Q_{A})}{\exp(\beta Q_{A}) + \exp(\beta Q_{B})}
 $$
 
-### Q learningの関数
+#### Q learningの関数
 
 上記のQ learningの計算を関数にすると以下のようになります。
 
@@ -150,9 +150,9 @@ q_learning_sim <- function(alpha, beta,data) {
 ```
 
 
-### Q learningの関数の動作確認
+#### Q learningの関数の動作確認
 
-α，β，各施行の報酬の有無がはいったデータを指定すればQ leaningを試すことができます（とりあえず，ここでは，プロットして，動作するかだけ確認しましょう）。
+α，β，各施行の報酬の有無(入力刺激)がはいったデータを指定すればQ leaningを試すことができます（とりあえず，ここでは，プロットして，動作するかだけ確認しましょう）。
 
 ```{r}
 result <- q_learning_sim(alpha = 0.5, beta = 5,data = sim_data) 
@@ -164,16 +164,14 @@ result %>%
   geom_point(aes(x = trial, y = reward), colour = 'red') 
 ```
 
+おお，なんか人間っぽいというか知性がある感じがしますね！
 
 
 ## B 人工データ生成とパラメータリカバリーを確認（モデルや課題の修正）
 
-### 実行データの生成
+### 人工データの生成
 
-- Q learningモデルとソフトマックス行動選択を用いて，個々の参加者のパラメータ推定を行うのが最終的な目標になります。
-- すぐにリアルデータの推定をしたくなりますが，まずはシミュレーション(人工データ生成)から始めましょう。
-- モデルとパラメータと実験状況（刺激の種類やFBの確率など）を準備して，データを生成してみましょう。
-- αをβを色々と変更させて，生成されるデータの挙動を確認しましょう！
+Q learningモデルとソフトマックス行動選択を用いて，個々の参加者のパラメータ推定を行うのが最終的な目標になります。すぐにリアルデータの推定をしたくなりますが，まずはシミュレーション(人工データ生成)から始めます。モデルとパラメータと実験状況（刺激の種類やFBの確率など）を準備して，データを生成してみましょう。その際に，αをβを色々と変更させて，生成されるデータの挙動も確認しましょう！上記で作成したq_learning_sim関数を使えば，以下のようにαをβを色々と変更したときのデータの挙動が確認できます。
 
 ```{r}
 result <- q_learning_sim(alpha = 0.3, beta = 1,data = sim_data) 
@@ -185,14 +183,14 @@ result %>%
   geom_point(aes(x = trial, y = reward), colour = 'red') 
 ```
 
-### 演習
+#### 演習
 
 - S2の価値と選択確率もプロットしてみよう！
 
 
-## シミュレーションデータを用いてパラメータリカバリーを行う
+### シミュレーションデータを用いてパラメータリカバリーを行う
 
-### パラメータ推定の手順
+#### パラメータ推定の手順
 
 パラメータ推定の手順は以下になります。
 
@@ -200,8 +198,13 @@ result %>%
 2. パラメータを評価する基準を設定
 3. 最良の評価を与えるパラメータを決定する
 
-- 1.パラメータを含むモデルを設定 → Q learning model, 方策はソフトマックス行動選択ルールを仮定します（なお，仮定というが重要で，これが真実のモデルは全く無くて，可能性のあるモデルの１つであるという点は意識しておく必要があります）。
-- 2.パラメータを評価する基準を設定 → モデルとパラメータが与えられた時の観察されたデータの尤もらしさ（尤度: Likekihood）を評価基準にします。尤度が高いほど，そのモデル（パラメータ）の仮定は尤もらしいと考えられます。尤度は，実際に選んだ選択肢の行動選択確率を全ての試行でかけ合わせたもの（総積）です。モデルが考えた選択確率がどれくらい実際のデータにフィットしているか調べています。
+- 1.パラメータを含むモデルを設定
+
+→ Q learning model, 方策はソフトマックス行動選択ルールを仮定します（なお，仮定というが重要で，これが真実のモデルは全く無くて，可能性のあるモデルの１つであるという点は意識しておく必要があります）。
+
+- 2.パラメータを評価する基準を設定 
+
+→ モデルとパラメータが与えられた時の観察されたデータの尤もらしさ（尤度: Likekihood）を評価基準にします。尤度が高いほど，そのモデル（パラメータ）の仮定は尤もらしいと考えられます。尤度は，実際に選んだ選択肢の行動選択確率を全ての試行でかけ合わせたもの（総積）です。モデルが考えた選択確率がどれくらい実際のデータにフィットしているか調べています。
 
 
 $$
@@ -279,9 +282,11 @@ result <- q_learning_ll(alpha = 0.6, beta = 1,data = data)
 result$ll
 ```
 
-- 3.最良の評価を与えるパラメータを決定する →最も尤度が高くなるパラメータを探す（最適化）。最尤推定，ベイズ推定など色々な方法があるが，ここでは，単純なグリッドサーチを用いた最尤推定を行う。
+- 3.最良の評価を与えるパラメータを決定する
 
-### パラメータリカバリー（グリッドサーチ定）
+→最も尤度が高くなるパラメータを探す（最適化）。最尤推定，ベイズ推定など色々な方法があるが，ここでは，単純なグリッドサーチを用いた最尤推定を行う。
+
+#### パラメータリカバリー（グリッドサーチ定）
 
 - グリッドサーチは，可能性のあるパラメータの組み合わせを格子状にして，順番に尤度を評価する方法です。指定したパラメータの範囲内で最も高い尤度のパラメータを選択します（最尤推定法：maximum likelihood estimate）
 - グリッドは研究者が決めます。今回は，αは0から１まで0.01刻みでサーチし(101個の値)，βは0から15まで0.2刻みでサーチする(76個の値)ことにします(つまり7676個のパラメータの組み合わせで尤度を評価します)。
@@ -320,7 +325,7 @@ grid_search <- function(data) {
 }
 ```
 
-### 最尤推定（グリッドサーチ）の実施
+#### 最尤推定（グリッドサーチ）の実施
 
 grid_search関数を使って，最尤推定値を探します。まず，alpha=0.3,beta=5に設定したq_learning_sim関数でデータを作ります。そして，grid_search関数に作ったdataをいれてグリッドサーチをさせます。ちょっと時間がかかります。
 
@@ -330,19 +335,19 @@ grid_result <- grid_search(data)
 ```
 
 
-### ３次元データのプロット
+#### ３次元データのプロット
 
 αとβと尤度の３次元データをプロットしてみます。データ生成時に設定したパラメータの値周辺になっているでしょうか？
 
 ```{r, echo=TRUE, message=TRUE, warning=TRUE}
 rownames(grid_result$store_3d) <- NULL
-y <- seq(0,1,0.01)
-x <- seq(0,15,0.2)
-image.plot(x,y,grid_result$store_3d)
+alpha <- seq(0,1,0.01)
+beta <- seq(0,15,0.2)
+image.plot(beta,alpha,grid_result$store_3d)
 ```
 
 
-### 周辺尤度
+#### 周辺尤度
 
 3Dプロットだとちょっと判断が難しいので，周辺尤度を求めてみます。例えば，βがどのような値をとるかにかかわらないαの尤度が，αの周辺尤度です。つまり，αの値ごとに，平均尤度を計算する感じです（βも同様です）。
 
@@ -352,12 +357,12 @@ matrix_ll <- exp(grid_result$store_3d)
 # 行（beta）ごとに平均をして、全体の平均で標準化
 beta_sum_ll <- rowSums(matrix_ll)
 beta_marginal_like <- beta_sum_ll/sum(beta_sum_ll)
-beta_marginal_like_data <- data.frame(x,beta_marginal_like)
+beta_marginal_like_data <- data.frame(beta,beta_marginal_like)
 colnames(beta_marginal_like_data) <- c("parameter","marginal_like")
 # 列（alpha）ごとに平均をして、全体の平均で標準化
 alpha_sum_ll <- colSums(matrix_ll)
 alpha_marginal_like <- alpha_sum_ll/sum(alpha_sum_ll)
-alpha_marginal_like_data <- data.frame(y,alpha_marginal_like)
+alpha_marginal_like_data <- data.frame(alpha,alpha_marginal_like)
 colnames(alpha_marginal_like_data) <- c("parameter","marginal_like")
 #プロット
 beta_marginal_like_data %>% 
@@ -370,9 +375,9 @@ alpha_marginal_like_data %>%
   labs(x="Parameter α", y="p(data|model)")
 ```
 
-### 最尤推定値とパラメータリカバリのチェック
+#### 最尤推定値とパラメータリカバリのチェック
 
-最も対数尤度が高いパラメータの値を選択するのが最尤推定法です。which.maxで最も対数尤度の高いパラメータの値をとってきましょう。α=0.3，β=5で作ったデータなので，パラメータリカバリできているか確認しましょう。なお，もともとのデータ生成の部分で確率的な変動が入るので，ある程度誤差ははいります。一致するかというよりは，大幅にずれてないかチェックします。
+最も対数尤度が高いパラメータの値を選択するのが最尤推定法です。which.maxで最も対数尤度の高いパラメータの値をとってきましょう。α=0.3，β=5で作ったデータなので，パラメータリカバリできているか確認しましょう。なお，もともとのデータ生成の部分で確率的な変動が入るので，ある程度誤差がはいります。一致するかというよりは，大幅にずれてないかチェックします。
 
 ```{r, echo=TRUE, message=TRUE, warning=TRUE}
 # 最尤推定値
@@ -382,7 +387,7 @@ paste("最尤推定値: α =",grid_result$calc_results$store_alpha[maxIndex],
       ",対数尤度: Log Likelihood = ",grid_result$calc_results$store_loglike[maxIndex])
 ```
 
-### 価値と行動選択確率のプロット（モデル・シミュレーション）
+#### 価値と行動選択確率のプロット（モデル・シミュレーション）
 
 - 与えられたモデルがデータを生成する能力のことを生成パフォーマンスと言います（Palminteri et al., 2017）。この生成パフォーマンスを検討するには，パラメータ推定によって最もフィットしたパラメータ値と認知モデルを用いてデータ生成を行って，実際の行動レベルでの効果が検出できるのかを検討するモデル・シミュレーションが必要です（Palminteri et al., 2017）。
 
@@ -398,16 +403,17 @@ data_original_estimated <- tibble(trial = data$trial,
 ```
 
 
-- プロットは重なっているでしょうか？（なお，たまたまずれちゃうこともあります）
+- 青い点がデータ，赤い点が最尤推定値から生成したデータです(見やすくなるように少しずらしました)。２つは重なっているでしょうか？
 
 ```{r}
 data_original_estimated %>% 
-  ggplot(aes(x = trial, y = choice_original)) +
+  mutate(choice_original_plot = choice_original +0.02) %>% 
+  ggplot(aes(x = trial, y = choice_original_plot)) +
   geom_point(colour = "blue") +
   geom_point(aes(x = trial, y = choice_estimated),colour = "red")
 ```
 
-- クロス集計をすると，一致しているでしょうか？（なお，たまたまずれちゃうこともあります）
+- 以下のように，クロス集計して確認することもできます。
 
 ```{r}
 table(data_original_estimated$choice_original,data_original_estimated$choice_estimated)
@@ -443,7 +449,7 @@ sub01 <- read_csv("data/sub01.csv")
 sub01
 ```
 
-教示とか刺激が出た時(trial_typeがhtml-keyboard-response)やpavloviaの関数(trial_typeがpavlovia)は邪魔なので除外する。
+教示とか刺激が出た時(trial_typeがhtml-keyboard-response)やpavloviaの関数(trial_typeがpavlovia)は邪魔なので除外する（このデータはpavloviaで収集されました）。
 
 ```{r}
 sub01 %>% 
@@ -483,7 +489,7 @@ sub01 %>%
   geom_point(aes(x = trial, y = reward),colour = 'red')
 ```
 
-## 5名分のデータを読み込んでlong形式のデータにする
+#### 5名分のデータを読み込んでlong形式のデータにする
 
 １名ずつ読み込むのは大変なので，一気に処理をしてしまいましょう。for文でfile_namesに入っているデータの数の回数分処理をします。
 
@@ -515,7 +521,7 @@ for (i in 1:length(file_names)) {
 
 ## D パラメータ推定
 
-### 以降の解析の関数化
+### 解析の関数化
 
 以降は，繰り返しも多いので，dataフォルダ内のデータに対して，グリッドサーチを用いた最尤推定を行って結果を返す関数を準備します。idに番号をいれたら，そのid番号の参加者のパラメータを推定する関数として，estimate_gridを作りました。長いですが，上でやっていることを並べただけです。
 
@@ -585,8 +591,8 @@ estimate_grid <- function(data, id_no){
 }
 ```
     
-
-#### モデル・フィッティング(sub01)
+### モデル・フィッティング
+#### sub01のモデル・フィッティング
 
 上の方で関数を定義したので，１行でいろいろと出力してくれます。なお，sub01は国里がかなりグリーディーな選択をしたので，βが15を越えてしまっています。
 
@@ -594,7 +600,7 @@ estimate_grid <- function(data, id_no){
 estimate_grid(data = data_long, id_no = 1)
 ```
 
-#### モデル・フィッティング(sub02)
+#### sub02のモデル・フィッティング
 
 sub02は，国里が学習率が高くなるように反応をしてみました。
 
@@ -602,7 +608,7 @@ sub02は，国里が学習率が高くなるように反応をしてみました
 estimate_grid(data = data_long, id = 2)
 ```
 
-### 演習
+#### 演習
 
 sub03以降も確認して，自分のデータでも確かめてみよう！
 
@@ -673,3 +679,21 @@ y <- seq(0,1,0.2)
 x <- seq(0,1,0.2)
 image.plot(x,y,grid_result2$store_3d)
 ```
+
+### 汎用最適化関数で最尤推定する
+
+グリッドサーチはわかりやすいですが，上記のような問題もあるので，実際のパラメータ推定では，汎用最適化関数を用います。以下では，Rでよく使用されるoptim関数とより洗練されたアルゴリズムである粒子群最適化(Particle Swarm Optimization)を実装したpsoパッケージを用いたパラメータ推定について紹介します。
+
+#### optim
+
+
+#### pso
+
+
+
+
+## 引用・参考文献
+
+- Busemeyer, J. R., & Diederich, A. (2010). Cognitive Modeling. SAGE.
+- Heathcote, A., Brown, S. D., & Wagenmakers, E.-J. (2015). An Introduction to Good Practices in Cognitive Modeling. In B. U. Forstmann & E.-J. Wagenmakers (Eds.), An Introduction to Model-Based Cognitive Neuroscience (pp. 25–48). Springer New York.
+- Palminteri, S., Wyart, V., & Koechlin, E. (2017). The Importance of Falsification in Computational Cognitive Modeling. Trends in Cognitive Sciences, 21(6), 425–433.
