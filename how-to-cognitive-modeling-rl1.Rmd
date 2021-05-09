@@ -315,7 +315,7 @@ grid_search <- function(data) {
     #betaを0.2刻みで増やす
     beta　<- beta +0.2
   }
-    calc_results<- data_frame(store_alpha, store_beta, store_loglike)
+    calc_results<- tibble(store_alpha, store_beta, store_loglike)
     return(list(calc_results = calc_results, store_3d = store_3d))
 }
 ```
@@ -415,16 +415,15 @@ table(data_original_estimated$choice_original,data_original_estimated$choice_est
 
 
 # C データ収集と行動データを確認
-## pavloviaでのデータ収集
 
-- 昨日作成していた逆転学習課題をpavloviaで走らせています（pavlovia用の設定，スマホからのアクセス拒否，画像の事前読み込みなどを追加）。
+では，実験をおこなって，行動データを収集したことにしましょう。以下では，国里が用意した模擬データを使って解析を行います。以下を実行して，データをダウンロードください。
 
-https://run.pavlovia.org/ykunisato_senshu/rl
-
-- pavloviaはgitlab上で動いているので，jsPsychの課題をRStudio上で作成して，そのままGithubと同じ操作で課題をプッシュできます。
-
-https://kunisatolab.github.io/main/how-to-jspsych-pavlovia.html
-
+```
+temp <- tempfile()
+download.file("https://github.com/kunisatoLab/main/raw/master/materials/data.zip",temp)
+unzip(temp)
+unlink(temp)
+```
 
 
 ## データの確認
