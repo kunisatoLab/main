@@ -386,18 +386,16 @@ div.tocify {
 </div>
 
 
-<p>以下では，<a href="https://www.jatos.org/">JSTOS(Just Another Tool for Online Studies)</a>を用いて，jsPsychで作成した実験課題をローカルもしくはオンラインで実施してみましょう。</p>
+<p><a href="https://www.jatos.org/">JSTOS(Just Another Tool for Online Studies)</a>を用いて，jsPsychで作成した実験課題をローカルもしくはオンラインで実施してみましょう。</p>
 <div id="jatosで用いるためにjspsychのコードを修正する" class="section level3">
 <h3>JATOSで用いるためにjsPsychのコードを修正する</h3>
 <p>JATOSで用いるためにjsPsychのコードを修正します。詳細は，<a href="https://www.jatos.org/Adapt-Pre-written-Code-to-run-it-in-JATOS.html">こちら</a>を確認ください。</p>
 <ul>
-<li>HTMLファイルの
-<head>
-に以下を追加する。JATOSで動作するjsライブラリを読み込みます。</li>
+<li>JATOSで動作するjsライブラリを読み込むために，HTMLファイルのheadに以下を追加します。</li>
 </ul>
 <pre><code>&lt;script src=&quot;jatos.js&quot;&gt;&lt;/script&gt;</code></pre>
 <ul>
-<li>jsPsych.initをjatos.onLoad内にいれ，データをJATOSに保存できるようにする。以下のように，var resultJson = jsPsych.data.get().json()と jatos.submitResultData(resultJson, jatos.startNextComponent)を追加することで，jsPsychの結果をJATOSに保存できるようになります。</li>
+<li>jsPsych.initをjatos.onLoad内にいれ，データをJATOSに保存できるようにします。以下のように，var resultJson = jsPsych.data.get().json()と jatos.submitResultData(resultJson, jatos.startNextComponent)を追加することで，jsPsychの結果をJATOSに保存できるようになります。</li>
 </ul>
 <pre><code>jatos.onLoad(function() {
   jsPsych.init( {
@@ -409,35 +407,76 @@ div.tocify {
   });
 });</code></pre>
 </div>
-<div id="ローカルのjatosでjspsychを使えるようにする" class="section level3">
-<h3>ローカルのJATOSでjsPsychを使えるようにする</h3>
+<div id="ローカルのjatosでjspsychを使えるようにする" class="section level2">
+<h2>ローカルのJATOSでjsPsychを使えるようにする</h2>
+<div id="jatosをdockerで準備する" class="section level3">
+<h3>JATOSをDockerで準備する。</h3>
+<p>まず，ローカルのパソコンにJATOSを用意します。インストール方法はいくつかありますが，dockerが簡単かと思います。dockerの導入方法は，<a href="https://ykunisato.github.io/jpa2020-tws-002/02.html">2 事前準備（Dockerとは）</a> を参照ください。以下のコマンドをターミナル(Macの場合。Windowsの場合は，コマンドプロンプト)で実行してください。</p>
 <pre><code>docker run -d -p 9000:9000 --name jatos jatos/jatos:latest</code></pre>
-<p>ブラウザ上に<code>localhost:9000</code></p>
-<p>Usernameに<code>admin</code>,Passwordに<code>admin</code>をいれる。</p>
-<p><img src="fig/jatos_fig1.png" width="600"></p>
-<p>Create the study in your local JATOS Create a new study with the ‘New Study’ button in JATOS’ header. Choose a study title and a folder name. Leave the other fields empty for now and click ‘Create’. JATOS will have created a new folder within your assets root folder (default is /path_to_your_JATOS/study_assets_root/). Copy all your files (HTML, JavaScripts, images, audio, …) into your new study folder. Back in the JATOS GUI, and within the newly created study, create a new component by clicking ‘Components’ and then ‘New’. Choose a component title and set the HTML file name, to the name of the HTML file you just copied into the study folder.</p>
-<p><img src="fig/jatos_fig2.png" width="600"></p>
+<p>ターミナル（コマンドプロンプト）でのインストール作業が終わったら，ブラウザのURLバーに<code>localhost:9000</code>を打ち込みます。</p>
+<p>以下のような画面がブラウザ上に出てくるので，Usernameに<code>admin</code>,Passwordに<code>admin</code>をいれてください（chromeだとパスワードについてのエラーが出るかもしれないですが，とりあえず，気にしなくて良いです）。</p>
 <p><img src="fig/jatos_fig3.png" width="600"></p>
-<p>以下にjsPsychの課題を置く場所が作られる</p>
-<p>/opt/docker/study_assets_root</p>
-<pre><code>docker cp  Downloads/rl/ jatos:/opt/docker/study_assets_root/
-</code></pre>
-<pre><code>docker exec -i -t jatos bash</code></pre>
-<pre><code>ls study_assets_root/rl</code></pre>
-<pre><code>exit</code></pre>
-<p><img src="fig/jatos_fig4.png" width="600"></p>
-<p>登録 <img src="fig/jatos_fig5.png" width="600"></p>
-<p>run <img src="fig/jatos_fig6.png" width="600"></p>
-<p>Export <img src="fig/jatos_fig7.png" width="600"></p>
 </div>
-<div id="jatosサーバー上でjspsychを使えるようにする" class="section level3">
-<h3>JATOSサーバー上でjsPsychを使えるようにする</h3>
+<div id="jatosで実験を登録する" class="section level3">
+<h3>JATOSで実験を登録する</h3>
+<p>以下のような画面になったら，<code>＋New Study</code>をクリックします。</p>
+<p><img src="fig/jatos_fig1.png" width="600"></p>
+<p>以下のような画面になったら，<code>Title</code>に課題名を入れ，<code>Study assets' directory name</code>にディレクトリ名を入れて，<code>Create</code>をクリックします。こうすると，dockerで用意したJATOSの/opt/docker/study_assets_root/内に実験課題用のフォルダが作られます（以下の場合は，/opt/docker/study_assets_root内にrlというフォルダ作られます）。</p>
+<p><img src="fig/jatos_fig2.png" width="600"></p>
+<p>上記で準備した/opt/docker/study_assets_root/rl内にjsPsychの課題のファイルをコピーします。以下のようなコマンドをターミナル（コマンドプロンプトの場合は修正が必要に思います）で実行します（なお，今回は，Downloads/rl/内にファイルをおいています。フォルダ名は上記と同じにしています）。</p>
+<pre><code>docker cp  Downloads/rl/ jatos:/opt/docker/study_assets_root/</code></pre>
+<p>コピーができているか一応確認します。dokcerのイメージ内に入ります。</p>
+<pre><code>docker exec -i -t jatos bash</code></pre>
+<p>/opt/docker/study_assets_root/rl内をlsで確認をします。コピーしたファイルがあればOKです。</p>
+<pre><code>ls study_assets_root/rl</code></pre>
+<p>確認ができたら，以下のコマンドでイメージから出ます。</p>
+<pre><code>exit</code></pre>
+<p>さて，/opt/docker/study_assets_root/rlにコピーしたファイルを読み込みます。以下のように，<code>Components</code>をクリックして，<code>+New</code>をクリックします。</p>
+<p><img src="fig/jatos_fig4.png" width="600"></p>
+<p><code>Title</code>に課題名をいれて，<code>HTML file path</code>で課題のHTMLファイル名をいれて，<code>Create</code>をクリックします。なお，実験が複数の課題やコンポーネントからなる場合は，複数回登録をしてください。</p>
+<p><img src="fig/jatos_fig5.png" width="600"></p>
+<p>以下の赤で囲っている部分の<code>Run</code>をクリックすると，ローカルで実験課題を実行できます。テストしてみてください。</p>
+<p><img src="fig/jatos_fig6.png" width="600"></p>
+</div>
+</div>
+<div id="jatosサーバー上でjspsychを使えるようにする" class="section level2">
+<h2>JATOSサーバー上でjsPsychを使えるようにする</h2>
+<p>ウェブ実験を行う場合は，なんらかのサーバー上にJATOSをおいて実施します。GCPで準備する場合は，<a href="https://kunisatolab.github.io/main/how-to-docker-compose-https.html">Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法</a>を参照ください。それ以外にも<a href="https://note.com/yoshi_majima/n/na07efd09097b">CentOS 8 &amp; Nginx で JATOS 環境を作って，lab.js でオンライン実験を組むときに嵌まりそうなポイント</a>や<a href="https://note.com/yoshi_majima/n/n304703126b22">OpenSesame で心理学実験をしてみよう #2 JATOS サーバを使ったオンライン実験を設定してみよう</a>などの有益な日本語資料もあるのでご自身の興味に合わせてご準備ください。</p>
+<div id="ローカルのjatosで準備した課題をエクスポートする" class="section level3">
+<h3>ローカルのJATOSで準備した課題をエクスポートする</h3>
+<p>サーバー上のJATOSに課題をアップロードする場合，ローカルのJATOSで課題を準備してエクスポートしたものを読み込むのが便利です（jsPsychの場合は，推奨されています）。さきほど準備したローカルのJATOSのみて，以下の赤で囲っている部分の<code>Export</code>をクリックします。すると，これまで設定した実験課題がjzip形式で出力されます。なお，jzipは普通のzipと同じで，課題がまとめられて圧縮されたものです。</p>
+<p><img src="fig/jatos_fig7.png" width="600"></p>
+<p>さて，サーバー上のJATOSに移動します。以下は，私がGCP上に用意したJATOSの画面です。<code>Import Study</code>をクリックします。</p>
 <p><img src="fig/jatos_fig8.png" width="600"></p>
+<p><code>Import Study</code>をクリックすると，ファイルの選択画面になるので，先程ローカルのJATOSからエクスポートしたjzip形式のファイルを選びます。以下のような画面で，<code>Import</code>を選択ください。左側にインポートした課題が出てきたら，成功です。</p>
 <p><img src="fig/jatos_fig9.png" width="600"></p>
+</div>
+<div id="ウェブ実験用のurlを準備する" class="section level3">
+<h3>ウェブ実験用のURLを準備する</h3>
+<p>以下で赤い線で囲った<code>Worker &amp; Batch Manager</code>をクリックします。</p>
 <p><img src="fig/jatos_fig10.png" width="600"></p>
+<p>以下で赤い線で囲った<code>Get Worker Links</code>をクリックします。</p>
 <p><img src="fig/jatos_fig11.png" width="600"></p>
+<p><code>Choose worker Type</code>で<code>General Sigle</code>を選んで，<code>Continue</code>をクリックします。</p>
+<p>なお，worker Typeには以下の種類があります。</p>
+<ul>
+<li>Personal Single Worker: <strong>参加者ごと</strong>に<strong>１回</strong>だけ参加できるURLを発行</li>
+<li>Personal Multiple Worker:　<strong>参加者ごと</strong>に<strong>複数回</strong>参加できるURLを発行</li>
+<li>General Single Worker: <strong>複数の参加者</strong>が<strong>１回</strong>だけ参加できるURLを発行</li>
+<li>General Multiple Worker:<strong>複数の参加者</strong>が<strong>複数回</strong>参加できるURLを発行</li>
+<li>Mturk Worker: Amazon Mechanical Turk用URLを発行</li>
+</ul>
 <p><img src="fig/jatos_fig12.png" width="600"></p>
+<p>以下のように実験用のURLが表示されますので，参加者に配布して使うことができます。</p>
 <p><img src="fig/jatos_fig13.png" width="600"></p>
+</div>
+<div id="ウェブ実験結果の確認" class="section level3">
+<h3>ウェブ実験結果の確認</h3>
+<p>参加者の反応はJATOSサーバーに保存されます。結果を確認する場合，以下で赤い線で囲った<code>Results</code>をクリックします。</p>
+<p><img src="fig/jatos_fig14.png" width="600"></p>
+<p>以下のような画面がでてきます。Comp.Result IDの４も５も私が試しにやってみた結果ですが，４の方は，途中でやめており，５は最後まで取り組みました。参加者の反応データは，た<code>Export Results</code>をクリックして，全てか選択したものを出力できます（txt形式で出力されます）。</p>
+<p><img src="fig/jatos_fig15.png" width="600"></p>
+</div>
 </div>
 
 <footer>
