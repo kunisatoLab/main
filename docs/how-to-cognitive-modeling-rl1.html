@@ -622,11 +622,11 @@ result %&gt;%
 <pre class="r"><code>data &lt;- q_learning_sim(alpha = 0.2, beta = 5,data = sim_data) 
 result &lt;- q_learning_ll(alpha = 0.2, beta = 5,data = data) 
 result$ll</code></pre>
-<pre><code>## [1] -24.83688</code></pre>
+<pre><code>## [1] -25.58886</code></pre>
 <p>alpha = 0.2, beta = 5で生成されたデータにたいして，alpha = 0.6, beta = 1の時の尤度を計算します。尤度が小さくなったかと思います。他にもαとβを変更して（生成時の値alpha = 0.2, beta = 5に近づけたり，遠ざけたりする），尤度の挙動を確認してみましょう。</p>
 <pre class="r"><code>result &lt;- q_learning_ll(alpha = 0.6, beta = 1,data = data) 
 result$ll</code></pre>
-<pre><code>## [1] -40.50529</code></pre>
+<pre><code>## [1] -37.66696</code></pre>
 <ul>
 <li>3.最良の評価を与えるパラメータを決定する</li>
 </ul>
@@ -720,7 +720,7 @@ maxIndex &lt;- which.max(grid_result$calc_results$store_loglike)
 paste(&quot;最尤推定値: α =&quot;,grid_result$calc_results$store_alpha[maxIndex],
       &quot;β =&quot;,grid_result$calc_results$store_beta[maxIndex], 
       &quot;,対数尤度: Log Likelihood = &quot;,grid_result$calc_results$store_loglike[maxIndex])</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.52 β = 7.2 ,対数尤度: Log Likelihood =  -15.6011482940969&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.16 β = 7.2 ,対数尤度: Log Likelihood =  -15.5387223132021&quot;</code></pre>
 </div>
 <div id="価値と行動選択確率のプロットモデルシミュレーション" class="section level4">
 <h4>価値と行動選択確率のプロット（モデル・シミュレーション）</h4>
@@ -749,8 +749,8 @@ data_original_estimated &lt;- tibble(trial = data$trial,
 <pre class="r"><code>table(data_original_estimated$choice_original,data_original_estimated$choice_estimated)</code></pre>
 <pre><code>##    
 ##      0  1
-##   0 39  5
-##   1  2 34</code></pre>
+##   0 51 13
+##   1  2 14</code></pre>
 </div>
 </div>
 </div>
@@ -1041,13 +1041,13 @@ image.plot(x,y,grid_result1$store_3d)</code></pre>
 paste(&quot;最尤推定値: α =&quot;,grid_result1$calc_results$store_alpha[maxIndex],
       &quot;β =&quot;,grid_result1$calc_results$store_beta[maxIndex], 
       &quot;,対数尤度: Log Likelihood = &quot;,grid_result1$calc_results$store_loglike[maxIndex])</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.67 β = 15 ,対数尤度: Log Likelihood =  -8.60684028721809&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.38 β = 15 ,対数尤度: Log Likelihood =  -2.29866391841605&quot;</code></pre>
 <p>当たり前ですが，間隔を広げたり，範囲を狭めると，範囲外の推定値は求まりませんし（βは範囲外），きめが荒いので，推定値もずれます。実際は，グリッドサーチではなく，最適化手法を使って最尤推定値を求めたり，ベイズ推定で求めたりします。ただ，推定においては，狭い範囲内で最も良いだけの値（局所最適解という）をもってくる可能性があるのは気をつけないといけません。</p>
 <pre class="r"><code>maxIndex &lt;- which.max(grid_result2$calc_results$store_loglike)
 paste(&quot;最尤推定値: α =&quot;,grid_result2$calc_results$store_alpha[maxIndex],
       &quot;β =&quot;,grid_result2$calc_results$store_beta[maxIndex], 
       &quot;,対数尤度: Log Likelihood = &quot;,grid_result2$calc_results$store_loglike[maxIndex])</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.6 β = 1 ,対数尤度: Log Likelihood =  -35.025580884979&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.6 β = 1 ,対数尤度: Log Likelihood =  -31.3697872933866&quot;</code></pre>
 <pre class="r"><code>rownames(grid_result2$store_3d) &lt;- NULL
 y &lt;- seq(0,1,0.2)
 x &lt;- seq(0,1,0.2)
@@ -1057,11 +1057,124 @@ image.plot(x,y,grid_result2$store_3d)</code></pre>
 <div id="汎用最適化関数で最尤推定する" class="section level3">
 <h3>汎用最適化関数で最尤推定する</h3>
 <p>グリッドサーチはわかりやすいですが，上記のような問題もあるので，実際のパラメータ推定では，汎用最適化関数を用います。以下では，Rでよく使用されるoptim関数とより洗練されたアルゴリズムである粒子群最適化(Particle Swarm Optimization)を実装したpsoパッケージを用いたパラメータ推定について紹介します。</p>
+<p>汎用最適化関数を使うために，q_learning_ll関数を少し変更して，パラメータとデータを与えたら，負の対数尤度を返すq_learning_nll関数を作ります（不要な部分を削除して，最後に対数尤度にマイナスをつけただけです）。</p>
+<pre class="r"><code>q_learning_nll &lt;- function(par,data) {
+  alpha &lt;- par[1]
+  beta &lt;- par[2]
+  #変数の準備
+  value_s1 &lt;- 0          # s1の価値(初期値は0)
+  value_s2 &lt;- 0          # s2の価値(初期値は0)
+  prob_s1 &lt;- NULL  # s1の選択確率
+  ll &lt;- 0                 # 対数尤度
+  # Qlearningモデル
+  for (i in 1:nrow(data)){
+    # s1を選ぶ確率を計算
+    prob_s1[i] &lt;- exp(beta*value_s1[i])/(exp(beta*value_s1[i])+exp(beta*value_s2[i]))
+    #FBを報酬(r)として、価値の更新を行う。
+    if (data$choice[i] == 1){
+        #予測誤差の計算
+        prediction_error &lt;-  data$reward[i] - value_s1[i]
+        #予測誤差を使ってs1の価値を更新する
+        value_s1[i+1] &lt;- value_s1[i]+alpha*prediction_error
+        #s2は更新なし
+        value_s2[i+1] &lt;- value_s2[i]
+        # 対数尤度の計算のために選択したs1を選ぶ確率の対数を加算
+        ll &lt;- ll + log(prob_s1[i])
+    }else{
+        #予測誤差の計算
+        prediction_error &lt;- data$reward[i] - value_s2[i]
+        #予測誤差を使ってs2の価値を更新する
+        value_s2[i+1] &lt;- value_s2[i]+alpha*prediction_error
+        #s1は更新なし
+        value_s1[i+1] &lt;- value_s1[i]
+        # 対数尤度の計算のために選択したs2を選ぶ確率の対数を加算
+        ll &lt;- ll + log(1-prob_s1[i])
+    }
+  }
+  return(-ll)
+}</code></pre>
+<p>今回は，sub03のデータでグリッドサーチ，optim, psoの推定をしてみましょう。まずは，データを用意して，グリッドサーチをしてみます。</p>
+<pre class="r"><code># データの用意
+sub03_data &lt;- data_long %&gt;% 
+    filter(id == 3)
+
+# グリッドサーチ
+result_grid &lt;- grid_search(sub03_data)
+maxIndex &lt;- which.max(result_grid$calc_results$store_loglike)
+alpha_grid &lt;- result_grid$calc_results$store_alpha[maxIndex]
+beta_grid &lt;- result_grid$calc_results$store_beta[maxIndex]
+loglike_grid &lt;- result_grid$calc_results$store_loglike[maxIndex]
+print(paste(&quot;最尤推定値: α =&quot;,result_grid$calc_results$store_alpha[maxIndex],
+      &quot;β =&quot;,result_grid$calc_results$store_beta[maxIndex], 
+      &quot;,対数尤度: Log Likelihood = &quot;,result_grid$calc_results$store_loglike[maxIndex]))</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.7 β = 2.2 ,対数尤度: Log Likelihood =  -38.8582274622813&quot;</code></pre>
 <div id="optim" class="section level4">
 <h4>optim</h4>
+<p>optimは与えられた関数の出力値を最小化するパラメータを探索する関数です。parにパラメータの初期値（これを変えると結果も変わるので工夫が必要ですが，今回は適当に0.5にしています），fnに負の対数尤度を返す関数，dataにデータ，methodに使用するアルゴリズム（今回は，L-BFGS-Bです），lowerにパラメータの下限（fnで定義しているように，１つ目がα，１つ目がβです），upoerにパラメータの上限（fnで定義しているように，１つ目がα，１つ目がβです）を指定して実行します。</p>
+<pre class="r"><code>result_optim &lt;- optim(par = c(0.5,0.5),
+      fn = q_learning_nll,
+      data = sub03_data,
+      method = &quot;L-BFGS-B&quot;,
+      lower = c(0,0),
+      upper = c(1,15))
+
+
+print(paste(&quot;最尤推定値: α =&quot;,result_optim$par[1],&quot;β =&quot;,result_optim$par[2], &quot;,対数尤度: Log Likelihood = &quot;, -result_optim$value))</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.69121145496389 β = 2.26477480079629 ,対数尤度: Log Likelihood =  -38.8506377123627&quot;</code></pre>
 </div>
 <div id="pso" class="section level4">
 <h4>pso</h4>
+<p>粒子群最適化(pso)は，最小値の探索において，複数の初期値からスタートして，局所的な最小化と全体としての最小化を同時に行うことで局所最適解に陥らないように工夫された最適化アルゴリズムです。粒子群最適化について説明は，<a href="result_pso">こちら</a>が簡潔でわかりやすいかと思います。psoパッケージは，optimと同じ使い方ができるように，引数の設定と出力が同じになっています。optimと同様に以下のように設定して，実行します。</p>
+<pre class="r"><code>result_pso &lt;- psoptim(par = c(0.5,0.5),
+                      fn = q_learning_nll,
+                      data = sub03_data,
+                      lower = c(0,0),
+                      upper = c(1,15))
+
+print(paste(&quot;最尤推定値: α =&quot;,result_pso$par[1],&quot;β =&quot;,result_pso$par[2], &quot;,対数尤度: Log Likelihood = &quot;, -result_pso$value))</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.691211122990475 β = 2.26477597514574 ,対数尤度: Log Likelihood =  -38.8506377123594&quot;</code></pre>
+</div>
+<div id="つの比較" class="section level4">
+<h4>３つの比較</h4>
+<p>ほとんど同じ結果になりますが，一応並べてみます。手法選択は，パラメータリカバリの結果を元にして，推定精度とコスト（主に時間的なコスト）を考慮して，選択することになります。</p>
+<pre class="r"><code>method &lt;- c(&quot;grid&quot;, &quot;optim&quot;, &quot;pso&quot;)
+alpha &lt;- c(result_grid$calc_results$store_alpha[maxIndex],result_optim$par[1],result_pso$par[1])
+beta &lt;- c(result_grid$calc_results$store_beta[maxIndex],result_optim$par[2],result_pso$par[1])
+loglikelihood &lt;- c(result_grid$calc_results$store_loglike[maxIndex],-result_optim$value,-result_pso$value)
+
+compare_table &lt;- tibble(method,alpha,beta, loglikelihood)
+
+knitr::kable(compare_table)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">method</th>
+<th align="right">alpha</th>
+<th align="right">beta</th>
+<th align="right">loglikelihood</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">grid</td>
+<td align="right">0.7000000</td>
+<td align="right">2.2000000</td>
+<td align="right">-38.85823</td>
+</tr>
+<tr class="even">
+<td align="left">optim</td>
+<td align="right">0.6912115</td>
+<td align="right">2.2647748</td>
+<td align="right">-38.85064</td>
+</tr>
+<tr class="odd">
+<td align="left">pso</td>
+<td align="right">0.6912111</td>
+<td align="right">0.6912111</td>
+<td align="right">-38.85064</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>

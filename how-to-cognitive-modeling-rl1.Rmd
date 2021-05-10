@@ -684,12 +684,110 @@ image.plot(x,y,grid_result2$store_3d)
 
 グリッドサーチはわかりやすいですが，上記のような問題もあるので，実際のパラメータ推定では，汎用最適化関数を用います。以下では，Rでよく使用されるoptim関数とより洗練されたアルゴリズムである粒子群最適化(Particle Swarm Optimization)を実装したpsoパッケージを用いたパラメータ推定について紹介します。
 
+
+汎用最適化関数を使うために，q_learning_ll関数を少し変更して，パラメータとデータを与えたら，負の対数尤度を返すq_learning_nll関数を作ります（不要な部分を削除して，最後に対数尤度にマイナスをつけただけです）。
+
+```{r}
+q_learning_nll <- function(par,data) {
+  alpha <- par[1]
+  beta <- par[2]
+  #変数の準備
+  value_s1 <- 0          # s1の価値(初期値は0)
+  value_s2 <- 0          # s2の価値(初期値は0)
+  prob_s1 <- NULL  # s1の選択確率
+  ll <- 0                 # 対数尤度
+  # Qlearningモデル
+  for (i in 1:nrow(data)){
+    # s1を選ぶ確率を計算
+    prob_s1[i] <- exp(beta*value_s1[i])/(exp(beta*value_s1[i])+exp(beta*value_s2[i]))
+    #FBを報酬(r)として、価値の更新を行う。
+    if (data$choice[i] == 1){
+        #予測誤差の計算
+        prediction_error <-  data$reward[i] - value_s1[i]
+        #予測誤差を使ってs1の価値を更新する
+        value_s1[i+1] <- value_s1[i]+alpha*prediction_error
+        #s2は更新なし
+        value_s2[i+1] <- value_s2[i]
+        # 対数尤度の計算のために選択したs1を選ぶ確率の対数を加算
+        ll <- ll + log(prob_s1[i])
+    }else{
+        #予測誤差の計算
+        prediction_error <- data$reward[i] - value_s2[i]
+        #予測誤差を使ってs2の価値を更新する
+        value_s2[i+1] <- value_s2[i]+alpha*prediction_error
+        #s1は更新なし
+        value_s1[i+1] <- value_s1[i]
+        # 対数尤度の計算のために選択したs2を選ぶ確率の対数を加算
+        ll <- ll + log(1-prob_s1[i])
+    }
+  }
+  return(-ll)
+}
+```
+
+今回は，sub03のデータでグリッドサーチ，optim, psoの推定をしてみましょう。まずは，データを用意して，グリッドサーチをしてみます。
+
+```{r}
+# データの用意
+sub03_data <- data_long %>% 
+    filter(id == 3)
+
+# グリッドサーチ
+result_grid <- grid_search(sub03_data)
+maxIndex <- which.max(result_grid$calc_results$store_loglike)
+alpha_grid <- result_grid$calc_results$store_alpha[maxIndex]
+beta_grid <- result_grid$calc_results$store_beta[maxIndex]
+loglike_grid <- result_grid$calc_results$store_loglike[maxIndex]
+print(paste("最尤推定値: α =",result_grid$calc_results$store_alpha[maxIndex],
+      "β =",result_grid$calc_results$store_beta[maxIndex], 
+      ",対数尤度: Log Likelihood = ",result_grid$calc_results$store_loglike[maxIndex]))
+```
+
+
 #### optim
 
+optimは与えられた関数の出力値を最小化するパラメータを探索する関数です。parにパラメータの初期値（これを変えると結果も変わるので工夫が必要ですが，今回は適当に0.5にしています），fnに負の対数尤度を返す関数，dataにデータ，methodに使用するアルゴリズム（今回は，L-BFGS-Bです），lowerにパラメータの下限（fnで定義しているように，１つ目がα，１つ目がβです），upoerにパラメータの上限（fnで定義しているように，１つ目がα，１つ目がβです）を指定して実行します。
+
+```{r}
+result_optim <- optim(par = c(0.5,0.5),
+      fn = q_learning_nll,
+      data = sub03_data,
+      method = "L-BFGS-B",
+      lower = c(0,0),
+      upper = c(1,15))
+
+
+print(paste("最尤推定値: α =",result_optim$par[1],"β =",result_optim$par[2], ",対数尤度: Log Likelihood = ", -result_optim$value))
+```
 
 #### pso
 
+粒子群最適化(pso)は，最小値の探索において，複数の初期値からスタートして，局所的な最小化と全体としての最小化を同時に行うことで局所最適解に陥らないように工夫された最適化アルゴリズムです。粒子群最適化について説明は，[こちら](result_pso)が簡潔でわかりやすいかと思います。psoパッケージは，optimと同じ使い方ができるように，引数の設定と出力が同じになっています。optimと同様に以下のように設定して，実行します。
 
+```{r}
+result_pso <- psoptim(par = c(0.5,0.5),
+                      fn = q_learning_nll,
+                      data = sub03_data,
+                      lower = c(0,0),
+                      upper = c(1,15))
+
+print(paste("最尤推定値: α =",result_pso$par[1],"β =",result_pso$par[2], ",対数尤度: Log Likelihood = ", -result_pso$value))
+```
+
+#### ３つの比較
+
+ほとんど同じ結果になりますが，一応並べてみます。手法選択は，パラメータリカバリの結果を元にして，推定精度とコスト（主に時間的なコスト）を考慮して，選択することになります。
+
+```{r}
+method <- c("grid", "optim", "pso")
+alpha <- c(result_grid$calc_results$store_alpha[maxIndex],result_optim$par[1],result_pso$par[1])
+beta <- c(result_grid$calc_results$store_beta[maxIndex],result_optim$par[2],result_pso$par[1])
+loglikelihood <- c(result_grid$calc_results$store_loglike[maxIndex],-result_optim$value,-result_pso$value)
+
+compare_table <- tibble(method,alpha,beta, loglikelihood)
+
+knitr::kable(compare_table)
+```
 
 
 ## 引用・参考文献
