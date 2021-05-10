@@ -594,4 +594,47 @@ timeline.push(debrief);
 
 ### 演習課題5 
 
-ストループ課題と同様に，debriefブロックで，「あなたの正答率は，80%でした。」というように，参加者の正答率を計算して，呈示しましょう！
+ストループ課題と同様に，debriefブロックで，「あなたの正答率は，80%でした。」というように，参加者の正答率を計算して，呈示しましょう！いきなりだと大変かなと思うので，以下を参考にしてください。
+
+```
+var s1_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 0}).select('reward_s1').sum();
+var s2_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 1}).select('reward_s2').sum();
+var correct_rate = ((s1_reward + s2_reward)/80)*100;
+return "<p>あなたの正答率は，<strong>"+correct_rate+"%</strong>でした。</p> " + "<p>キーボードのfを押すと画面に結果の記録が表示されます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>";
+```
+
+
+### 演習課題6
+
+オンライン実験の場合，参加したかどうかを確認するために，最後に確認コードを出すことがあります。その際に，jsPsych.randomization.randomIDを使うと便利です。以下を参考にして，デブリーフィングで参加者にIDを呈示してみましょう。
+
+```
+var sub_id = jsPsych.randomization.randomID(6)
+
+var debrief = {
+  type: "html-keyboard-response",
+  choices: ["f"],
+  stimulus: function() {
+    var s1_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 0}).select('reward_s1').sum();
+    var s2_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 1}).select('reward_s2').sum();
+    var correct_rate = ((s1_reward + s2_reward)/80)*100;
+    return "<p>あなたのIDは，<strong>"+sub_id+"</strong>です。紙にメモするか，コピーをして保存をしてください。</p> " +
+    "<p>あなたの正答率は，<strong>"+correct_rate+"%</strong>でした。</p> " +
+    "<p>キーボードのfを押すと画面に結果の記録が表示されます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>";
+  }
+};
+```
+
+また，呈示したIDを保存する場合は，以下のようにjsPsych.init内でjsPsych.data.addProperties()を使って追加をしておきましょう。
+
+```
+jsPsych.init({
+    timeline: timeline,
+    on_finish: function() {
+     jsPsych.data.addProperties({id:sub_id});
+     jsPsych.data.displayData();
+    }
+});
+```
+
+
