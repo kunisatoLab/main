@@ -34,7 +34,7 @@ title: "認知課題の解析データセット作成"
 
 <br />
 
-## 2 jsPsychを用いたWEB実験で得られたJSONファイルの処理
+## 2 jsPsychを用いたWEB実験で得られたJSONファイルの処理(JATOS編)
 ### 2.1 データとフォルダの準備
 
 [jsPsychを用いたWEB実験のサンプルデータ](materials/stroop.zip)をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います（国里がstroop課題に３回取り組んだデータです）。RstudioのWorking Directoryにこのstroop.jsonを置くか，stroop.jsonのある場所をRstudioのWorking Directoryにしてください。
@@ -51,6 +51,81 @@ library(tidyverse)
 
 ### 2.3 JSONファイルの読み込み
 
+```{r include=FALSE}
+# 不可視
+data_raw <- read_file('materials/jatos_results_20210513054636.txt') %>%
+  str_split('\n') %>% first() %>%
+  discard(function(x) x == '') %>%
+  map_dfr(fromJSON, flatten=T)
+```
+
+
+
+https://labjs.readthedocs.io/en/latest/learn/deploy/3c-jatos.html
+
+
+```{r eval=FALSE, include=TRUE}
+data_raw <- read_file('jatos_results_20210513054636.txt') %>%
+  str_split('\n') %>% first() %>%
+  discard(function(x) x == '') %>%
+  map_dfr(fromJSON, flatten=T)
+```
+
+
+
+
+
+### 2.4 読み込んだJSONファイルの整形
+
+
+```{r}
+data <- data_raw %>% 
+  as_tibble(validate = F) %>%  
+  filter(trial_type == "html-button-response") %>%
+  mutate(reward = ifelse(response == 0,reward_s1,reward_s2)) %>% 
+  group_by(id) %>%  
+  mutate(trial = row_number()) %>% 
+  ungroup() %>% 
+  mutate(response = as.numeric(response),reward = as.numeric(reward)) %>% 
+  select(id,trial,response,reward,rt) 
+```
+
+### 2.5 データのチェック
+
+
+```{r}
+data %>% 
+  filter(id == "4dk59k") %>% 
+  filter(!is.na(response)) %>% 
+  ggplot(aes(x = trial, y = response)) +
+  geom_point()
+```
+
+
+### 2.6演習課題1
+
+ゼミ生で協力して，自分でjsPsychを使った認知課題を作成して，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。
+
+
+<br />
+
+## 3 jsPsychを用いたWEB実験で得られたJSONファイルの処理(Pavlovia編)
+### 3.1 データとフォルダの準備
+
+[jsPsychを用いたWEB実験のサンプルデータ](materials/stroop.zip)をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います（国里がstroop課題に３回取り組んだデータです）。RstudioのWorking Directoryにこのstroop.jsonを置くか，stroop.jsonのある場所をRstudioのWorking Directoryにしてください。
+
+### 3.2 使用するRパッケージ
+
+- JSONファイルの読み込みのためにjsonlite，データの整形のためにtidyverseを使用します。
+
+```{r message=FALSE}
+library(jsonlite)
+library(tidyverse)
+```
+
+
+### 3.3 JSONファイルの読み込み
+
 ダウンロードしたJSONファイルを読み込む際には，以下のように，jsonliteパッケージのfromJSON()関数を使います。データ名は，list形式のdatabaseデータなので，db_listとしました。
 
 ```{r}
@@ -63,7 +138,7 @@ db_list <- fromJSON("materials/stroop.json")
 glimpse(db_list)
 ```
 
-### 2.4 読み込んだJSONファイルの整形
+### 3.4 読み込んだJSONファイルの整形
 
 - 読み込んだJSONデータをtidyverseのas.tibble()関数を使ってデータフレームにします（データフレームなので，db_dfという名前にしました）。すると，３つの参加者が変数になって，変数の下にdata.frameができました。
 
@@ -131,7 +206,7 @@ db_df <- db_list %>%
 db_df
 ```
 
-### 2.5 データのチェック
+### 3.5 データのチェック
 
 上記の作業で解析データセットができました。簡単に３名の参加者の条件ごと（ストループ課題での色と文字の一致条件と不一致条件）の正答率と平均反応時間を見てみましょう。tidyverseを使えば，group_byとsummariseで簡単にこういう整理ができます。なお，参加者のIDがちょっと長すぎたので，mutateを使ってIDをtime1,time2,time3に書き換えたidという変数を作って，使っています。このデータは，私が適当に３回回答したものですので，time1~3というidにしました。結果をみると，全体として，正答率はあまり変わりませんが，一致条件(congruent)の方が不一致条件(incongruent)よりも反応時間が短いことがわかりますね。私が適当に３回取り組んだ結果ですが，まあまあきれいな結果ですね。
 
@@ -153,22 +228,17 @@ db_df　 %>%
 ```
 
 
-### 2.6演習課題1
-
-自分でjsPsychを使った認知課題を作成して，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。
-
-
 ## 3 PsychoPyを用いた実験で得られたcsvファイルの処理
 
 本研究室では，2020年度からjsPsychを使った認知課題の作成を学ぶようになっていますが，BIOPACやEEGを用いた実験などでは，PsychoPyで実験をしたほうが良いことがあります。PsychoPyでの実験では，参加者ごとにcsvファイルが得られます，以下では，そのようなcsvファイルの処理について解説しています。
 
-### 3.1 データとフォルダの準備
+### 4.1 データとフォルダの準備
 
 [PsychoPyを用いた実験のサンプルデータ](materials/Analysis.zip)をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。"Analysis"フォルダ内に"Data"フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。RstudioのWorking Directoryにこの"Analysis"フォルダを置くか，"Analysis"フォルダのある場所をRstudioのWorking Directoryにしてください。
 
 今回は，すでにフォルダに名前がついていましたが，自分でフォルダ名を付ける場合は，日本語を使用するのは推奨しません。フォルダとファイルと変数名には，英語（日本語のローマ字化でけっこう）を使用してください。
 
-### 3.2 カレントディレクトリーの移動
+### 4.2 カレントディレクトリーの移動
 
 基本的には，Analysisフォルダで解析の前処理や解析は行いますが，一時的にフォルダ移動する必要があります。その時に便利なのが，getwd()とsetwd()です。wdは，作業ディレクトリ(working directory)を意味し，getwdで現在の作業ディレクトリの情報を取得し，setwdで作業ディレクトリを設定します。
 
@@ -198,7 +268,7 @@ setwd("..")
 
 上記のsetwd("..")をRstudioのConsoleに打ちこんでから，getwd()でAnalysisフォルダに戻ってきているか確認をしてみましょう。
 
-### 3.3 Dataフォルダ内のファイル名を取得
+### 4.3 Dataフォルダ内のファイル名を取得
 
 もう一度，Dataフォルダに移動します。その上で，list.filse()を使って，フォルダ内のファイル名をリスト化します（そしてfileNamesに入れる）。
 
@@ -228,7 +298,7 @@ fileNamseの中身を確認します。フォルダに入っているファイ�
 print(fileNames)
 ```
 
-### 3.4 Dataフォルダ内のファイル数を確認
+### 4.4 Dataフォルダ内のファイル数を確認
 
 fileNamesに格納されているファイルの数から参加者数を確認します。lengthでデータの長さ（ここでは，fileNamesに含まれるデータの個数）がわかります。今回は，４個のデータが入っています。
 
@@ -237,7 +307,7 @@ numberSubject <- length(fileNames)
 print(numberSubject)
 ```
 
-### 3.5 sub01のデータを読み込んでみる
+### 4.5 sub01のデータを読み込んでみる
 
 では，早速，sub01.csvを読み込んでみましょう！tidyverseに入っているreadrパッケージのread_csv()でcsvファイルが読み込めます。そして，読み込むファイル名は，fileNamesに格納されているのものの１つ目（つまり，sub01）です。
 
@@ -247,7 +317,7 @@ sub01
 ```
 
 
-### 3.6 sub01のデータで必要な部分を抽出
+### 4.6 sub01のデータで必要な部分を抽出
 
 上記のsub01のデータの解析で必要なのは，rt（反応時間）, key_press（押したキー），trial_index(試行番号)，correct（正誤）になります。また，trial_typeでは，categorizeのデータだけが欲しい（textは教示なので，いらない）。このようなデータの整理では，tidyverseのdplyrパッケージを使います。ここで，%>%というパイプ演算子というものがでてきます。これは，%>%の左(or前)のものが，次にくる関数の第一引数に入ることを意味します（例えば，上のlength(fileNames)の場合，length()関数の第一引数は，ファイル名リストのfileNamesになります）。
 
@@ -268,8 +338,8 @@ sub01
 
 これで，必要な部分だけきれいに抽出できました。
 
-### 3.6 ４名のデータの読み込みと保存
-#### 3.6.1 データの読み込み
+### 4.7 ４名のデータの読み込みと保存
+#### 4.7.1 データの読み込み
 
 さて，今度は４名分のデータ（フォルダ内のすべてのデータ）を読み込んで，整理してみましょう。フォルダ内のデータ数分（今回は４）だけ，上記の操作を繰り返します。繰り返す場合は，for文を使います。for文は以下のように書きます。1から"繰り返す回数"までを順番にiに代入しつつ，"繰り返したい操作"を繰り返します。
 
@@ -304,7 +374,7 @@ analysisData
 ```
 
 
-#### 3.6.2 データの保存
+#### 4.7.2 データの保存
 
 これで，４名分の生データを読み込んだので，今度は，これをcsvファイルとして保存します。csvファイルは，write.csv()を使って，保存できます。
 
@@ -312,7 +382,7 @@ analysisData
 write.csv(analysisData, "analysisData.csv")
 ```
 
-#### 3.6.3 IDの対応表
+#### 4.7.3 IDの対応表
 
 上記の作業では，for文でのiをIDとしているが，それが実際のどのファイルに対応するのか対応づけできてない。そこで，以下では，上記と同じようなfor文を使って，iとフォルダのファイル名との対応づけをした対応表(idTable)を作成する。また，tidyverseのstringrパッケージを用いると（stringrパッケージはtidyverseを読み込むだけでは読み込まれないので，別途libraryで読み込む），文字列の一部を抽出することもできる。今回は，参加者ID番号にかかわる4~5番目の文字を抽出してみて，それをidTableにいれる。
 
@@ -329,8 +399,8 @@ idTable <- as.data.frame(idTable)
 print(idTable)
 ```
 
-### 3.7 もう少し処理をしたデータの読み込みと保存
-#### 3.7.1 データの読み込み
+### 4.8 もう少し処理をしたデータの読み込みと保存
+#### 4.8.1 データの読み込み
 
 上記では，フォルダ内のすべてのcsvファイルを読み込んで，その生データを結合して，１つのcsvファイルで保存しました。私個人としては，このように各試行ごとのデータを使って解析した方が良いと考えますが，目的によっては，各試行ごとのデータではなく，全試行における正答率などを参加者ごとに計算した場合もあるかと思います。今回は，各参加者のデータを読み込んで，紫を選んだ比率（1が紫，緑は0）と正答率(correctでは1が正答，0が誤答)を各参加者ごとにsummaryDataに保存してみます。先程ののanalysiDataを作成したコードにちょっとだけ追加をしてみます。
 
@@ -366,14 +436,10 @@ summaryData <- as_data_frame(summaryData)
 summaryData
 ```
 
-### 3.8 データの保存
+### 4.9 データの保存
 
 summaryDataをcsv形式で保存する。
 
 ```
 write.csv(summaryData, "summaryData.csv")
 ```
-
-### 3.9 演習課題2
-
-自分でPsychoPyを使った認知課題を作成して，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。

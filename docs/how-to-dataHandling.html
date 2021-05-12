@@ -13,12 +13,22 @@
 
 <title>認知課題の解析データセット作成</title>
 
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,6 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +72,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -112,40 +88,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +122,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +134,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +145,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +173,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,13 +298,13 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -416,7 +377,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -455,8 +416,8 @@ div.tocify {
 <p><br /></p>
 </div>
 </div>
-<div id="jspsychを用いたweb実験で得られたjsonファイルの処理" class="section level2">
-<h2>2 jsPsychを用いたWEB実験で得られたJSONファイルの処理</h2>
+<div id="jspsychを用いたweb実験で得られたjsonファイルの処理jatos編" class="section level2">
+<h2>2 jsPsychを用いたWEB実験で得られたJSONファイルの処理(JATOS編)</h2>
 <div id="データとフォルダの準備" class="section level3">
 <h3>2.1 データとフォルダの準備</h3>
 <p><a href="materials/stroop.zip">jsPsychを用いたWEB実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います（国里がstroop課題に３回取り組んだデータです）。RstudioのWorking Directoryにこのstroop.jsonを置くか，stroop.jsonのある場所をRstudioのWorking Directoryにしてください。</p>
@@ -471,6 +432,55 @@ library(tidyverse)</code></pre>
 </div>
 <div id="jsonファイルの読み込み" class="section level3">
 <h3>2.3 JSONファイルの読み込み</h3>
+<p><a href="https://labjs.readthedocs.io/en/latest/learn/deploy/3c-jatos.html" class="uri">https://labjs.readthedocs.io/en/latest/learn/deploy/3c-jatos.html</a></p>
+<pre class="r"><code>data_raw &lt;- read_file(&#39;jatos_results_20210513054636.txt&#39;) %&gt;%
+  str_split(&#39;\n&#39;) %&gt;% first() %&gt;%
+  discard(function(x) x == &#39;&#39;) %&gt;%
+  map_dfr(fromJSON, flatten=T)</code></pre>
+</div>
+<div id="読み込んだjsonファイルの整形" class="section level3">
+<h3>2.4 読み込んだJSONファイルの整形</h3>
+<pre class="r"><code>data &lt;- data_raw %&gt;% 
+  as_tibble(validate = F) %&gt;%  
+  filter(trial_type == &quot;html-button-response&quot;) %&gt;%
+  mutate(reward = ifelse(response == 0,reward_s1,reward_s2)) %&gt;% 
+  group_by(id) %&gt;%  
+  mutate(trial = row_number()) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(response = as.numeric(response),reward = as.numeric(reward)) %&gt;% 
+  select(id,trial,response,reward,rt) </code></pre>
+</div>
+<div id="データのチェック" class="section level3">
+<h3>2.5 データのチェック</h3>
+<pre class="r"><code>data %&gt;% 
+  filter(id == &quot;4dk59k&quot;) %&gt;% 
+  filter(!is.na(response)) %&gt;% 
+  ggplot(aes(x = trial, y = response)) +
+  geom_point()</code></pre>
+<p><img src="how-to-dataHandling_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="演習課題1" class="section level3">
+<h3>2.6演習課題1</h3>
+<p>ゼミ生で協力して，自分でjsPsychを使った認知課題を作成して，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。</p>
+<p><br /></p>
+</div>
+</div>
+<div id="jspsychを用いたweb実験で得られたjsonファイルの処理pavlovia編" class="section level2">
+<h2>3 jsPsychを用いたWEB実験で得られたJSONファイルの処理(Pavlovia編)</h2>
+<div id="データとフォルダの準備-1" class="section level3">
+<h3>3.1 データとフォルダの準備</h3>
+<p><a href="materials/stroop.zip">jsPsychを用いたWEB実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います（国里がstroop課題に３回取り組んだデータです）。RstudioのWorking Directoryにこのstroop.jsonを置くか，stroop.jsonのある場所をRstudioのWorking Directoryにしてください。</p>
+</div>
+<div id="使用するrパッケージ-1" class="section level3">
+<h3>3.2 使用するRパッケージ</h3>
+<ul>
+<li>JSONファイルの読み込みのためにjsonlite，データの整形のためにtidyverseを使用します。</li>
+</ul>
+<pre class="r"><code>library(jsonlite)
+library(tidyverse)</code></pre>
+</div>
+<div id="jsonファイルの読み込み-1" class="section level3">
+<h3>3.3 JSONファイルの読み込み</h3>
 <p>ダウンロードしたJSONファイルを読み込む際には，以下のように，jsonliteパッケージのfromJSON()関数を使います。データ名は，list形式のdatabaseデータなので，db_listとしました。</p>
 <pre class="r"><code>db_list &lt;- fromJSON(&quot;materials/stroop.json&quot;)</code></pre>
 <ul>
@@ -515,17 +525,13 @@ library(tidyverse)</code></pre>
 ##   .. ..$ response        : chr [1:19] NA NA &quot;j&quot; &quot;j&quot; ...
 ##   .. ..$ stim_type       : chr [1:19] NA NA &quot;incongruent&quot; &quot;incongruent&quot; ...</code></pre>
 </div>
-<div id="読み込んだjsonファイルの整形" class="section level3">
-<h3>2.4 読み込んだJSONファイルの整形</h3>
+<div id="読み込んだjsonファイルの整形-1" class="section level3">
+<h3>3.4 読み込んだJSONファイルの整形</h3>
 <ul>
 <li>読み込んだJSONデータをtidyverseのas.tibble()関数を使ってデータフレームにします（データフレームなので，db_dfという名前にしました）。すると，３つの参加者が変数になって，変数の下にdata.frameができました。</li>
 </ul>
-<pre class="r"><code>db_df &lt;- as_tibble(db_list, validate = F) </code></pre>
-<pre><code>## Warning: The `validate` argument of `as_tibble()` is deprecated as of tibble 2.0.0.
-## Please use the `.name_repair` argument instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
-<pre class="r"><code>db_df</code></pre>
+<pre class="r"><code>db_df &lt;- as_tibble(db_list, validate = F) 
+db_df</code></pre>
 <pre><code>## # A tibble: 1 x 3
 ##   `2019_8_22_23_48_59_fxlmh… `2019_8_22_23_56_32_juSt… `2019_8_22_23_57_16_8Eyg…
 ##   &lt;named list&gt;               &lt;named list&gt;              &lt;named list&gt;             
@@ -547,18 +553,18 @@ db_df2</code></pre>
 <pre class="r"><code>db_df3 &lt;-unnest(db_df2,cols = data)
 db_df3</code></pre>
 <pre><code>## # A tibble: 57 x 11
-##    ID    internal_node_id key_press     rt stimulus time_elapsed trial_index
-##    &lt;chr&gt; &lt;chr&gt;                &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;int&gt;       &lt;int&gt;
-##  1 2019… 0.0-0.0                 13 3.90e5 &lt;p&gt;&lt;spa…       390012           0
-##  2 2019… 0.0-1.0                 68 7.18e3 &lt;p styl…       397196           1
-##  3 2019… 0.0-2.0-0.0             68 7.06e2 &lt;p styl…       398906           2
-##  4 2019… 0.0-2.0-0.1             68 8.16e2 &lt;p styl…       401142           3
-##  5 2019… 0.0-2.0-0.2             75 1.12e3 &lt;p styl…       404260           4
-##  6 2019… 0.0-2.0-0.3             68 8.34e2 &lt;p styl…       406947           5
-##  7 2019… 0.0-2.0-0.4             74 1.06e3 &lt;p styl…       408927           6
-##  8 2019… 0.0-2.0-0.5             74 1.15e3 &lt;p styl…       411447           7
-##  9 2019… 0.0-2.0-0.6             75 7.51e2 &lt;p styl…       412857           8
-## 10 2019… 0.0-2.0-0.7             70 8.04e2 &lt;p styl…       414985           9
+##    ID     internal_node_id key_press     rt stimulus    time_elapsed trial_index
+##    &lt;chr&gt;  &lt;chr&gt;                &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;              &lt;int&gt;       &lt;int&gt;
+##  1 2019_… 0.0-0.0                 13 3.90e5 &lt;p&gt;&lt;span s…       390012           0
+##  2 2019_… 0.0-1.0                 68 7.18e3 &lt;p style=&#39;…       397196           1
+##  3 2019_… 0.0-2.0-0.0             68 7.06e2 &lt;p style=&#39;…       398906           2
+##  4 2019_… 0.0-2.0-0.1             68 8.16e2 &lt;p style=&#39;…       401142           3
+##  5 2019_… 0.0-2.0-0.2             75 1.12e3 &lt;p style=&#39;…       404260           4
+##  6 2019_… 0.0-2.0-0.3             68 8.34e2 &lt;p style=&#39;…       406947           5
+##  7 2019_… 0.0-2.0-0.4             74 1.06e3 &lt;p style=&#39;…       408927           6
+##  8 2019_… 0.0-2.0-0.5             74 1.15e3 &lt;p style=&#39;…       411447           7
+##  9 2019_… 0.0-2.0-0.6             75 7.51e2 &lt;p style=&#39;…       412857           8
+## 10 2019_… 0.0-2.0-0.7             70 8.04e2 &lt;p style=&#39;…       414985           9
 ## # … with 47 more rows, and 4 more variables: trial_type &lt;chr&gt;, correct &lt;lgl&gt;,
 ## #   response &lt;chr&gt;, stim_type &lt;chr&gt;</code></pre>
 <ul>
@@ -653,14 +659,14 @@ db_df</code></pre>
 ## 10 2019_8_22_23_48_59_fxlmh9SL          11 incongruent j               1 1206.
 ## # … with 38 more rows</code></pre>
 </div>
-<div id="データのチェック" class="section level3">
-<h3>2.5 データのチェック</h3>
+<div id="データのチェック-1" class="section level3">
+<h3>3.5 データのチェック</h3>
 <p>上記の作業で解析データセットができました。簡単に３名の参加者の条件ごと（ストループ課題での色と文字の一致条件と不一致条件）の正答率と平均反応時間を見てみましょう。tidyverseを使えば，group_byとsummariseで簡単にこういう整理ができます。なお，参加者のIDがちょっと長すぎたので，mutateを使ってIDをtime1,time2,time3に書き換えたidという変数を作って，使っています。このデータは，私が適当に３回回答したものですので，time1~3というidにしました。結果をみると，全体として，正答率はあまり変わりませんが，一致条件(congruent)の方が不一致条件(incongruent)よりも反応時間が短いことがわかりますね。私が適当に３回取り組んだ結果ですが，まあまあきれいな結果ですね。</p>
 <pre class="r"><code>db_df　 %&gt;% 
   mutate(id = ifelse(ID == &quot;2019_8_22_23_48_59_fxlmh9SL&quot;, &quot;time1&quot;, ifelse(ID == &quot;2019_8_22_23_56_32_juStKRbZ&quot;, &quot;time2&quot;,&quot;time3&quot;))) %&gt;% 
   group_by(id,stim_type) %&gt;% 
   summarise(正答率=sum(correct2,na.rm = TRUE)/length(correct2), 平均反応時間=mean(rt,na.rm = TRUE))</code></pre>
-<pre><code>## `summarise()` regrouping output by &#39;id&#39; (override with `.groups` argument)</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;id&#39;. You can override using the `.groups` argument.</code></pre>
 <pre><code>## # A tibble: 6 x 4
 ##   id    stim_type   正答率 平均反応時間
 ##   &lt;chr&gt; &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;
@@ -676,23 +682,19 @@ db_df</code></pre>
   ggplot(aes(x=id,y=rt,fill=stim_type)) +
   geom_bar(position = position_dodge(),stat = &quot;identity&quot;) </code></pre>
 <pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
-<p><img src="how-to-dataHandling_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-</div>
-<div id="演習課題1" class="section level3">
-<h3>2.6演習課題1</h3>
-<p>自分でjsPsychを使った認知課題を作成して，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。</p>
+<p><img src="how-to-dataHandling_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 </div>
 <div id="psychopyを用いた実験で得られたcsvファイルの処理" class="section level2">
 <h2>3 PsychoPyを用いた実験で得られたcsvファイルの処理</h2>
 <p>本研究室では，2020年度からjsPsychを使った認知課題の作成を学ぶようになっていますが，BIOPACやEEGを用いた実験などでは，PsychoPyで実験をしたほうが良いことがあります。PsychoPyでの実験では，参加者ごとにcsvファイルが得られます，以下では，そのようなcsvファイルの処理について解説しています。</p>
-<div id="データとフォルダの準備-1" class="section level3">
-<h3>3.1 データとフォルダの準備</h3>
+<div id="データとフォルダの準備-2" class="section level3">
+<h3>4.1 データとフォルダの準備</h3>
 <p><a href="materials/Analysis.zip">PsychoPyを用いた実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。“Analysis”フォルダ内に“Data”フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。RstudioのWorking Directoryにこの“Analysis”フォルダを置くか，“Analysis”フォルダのある場所をRstudioのWorking Directoryにしてください。</p>
 <p>今回は，すでにフォルダに名前がついていましたが，自分でフォルダ名を付ける場合は，日本語を使用するのは推奨しません。フォルダとファイルと変数名には，英語（日本語のローマ字化でけっこう）を使用してください。</p>
 </div>
 <div id="カレントディレクトリーの移動" class="section level3">
-<h3>3.2 カレントディレクトリーの移動</h3>
+<h3>4.2 カレントディレクトリーの移動</h3>
 <p>基本的には，Analysisフォルダで解析の前処理や解析は行いますが，一時的にフォルダ移動する必要があります。その時に便利なのが，getwd()とsetwd()です。wdは，作業ディレクトリ(working directory)を意味し，getwdで現在の作業ディレクトリの情報を取得し，setwdで作業ディレクトリを設定します。</p>
 <p>以下をRstudioのConsoleにタイプしてみましょう！</p>
 <pre><code>getwd()</code></pre>
@@ -706,7 +708,7 @@ setwd(paste(workDir, &quot;Data&quot;, sep = &quot;/&quot;))</code></pre>
 <p>上記のsetwd(“..”)をRstudioのConsoleに打ちこんでから，getwd()でAnalysisフォルダに戻ってきているか確認をしてみましょう。</p>
 </div>
 <div id="dataフォルダ内のファイル名を取得" class="section level3">
-<h3>3.3 Dataフォルダ内のファイル名を取得</h3>
+<h3>4.3 Dataフォルダ内のファイル名を取得</h3>
 <p>もう一度，Dataフォルダに移動します。その上で，list.filse()を使って，フォルダ内のファイル名をリスト化します（そしてfileNamesに入れる）。</p>
 <pre class="r"><code>workDir &lt;- getwd()</code></pre>
 <pre class="r"><code>setwd(paste(workDir, &quot;Data&quot;, sep = &quot;/&quot;))
@@ -718,14 +720,14 @@ fileNames &lt;- list.files()</code></pre>
 <pre><code>## [1] &quot;sub01.csv&quot; &quot;sub02.csv&quot; &quot;sub03.csv&quot; &quot;sub04.csv&quot;</code></pre>
 </div>
 <div id="dataフォルダ内のファイル数を確認" class="section level3">
-<h3>3.4 Dataフォルダ内のファイル数を確認</h3>
+<h3>4.4 Dataフォルダ内のファイル数を確認</h3>
 <p>fileNamesに格納されているファイルの数から参加者数を確認します。lengthでデータの長さ（ここでは，fileNamesに含まれるデータの個数）がわかります。今回は，４個のデータが入っています。</p>
 <pre class="r"><code>numberSubject &lt;- length(fileNames)
 print(numberSubject)</code></pre>
 <pre><code>## [1] 4</code></pre>
 </div>
 <div id="sub01のデータを読み込んでみる" class="section level3">
-<h3>3.5 sub01のデータを読み込んでみる</h3>
+<h3>4.5 sub01のデータを読み込んでみる</h3>
 <p>では，早速，sub01.csvを読み込んでみましょう！tidyverseに入っているreadrパッケージのread_csv()でcsvファイルが読み込めます。そして，読み込むファイル名は，fileNamesに格納されているのものの１つ目（つまり，sub01）です。</p>
 <pre class="r"><code>sub01 &lt;- read_csv(paste(workDir, &quot;Data&quot;,fileNames[1], sep = &quot;/&quot;))
 sub01</code></pre>
@@ -745,7 +747,7 @@ sub01</code></pre>
 ## # … with 112 more rows, and 1 more variable: stimulus &lt;chr&gt;</code></pre>
 </div>
 <div id="sub01のデータで必要な部分を抽出" class="section level3">
-<h3>3.6 sub01のデータで必要な部分を抽出</h3>
+<h3>4.6 sub01のデータで必要な部分を抽出</h3>
 <p>上記のsub01のデータの解析で必要なのは，rt（反応時間）, key_press（押したキー），trial_index(試行番号)，correct（正誤）になります。また，trial_typeでは，categorizeのデータだけが欲しい（textは教示なので，いらない）。このようなデータの整理では，tidyverseのdplyrパッケージを使います。ここで，%&gt;%というパイプ演算子というものがでてきます。これは，%&gt;%の左(or前)のものが，次にくる関数の第一引数に入ることを意味します（例えば，上のlength(fileNames)の場合，length()関数の第一引数は，ファイル名リストのfileNamesになります）。</p>
 <p>具体的な操作は以下になります。(1)まず，filterで，trial_typeが“categorize”なものにしぼります。(2)key_pressは，90だと紫の選択，77だと緑の選択になります。90と77だと扱いにくいので，90は1，77は0に変換します。ifelse(key_press == 90, 1,0)を使って，90なら1，それ以外は0になるようにして，mutateの新しい変数rewardを作成します（mutateは，新しい変数を作成する関数です）。(3)correctは，true,falseになるのですが，これも扱いにくいので，trueは1,falseは0にします。as.numeric(as.logical(correct))を使って，論理値にした上で，数値型に変換します。これもmutateを使って新たにrewardという名前を付けます。(4)この段階で，key_press, trial_type, time_elapsed, internal_node_id, correct, stimulusが要らなくなりました。selectを使って，不要な変数にマイナスをつけて除外します。(5)最後に，renameを使ってtrial_indexをnoに変更します。</p>
 <pre class="r"><code># データの整理
@@ -774,9 +776,9 @@ sub01</code></pre>
 <p>これで，必要な部分だけきれいに抽出できました。</p>
 </div>
 <div id="名のデータの読み込みと保存" class="section level3">
-<h3>3.6 ４名のデータの読み込みと保存</h3>
+<h3>4.7 ４名のデータの読み込みと保存</h3>
 <div id="データの読み込み" class="section level4">
-<h4>3.6.1 データの読み込み</h4>
+<h4>4.7.1 データの読み込み</h4>
 <p>さて，今度は４名分のデータ（フォルダ内のすべてのデータ）を読み込んで，整理してみましょう。フォルダ内のデータ数分（今回は４）だけ，上記の操作を繰り返します。繰り返す場合は，for文を使います。for文は以下のように書きます。1から“繰り返す回数”までを順番にiに代入しつつ，“繰り返したい操作”を繰り返します。</p>
 <pre><code>for(i in 1:繰り返す回数){
     繰り返したい操作
@@ -817,12 +819,12 @@ analysisData</code></pre>
 ## # … with 470 more rows</code></pre>
 </div>
 <div id="データの保存" class="section level4">
-<h4>3.6.2 データの保存</h4>
+<h4>4.7.2 データの保存</h4>
 <p>これで，４名分の生データを読み込んだので，今度は，これをcsvファイルとして保存します。csvファイルは，write.csv()を使って，保存できます。</p>
 <pre><code>write.csv(analysisData, &quot;analysisData.csv&quot;)</code></pre>
 </div>
 <div id="idの対応表" class="section level4">
-<h4>3.6.3 IDの対応表</h4>
+<h4>4.7.3 IDの対応表</h4>
 <p>上記の作業では，for文でのiをIDとしているが，それが実際のどのファイルに対応するのか対応づけできてない。そこで，以下では，上記と同じようなfor文を使って，iとフォルダのファイル名との対応づけをした対応表(idTable)を作成する。また，tidyverseのstringrパッケージを用いると（stringrパッケージはtidyverseを読み込むだけでは読み込まれないので，別途libraryで読み込む），文字列の一部を抽出することもできる。今回は，参加者ID番号にかかわる4~5番目の文字を抽出してみて，それをidTableにいれる。</p>
 <pre class="r"><code>library(stringr)
 idTable &lt;- NULL
@@ -842,9 +844,9 @@ print(idTable)</code></pre>
 </div>
 </div>
 <div id="もう少し処理をしたデータの読み込みと保存" class="section level3">
-<h3>3.7 もう少し処理をしたデータの読み込みと保存</h3>
+<h3>4.8 もう少し処理をしたデータの読み込みと保存</h3>
 <div id="データの読み込み-1" class="section level4">
-<h4>3.7.1 データの読み込み</h4>
+<h4>4.8.1 データの読み込み</h4>
 <p>上記では，フォルダ内のすべてのcsvファイルを読み込んで，その生データを結合して，１つのcsvファイルで保存しました。私個人としては，このように各試行ごとのデータを使って解析した方が良いと考えますが，目的によっては，各試行ごとのデータではなく，全試行における正答率などを参加者ごとに計算した場合もあるかと思います。今回は，各参加者のデータを読み込んで，紫を選んだ比率（1が紫，緑は0）と正答率(correctでは1が正答，0が誤答)を各参加者ごとにsummaryDataに保存してみます。先程ののanalysiDataを作成したコードにちょっとだけ追加をしてみます。</p>
 <pre class="r"><code># analysisDataの準備
 analysisData &lt;- NULL
@@ -874,11 +876,9 @@ for(i in 1:numberSubject){
 }
 #データフレーム化と結果の表示
 summaryData &lt;- as_data_frame(summaryData)</code></pre>
-<pre><code>## Warning: `as_data_frame()` is deprecated as of tibble 2.0.0.
+<pre><code>## Warning: `as_data_frame()` was deprecated in tibble 2.0.0.
 ## Please use `as_tibble()` instead.
-## The signature and semantics have changed, see `?as_tibble`.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
+## The signature and semantics have changed, see `?as_tibble`.</code></pre>
 <pre class="r"><code>summaryData</code></pre>
 <pre><code>## # A tibble: 4 x 3
 ##      id purpleRate correctRate
@@ -890,13 +890,9 @@ summaryData &lt;- as_data_frame(summaryData)</code></pre>
 </div>
 </div>
 <div id="データの保存-1" class="section level3">
-<h3>3.8 データの保存</h3>
+<h3>4.9 データの保存</h3>
 <p>summaryDataをcsv形式で保存する。</p>
 <pre><code>write.csv(summaryData, &quot;summaryData.csv&quot;)</code></pre>
-</div>
-<div id="演習課題2" class="section level3">
-<h3>3.9 演習課題2</h3>
-<p>自分でPsychoPyを使った認知課題を作成して，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。</p>
 </div>
 </div>
 
@@ -932,7 +928,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
