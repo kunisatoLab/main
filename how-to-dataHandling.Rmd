@@ -37,7 +37,7 @@ title: "認知課題の解析データセット作成"
 ## 2 jsPsychを用いたWEB実験で得られたJSONファイルの処理(JATOS編)
 ### 2.1 データとフォルダの準備
 
-[jsPsychを用いたWEB実験のサンプルデータ](materials/stroop.zip)をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います（国里がstroop課題に３回取り組んだデータです）。RstudioのWorking Directoryにこのstroop.jsonを置くか，stroop.jsonのある場所をRstudioのWorking Directoryにしてください。
+[jsPsychで作成しJATOSで収集したWEB実験のサンプルデータ](materials/jatos_results_20210513054636.zip)をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，jatos_results_20210513054636.txtというファイルが出てくると思います（国里が 逆転学習課題に２回取り組んだデータです）。RstudioのWorking Directoryにこのjatos_results_20210513054636.txtを置くか，jatos_results_20210513054636.txtのある場所をRstudioのWorking Directoryにしてください。
 
 ### 2.2 使用するRパッケージ
 
@@ -54,26 +54,21 @@ library(tidyverse)
 ```{r include=FALSE}
 # 不可視
 data_raw <- read_file('materials/jatos_results_20210513054636.txt') %>%
-  str_split('\n') %>% first() %>%
+  str_split('\n') %>% 
+  first() %>%
   discard(function(x) x == '') %>%
   map_dfr(fromJSON, flatten=T)
 ```
 
-[JATOSで収集したデータ](https://raw.githubusercontent.com/kunisatoLab/main/master/materials/jatos_results_20210513054636.txt)
-
-https://labjs.readthedocs.io/en/latest/learn/deploy/3c-jatos.html
-
+JATOSで収集してエクスポートしたデータはJSON形式ですが，そのままでは，jsonliteパッケージを使って読み込めません。そこで，[lab.jsで解説されている方法](https://labjs.readthedocs.io/en/latest/learn/deploy/3c-jatos.html)を使います。以下のように改行で区切ってから読み込みの処理をします。以下を実行すると，通常のRで使用するデータフレームとして読み込めているかと思います。
 
 ```{r eval=FALSE, include=TRUE}
 data_raw <- read_file('jatos_results_20210513054636.txt') %>%
-  str_split('\n') %>% first() %>%
+  str_split('\n') %>% 
+  first() %>%
   discard(function(x) x == '') %>%
   map_dfr(fromJSON, flatten=T)
 ```
-
-
-
-
 
 ### 2.4 読み込んだJSONファイルの整形
 
@@ -112,7 +107,7 @@ data %>%
 ## 3 jsPsychを用いたWEB実験で得られたJSONファイルの処理(Pavlovia編)
 ### 3.1 データとフォルダの準備
 
-[jsPsychを用いたWEB実験のサンプルデータ](materials/stroop.zip)をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います（国里がstroop課題に３回取り組んだデータです）。RstudioのWorking Directoryにこのstroop.jsonを置くか，stroop.jsonのある場所をRstudioのWorking Directoryにしてください。
+[jsPsychで作成しPavloviaで収集したWEB実験のサンプルデータ](materials/stroop.zip)をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います（国里がstroop課題に３回取り組んだデータです）。RstudioのWorking Directoryにこのstroop.jsonを置くか，stroop.jsonのある場所をRstudioのWorking Directoryにしてください。
 
 ### 3.2 使用するRパッケージ
 
@@ -128,8 +123,13 @@ library(tidyverse)
 
 ダウンロードしたJSONファイルを読み込む際には，以下のように，jsonliteパッケージのfromJSON()関数を使います。データ名は，list形式のdatabaseデータなので，db_listとしました。
 
-```{r}
+```{r include=FALSE}
+# 不可視
 db_list <- fromJSON("materials/stroop.json")
+```
+
+```{r eval=FALSE, include=TRUE}
+db_list <- fromJSON("stroop.json")
 ```
 
 - glimpse()で，読み込んだJSONファイルの構造をチェックします。このデータは，私が３回Stroop課題に取り組んだものです。listは参加者で構成されていますので，３つあります。そして，それぞれの下に実験データのdata.frameがあります。
