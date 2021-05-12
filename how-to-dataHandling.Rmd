@@ -59,7 +59,7 @@ data_raw <- read_file('materials/jatos_results_20210513054636.txt') %>%
   map_dfr(fromJSON, flatten=T)
 ```
 
-
+[JATOSで収集したデータ](https://raw.githubusercontent.com/kunisatoLab/main/master/materials/jatos_results_20210513054636.txt)
 
 https://labjs.readthedocs.io/en/latest/learn/deploy/3c-jatos.html
 

@@ -432,6 +432,7 @@ library(tidyverse)</code></pre>
 </div>
 <div id="jsonファイルの読み込み" class="section level3">
 <h3>2.3 JSONファイルの読み込み</h3>
+<p><a href="https://raw.githubusercontent.com/kunisatoLab/main/master/materials/jatos_results_20210513054636.txt">JATOSで収集したデータ</a></p>
 <p><a href="https://labjs.readthedocs.io/en/latest/learn/deploy/3c-jatos.html" class="uri">https://labjs.readthedocs.io/en/latest/learn/deploy/3c-jatos.html</a></p>
 <pre class="r"><code>data_raw &lt;- read_file(&#39;jatos_results_20210513054636.txt&#39;) %&gt;%
   str_split(&#39;\n&#39;) %&gt;% first() %&gt;%
