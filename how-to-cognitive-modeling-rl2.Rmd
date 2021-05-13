@@ -41,6 +41,7 @@ sim_data <- tibble(trial = 1:80,
                    prob_s2 = rep(c(0.8, 0.2), each = 40),
                    reward_s1 = ifelse(runif(80) < prob_s1, 1, 0),
                    reward_s2 = ifelse(runif(80) < prob_s2, 1, 0))
+
 q_learning_sim <- function(alpha, beta,data) {
   #変数の準備
   value_s1 <- 0          # s1の価値(初期値は0)
@@ -164,7 +165,11 @@ model {
 
 Stanコードがstanファイルとして保存できたら，cmdstan_model()コンパイルします。Rは便利ですが計算は遅い言語なので，c++のような高速な計算が可能な言語にコンパイルをします。ちなみに，stanをRで使う場合は，Rstanを使うことが多かったのですが，最近は，cmdstanrが開発されており，こっちのほうがコンパイルもサンプリングも早いのでおすすめです。
 
-```{r}
+```{r include=FALSE}
+q_non_info_single <- cmdstan_model('rl/q_learning_non_info_single.stan')
+```
+
+```{r eval=FALSE, include=TRUE}
 q_non_info_single <- cmdstan_model('q_learning_non_info_single.stan')
 ```
 
