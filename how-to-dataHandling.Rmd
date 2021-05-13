@@ -30,7 +30,7 @@ title: "認知課題の解析データセット作成"
 - オリジナルの生データを１つのファイルにまとめて，解析可能なフォーマットに変更する
 - 上記の操作について作業ログが残り，何度でもやり直せる
 
-このような条件を満たすもので，心理学科の学生にも使いやすいものとしては**R**があります。解析データセット作成では，**R**を使いましょう！以下では，(1)jsPsychを用いたWEB実験で得られたJSONファイルの処理，(2)PsychoPyを用いた実験で得られたcsvファイルの処理について解説します。なお，RやRstudioの基本的な使い方については，[R言語の基本と解析のパッケージ化](how-to-R-language.html)で学んでいることを前提とします。
+このような条件を満たすもので，心理学科の学生にも使いやすいものとしては**R**があります。解析データセット作成では，**R**を使いましょう！以下では，(1)jsPsychを用いたWEB実験で得られたJSONファイルの処理(JATOSとPavloviaで分けています)，(2)PsychoPyを用いた実験で得られたcsvファイルの処理について解説します。なお，RやRstudioの基本的な使い方については，[R言語の基本と解析のパッケージ化](how-to-R-language.html)で学んでいることを前提とします。
 
 <br />
 
@@ -60,7 +60,7 @@ data_raw <- read_file('materials/jatos_results_20210513054636.txt') %>%
   map_dfr(fromJSON, flatten=T)
 ```
 
-JATOSで収集してエクスポートしたデータはJSON形式ですが，そのままでは，jsonliteパッケージを使って読み込めません。そこで，[lab.jsで解説されている方法](https://labjs.readthedocs.io/en/latest/learn/deploy/3c-jatos.html)を使います。以下のように改行で区切ってから読み込みの処理をします。以下を実行すると，通常のRで使用するデータフレームとして読み込めているかと思います。
+JATOSで収集してエクスポートしたデータはJSON形式ですが，そのままでは，jsonliteパッケージを使って読み込めません。そこで，<a href="https://labjs.readthedocs.io/en/latest/learn/deploy/3c-jatos.html" target="_blank">lab.jsで解説されている方法</a>を使います。以下のように,read_file()で読み込んだ内容を，str_split()を使って改行で区切ります（これによって参加者ごとのデータで区切られる）。するとリスト化されちゃうので，first()を使ってデータだけ取り出します。完全ではないデータの場合，”空白”になるので，それを，discard() で除外します。最後に，map_dfr(fromJSON, flatten=T)で各参加者のJSON形式のデータを読み込んでRで使えるようにします。
 
 ```{r eval=FALSE, include=TRUE}
 data_raw <- read_file('jatos_results_20210513054636.txt') %>%
@@ -71,6 +71,8 @@ data_raw <- read_file('jatos_results_20210513054636.txt') %>%
 ```
 
 ### 2.4 読み込んだJSONファイルの整形
+
+JSONから読み込んだだけだと解析では使えないので，以下でデータ整形をしてきます。as_tibble()でtibble化します。今回の実験の場合，html-button-response以外は教示やフィードバックなので，filter(trial_type == "html-button-response")でhtml-button-responseにしぼります。次に，参加者が受けた報酬を変数にするために，mutate(reward = ifelse(response == 0,reward_s1,reward_s2))でresponseで0の場合は（S1を選んだ場合），reward_s1，それ以外はreward_s2をrewardにいれます。次のgroup_by(id) %>% mutate(trial = row_number()) %>% ungroup() %>% は，各参加者のidごとに試行番号(trial)をつけるために，idでグループ化して，row_number()をつかってtrial番号をつくって，最後にグループ化をといています。mutate(response = as.numeric(response),reward = as.numeric(reward))は，一部が文字型とかになっているので，数値型にしています。最後に，その後の解析必要なものをselect(id,trial,response,reward,rt) で選んでいます。
 
 
 ```{r}
@@ -87,6 +89,7 @@ data <- data_raw %>%
 
 ### 2.5 データのチェック
 
+上記で整形したデータをプロットしてみましょう。各trialのresponseをプロットしてみます。逆転学習課題は，最初はS1のほうが報酬がよく出て，後半はS2のほうが報酬がよく出ました。それに合わせて，反応(response)も前半は０（S1）,後半は１（S2)が多くなっています。
 
 ```{r}
 data %>% 
@@ -99,8 +102,7 @@ data %>%
 
 ### 2.6演習課題1
 
-ゼミ生で協力して，自分でjsPsychを使った認知課題を作成して，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。
-
+ゼミ生で協力して，jsPsychで逆転学習課題を作成して，JATOSにホスティングして，10名ほどデータを集めてみましょう。その結果をRで読み込んで処理をして，可視化してみましょう。
 
 <br />
 
