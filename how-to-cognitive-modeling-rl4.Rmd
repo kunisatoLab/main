@@ -1,0 +1,16 @@
+---
+title: "強化学習事態でのベイズ推論モデル"
+---
+
+カルマンフィルターを用いたモデルについて解説をする。
+
+Daw, N. D., O’Doherty, J. P., Dayan, P., Seymour, B., & Dolan, R. J. (2006). Cortical substrates for exploratory decisions in humans. Nature, 441(7095), 876–879.
+
+Speekenbrink, M., & Konstantinidis, E. (2015). Uncertainty and exploration in a restless bandit problem. Topics in Cognitive Science, 7(2), 351–367.
+
+
+以下を参考にして作成する。
+
+https://speekenbrink-lab.github.io/modelling/2019/02/28/fit_kf_rl_1.html
+
+https://speekenbrink-lab.github.io/modelling/2019/08/29/fit_kf_rl_2.html
