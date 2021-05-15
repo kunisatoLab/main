@@ -510,7 +510,6 @@ parameters {
   real<lower=0.0> beta;            //逆温度
 }
 model {
-  //学習率と逆温度の事前分布の指定はしていないので，parametersで指定した範囲の無情報事前分布が使われる
   matrix[trial,2] Q;
   Q[1, 1] = 0;
   Q[1, 2] = 0;

@@ -17,7 +17,7 @@ Busemeyer & Diederich(2010), Heathcote (2014), Palminteri et al.(2017)を参考�
 
 ### 使用するRパッケージ
 
-適宜必要なパッケージをインストールしてください。cmdstnrのインストールは，<a href="https://mc-stan.org/cmdstanr/" target="_blank">こちら</a>をご確認ください。
+適宜必要なパッケージをインストールしてください(<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル: ベイズ推定(1)」</a>と同じです)。
 
 ```{r message=FALSE, warning=FALSE}
 rm(list = ls())
@@ -28,7 +28,8 @@ library(posterior)
 library(bridgesampling)
 ```
 
-改めて人工データを生成するために，実験状況の入ったsim_dataの準備とq_learning_sim関数とq_learning_ll関数の準備をします。
+
+<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル: ベイズ推定(1)」</a>と同じく，人工データを生成するために，実験状況の入ったsim_dataの準備とq_learning_sim関数を準備をします。
 
 ```{r, echo=TRUE, message=TRUE, warning=TRUE}
 sim_data <- tibble(trial = 1:80,
@@ -76,21 +77,43 @@ q_learning_sim <- function(alpha, beta,data) {
               reward = reward)
   return(result)
 }
+
+# データの準備
+setwd("data")
+file_names <- list.files()
+setwd("..")
+# 確認用の図を入れる場所を確保
+plot_check <- NULL
+# データを入れる場所を確保
+data_long <- NULL
+for (i in 1:length(file_names)) {
+  # file_namesのi番目のデータを読み込んで,上記の処理をして，tmp_dataに格納
+  tmp_data <- read_csv(paste("data",file_names[i], sep = "/")) %>% 
+    filter(trial_type == "html-button-response") %>% 
+    mutate(id = rep(i,80),
+           trial = 1:80, 
+           s1_prob = rep(c(0.2,0.8),each = 40),
+           reward = ifelse(button_pressed == 0, reward_s1, reward_s2)) %>% 
+    select(id, trial,choice=button_pressed, rt, reward, s1_prob,reward_s1, reward_s2)
+  # データの保存
+  data_long <- rbind(data_long, tmp_data)
+}
+
 ```
 
 
 ## E 相対モデル比較
 
-sub01のデータの推定を考えると，弱情報事前分布の方が良さそうに思えますが，ここはモデル比較をしてみたいと思います。モデル比較する場合には，以下の２種類があります。今回は，予測をしたいという話ではないので，WBICを使用します。
+<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル: ベイズ推定(1)」</a>の最後に検討したように，sub01のデータの推定結果からは，有情報事前分布の方が良さそうに思えますが，ここはモデル比較をしてみたいと思います。モデル比較する場合には，以下の２種類があります。今回は，予測をしたいという話ではないので，WBICを使用します。
 
-- 予測の良さに基づくモデル選択法：AIC, 交差検証法，WAIC
+- 予測の良さに基づくモデル選択法：KL距離をベースにしたものであり，予測をする上で悪いものを避けるという保守的なモデル選択ができる。例えば，AIC, DIC，WAICなどがあります。
 
 - ベイズ的なモデル選択法(モデルと事前分布からみてどのくらいデータが意外か。この意外性が小さいほど良いモデルと考えられる)：BIC, WBIC, ベイズファクター,自由エネルギー
 
 
 WBICの計算をする場合は，stanコードの対数尤度の計算の部分で対数尤度に(1/log(データ数)) を掛ける必要があります。さらに，generated quantitiesブロックで対数尤度を計算します。それぞれは，以下になります。
 
-- q_learning_non_info_single_WBIC.stan
+- q_learning_WBIC.stan
 
 ```
 data {
@@ -139,7 +162,7 @@ generated quantities {
 }
 ```
 
-q_learning_weak_info_single_WBIC.stan
+- q_learning_prior_WBIC.stan
 
 ```
 data {
@@ -152,7 +175,6 @@ parameters {
   real<lower=0.0> beta;            //逆温度
 }
 model {
-  //学習率と逆温度の事前分布の指定はしていないので，parametersで指定した範囲の無情報事前分布が使われる
   matrix[trial,2] Q;
   Q[1, 1] = 0;
   Q[1, 2] = 0;
@@ -197,14 +219,14 @@ generated quantities {
 推定してモデル比較してみましょう。まずは，モデルをコンパイルします。
 
 ```{r include=FALSE}
-q_weak_info_single_WBIC <- cmdstan_model('rl/q_learning_weak_info_single_WBIC.stan')
-q_non_info_single_WBIC <- cmdstan_model('rl/q_learning_non_info_single_WBIC.stan')
+q_learning_WBIC <- cmdstan_model('rl/q_learning_WBIC.stan')
+q_learning_prior_WBIC <- cmdstan_model('rl/q_learning_prior_WBIC.stan')
 ```
 
 
 ```
-q_weak_info_single_WBIC <- cmdstan_model('q_learning_weak_info_single_WBIC.stan')
-q_non_info_single_WBIC <- cmdstan_model('q_learning_non_info_single_WBIC.stan')
+q_learning_WBIC <- cmdstan_model('q_learning_WBIC.stan')
+q_learning_prior_WBIC <- cmdstan_model('q_learning_prior_WBIC.stan')
 ```
 
 それでは，sub01で推定をしてみましょう！
@@ -213,17 +235,7 @@ q_non_info_single_WBIC <- cmdstan_model('q_learning_non_info_single_WBIC.stan')
 data_individual <- data_long %>% 
   filter(id == 1)
 
-weak_info_WBIC <- q_weak_info_single_WBIC$sample(
-        data = list(trial = nrow(data_individual),
-                   reward = data_individual$reward,
-                   choice = data_individual$choice + 1),
-        seed = 123,
-        chains = 4,
-        iter_warmup = 500,
-        iter_sampling = 10000,
-        parallel_chains = 4)
-
-non_info_WBIC <- q_non_info_single_WBIC$sample(
+q_learning_WBIC_mcmc <- q_learning_WBIC$sample(
         data = list(trial = nrow(data_individual),
                    reward = data_individual$reward,
                    choice = data_individual$choice + 1),
@@ -233,45 +245,55 @@ non_info_WBIC <- q_non_info_single_WBIC$sample(
         iter_sampling = 2000,
         parallel_chains = 4)
 
-weak_info_WBIC_rstan <- rstan::read_stan_csv(weak_info_WBIC$output_files())
-non_info_WBIC_rstan <- rstan::read_stan_csv(non_info_WBIC$output_files())
+q_learning_prior_WBIC_mcmc <- q_learning_prior_WBIC$sample(
+        data = list(trial = nrow(data_individual),
+                   reward = data_individual$reward,
+                   choice = data_individual$choice + 1),
+        seed = 123,
+        chains = 4,
+        iter_warmup = 500,
+        iter_sampling = 10000,
+        parallel_chains = 4)
+
+q_learning_WBIC_sample <- rstan::read_stan_csv(q_learning_WBIC_mcmc$output_files())
+q_learning_prior_WBIC_sample <- rstan::read_stan_csv(q_learning_prior_WBIC_mcmc$output_files())
 ```
 
 ```{r include=FALSE}
 data_individual <- data_long %>% 
   filter(id == 1)
 
-weak_info_WBIC <- q_weak_info_single_WBIC$sample(
+q_learning_WBIC_mcmc <- q_learning_WBIC$sample(
         data = list(trial = nrow(data_individual),
                    reward = data_individual$reward,
                    choice = data_individual$choice + 1),
         seed = 123,
         chains = 4,
         iter_warmup = 500,
-        iter_sampling = 3000,
+        iter_sampling = 2000,
         parallel_chains = 4)
 
-non_info_WBIC <- q_non_info_single_WBIC$sample(
+q_learning_prior_WBIC_mcmc <- q_learning_prior_WBIC$sample(
         data = list(trial = nrow(data_individual),
                    reward = data_individual$reward,
                    choice = data_individual$choice + 1),
         seed = 123,
         chains = 4,
         iter_warmup = 500,
-        iter_sampling = 3000,
+        iter_sampling = 10000,
         parallel_chains = 4)
 
-weak_info_WBIC_rstan <- rstan::read_stan_csv(weak_info_WBIC$output_files())
-non_info_WBIC_rstan <- rstan::read_stan_csv(non_info_WBIC$output_files())
+q_learning_WBIC_sample <- rstan::read_stan_csv(q_learning_WBIC_mcmc$output_files())
+q_learning_prior_WBIC_sample <- rstan::read_stan_csv(q_learning_prior_WBIC_mcmc$output_files())
 ```
 
-予想に反して，弱情報事前分布の方がWBICが低くなりました（低いほどよい）。弱と言うよりは結構強めな事前分布だったのでデータとの適合が悪かったのかもしれません。なお，sub02は，弱情報の方がWBICが小さくなりました。個人ごとには適切なモデルや事前分布は違う可能性があるので，階層モデルを作って評価が必要ですね。
+予想に反して，無情報事前分布の方がWBICが低くなりました（低いほどよい）。一方，sub02では，弱情報の方がWBICが小さくなりました。個人ごとには適切なモデルや事前分布は違う可能性があるので，階層モデルを作って評価が必要も思われます。
 
 ```{r}
-WBIC_weak <- -mean(rowSums(rstan::extract(weak_info_WBIC_rstan)$log_lik))
-WBIC_non <- -mean(rowSums(rstan::extract(non_info_WBIC_rstan)$log_lik))
-paste("弱情報事前分布のWBICは",WBIC_weak)
+WBIC_non <- -mean(rowSums(rstan::extract(q_learning_WBIC_sample)$log_lik))
+WBIC_prior <- -mean(rowSums(rstan::extract(q_learning_prior_WBIC_sample)$log_lik))
 paste("無情報事前分布のWBICは",WBIC_non)
+paste("有情報事前分布のWBICは",WBIC_prior)
 ```
 
 
@@ -290,9 +312,9 @@ paste("無情報事前分布のWBICは",WBIC_non)
 
 #### αとβを仮定したモデルから生成されたデータのモデルリカバリー
 
-まずは，これまでと同様なαもβも存在する強化学習モデルでデータを生成します。それに対して，それと一致したモデル（上記のq_learning_weak_info_single_WBIC.stan）と一致しないモデル（以下のq_learning_weak_info_no_beta_WBIC.stan）を使って推定することで，モデルリカバリーをしてみます。
+まずは，これまでと同様なαもβも存在する強化学習モデルでデータを生成します。それに対して，それと一致したモデル（上記のq_learning_prior_WBIC.stan）と一致しないモデル（以下のq_learning_prior_non_beta_WBIC.stan）を使って推定することで，モデルリカバリーをしてみます。
 
-q_learning_weak_info_no_beta_WBIC.stanは，以下のようなコードになります。簡単にいうと，q_learning_weak_info_single_WBIC.stanからbetaを抜いただけです。
+q_learning_prior_non_beta_WBIC.stanは，以下のようなコードになります。簡単にいうと，q_learning_weak_info_single_WBIC.stanからbetaを抜いただけです。
 
 ```
 data {
@@ -306,7 +328,6 @@ parameters {
 }
 
 model {
-  //学習率と逆温度の事前分布の指定はしていないので，parametersで指定した範囲の無情報事前分布が使われる
   matrix[trial,2] Q;
   Q[1, 1] = 0;
   Q[1, 2] = 0;
@@ -346,73 +367,63 @@ generated quantities {
 }
 ```
 
-まずは，q_learning_weak_info_no_beta_WBIC.stanをコンパイルします。
+まずは，q_learning_prior_non_beta_WBIC.stanをコンパイルします。
 
 ```{r include=FALSE}
-q_weak_info_no_beta_WBIC <- cmdstan_model('rl/q_learning_weak_info_no_beta_WBIC.stan')
+q_learning_prior_non_beta_WBIC <- cmdstan_model('rl/q_learning_prior_non_beta_WBIC.stan')
 ```
 
 
 ```
-q_weak_info_no_beta_WBIC <- cmdstan_model('rl/q_learning_weak_info_no_beta_WBIC.stan')
+q_learning_prior_non_beta_WBIC <- cmdstan_model('rl/q_learning_prior_non_beta_WBIC.stan')
 ```
 
 さて，以下のコードを走らせて，αとβを仮定したモデルで生成されたデータをαとβを仮定するモデルとαだけを仮定するモデルでフィッティングした時に，モデルが選択される確率を計算します。
 
-
-
-
-
-やっぱランダムサンプリングにする。
-
-
-
-
+hist(rbeta(1000, 2, 2))
+hist(rgamma(1000, 2, 0.5))
 
 ```{r include=FALSE}
 better_with_beta <- 0
-beta_set <- 0
-for (i in 1:10) {
-  alpha_set <- 0
-  beta_set = beta_set + 0.5
-  for (j in 1:10) {
-    alpha_set = alpha_set + 0.1
-    #データ生成
-    data_2 <- q_learning_sim(alpha = alpha_set, beta = beta_set, sim_data)
-    print(paste("進捗状況：",(i-1)*10 + j,"/100"))
-    #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
-    tryCatch({
-      with_beta_WBIC <- q_weak_info_single_WBIC$sample(
-        data = list(trial = nrow(data_2),
+n_simulation <- 100
+for (i in 1:n_simulation) {
+  alpha_set <- rbeta(1, 2, 2)
+  beta_set <- rgamma(1, 2, 0.5)
+  #データ生成
+  data_2 <- q_learning_sim(alpha = alpha_set, beta = beta_set, sim_data)
+  print(paste("進捗状況：",i,"/",n_simulation))
+  #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
+  tryCatch({
+    with_beta_WBIC <- q_learning_prior_WBIC$sample(
+      data = list(trial = nrow(data_2),
                    reward = data_2$reward,
                    choice = data_2$choice + 1),
-        seed = 123,
-        chains = 4,
-        iter_warmup = 500,
-        iter_sampling = 3000,
-        parallel_chains = 4)
+      seed = 123,
+      chains = 4,
+      iter_warmup = 500,
+      iter_sampling = 3000,
+      parallel_chains = 4)
 
-      no_beta_WBIC <- q_weak_info_no_beta_WBIC$sample(
-        data = list(trial = nrow(data_2),
+    non_beta_WBIC <- q_learning_prior_non_beta_WBIC$sample(
+      data = list(trial = nrow(data_2),
                    reward = data_2$reward,
                    choice = data_2$choice + 1),
-        seed = 123,
-        chains = 4,
-        iter_warmup = 500,
-        iter_sampling = 3000,
-        parallel_chains = 4)
+      seed = 123,
+      chains = 4,
+      iter_warmup = 500,
+      iter_sampling = 3000,
+      parallel_chains = 4)
       
-      with_beta_WBIC_sample <- rstan::read_stan_csv(with_beta_WBIC$output_files())
-      no_beta_WBIC_sample <- rstan::read_stan_csv(no_beta_WBIC$output_files())
-      with_beta_WBIC <- -mean(rowSums(rstan::extract(weak_info_WBIC_rstan)$log_lik))
-      no_beta_WBIC <- -mean(rowSums(rstan::extract(no_beta_WBIC_sample)$log_lik))
-      better_with_beta <- better_with_beta + ifelse(with_beta_WBIC < no_beta_WBIC, 1, 0)
-    },error = function(e) {message(e)})
-  }
+    with_beta_WBIC_sample <- rstan::read_stan_csv(with_beta_WBIC$output_files())
+    WBIC_with_beta <- -mean(rowSums(rstan::extract(with_beta_WBIC_sample)$log_lik))
+    non_beta_WBIC_sample <- rstan::read_stan_csv(non_beta_WBIC$output_files())
+    WBIC_no_beta <- -mean(rowSums(rstan::extract(non_beta_WBIC_sample)$log_lik))
+    better_with_beta <- better_with_beta + ifelse(WBIC_with_beta < WBIC_no_beta, 1, 0)
+  },error = function(e) {message(e)})
 }
 
-fit_both_sim_both <- better_with_beta/100
-fit_alpha_sim_both <- (100-better_with_beta)/100
+fit_both_sim_both <- better_with_beta/n_simulation
+fit_alpha_sim_both <- (n_simulation-better_with_beta)/n_simulation
 
 ```
 
@@ -422,16 +433,16 @@ fit_alpha_sim_both <- (100-better_with_beta)/100
 
 ```{r include=FALSE}
 better_with_beta <- 0
+n_simulation <- 100
 beta_set <- 1
-alpha_set <- 0
-for (i in 1:100) {
+for (i in 1:n_simulation) {
     alpha_set = alpha_set + 0.01
     #データ生成
     data_2 <- q_learning_sim(alpha = alpha_set, beta = beta_set, sim_data)
-    print(paste("進捗状況：",(i-1)*10 + j,"/100"))
+    print(paste("進捗状況：",i,"/",n_simulation))
     #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
     tryCatch({
-      with_beta_WBIC <- q_weak_info_single_WBIC$sample(
+      with_beta_WBIC <- q_learning_prior_WBIC$sample(
         data = list(trial = nrow(data_2),
                    reward = data_2$reward,
                    choice = data_2$choice + 1),
@@ -441,7 +452,7 @@ for (i in 1:100) {
         iter_sampling = 3000,
         parallel_chains = 4)
 
-      no_beta_WBIC <- q_weak_info_no_beta_WBIC$sample(
+      non_beta_WBIC <- q_learning_prior_non_beta_WBIC$sample(
         data = list(trial = nrow(data_2),
                    reward = data_2$reward,
                    choice = data_2$choice + 1),
@@ -451,25 +462,24 @@ for (i in 1:100) {
         iter_sampling = 3000,
         parallel_chains = 4)
       
-      with_beta_WBIC_sample <- rstan::read_stan_csv(with_beta_WBIC$output_files())
-      with_beta_WBIC <- -mean(rowSums(rstan::extract(weak_info_WBIC_rstan)$log_lik))
-      no_beta_WBIC_sample <- rstan::read_stan_csv(no_beta_WBIC$output_files())
-      no_beta_WBIC <- -mean(rowSums(rstan::extract(no_beta_WBIC_sample)$log_lik))
-      better_with_beta <- better_with_beta + ifelse(with_beta_WBIC < no_beta_WBIC, 1, 0)
-    },error = function(e) {message(e)})
+    with_beta_WBIC_sample <- rstan::read_stan_csv(with_beta_WBIC$output_files())
+    WBIC_with_beta <- -mean(rowSums(rstan::extract(with_beta_WBIC_sample)$log_lik))
+    non_beta_WBIC_sample <- rstan::read_stan_csv(non_beta_WBIC$output_files())
+    WBIC_no_beta <- -mean(rowSums(rstan::extract(non_beta_WBIC_sample)$log_lik))
+    better_with_beta <- better_with_beta + ifelse(WBIC_with_beta < WBIC_no_beta, 1, 0)
+  },error = function(e) {message(e)})
 }
 
-fit_both_sim_alpha <- better_with_beta/100
-fit_alpha_sim_alpha <- (100-better_with_beta)/100
-
+fit_both_sim_alpha <- better_with_beta/n_simulation
+fit_alpha_sim_alpha <- (n_simulation-better_with_beta)/n_simulation
 ```
 
 
 整理すると以下のようになります。
 
 ```{r}
-simulated_model <- c()
-fit_model <- c()
+simulated_model <- c("alpha & beta","alpha & beta","alpha","alpha")
+fit_model <- c("alpha & beta","alpha","alpha & beta","alpha")
 prob <- c(fit_both_sim_both, fit_alpha_sim_both, fit_both_sim_alpha, fit_alpha_sim_alpha)
 
 model_recovery <- tibble(simulated_model, fit_model, prob)

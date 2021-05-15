@@ -623,12 +623,12 @@ parameter_recovery_mle &lt;- data.frame(alpha_true = alpha_true[1:length(alpha_e
 <pre><code>## # A tibble: 3 x 10
 ##   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
 ##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1 lp__     -39.7   -39.4   1.15  0.792 -42.1   -38.6    1.01    1265.    1142.
-## 2 alpha      0.364   0.330 0.158 0.130   0.176   0.689  1.00    1582.    1057.
-## 3 beta       2.46    2.42  0.559 0.554   1.59    3.41   1.00    1696.    1929.</code></pre>
+## 1 lp__     -34.7   -34.4   1.18  0.759 -37.0   -33.7    1.00    1537.    1672.
+## 2 alpha      0.413   0.386 0.152 0.143   0.213   0.702  1.00    1905.    1413.
+## 3 beta       3.00    2.98  0.620 0.602   2.03    4.06   1.00    2223.    2231.</code></pre>
 <p>以下はMCMCについての診断結果です。</p>
 <pre class="r"><code>q_learning_mcmc$cmdstan_diagnose()</code></pre>
-<pre><code>## Processing csv files: /tmp/Rtmp3zBAAO/q_learning-202105150616-1-080e61.csv, /tmp/Rtmp3zBAAO/q_learning-202105150616-2-080e61.csv, /tmp/Rtmp3zBAAO/q_learning-202105150616-3-080e61.csv, /tmp/Rtmp3zBAAO/q_learning-202105150616-4-080e61.csv
+<pre><code>## Processing csv files: /tmp/RtmptaKzql/q_learning-202105150701-1-7b0146.csv, /tmp/RtmptaKzql/q_learning-202105150701-2-7b0146.csv, /tmp/RtmptaKzql/q_learning-202105150701-3-7b0146.csv, /tmp/RtmptaKzql/q_learning-202105150701-4-7b0146.csv
 ## 
 ## Checking sampler transitions treedepth.
 ## Treedepth satisfactory for all transitions.
@@ -754,7 +754,6 @@ parameters {
   real&lt;lower=0.0&gt; beta;            //逆温度
 }
 model {
-  //学習率と逆温度の事前分布の指定はしていないので，parametersで指定した範囲の無情報事前分布が使われる
   matrix[trial,2] Q;
   Q[1, 1] = 0;
   Q[1, 2] = 0;
@@ -793,12 +792,12 @@ model {
 <pre><code>## # A tibble: 3 x 10
 ##   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
 ##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1 lp__     -41.6   -41.2   1.10  0.771 -43.8   -40.5    1.00    1448.    1579.
-## 2 alpha      0.375   0.350 0.142 0.124   0.192   0.672  1.00    1603.    1134.
-## 3 beta       2.40    2.37  0.534 0.530   1.58    3.28   1.00    1737.    1880.</code></pre>
+## 1 lp__     -36.5   -36.2   1.05  0.712 -38.6   -35.6    1.00    1689.    1780.
+## 2 alpha      0.422   0.403 0.140 0.144   0.227   0.687  1.00    2408.    1938.
+## 3 beta       2.94    2.91  0.576 0.553   2.04    3.93   1.00    2278.    2262.</code></pre>
 <p>以下はMCMCについての診断結果です。収束診断の問題もないかと思います。</p>
 <pre class="r"><code>q_learning_prior_mcmc$cmdstan_diagnose()</code></pre>
-<pre><code>## Processing csv files: /tmp/Rtmp3zBAAO/q_learning_prior-202105150620-1-7b7274.csv, /tmp/Rtmp3zBAAO/q_learning_prior-202105150620-2-7b7274.csv, /tmp/Rtmp3zBAAO/q_learning_prior-202105150620-3-7b7274.csv, /tmp/Rtmp3zBAAO/q_learning_prior-202105150620-4-7b7274.csv
+<pre><code>## Processing csv files: /tmp/RtmptaKzql/q_learning_prior-202105150706-1-2e873b.csv, /tmp/RtmptaKzql/q_learning_prior-202105150706-2-2e873b.csv, /tmp/RtmptaKzql/q_learning_prior-202105150706-3-2e873b.csv, /tmp/RtmptaKzql/q_learning_prior-202105150706-4-2e873b.csv
 ## 
 ## Checking sampler transitions treedepth.
 ## Treedepth satisfactory for all transitions.
