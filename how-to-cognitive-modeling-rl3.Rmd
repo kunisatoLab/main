@@ -424,7 +424,6 @@ for (i in 1:n_simulation) {
 
 fit_both_sim_both <- better_with_beta/n_simulation
 fit_alpha_sim_both <- (n_simulation-better_with_beta)/n_simulation
-
 ```
 
 #### αのみを仮定したモデルから生成されたデータのモデルリカバリー
@@ -478,38 +477,21 @@ fit_alpha_sim_alpha <- (n_simulation-better_with_beta)/n_simulation
 整理すると以下のようになります。
 
 ```{r}
-simulated_model <- c("alpha & beta","alpha & beta","alpha","alpha")
-fit_model <- c("alpha & beta","alpha","alpha & beta","alpha")
-prob <- c(fit_both_sim_both, fit_alpha_sim_both, fit_both_sim_alpha, fit_alpha_sim_alpha)
+simulated_model <- factor(c("alpha & beta","alpha & beta","alpha","alpha"), levels = c("alpha & beta","alpha"))
+fit_model <- factor(c("alpha & beta","alpha","alpha & beta","alpha"), levels = c("alpha","alpha & beta"))
+Probability <- c(fit_both_sim_both, fit_alpha_sim_both, fit_both_sim_alpha, fit_alpha_sim_alpha)
+model_recovery <- tibble(simulated_model, fit_model, Probability)
 
-model_recovery <- tibble(simulated_model, fit_model, prob)
-
-ggplot(model_recovery, aes(x = fit_model, y = simulated_model, fill = prob)) +
+ggplot(model_recovery, aes(x = fit_model, y = simulated_model, fill = Probability)) +
   geom_tile() +
-  geom_text(aes(label = round(mean_c1, digits = 1)), color = "white")
+  geom_text(aes(label = round(Probability, digits = 2)), color = "white")　+
+  xlab("Fit Model") +
+  ylab("Simulated Model")
 ```
 
 
-## 階層ベイズ
-
-- これまで１名のデータをごとに推定をしてきたが，多くの心理学研究では，複数の参加者が研究に参加している。
-
-- 個人ごとに推定する方法でも個人差は検討できるが，試行数が少ないとと推定は不安定になる。また，参加者間変動も考慮していない。
-
-- 集団における各参加者のパラメタのばらつきもモデルに組み込んでベイズ推定する階層ベイズを用いると，個人差も検討することができ,推定も安定する。階層ベイズでは,個々の参加者から推定されるパラメタの分布も考慮できるので,個人のパラメタとグループのパラメタの傾向を同時制約的に推定できる。個人差も検討できるし、推定するパラメタも安定する。試行数を増やしにくい臨床研究で使いやすい！
 
 
-上記の２つのモデルで作成して，比較してみる。
-
-
-
-
-
-
-
-
-
-- 階層ベイズモデルやモデル選択に関しては，「StanとRでベイズ統計モデリング」(松浦健太郎, 2016, 共立出版)，「行動データの計算論モデリング」（片平健太郎，2018，オーム社），「社会科学のためのベイズ統計モデリング」（浜田宏ら，2019，朝倉書店）などが詳しい。
 
 ## F モデル・シミュレーションと選択的影響テスト
 
@@ -525,6 +507,3 @@ ggplot(model_recovery, aes(x = fit_model, y = simulated_model, fill = prob)) +
 - Heathcote, A., Brown, S. D., & Wagenmakers, E.-J. (2015). An Introduction to Good Practices in Cognitive Modeling. In B. U. Forstmann & E.-J. Wagenmakers (Eds.), An Introduction to Model-Based Cognitive Neuroscience (pp. 25–48). Springer New York.
 - Palminteri, S., Wyart, V., & Koechlin, E. (2017). The Importance of Falsification in Computational Cognitive Modeling. Trends in Cognitive Sciences, 21(6), 425–433.
 - Voss, A., Rothermund, K., & Voss, J. (2004). Interpreting the parameters of the diffusion model: an empirical validation. Memory & Cognition, 32(7), 1206–1220.
-- 松浦健太郎(2016).StanとRでベイズ統計モデリング 共立出版
-- 片平健太郎(2018). 行動データの計算論モデリング オーム社
-- 浜田宏ら(2019). 社会科学のためのベイズ統計モデリング 朝倉書店

@@ -1,16 +1,25 @@
 ---
-title: "強化学習事態でのベイズ推論モデル"
+title: "強化学習モデル: ベイズ推定(3)"
 ---
 
-カルマンフィルターを用いたモデルについて解説をする。
+## 階層ベイズ
 
-Daw, N. D., O’Doherty, J. P., Dayan, P., Seymour, B., & Dolan, R. J. (2006). Cortical substrates for exploratory decisions in humans. Nature, 441(7095), 876–879.
+- これまで１名のデータをごとに推定をしてきたが，多くの心理学研究では，複数の参加者が研究に参加している。
 
-Speekenbrink, M., & Konstantinidis, E. (2015). Uncertainty and exploration in a restless bandit problem. Topics in Cognitive Science, 7(2), 351–367.
+- 個人ごとに推定する方法でも個人差は検討できるが，試行数が少ないとと推定は不安定になる。また，参加者間変動も考慮していない。
+
+- 集団における各参加者のパラメタのばらつきもモデルに組み込んでベイズ推定する階層ベイズを用いると，個人差も検討することができ,推定も安定する。階層ベイズでは,個々の参加者から推定されるパラメタの分布も考慮できるので,個人のパラメタとグループのパラメタの傾向を同時制約的に推定できる。個人差も検討できるし、推定するパラメタも安定する。試行数を増やしにくい臨床研究で使いやすい！
 
 
-以下を参考にして作成する。
+上記の２つのモデルで作成して，比較してみる。
 
-https://speekenbrink-lab.github.io/modelling/2019/02/28/fit_kf_rl_1.html
+- 階層ベイズモデルやモデル選択に関しては，「StanとRでベイズ統計モデリング」(松浦健太郎, 2016, 共立出版)，「行動データの計算論モデリング」（片平健太郎，2018，オーム社），「社会科学のためのベイズ統計モデリング」（浜田宏ら，2019，朝倉書店）などが詳しい。
 
-https://speekenbrink-lab.github.io/modelling/2019/08/29/fit_kf_rl_2.html
+
+## 引用・参考文献
+
+- Schaaf, J. V., Jepma, M., Visser, I., & Huizenga, H. M. (2019). A hierarchical Bayesian approach to assess learning and guessing strategies in reinforcement learning. Journal of Mathematical Psychology, 93, 102276.
+- Steingroever, H., Wetzels, R., & Wagenmakers, E.-J. (2014). Absolute performance of reinforcement-learning models for the Iowa Gambling Task. Decision (Washington, D.C.), 1(3), 161–183.
+- 松浦健太郎(2016).StanとRでベイズ統計モデリング 共立出版
+- 片平健太郎(2018). 行動データの計算論モデリング オーム社
+- 浜田宏ら(2019). 社会科学のためのベイズ統計モデリング 朝倉書店
