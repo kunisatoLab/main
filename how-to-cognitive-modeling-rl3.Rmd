@@ -13,7 +13,7 @@ Busemeyer & Diederich(2010), Heathcote (2014), Palminteri et al.(2017)を参考�
 - E 相対モデル比較
 - F モデル・シミュレーションと選択的影響テスト
 
-<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl1.html" target="_blank">「強化学習モデル: 最尤推定」</a>ではABCDとすすめてきました。今回は，ベイズ推定をcmdstanを使って行ってみます。そこで，一度Bに戻ってからDEFと進みます。
+<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl1.html" target="_blank">「強化学習モデル: 最尤推定」</a>と<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル: ベイズ推定(1)」</a>では，ABCDとすすめてきました。今回は，今回は，EとFについて説明し（相対モデル比較に関連づけてモデル・リカバリーの説明もします），最後に階層モデルについて説明をします。
 
 ### 使用するRパッケージ
 
@@ -26,6 +26,56 @@ library(cmdstanr)
 library(rstan)
 library(posterior)
 library(bridgesampling)
+```
+
+改めて人工データを生成するために，実験状況の入ったsim_dataの準備とq_learning_sim関数とq_learning_ll関数の準備をします。
+
+```{r, echo=TRUE, message=TRUE, warning=TRUE}
+sim_data <- tibble(trial = 1:80,
+                   prob_s1 = rep(c(0.2, 0.8), each = 40),
+                   prob_s2 = rep(c(0.8, 0.2), each = 40),
+                   reward_s1 = ifelse(runif(80) < prob_s1, 1, 0),
+                   reward_s2 = ifelse(runif(80) < prob_s2, 1, 0))
+
+q_learning_sim <- function(alpha, beta,data) {
+  #変数の準備
+  value_s1 <- 0          # s1の価値(初期値は0)
+  value_s2 <- 0          # s2の価値(初期値は0)
+  current_choice <- NULL     # ある時点の選択（1=s1，0=s2）
+  choice_prob_s1 <- NULL  # s1の選択確率
+  reward <- NULL                 # 報酬
+  # Qlearningモデル
+  for (i in 1:nrow(data)){
+    # s1を選ぶ確率を計算し,一様分布から発生させた乱数が行動選択確率よりも小さい時に1（s1），大きい時に0（s2）
+    choice_prob_s1[i] <- exp(beta*value_s1[i])/(exp(beta*value_s1[i])+exp(beta*value_s2[i]))
+    current_choice[i] <- as.integer(runif(1,min=0,max=1) <= choice_prob_s1[i])
+    #FBを報酬(r)として、価値の更新を行う。
+    if (current_choice[i] == 1){
+        reward[i] <- data$reward_s1[i]
+        #予測誤差の計算
+        prediction_error <-  reward[i] - value_s1[i]
+        #予測誤差を使ってs1の価値を更新する
+        value_s1[i+1] <- value_s1[i]+alpha*prediction_error
+        #s2は更新なし
+        value_s2[i+1] <- value_s2[i]
+    }else{
+        reward[i] <- data$reward_s2[i]
+        #予測誤差の計算
+        prediction_error <- reward[i] - value_s2[i]
+        #予測誤差を使ってs2の価値を更新する
+        value_s2[i+1] <- value_s2[i]+alpha*prediction_error
+        #s1は更新なし
+        value_s1[i+1] <- value_s1[i]
+    }
+  }
+  result <- data.frame(trial = data$trial,
+              value_s1 = value_s1[1:nrow(data)], 
+              value_s2 = value_s2[1:nrow(data)], 
+              prob_s1 = choice_prob_s1,
+              choice = current_choice,
+              reward = reward)
+  return(result)
+}
 ```
 
 
@@ -309,6 +359,16 @@ q_weak_info_no_beta_WBIC <- cmdstan_model('rl/q_learning_weak_info_no_beta_WBIC.
 
 さて，以下のコードを走らせて，αとβを仮定したモデルで生成されたデータをαとβを仮定するモデルとαだけを仮定するモデルでフィッティングした時に，モデルが選択される確率を計算します。
 
+
+
+
+
+やっぱランダムサンプリングにする。
+
+
+
+
+
 ```{r include=FALSE}
 better_with_beta <- 0
 beta_set <- 0
@@ -408,7 +468,15 @@ fit_alpha_sim_alpha <- (100-better_with_beta)/100
 整理すると以下のようになります。
 
 ```{r}
+simulated_model <- c()
+fit_model <- c()
+prob <- c(fit_both_sim_both, fit_alpha_sim_both, fit_both_sim_alpha, fit_alpha_sim_alpha)
 
+model_recovery <- tibble(simulated_model, fit_model, prob)
+
+ggplot(model_recovery, aes(x = fit_model, y = simulated_model, fill = prob)) +
+  geom_tile() +
+  geom_text(aes(label = round(mean_c1, digits = 1)), color = "white")
 ```
 
 

@@ -81,6 +81,7 @@ q_learning_sim <- function(alpha, beta,data) {
               reward = reward)
   return(result)
 }
+
 q_learning_ll <- function(alpha, beta,data) {
   #変数の準備
   value_s1 <- 0          # s1の価値(初期値は0)
@@ -132,7 +133,7 @@ data_1 <- q_learning_sim(alpha = 0.3, beta = 2, sim_data)
 ### cmdstanrでの推定
 #### Stanコードの作成
 
-"q_learning_non_info_single.stan"というファイルを作成して，以下のコードを書き込みます。Stanは統計モデリング用のプラットフォームで，MCMCサンプリングによるベイズ推定，変分推定，最適化による最尤推定が可能です。Stanでは，data,parameters,modelのようにブロックごとに指定をして，書いていきます（この３つが最小限のブロック数かと思います）。dataブロックでは入力するデータについて記述します（型と範囲の指定が必要です）。parameterブロックでは，推定するパラメータについて記述します（型と範囲の指定が必要です）。modelブロックでは，データとパラメータを用いた生成モデルの記載をします。なお，データ~分布(y ~ normal(mu, sig))のような形で記述もできますし，target += 対数尤度のように，対数尤度でも記述ができます。以下は，Q学習の推定用のコードですが，グリッドサーチで用意したものに比べて，すっきりしているかと思います。
+"q_learning.stan"というファイルを作成して，以下のコードを書き込みます。Stanは統計モデリング用のプラットフォームで，MCMCサンプリングによるベイズ推定，変分推定，最適化による最尤推定が可能です。Stanでは，data,parameters,modelのようにブロックごとに指定をして，書いていきます（この３つが最小限のブロック数かと思います）。dataブロックでは入力するデータについて記述します（型と範囲の指定が必要です）。parameterブロックでは，推定するパラメータについて記述します（型と範囲の指定が必要です）。modelブロックでは，データとパラメータを用いた生成モデルの記載をします。なお，データ~分布(y ~ normal(mu, sig))のような形で記述もできますし，target += 対数尤度のように，対数尤度でも記述ができます。以下は，Q学習の推定用のコードですが，グリッドサーチで用意したものに比べて，すっきりしているかと思います。
 
 ```
 data {
@@ -167,11 +168,11 @@ model {
 Stanコードがstanファイルとして保存できたら，cmdstan_model()コンパイルします。Rは便利ですが計算は遅い言語なので，c++のような高速な計算が可能な言語にコンパイルをします。ちなみに，stanをRで使う場合は，Rstanを使うことが多かったのですが，最近は，cmdstanrが開発されており，こっちのほうがコンパイルもサンプリングも早いのでおすすめです。
 
 ```{r include=FALSE}
-q_non_info_single <- cmdstan_model('rl/q_learning_non_info_single.stan')
+q_learning <- cmdstan_model('rl/q_learning.stan')
 ```
 
 ```
-q_non_info_single <- cmdstan_model('q_learning_non_info_single.stan')
+q_learning <- cmdstan_model('q_learning.stan')
 ```
 
 ### 最尤推定
@@ -180,7 +181,7 @@ q_non_info_single <- cmdstan_model('q_learning_non_info_single.stan')
 </a>でも見てきたように，optimやpsoなどのRパッケージでできますが，ここではstanで最尤推定値を推定します。コンパイルしたモデル$optimize()で推定ができます。
 
 ```
-mle_cmdstan <- q_non_info_single$optimize(
+mle_cmdstan <- q_learning$optimize(
   data = list(trial = nrow(data_1),
               reward = data_1$reward,
               choice = data_1$choice + 1),
@@ -190,18 +191,18 @@ mle_cmdstan$summary()
 
 
 ```{r include=FALSE}
-mle_cmdstan <- q_non_info_single$optimize(
+q_learning_mle <- q_learning$optimize(
   data = list(trial = nrow(data_1),
               reward = data_1$reward,
               choice = data_1$choice + 1),
   seed = 123)
-mle_cmdstan$summary()
+q_learning_mle$summary()
 ```
 
 
 ### パラメータリカバリ（最尤推定）
 
-グリッドサーチは時間がかかることもあって，ちゃんとしたパラメータリカバリしなかったのですが，ここで，最尤推定のパラメータリカバリをします。αは0.1から1の範囲で0.1刻み，βは0.5から5の範囲で0.5刻みでデータ生成とパラメータ推定を行います(つまり100個分チェックします)。
+stanのoptimizeを用いた最尤推定のパラメータリカバリをします。αは0.1から1の範囲で0.1刻み，βは0.5から5の範囲で0.5刻みでデータ生成とパラメータ推定を行います(つまり100個分チェックします)。
 
 ```
 alpha_true <- NULL
@@ -209,6 +210,7 @@ beta_true <- NULL
 alpha_estimated <- NULL
 beta_estimated <- NULL
 beta_set <- 0
+
 for (i in 1:10) {
   alpha_set <- 0
   beta_set = beta_set + 0.5
@@ -220,21 +222,21 @@ for (i in 1:10) {
     beta_true[(i-1)*10 + j] <- beta_set
     #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
     tryCatch({
-      mle_cmdstan <- q_non_info_single$optimize(
+      q_learning_mle <- q_learning$optimize(
       data = list(trial = nrow(data_2),
               reward = data_2$reward,
               choice = data_2$choice + 1),
       seed = 123)
-      alpha_estimated[(i-1)*10 + j] <- mle_cmdstan$mle("alpha")
-      beta_estimated[(i-1)*10 + j] <- mle_cmdstan$mle("beta")
+      alpha_estimated[(i-1)*10 + j] <- q_learning_mle$mle("alpha")
+      beta_estimated[(i-1)*10 + j] <- q_learning_mle$mle("beta")
     },error = function(e) {message(e)})
   }
 }
+
 parameter_recovery_mle <- data.frame(alpha_true = alpha_true[1:length(alpha_estimated)],
                                      beta_true = beta_true[1:length(alpha_estimated)],
                                      alpha_estimated = alpha_estimated[1:length(alpha_estimated)],
                                      beta_estimated = beta_estimated[1:length(alpha_estimated)])
-parameter_recovery_mle
 ```
 
 
@@ -244,6 +246,7 @@ beta_true <- NULL
 alpha_estimated <- NULL
 beta_estimated <- NULL
 beta_set <- 0
+
 for (i in 1:10) {
   alpha_set <- 0
   beta_set = beta_set + 0.5
@@ -255,16 +258,17 @@ for (i in 1:10) {
     beta_true[(i-1)*10 + j] <- beta_set
     #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
     tryCatch({
-      mle_cmdstan <- q_non_info_single$optimize(
+      q_learning_mle <- q_learning$optimize(
       data = list(trial = nrow(data_2),
               reward = data_2$reward,
               choice = data_2$choice + 1),
       seed = 123)
-      alpha_estimated[(i-1)*10 + j] <- mle_cmdstan$mle("alpha")
-      beta_estimated[(i-1)*10 + j] <- mle_cmdstan$mle("beta")
+      alpha_estimated[(i-1)*10 + j] <- q_learning_mle$mle("alpha")
+      beta_estimated[(i-1)*10 + j] <- q_learning_mle$mle("beta")
     },error = function(e) {message(e)})
   }
 }
+
 parameter_recovery_mle <- data.frame(alpha_true = alpha_true[1:length(alpha_estimated)],
                                      beta_true = beta_true[1:length(alpha_estimated)],
                                      alpha_estimated = alpha_estimated[1:length(alpha_estimated)],
@@ -280,7 +284,10 @@ parameter_recovery_mle %>%
   ggplot(aes(x = alpha_true, y = alpha_estimated)) +
   geom_point()
 ```
+
+
 どうもβの推定値の中にとても大きな値になってしまったものがあるようです。βの最大値は制約をかけてないので，すごく大きくなることがあります。
+
 
 ```{r}
 parameter_recovery_mle %>% 
@@ -299,11 +306,11 @@ parameter_recovery_mle %>%
 
 ### ベイズ推定
 
-- 今度は，MCMCを用いたベイズ推定をしてみましょう！最尤推定のときは，optimizeでしたが，今度は，sampleを使います。違う点としては，MCMCの連鎖（チェーン）の本数（chains 4本が良いと思います），MCMCの初期のあまり収束してい部分をどのくらい捨てるか(iter_warmup, モデルに依存するのでtrace plotを見てから判断するのが良いと思います）,MCMCサンプルの数(iter_sampling 多いほうが推定は安定しますが，時間がかかります)，　並列化で使用するコアの数（parallel_chains MCMCチェーンを４とした場合は，４がいいですが，お手持ちのパソコンのコア数によります）
+- 今度は，MCMCを用いたベイズ推定をしてみましょう！最尤推定のときは，optimizeでしたが，今度は，sampleを使います。違う点としては，MCMCの連鎖（チェーン）の本数（chains 4本が良いと思います），MCMCの初期のあまり収束してい部分をどのくらい捨てるか(iter_warmup, モデルに依存するのでtrace plotを見てから判断するのが良いと思います）,MCMCサンプルの数(iter_sampling 多いほうが推定は安定しますが，時間がかかります)，　並列化で使用するコアの数（parallel_chains，MCMCのチェーンを４とした場合は，４がいいですが，お手持ちのパソコンのコア数に依存します）を指定する点です。
 
 
 ```
-q_non_info_single_cmdstan <- q_non_info_single$sample(
+q_learning_mcmc <- q_learning$sample(
   data = list(trial = nrow(data_1),
               reward = data_1$reward,
               choice = data_1$choice + 1),
@@ -316,7 +323,7 @@ q_non_info_single_cmdstan <- q_non_info_single$sample(
 
 
 ```{r include=FALSE}
-q_non_info_single_cmdstan <- q_non_info_single$sample(
+q_learning_mcmc  <- q_learning$sample(
   data = list(trial = nrow(data_1),
               reward = data_1$reward,
               choice = data_1$choice + 1),
@@ -330,20 +337,20 @@ q_non_info_single_cmdstan <- q_non_info_single$sample(
 結果の要約を確認してみましょう。
 
 ```{r}
-q_non_info_single_cmdstan$summary()
+q_learning_mcmc$summary()
 ```
 
 以下はMCMCについての診断結果です。
 
 ```{r}
-q_non_info_single_cmdstan$cmdstan_diagnose()
+q_learning_mcmc$cmdstan_diagnose()
 ```
 
 trace plot と事後分布をプロットしてみましょう。trace plotはMCMCのチェーンがきれいにまざっているか確認をしましょう。
 
 ```{r}
 # ggplotやtidyverseで扱いやすく処理する
-mcmc_samples = as_draws_df(q_non_info_single_cmdstan$draws())
+mcmc_samples = as_draws_df(q_learning_mcmc$draws())
 # alphaのtrace plot
 mcmc_samples %>%
   mutate(chain = as.factor(.chain)) %>% 
@@ -368,7 +375,7 @@ ggplot() +
 
 ### パラメータリカバリ（ベイズ推定）
 
-ベイズ推定でもパラメータリカバリをしてみましょう。ただ，これは結構長くなると思います。
+ベイズ推定でもパラメータリカバリをしてみましょう。ただ，これは結構計算に時間がかかると思います。
 
 ```
 alpha_true <- NULL
@@ -376,6 +383,7 @@ beta_true <- NULL
 alpha_estimated <- NULL
 beta_estimated <- NULL
 beta_set <- 0
+
 for (i in 1:10) {
   alpha_set <- 0
   beta_set = beta_set + 0.5
@@ -388,7 +396,7 @@ for (i in 1:10) {
     print(paste("進捗状況：",(i-1)*10 + j,"/100"))
     #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
     tryCatch({
-      mcmc_cmdstan <- q_non_info_single$sample(
+      q_learning_mcmc <- q_learning$sample(
         data = list(trial = nrow(data_2),
                    reward = data_2$reward,
                    choice = data_2$choice + 1),
@@ -397,14 +405,14 @@ for (i in 1:10) {
         iter_warmup = 500,
         iter_sampling = 1000,
         parallel_chains = 4)
-      mcmc_samples = as_draws_df(mcmc_cmdstan$draws())
+      mcmc_samples = as_draws_df(q_learning_mcmc$draws())
       alpha_estimated[(i-1)*10 + j] <- mean(mcmc_samples$alpha)
       beta_estimated[(i-1)*10 + j] <- mean(mcmc_samples$beta)
     },error = function(e) {message(e)})
   }
 }
 
-parameter_recovery_non_info <- data.frame(alpha_true = alpha_true,
+parameter_recovery_mcmc <- data.frame(alpha_true = alpha_true,
                                      beta_true = beta_true,
                                      alpha_estimated = alpha_estimated,
                                      beta_estimated = beta_estimated)
@@ -429,7 +437,7 @@ for (i in 1:10) {
     print(paste("進捗状況：",(i-1)*10 + j,"/100"))
     #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
     tryCatch({
-      mcmc_cmdstan <- q_non_info_single$sample(
+      q_learning_mcmc <- q_learning$sample(
         data = list(trial = nrow(data_2),
                    reward = data_2$reward,
                    choice = data_2$choice + 1),
@@ -438,14 +446,14 @@ for (i in 1:10) {
         iter_warmup = 500,
         iter_sampling = 1000,
         parallel_chains = 4)
-      mcmc_samples = as_draws_df(mcmc_cmdstan$draws())
+      mcmc_samples = as_draws_df(q_learning_mcmc$draws())
       alpha_estimated[(i-1)*10 + j] <- mean(mcmc_samples$alpha)
       beta_estimated[(i-1)*10 + j] <- mean(mcmc_samples$beta)
     },error = function(e) {message(e)})
   }
 }
 
-parameter_recovery_non_info <- data.frame(alpha_true = alpha_true,
+parameter_recovery_mcmc <- data.frame(alpha_true = alpha_true,
                                      beta_true = beta_true,
                                      alpha_estimated = alpha_estimated,
                                      beta_estimated = beta_estimated)
@@ -453,18 +461,23 @@ parameter_recovery_non_info <- data.frame(alpha_true = alpha_true,
 
 #### パラメータリカバリ（ベイズ推定）の確認
 
-パラメータリカバリーのチェックをしましょう。散布図を書いて，真値（研究者がデータ生成時に設定した値）と推定された値が強い相関を示しているか確認します（データ生成時や推定時に確率的な変動が生じるので，完全一致はありません）。最尤推定同様に，βがすごく大きくなることがあるのは，気になるところです。
+パラメータリカバリーのチェックをしましょう。散布図を書いて，真値（研究者がデータ生成時に設定した値）と推定された値が強い相関を示しているか確認します（データ生成時や推定時に確率的な変動が生じるので，完全一致はありません）。
 
 ```{r}
-parameter_recovery_non_info %>% 
+parameter_recovery_mcmc %>% 
   ggplot(aes(x = alpha_true, y = alpha_estimated)) +
   geom_point()
-parameter_recovery_non_info %>%
+```
+
+最尤推定同様に，βがすごく大きくなることがあるのは，気になるところです。
+
+```{r}
+parameter_recovery_mcmc %>%
   ggplot(aes(x = beta_true, y = beta_estimated)) +
   geom_point()
 ```
 
-### 弱情報事前分布の活用
+### 事前分布の活用
 
 - 上記の無情報の事前分布の場合だと，ベータがとても大きな値になる点が気にかかるところです。そこで事前分布にも情報をもたせることにします。
 
@@ -482,9 +495,9 @@ beta = seq(0,15, length=500)
 plot(beta, dgamma(beta, 2, 0.5), ylab="density", type ="l", col=4)
 ```
 
-### 弱情報事前分布を用いた場合のパラメータリカバリ
+### 情報の有る事前分布を用いた場合のパラメータリカバリ
 
-上記を踏まえて，αの事前分布にベータ分布，ベータの事前分布にガンマ分布を仮定したStanコードを書いて，q_learning_weak_info_single.stanという名前で保存します。
+上記を踏まえて，αの事前分布にベータ分布，ベータの事前分布にガンマ分布を仮定したStanコードを書いて，q_learning_prior.stanという名前で保存します。
 
 ```
 data {
@@ -520,22 +533,22 @@ model {
 }
 ```
 
-q_learning_weak_info_single.stanを使って，パラメータリカバリを実施してみます。
+q_learning_prior.stanを使って，パラメータリカバリを実施してみます。
 
 まず，上記のモデルをコンパイルします。
 
 ```{r include=FALSE}
-q_weak_info_single <- cmdstan_model('rl/q_learning_weak_info_single.stan')
+q_learning_prior <- cmdstan_model('rl/q_learning_prior.stan')
 ```
 
 ```
-q_weak_info_single <- cmdstan_model('q_learning_weak_info_single.stan')
+q_learning_prior <- cmdstan_model('q_learning_prior.stan')
 ```
 
 まず，先程のdata_1で試してみます。
 
 ```{r include=FALSE}
-q_weak_info_single_cmdstan <- q_weak_info_single$sample(
+q_learning_prior_mcmc <- q_learning_prior$sample(
   data = list(trial = nrow(data_1),
               reward = data_1$reward,
               choice = data_1$choice + 1),
@@ -547,7 +560,7 @@ q_weak_info_single_cmdstan <- q_weak_info_single$sample(
 ```
 
 ```
-q_weak_info_single_cmdstan <- q_weak_info_single$sample(
+q_learning_prior_mcmc <- q_learning_prior$sample(
   data = list(trial = nrow(data_1),
               reward = data_1$reward,
               choice = data_1$choice + 1),
@@ -561,13 +574,13 @@ q_weak_info_single_cmdstan <- q_weak_info_single$sample(
 結果の要約を確認してみましょう。
 
 ```{r}
-q_weak_info_single_cmdstan$summary()
+q_learning_prior_mcmc$summary()
 ```
 
 以下はMCMCについての診断結果です。収束診断の問題もないかと思います。
 
 ```{r}
-q_weak_info_single_cmdstan$cmdstan_diagnose()
+q_learning_prior_mcmc$cmdstan_diagnose()
 ```
 
 
@@ -593,7 +606,7 @@ for (i in 1:10) {
     print(paste("進捗状況：",(i-1)*10 + j,"/100"))
     #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
     tryCatch({
-      mcmc_cmdstan <- q_weak_info_single$sample(
+      q_learning_prior_mcmc <- q_learning_prior$sample(
         data = list(trial = nrow(data_2),
                    reward = data_2$reward,
                    choice = data_2$choice + 1),
@@ -602,14 +615,14 @@ for (i in 1:10) {
         iter_warmup = 500,
         iter_sampling = 1000,
         parallel_chains = 4)
-      mcmc_samples = as_draws_df(mcmc_cmdstan$draws())
+      mcmc_samples = as_draws_df(q_learning_prior_mcmc$draws())
       alpha_estimated[(i-1)*10 + j] <- mean(mcmc_samples$alpha)
       beta_estimated[(i-1)*10 + j] <- mean(mcmc_samples$beta)
     },error = function(e) {message(e)})
   }
 }
 
-parameter_recovery_week_info <- data.frame(alpha_true = alpha_true,
+parameter_recovery_prior_mcmc <- data.frame(alpha_true = alpha_true,
                                      beta_true = beta_true,
                                      alpha_estimated = alpha_estimated,
                                      beta_estimated = beta_estimated)
@@ -635,7 +648,7 @@ for (i in 1:10) {
     print(paste("進捗状況：",(i-1)*10 + j,"/100"))
     #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
     tryCatch({
-      mcmc_cmdstan <- q_weak_info_single$sample(
+      q_learning_prior_mcmc <- q_learning_prior$sample(
         data = list(trial = nrow(data_2),
                    reward = data_2$reward,
                    choice = data_2$choice + 1),
@@ -644,28 +657,29 @@ for (i in 1:10) {
         iter_warmup = 500,
         iter_sampling = 1000,
         parallel_chains = 4)
-      mcmc_samples = as_draws_df(mcmc_cmdstan$draws())
+      mcmc_samples = as_draws_df(q_learning_prior_mcmc$draws())
       alpha_estimated[(i-1)*10 + j] <- mean(mcmc_samples$alpha)
       beta_estimated[(i-1)*10 + j] <- mean(mcmc_samples$beta)
     },error = function(e) {message(e)})
   }
 }
-parameter_recovery_week_info <- data.frame(alpha_true = alpha_true,
+
+parameter_recovery_prior_mcmc <- data.frame(alpha_true = alpha_true,
                                      beta_true = beta_true,
                                      alpha_estimated = alpha_estimated,
                                      beta_estimated = beta_estimated)
 ```
 
 
-#### 弱情報事前分布を用いた場合のパラメータリカバリの確認
+#### 有情報事前分布を用いた場合のパラメータリカバリの確認
 
 いい感じにパラメータリカバリーできています。無情報事前分布のときのようにすごく大きなβが発生しなくなっています。
 
 ```{r}
-parameter_recovery_week_info %>% 
+parameter_recovery_prior_mcmc %>% 
   ggplot(aes(x = alpha_true, y = alpha_estimated)) +
   geom_point()
-parameter_recovery_week_info %>%
+parameter_recovery_prior_mcmc %>%
   ggplot(aes(x = beta_true, y = beta_estimated)) +
   geom_point()
 ```
@@ -713,7 +727,7 @@ Sub01
 data_individual <- data_long %>% 
   filter(id == 1)
 
-mcmc_non_info <- q_non_info_single$sample(
+q_learning_mcmc <- q_learning$sample(
         data = list(trial = nrow(data_individual),
                    reward = data_individual$reward,
                    choice = data_individual$choice + 1),
@@ -723,14 +737,15 @@ mcmc_non_info <- q_non_info_single$sample(
         iter_sampling = 1000,
         parallel_chains = 4)
 
-mcmc_non_info $summary()
-mcmc_non_info $cmdstan_diagnose()
+q_learning_mcmc$summary()
+q_learning_mcmc$cmdstan_diagnose()
 ```
 
 ```{r include=FALSE}
 data_individual <- data_long %>% 
   filter(id == 1)
-mcmc_non_info <- q_non_info_single$sample(
+
+q_learning_mcmc <- q_learning$sample(
         data = list(trial = nrow(data_individual),
                    reward = data_individual$reward,
                    choice = data_individual$choice + 1),
@@ -740,38 +755,38 @@ mcmc_non_info <- q_non_info_single$sample(
         iter_sampling = 1000,
         parallel_chains = 4)
 
-mcmc_non_info $summary()
-mcmc_non_info $cmdstan_diagnose()
+q_learning_mcmc$summary()
+q_learning_mcmc$cmdstan_diagnose()
 ```
 
 結果のプロット
 
 ```{r}
-mcmc_non_info <- as_draws_df(mcmc_cmdstan$draws())
+q_learning_mcmc <- as_draws_df(q_learning_mcmc$draws())
 # alphaのtrace plot
-mcmc_non_info %>%
+q_learning_mcmc %>%
   mutate(chain = as.factor(.chain)) %>% 
   ggplot(aes(x = .iteration, y = alpha, group = .chain, color = chain)) +
   geom_line()
 # betaのtrace plot
-mcmc_non_info %>%
+q_learning_mcmc %>%
   mutate(chain = as.factor(.chain)) %>% 
   filter(beta < 1000) %>% 
   ggplot(aes(x = .iteration, y = beta, group = .chain, color = chain)) +
   geom_line()
 # alphaの事後分布
-mcmc_non_info %>% 
+q_learning_mcmc %>% 
   ggplot() +
   geom_histogram(aes(x=alpha),binwidth = 0.01)
 # betaの事後分布
-mcmc_non_info %>% 
+q_learning_mcmc %>% 
   filter(beta < 1000) %>% 
 ggplot() +
   geom_histogram(aes(x=beta),binwidth = 0.1)
 q_values <- q_learning_ll(mean(mcmc_samples$alpha),mean(mcmc_samples$beta),data_individual)
 ```
 
-### 個人のパラメータ推定（弱情報事前分布）
+### 個人のパラメータ推定（有情報事前分布）
 
 sub01
 
@@ -779,7 +794,7 @@ sub01
 data_individual <- data_long %>% 
   filter(id == 1)
 
-mcmc_weak_info <- q_weak_info_single$sample(
+q_learning_prior_mcmc <- q_learning_prior$sample(
         data = list(trial = nrow(data_individual),
                    reward = data_individual$reward,
                    choice = data_individual$choice + 1),
@@ -789,16 +804,16 @@ mcmc_weak_info <- q_weak_info_single$sample(
         iter_sampling = 1000,
         parallel_chains = 4)
 
-mcmc_weak_info$summary()
-mcmc_weak_info$cmdstan_diagnose()
+q_learning_prior_mcmc$summary()
+q_learning_prior_mcmc$cmdstan_diagnose()
 ```
 
 
 ```{r include=FALSE}
-# 特定の個人のデータを抽出
 data_individual <- data_long %>% 
   filter(id == 1)
-mcmc_weak_info <- q_weak_info_single$sample(
+
+q_learning_prior_mcmc <- q_learning_prior$sample(
         data = list(trial = nrow(data_individual),
                    reward = data_individual$reward,
                    choice = data_individual$choice + 1),
@@ -808,30 +823,30 @@ mcmc_weak_info <- q_weak_info_single$sample(
         iter_sampling = 1000,
         parallel_chains = 4)
 
-mcmc_weak_info$summary()
-mcmc_weak_info$cmdstan_diagnose()
+q_learning_prior_mcmc$summary()
+q_learning_prior_mcmc$cmdstan_diagnose()
 ```
 
 結果のプロット
 
 ```{r}
-mcmc_weak_info <- as_draws_df(mcmc_cmdstan$draws())
+q_learning_prior_mcmc <- as_draws_df(q_learning_prior_mcmc$draws())
 # alphaのtrace plot
-mcmc_weak_info %>%
+q_learning_prior_mcmc %>%
   mutate(chain = as.factor(.chain)) %>% 
   ggplot(aes(x = .iteration, y = alpha, group = .chain, color = chain)) +
   geom_line()
 # betaのtrace plot
-mcmc_weak_info %>%
+q_learning_prior_mcmc %>%
   mutate(chain = as.factor(.chain)) %>% 
   ggplot(aes(x = .iteration, y = beta, group = .chain, color = chain)) +
   geom_line()
 # alphaの事後分布
-mcmc_weak_info %>% 
+q_learning_prior_mcmc %>% 
   ggplot() +
   geom_histogram(aes(x=alpha),binwidth = 0.01)
 # betaの事後分布
-mcmc_weak_info %>% 
+q_learning_prior_mcmc %>% 
 ggplot() +
   geom_histogram(aes(x=beta),binwidth = 0.1)
 q_values <- q_learning_ll(mean(mcmc_samples$alpha),mean(mcmc_samples$beta),data_individual)

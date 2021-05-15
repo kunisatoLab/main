@@ -13,7 +13,7 @@
 
 <title>Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法</title>
 
-<script src="site_libs/header-attrs-2.7.1/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -397,7 +397,7 @@ div.tocify {
 </div>
 <div id="仮想マシンvmの準備" class="section level2">
 <h2>2. 仮想マシン(VM)の準備</h2>
-<p>1.名前やマシンの構成は好みで選択してください（マシンの構成によって金額が変わるので，お財布と相談ください）。ブートディスクの設定で変更を押して，Ubuntu 20.04 LTSを選んで，ディスクサイズは30~50GBくらいにしておきます。</p>
+<p>1.名前やマシンの構成は好みで選択してください（マシンの構成によって金額が変わるので，お財布と相談ください。なお，E2はコスパは良いのですが，複数人がRStudioにアクセスするとサーバーが落ちることがあるようです。少し割高に感じるかもしれませんが，N系を選ぶのが無難に思います）。ブートディスクの設定で変更を押して，Ubuntu 20.04 LTSを選んで，ディスクサイズは30~50GBくらいにしておきます。</p>
 <p>2.ファイヤーウォールの設定(「HTTP トラフィックを許可する」と「HTTPS トラフィックを許可する」にチェックをいれる)</p>
 <p>※ よく使う仮想マシン構成が決まっている場合は，インスタンステンプレートを使うと便利と思います。</p>
 <p>3.VMインスタンスを作成します。勝手に作ったVMが起動します。</p>

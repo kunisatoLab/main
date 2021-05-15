@@ -459,6 +459,7 @@ q_learning_sim &lt;- function(alpha, beta,data) {
               reward = reward)
   return(result)
 }
+
 q_learning_ll &lt;- function(alpha, beta,data) {
   #変数の準備
   value_s1 &lt;- 0          # s1の価値(初期値は0)
@@ -506,7 +507,7 @@ data_1 &lt;- q_learning_sim(alpha = 0.3, beta = 2, sim_data)</code></pre>
 <h3>cmdstanrでの推定</h3>
 <div id="stanコードの作成" class="section level4">
 <h4>Stanコードの作成</h4>
-<p>“q_learning_non_info_single.stan”というファイルを作成して，以下のコードを書き込みます。Stanは統計モデリング用のプラットフォームで，MCMCサンプリングによるベイズ推定，変分推定，最適化による最尤推定が可能です。Stanでは，data,parameters,modelのようにブロックごとに指定をして，書いていきます（この３つが最小限のブロック数かと思います）。dataブロックでは入力するデータについて記述します（型と範囲の指定が必要です）。parameterブロックでは，推定するパラメータについて記述します（型と範囲の指定が必要です）。modelブロックでは，データとパラメータを用いた生成モデルの記載をします。なお，データ~分布(y ~ normal(mu, sig))のような形で記述もできますし，target += 対数尤度のように，対数尤度でも記述ができます。以下は，Q学習の推定用のコードですが，グリッドサーチで用意したものに比べて，すっきりしているかと思います。</p>
+<p>“q_learning.stan”というファイルを作成して，以下のコードを書き込みます。Stanは統計モデリング用のプラットフォームで，MCMCサンプリングによるベイズ推定，変分推定，最適化による最尤推定が可能です。Stanでは，data,parameters,modelのようにブロックごとに指定をして，書いていきます（この３つが最小限のブロック数かと思います）。dataブロックでは入力するデータについて記述します（型と範囲の指定が必要です）。parameterブロックでは，推定するパラメータについて記述します（型と範囲の指定が必要です）。modelブロックでは，データとパラメータを用いた生成モデルの記載をします。なお，データ~分布(y ~ normal(mu, sig))のような形で記述もできますし，target += 対数尤度のように，対数尤度でも記述ができます。以下は，Q学習の推定用のコードですが，グリッドサーチで用意したものに比べて，すっきりしているかと思います。</p>
 <pre><code>data {
   int&lt;lower=1&gt; trial;
   int&lt;lower=1,upper=2&gt; choice[trial]; // 1 or 2
@@ -535,13 +536,13 @@ model {
   }
 }</code></pre>
 <p>Stanコードがstanファイルとして保存できたら，cmdstan_model()コンパイルします。Rは便利ですが計算は遅い言語なので，c++のような高速な計算が可能な言語にコンパイルをします。ちなみに，stanをRで使う場合は，Rstanを使うことが多かったのですが，最近は，cmdstanrが開発されており，こっちのほうがコンパイルもサンプリングも早いのでおすすめです。</p>
-<pre><code>q_non_info_single &lt;- cmdstan_model(&#39;q_learning_non_info_single.stan&#39;)</code></pre>
+<pre><code>q_learning &lt;- cmdstan_model(&#39;q_learning.stan&#39;)</code></pre>
 </div>
 </div>
 <div id="最尤推定" class="section level3">
 <h3>最尤推定</h3>
 <p>コンパイルができたら，最適化による最尤推定をしてみましょう。最尤推定は，<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl1.html" target="_blank">「強化学習モデル: 最尤推定」 </a>でも見てきたように，optimやpsoなどのRパッケージでできますが，ここではstanで最尤推定値を推定します。コンパイルしたモデル$optimize()で推定ができます。</p>
-<pre><code>mle_cmdstan &lt;- q_non_info_single$optimize(
+<pre><code>mle_cmdstan &lt;- q_learning$optimize(
   data = list(trial = nrow(data_1),
               reward = data_1$reward,
               choice = data_1$choice + 1),
@@ -550,12 +551,13 @@ mle_cmdstan$summary()</code></pre>
 </div>
 <div id="パラメータリカバリ最尤推定" class="section level3">
 <h3>パラメータリカバリ（最尤推定）</h3>
-<p>グリッドサーチは時間がかかることもあって，ちゃんとしたパラメータリカバリしなかったのですが，ここで，最尤推定のパラメータリカバリをします。αは0.1から1の範囲で0.1刻み，βは0.5から5の範囲で0.5刻みでデータ生成とパラメータ推定を行います(つまり100個分チェックします)。</p>
+<p>stanのoptimizeを用いた最尤推定のパラメータリカバリをします。αは0.1から1の範囲で0.1刻み，βは0.5から5の範囲で0.5刻みでデータ生成とパラメータ推定を行います(つまり100個分チェックします)。</p>
 <pre><code>alpha_true &lt;- NULL
 beta_true &lt;- NULL
 alpha_estimated &lt;- NULL
 beta_estimated &lt;- NULL
 beta_set &lt;- 0
+
 for (i in 1:10) {
   alpha_set &lt;- 0
   beta_set = beta_set + 0.5
@@ -567,28 +569,29 @@ for (i in 1:10) {
     beta_true[(i-1)*10 + j] &lt;- beta_set
     #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
     tryCatch({
-      mle_cmdstan &lt;- q_non_info_single$optimize(
+      q_learning_mle &lt;- q_learning$optimize(
       data = list(trial = nrow(data_2),
               reward = data_2$reward,
               choice = data_2$choice + 1),
       seed = 123)
-      alpha_estimated[(i-1)*10 + j] &lt;- mle_cmdstan$mle(&quot;alpha&quot;)
-      beta_estimated[(i-1)*10 + j] &lt;- mle_cmdstan$mle(&quot;beta&quot;)
+      alpha_estimated[(i-1)*10 + j] &lt;- q_learning_mle$mle(&quot;alpha&quot;)
+      beta_estimated[(i-1)*10 + j] &lt;- q_learning_mle$mle(&quot;beta&quot;)
     },error = function(e) {message(e)})
   }
 }
+
 parameter_recovery_mle &lt;- data.frame(alpha_true = alpha_true[1:length(alpha_estimated)],
                                      beta_true = beta_true[1:length(alpha_estimated)],
                                      alpha_estimated = alpha_estimated[1:length(alpha_estimated)],
-                                     beta_estimated = beta_estimated[1:length(alpha_estimated)])
-parameter_recovery_mle</code></pre>
+                                     beta_estimated = beta_estimated[1:length(alpha_estimated)])</code></pre>
 <div id="パラメータリカバリ最尤推定の確認" class="section level4">
 <h4>パラメータリカバリ（最尤推定）の確認</h4>
 <p>パラメータリカバリーのチェックをしましょう。散布図を書いて，真値（研究者がデータ生成時に設定した値）と推定された値が強い相関を示しているか確認します（データ生成時や推定時に確率的な変動が生じるので，完全一致はありません）。最尤推定だと，一部のパラメータは推定ミスをすることがあります。</p>
 <pre class="r"><code>parameter_recovery_mle %&gt;% 
   ggplot(aes(x = alpha_true, y = alpha_estimated)) +
   geom_point()</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-7-1.png" width="672" /> どうもβの推定値の中にとても大きな値になってしまったものがあるようです。βの最大値は制約をかけてないので，すごく大きくなることがあります。</p>
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>どうもβの推定値の中にとても大きな値になってしまったものがあるようです。βの最大値は制約をかけてないので，すごく大きくなることがあります。</p>
 <pre class="r"><code>parameter_recovery_mle %&gt;% 
   ggplot(aes(x = beta_true, y = beta_estimated)) +
   geom_point()</code></pre>
@@ -604,9 +607,9 @@ parameter_recovery_mle</code></pre>
 <div id="ベイズ推定" class="section level3">
 <h3>ベイズ推定</h3>
 <ul>
-<li>今度は，MCMCを用いたベイズ推定をしてみましょう！最尤推定のときは，optimizeでしたが，今度は，sampleを使います。違う点としては，MCMCの連鎖（チェーン）の本数（chains 4本が良いと思います），MCMCの初期のあまり収束してい部分をどのくらい捨てるか(iter_warmup, モデルに依存するのでtrace plotを見てから判断するのが良いと思います）,MCMCサンプルの数(iter_sampling 多いほうが推定は安定しますが，時間がかかります)，　並列化で使用するコアの数（parallel_chains MCMCチェーンを４とした場合は，４がいいですが，お手持ちのパソコンのコア数によります）</li>
+<li>今度は，MCMCを用いたベイズ推定をしてみましょう！最尤推定のときは，optimizeでしたが，今度は，sampleを使います。違う点としては，MCMCの連鎖（チェーン）の本数（chains 4本が良いと思います），MCMCの初期のあまり収束してい部分をどのくらい捨てるか(iter_warmup, モデルに依存するのでtrace plotを見てから判断するのが良いと思います）,MCMCサンプルの数(iter_sampling 多いほうが推定は安定しますが，時間がかかります)，　並列化で使用するコアの数（parallel_chains，MCMCのチェーンを４とした場合は，４がいいですが，お手持ちのパソコンのコア数に依存します）を指定する点です。</li>
 </ul>
-<pre><code>q_non_info_single_cmdstan &lt;- q_non_info_single$sample(
+<pre><code>q_learning_mcmc &lt;- q_learning$sample(
   data = list(trial = nrow(data_1),
               reward = data_1$reward,
               choice = data_1$choice + 1),
@@ -616,16 +619,16 @@ parameter_recovery_mle</code></pre>
   iter_sampling = 1000,
   parallel_chains = 4)</code></pre>
 <p>結果の要約を確認してみましょう。</p>
-<pre class="r"><code>q_non_info_single_cmdstan$summary()</code></pre>
+<pre class="r"><code>q_learning_mcmc$summary()</code></pre>
 <pre><code>## # A tibble: 3 x 10
 ##   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
 ##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1 lp__     -40.6   -40.2   1.19  0.893 -42.9   -39.4    1.00    1560.    1572.
-## 2 alpha      0.736   0.749 0.150 0.156   0.464   0.959  1.00    2375.    1438.
-## 3 beta       2.62    2.59  0.606 0.593   1.69    3.66   1.00    2280.    2321.</code></pre>
+## 1 lp__     -39.7   -39.4   1.15  0.792 -42.1   -38.6    1.01    1265.    1142.
+## 2 alpha      0.364   0.330 0.158 0.130   0.176   0.689  1.00    1582.    1057.
+## 3 beta       2.46    2.42  0.559 0.554   1.59    3.41   1.00    1696.    1929.</code></pre>
 <p>以下はMCMCについての診断結果です。</p>
-<pre class="r"><code>q_non_info_single_cmdstan$cmdstan_diagnose()</code></pre>
-<pre><code>## Processing csv files: /tmp/RtmpjlQFgj/q_learning_non_info_single-202105141524-1-078f45.csv, /tmp/RtmpjlQFgj/q_learning_non_info_single-202105141524-2-078f45.csv, /tmp/RtmpjlQFgj/q_learning_non_info_single-202105141524-3-078f45.csv, /tmp/RtmpjlQFgj/q_learning_non_info_single-202105141524-4-078f45.csv
+<pre class="r"><code>q_learning_mcmc$cmdstan_diagnose()</code></pre>
+<pre><code>## Processing csv files: /tmp/Rtmp3zBAAO/q_learning-202105150616-1-080e61.csv, /tmp/Rtmp3zBAAO/q_learning-202105150616-2-080e61.csv, /tmp/Rtmp3zBAAO/q_learning-202105150616-3-080e61.csv, /tmp/Rtmp3zBAAO/q_learning-202105150616-4-080e61.csv
 ## 
 ## Checking sampler transitions treedepth.
 ## Treedepth satisfactory for all transitions.
@@ -643,7 +646,7 @@ parameter_recovery_mle</code></pre>
 ## Processing complete, no problems detected.</code></pre>
 <p>trace plot と事後分布をプロットしてみましょう。trace plotはMCMCのチェーンがきれいにまざっているか確認をしましょう。</p>
 <pre class="r"><code># ggplotやtidyverseで扱いやすく処理する
-mcmc_samples = as_draws_df(q_non_info_single_cmdstan$draws())
+mcmc_samples = as_draws_df(q_learning_mcmc$draws())
 # alphaのtrace plot
 mcmc_samples %&gt;%
   mutate(chain = as.factor(.chain)) %&gt;% 
@@ -671,12 +674,13 @@ ggplot() +
 </div>
 <div id="パラメータリカバリベイズ推定" class="section level3">
 <h3>パラメータリカバリ（ベイズ推定）</h3>
-<p>ベイズ推定でもパラメータリカバリをしてみましょう。ただ，これは結構長くなると思います。</p>
+<p>ベイズ推定でもパラメータリカバリをしてみましょう。ただ，これは結構計算に時間がかかると思います。</p>
 <pre><code>alpha_true &lt;- NULL
 beta_true &lt;- NULL
 alpha_estimated &lt;- NULL
 beta_estimated &lt;- NULL
 beta_set &lt;- 0
+
 for (i in 1:10) {
   alpha_set &lt;- 0
   beta_set = beta_set + 0.5
@@ -689,7 +693,7 @@ for (i in 1:10) {
     print(paste(&quot;進捗状況：&quot;,(i-1)*10 + j,&quot;/100&quot;))
     #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
     tryCatch({
-      mcmc_cmdstan &lt;- q_non_info_single$sample(
+      q_learning_mcmc &lt;- q_learning$sample(
         data = list(trial = nrow(data_2),
                    reward = data_2$reward,
                    choice = data_2$choice + 1),
@@ -698,47 +702,48 @@ for (i in 1:10) {
         iter_warmup = 500,
         iter_sampling = 1000,
         parallel_chains = 4)
-      mcmc_samples = as_draws_df(mcmc_cmdstan$draws())
+      mcmc_samples = as_draws_df(q_learning_mcmc$draws())
       alpha_estimated[(i-1)*10 + j] &lt;- mean(mcmc_samples$alpha)
       beta_estimated[(i-1)*10 + j] &lt;- mean(mcmc_samples$beta)
     },error = function(e) {message(e)})
   }
 }
 
-parameter_recovery_non_info &lt;- data.frame(alpha_true = alpha_true,
+parameter_recovery_mcmc &lt;- data.frame(alpha_true = alpha_true,
                                      beta_true = beta_true,
                                      alpha_estimated = alpha_estimated,
                                      beta_estimated = beta_estimated)</code></pre>
 <div id="パラメータリカバリベイズ推定の確認" class="section level4">
 <h4>パラメータリカバリ（ベイズ推定）の確認</h4>
-<p>パラメータリカバリーのチェックをしましょう。散布図を書いて，真値（研究者がデータ生成時に設定した値）と推定された値が強い相関を示しているか確認します（データ生成時や推定時に確率的な変動が生じるので，完全一致はありません）。最尤推定同様に，βがすごく大きくなることがあるのは，気になるところです。</p>
-<pre class="r"><code>parameter_recovery_non_info %&gt;% 
+<p>パラメータリカバリーのチェックをしましょう。散布図を書いて，真値（研究者がデータ生成時に設定した値）と推定された値が強い相関を示しているか確認します（データ生成時や推定時に確率的な変動が生じるので，完全一致はありません）。</p>
+<pre class="r"><code>parameter_recovery_mcmc %&gt;% 
   ggplot(aes(x = alpha_true, y = alpha_estimated)) +
   geom_point()</code></pre>
 <p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<pre class="r"><code>parameter_recovery_non_info %&gt;%
+<p>最尤推定同様に，βがすごく大きくなることがあるのは，気になるところです。</p>
+<pre class="r"><code>parameter_recovery_mcmc %&gt;%
   ggplot(aes(x = beta_true, y = beta_estimated)) +
   geom_point()</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
 </div>
-<div id="弱情報事前分布の活用" class="section level3">
-<h3>弱情報事前分布の活用</h3>
+<div id="事前分布の活用" class="section level3">
+<h3>事前分布の活用</h3>
 <ul>
 <li><p>上記の無情報の事前分布の場合だと，ベータがとても大きな値になる点が気にかかるところです。そこで事前分布にも情報をもたせることにします。</p></li>
 <li><p>αについては，0や１に近い値を取ることは稀であると考えられるので，以下のベータ分布beta(2,2)のような形状だと推定が安定するかもしれません。</p></li>
 </ul>
 <pre class="r"><code>alpha = seq(0,1, length=100)
 plot(alpha, dbeta(alpha, 2, 2), ylab=&quot;density&quot;, type =&quot;l&quot;, col=4)</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>βは極端に大きな値をとりましたが，βがあまりに大きくても意味はないので，裾広がりなガンマ分布(gamma(2,0.5))を使うことで，極端に大きな推定値を避けられるかもしれません。</p>
 <pre class="r"><code>beta = seq(0,15, length=500)
 plot(beta, dgamma(beta, 2, 0.5), ylab=&quot;density&quot;, type =&quot;l&quot;, col=4)</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
-<div id="弱情報事前分布を用いた場合のパラメータリカバリ" class="section level3">
-<h3>弱情報事前分布を用いた場合のパラメータリカバリ</h3>
-<p>上記を踏まえて，αの事前分布にベータ分布，ベータの事前分布にガンマ分布を仮定したStanコードを書いて，q_learning_weak_info_single.stanという名前で保存します。</p>
+<div id="情報の有る事前分布を用いた場合のパラメータリカバリ" class="section level3">
+<h3>情報の有る事前分布を用いた場合のパラメータリカバリ</h3>
+<p>上記を踏まえて，αの事前分布にベータ分布，ベータの事前分布にガンマ分布を仮定したStanコードを書いて，q_learning_prior.stanという名前で保存します。</p>
 <pre><code>data {
   int&lt;lower=1&gt; trial;
   int&lt;lower=1,upper=2&gt; choice[trial]; // 1 or 2
@@ -770,11 +775,11 @@ model {
     }
   }
 }</code></pre>
-<p>q_learning_weak_info_single.stanを使って，パラメータリカバリを実施してみます。</p>
+<p>q_learning_prior.stanを使って，パラメータリカバリを実施してみます。</p>
 <p>まず，上記のモデルをコンパイルします。</p>
-<pre><code>q_weak_info_single &lt;- cmdstan_model(&#39;q_learning_weak_info_single.stan&#39;)</code></pre>
+<pre><code>q_learning_prior &lt;- cmdstan_model(&#39;q_learning_prior.stan&#39;)</code></pre>
 <p>まず，先程のdata_1で試してみます。</p>
-<pre><code>q_weak_info_single_cmdstan &lt;- q_weak_info_single$sample(
+<pre><code>q_learning_prior_mcmc &lt;- q_learning_prior$sample(
   data = list(trial = nrow(data_1),
               reward = data_1$reward,
               choice = data_1$choice + 1),
@@ -784,16 +789,16 @@ model {
   iter_sampling = 1000,
   parallel_chains = 4)</code></pre>
 <p>結果の要約を確認してみましょう。</p>
-<pre class="r"><code>q_weak_info_single_cmdstan$summary()</code></pre>
+<pre class="r"><code>q_learning_prior_mcmc$summary()</code></pre>
 <pre><code>## # A tibble: 3 x 10
 ##   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
 ##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1 lp__     -42.4   -42.0   1.19  0.831 -44.7   -41.3    1.00    1618.    1815.
-## 2 alpha      0.688   0.696 0.138 0.141   0.441   0.901  1.00    2459.    1667.
-## 3 beta       2.58    2.55  0.575 0.580   1.68    3.56   1.00    3333.    2291.</code></pre>
+## 1 lp__     -41.6   -41.2   1.10  0.771 -43.8   -40.5    1.00    1448.    1579.
+## 2 alpha      0.375   0.350 0.142 0.124   0.192   0.672  1.00    1603.    1134.
+## 3 beta       2.40    2.37  0.534 0.530   1.58    3.28   1.00    1737.    1880.</code></pre>
 <p>以下はMCMCについての診断結果です。収束診断の問題もないかと思います。</p>
-<pre class="r"><code>q_weak_info_single_cmdstan$cmdstan_diagnose()</code></pre>
-<pre><code>## Processing csv files: /tmp/RtmpjlQFgj/q_learning_weak_info_single-202105141528-1-7af358.csv, /tmp/RtmpjlQFgj/q_learning_weak_info_single-202105141528-2-7af358.csv, /tmp/RtmpjlQFgj/q_learning_weak_info_single-202105141528-3-7af358.csv, /tmp/RtmpjlQFgj/q_learning_weak_info_single-202105141528-4-7af358.csv
+<pre class="r"><code>q_learning_prior_mcmc$cmdstan_diagnose()</code></pre>
+<pre><code>## Processing csv files: /tmp/Rtmp3zBAAO/q_learning_prior-202105150620-1-7b7274.csv, /tmp/Rtmp3zBAAO/q_learning_prior-202105150620-2-7b7274.csv, /tmp/Rtmp3zBAAO/q_learning_prior-202105150620-3-7b7274.csv, /tmp/Rtmp3zBAAO/q_learning_prior-202105150620-4-7b7274.csv
 ## 
 ## Checking sampler transitions treedepth.
 ## Treedepth satisfactory for all transitions.
@@ -828,7 +833,7 @@ for (i in 1:10) {
     print(paste(&quot;進捗状況：&quot;,(i-1)*10 + j,&quot;/100&quot;))
     #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
     tryCatch({
-      mcmc_cmdstan &lt;- q_weak_info_single$sample(
+      q_learning_prior_mcmc &lt;- q_learning_prior$sample(
         data = list(trial = nrow(data_2),
                    reward = data_2$reward,
                    choice = data_2$choice + 1),
@@ -837,28 +842,28 @@ for (i in 1:10) {
         iter_warmup = 500,
         iter_sampling = 1000,
         parallel_chains = 4)
-      mcmc_samples = as_draws_df(mcmc_cmdstan$draws())
+      mcmc_samples = as_draws_df(q_learning_prior_mcmc$draws())
       alpha_estimated[(i-1)*10 + j] &lt;- mean(mcmc_samples$alpha)
       beta_estimated[(i-1)*10 + j] &lt;- mean(mcmc_samples$beta)
     },error = function(e) {message(e)})
   }
 }
 
-parameter_recovery_week_info &lt;- data.frame(alpha_true = alpha_true,
+parameter_recovery_prior_mcmc &lt;- data.frame(alpha_true = alpha_true,
                                      beta_true = beta_true,
                                      alpha_estimated = alpha_estimated,
                                      beta_estimated = beta_estimated)</code></pre>
-<div id="弱情報事前分布を用いた場合のパラメータリカバリの確認" class="section level4">
-<h4>弱情報事前分布を用いた場合のパラメータリカバリの確認</h4>
+<div id="有情報事前分布を用いた場合のパラメータリカバリの確認" class="section level4">
+<h4>有情報事前分布を用いた場合のパラメータリカバリの確認</h4>
 <p>いい感じにパラメータリカバリーできています。無情報事前分布のときのようにすごく大きなβが発生しなくなっています。</p>
-<pre class="r"><code>parameter_recovery_week_info %&gt;% 
+<pre class="r"><code>parameter_recovery_prior_mcmc %&gt;% 
   ggplot(aes(x = alpha_true, y = alpha_estimated)) +
   geom_point()</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-<pre class="r"><code>parameter_recovery_week_info %&gt;%
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<pre class="r"><code>parameter_recovery_prior_mcmc %&gt;%
   ggplot(aes(x = beta_true, y = beta_estimated)) +
   geom_point()</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -899,7 +904,7 @@ for (i in 1:length(file_names)) {
 <pre><code>data_individual &lt;- data_long %&gt;% 
   filter(id == 1)
 
-mcmc_non_info &lt;- q_non_info_single$sample(
+q_learning_mcmc &lt;- q_learning$sample(
         data = list(trial = nrow(data_individual),
                    reward = data_individual$reward,
                    choice = data_individual$choice + 1),
@@ -909,43 +914,43 @@ mcmc_non_info &lt;- q_non_info_single$sample(
         iter_sampling = 1000,
         parallel_chains = 4)
 
-mcmc_non_info $summary()
-mcmc_non_info $cmdstan_diagnose()</code></pre>
+q_learning_mcmc$summary()
+q_learning_mcmc$cmdstan_diagnose()</code></pre>
 <p>結果のプロット</p>
-<pre class="r"><code>mcmc_non_info &lt;- as_draws_df(mcmc_cmdstan$draws())
+<pre class="r"><code>q_learning_mcmc &lt;- as_draws_df(q_learning_mcmc$draws())
 # alphaのtrace plot
-mcmc_non_info %&gt;%
+q_learning_mcmc %&gt;%
   mutate(chain = as.factor(.chain)) %&gt;% 
   ggplot(aes(x = .iteration, y = alpha, group = .chain, color = chain)) +
   geom_line()</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <pre class="r"><code># betaのtrace plot
-mcmc_non_info %&gt;%
+q_learning_mcmc %&gt;%
   mutate(chain = as.factor(.chain)) %&gt;% 
   filter(beta &lt; 1000) %&gt;% 
   ggplot(aes(x = .iteration, y = beta, group = .chain, color = chain)) +
   geom_line()</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-27-2.png" width="672" /></p>
 <pre class="r"><code># alphaの事後分布
-mcmc_non_info %&gt;% 
+q_learning_mcmc %&gt;% 
   ggplot() +
   geom_histogram(aes(x=alpha),binwidth = 0.01)</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-26-3.png" width="672" /></p>
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-27-3.png" width="672" /></p>
 <pre class="r"><code># betaの事後分布
-mcmc_non_info %&gt;% 
+q_learning_mcmc %&gt;% 
   filter(beta &lt; 1000) %&gt;% 
 ggplot() +
   geom_histogram(aes(x=beta),binwidth = 0.1)</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-26-4.png" width="672" /></p>
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-27-4.png" width="672" /></p>
 <pre class="r"><code>q_values &lt;- q_learning_ll(mean(mcmc_samples$alpha),mean(mcmc_samples$beta),data_individual)</code></pre>
 </div>
-<div id="個人のパラメータ推定弱情報事前分布" class="section level3">
-<h3>個人のパラメータ推定（弱情報事前分布）</h3>
+<div id="個人のパラメータ推定有情報事前分布" class="section level3">
+<h3>個人のパラメータ推定（有情報事前分布）</h3>
 <p>sub01</p>
 <pre><code>data_individual &lt;- data_long %&gt;% 
   filter(id == 1)
 
-mcmc_weak_info &lt;- q_weak_info_single$sample(
+q_learning_prior_mcmc &lt;- q_learning_prior$sample(
         data = list(trial = nrow(data_individual),
                    reward = data_individual$reward,
                    choice = data_individual$choice + 1),
@@ -955,32 +960,32 @@ mcmc_weak_info &lt;- q_weak_info_single$sample(
         iter_sampling = 1000,
         parallel_chains = 4)
 
-mcmc_weak_info$summary()
-mcmc_weak_info$cmdstan_diagnose()</code></pre>
+q_learning_prior_mcmc$summary()
+q_learning_prior_mcmc$cmdstan_diagnose()</code></pre>
 <p>結果のプロット</p>
-<pre class="r"><code>mcmc_weak_info &lt;- as_draws_df(mcmc_cmdstan$draws())
+<pre class="r"><code>q_learning_prior_mcmc &lt;- as_draws_df(q_learning_prior_mcmc$draws())
 # alphaのtrace plot
-mcmc_weak_info %&gt;%
+q_learning_prior_mcmc %&gt;%
   mutate(chain = as.factor(.chain)) %&gt;% 
   ggplot(aes(x = .iteration, y = alpha, group = .chain, color = chain)) +
   geom_line()</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <pre class="r"><code># betaのtrace plot
-mcmc_weak_info %&gt;%
+q_learning_prior_mcmc %&gt;%
   mutate(chain = as.factor(.chain)) %&gt;% 
   ggplot(aes(x = .iteration, y = beta, group = .chain, color = chain)) +
   geom_line()</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
 <pre class="r"><code># alphaの事後分布
-mcmc_weak_info %&gt;% 
+q_learning_prior_mcmc %&gt;% 
   ggplot() +
   geom_histogram(aes(x=alpha),binwidth = 0.01)</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-28-3.png" width="672" /></p>
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-29-3.png" width="672" /></p>
 <pre class="r"><code># betaの事後分布
-mcmc_weak_info %&gt;% 
+q_learning_prior_mcmc %&gt;% 
 ggplot() +
   geom_histogram(aes(x=beta),binwidth = 0.1)</code></pre>
-<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-28-4.png" width="672" /></p>
+<p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-29-4.png" width="672" /></p>
 <pre class="r"><code>q_values &lt;- q_learning_ll(mean(mcmc_samples$alpha),mean(mcmc_samples$beta),data_individual)</code></pre>
 <p>さて，ここまでで，ベイズ推定が出来るようになりました。次は<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl3.html" target="_blank">「強化学習モデル: ベイズ推定(2)」</a>で，モデル比較などに取り組みます。</p>
 </div>
