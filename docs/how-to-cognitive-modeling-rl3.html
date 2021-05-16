@@ -612,7 +612,7 @@ q_learning_prior_WBIC_mcmc &lt;- q_learning_prior_WBIC$sample(
 
 q_learning_WBIC_sample &lt;- rstan::read_stan_csv(q_learning_WBIC_mcmc$output_files())
 q_learning_prior_WBIC_sample &lt;- rstan::read_stan_csv(q_learning_prior_WBIC_mcmc$output_files())</code></pre>
-<p>予想に反して，無情報事前分布の方がWBICが低くなりました（低いほどよい）。一方，sub02では，弱情報の方がWBICが小さくなりました。個人ごとには適切なモデルや事前分布は違う可能性があるので，階層モデルを作って評価が必要も思われます。</p>
+<p>予想に反して，無情報事前分布の方がWBICが低くなりました（低いほどよい）。一方，sub02では，有情報の方がWBICが小さくなりました。個人ごとには適切なモデルや事前分布は違う可能性があるので，階層モデルを作って評価が必要も思われます。</p>
 <pre class="r"><code>WBIC_non &lt;- -mean(rowSums(rstan::extract(q_learning_WBIC_sample)$log_lik))
 WBIC_prior &lt;- -mean(rowSums(rstan::extract(q_learning_prior_WBIC_sample)$log_lik))
 paste(&quot;無情報事前分布のWBICは&quot;,WBIC_non)</code></pre>
@@ -683,7 +683,7 @@ generated quantities {
   }
 }</code></pre>
 <p>まずは，q_learning_prior_non_beta_WBIC.stanをコンパイルします。</p>
-<pre><code>q_learning_prior_non_beta_WBIC &lt;- cmdstan_model(&#39;rl/q_learning_prior_non_beta_WBIC.stan&#39;)</code></pre>
+<pre><code>q_learning_prior_non_beta_WBIC &lt;- cmdstan_model(&#39;q_learning_prior_non_beta_WBIC.stan&#39;)</code></pre>
 <p>さて，以下のコードを走らせて，αとβを仮定したモデル(Model 1)で生成されたデータをαとβを仮定するモデル(Model 1)とαだけを仮定するモデル(Model 2)でフィッティングした時に，モデルが選択される確率を計算します。以下では，100回シミュテーションデータを生成して，MCMCで推定をするのでかなり時間がかかると思います（メモリもかなり使うと予想されます）。</p>
 <pre><code>better_model1 &lt;- 0
 n_simulation &lt;- 100
@@ -778,7 +778,7 @@ model_recovery &lt;- tibble(simulated_model, fit_model, Probability)
 ggplot(model_recovery, aes(x = fit_model, y = simulated_model, fill = Probability)) +
   geom_tile() +
   scale_fill_gradient(low = &quot;white&quot;, high = &quot;red&quot;) +
-  geom_text(aes(label = round(Probability, digits = 2)), color = &quot;white&quot;)　+
+  geom_text(aes(label = round(Probability, digits = 2)), color = &quot;black&quot;)　+
   xlab(&quot;Fit Model&quot;) +
   ylab(&quot;Simulated Model&quot;)</code></pre>
 <p><img src="how-to-cognitive-modeling-rl3_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>

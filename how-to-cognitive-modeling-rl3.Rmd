@@ -301,7 +301,7 @@ paste("有情報事前分布のWBICは",WBIC_prior)
 
 これまでパラメータリカバリーをパラメータ推定のチェックに用いてきました。特定のモデルのパラメータ推定の精度を調べる上では，パラメータリカバリーが使えます。ただし，そもそもデータ生成に用いたれたモデルがモデル選択でちゃんと選ばれるのかについては，検討ができていません。生成モデルはあくまで研究者が仮定したものであって，複数の生成モデルが存在すると考えられるので，データからちゃんとモデルが選択できることが重要です。
 
-パラメータ推定後の相対モデル比較において，データ生成過程で用いられた生成モデルがちゃんと選ばれるか確認するモデルリカバリーという考えがあります。例えば，特定の生成モデルAから生成されたシミュレーションデータに対して，複数の生成モデルA ,B,Cを用いてパラメータ推定してモデル比較した場合，BやCよりもAが選ばれる必要があります。これを検討するのがモデルリカバリーです。モデルリカバリーでは，全ての生成モデルから異なる値のパラメータを用いてシミュレーションデータを生成し，それらに対して，全ての生成モデルを用いてパラメータ推定を行うことを全ての組み合わせで行います。モデルリカバリーによって，検討しているモデルが研究目的から妥当か，追加すべきモデルはないか，パラメータ推定で識別不可能なモデルはないかを検討することができます。
+パラメータ推定後の相対モデル比較において，データ生成過程で用いられた生成モデルがちゃんと選ばれるか確認するモデルリカバリーという考えがあります(Wilson & Collins, 2019)。例えば，特定の生成モデルAから生成されたシミュレーションデータに対して，複数の生成モデルA ,B,Cを用いてパラメータ推定してモデル比較した場合，BやCよりもAが選ばれる必要があります。これを検討するのがモデルリカバリーです。モデルリカバリーでは，全ての生成モデルから異なる値のパラメータを用いてシミュレーションデータを生成し，それらに対して，全ての生成モデルを用いてパラメータ推定を行うことを全ての組み合わせで行います。モデルリカバリーによって，検討しているモデルが研究目的から妥当か，追加すべきモデルはないか，パラメータ推定で識別不可能なモデルはないかを検討することができます。
 
 
 ### モデルリカバリーで用いるモデル
@@ -594,3 +594,4 @@ ggplot(model_recovery, aes(x = fit_model, y = simulated_model, fill = Probabilit
 - Heathcote, A., Brown, S. D., & Wagenmakers, E.-J. (2015). An Introduction to Good Practices in Cognitive Modeling. In B. U. Forstmann & E.-J. Wagenmakers (Eds.), An Introduction to Model-Based Cognitive Neuroscience (pp. 25–48). Springer New York.
 - Palminteri, S., Wyart, V., & Koechlin, E. (2017). The Importance of Falsification in Computational Cognitive Modeling. Trends in Cognitive Sciences, 21(6), 425–433.
 - Voss, A., Rothermund, K., & Voss, J. (2004). Interpreting the parameters of the diffusion model: an empirical validation. Memory & Cognition, 32(7), 1206–1220.
+- Wilson, R. C., & Collins, A. G. (2019). Ten simple rules for the computational modeling of behavioral data. eLife, 8. https://doi.org/10.7554/eLife.49547
