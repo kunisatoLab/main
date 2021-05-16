@@ -710,19 +710,20 @@ paste(&quot;無情報事前分布のWBICは&quot;,WBIC_non)</code></pre>
 <pre><code>## [1] &quot;有情報事前分布のWBICは 6.43904859965286&quot;</code></pre>
 </div>
 </div>
-<div id="モデルリカバリー" class="section level2">
-<h2>モデルリカバリー</h2>
-<p>これまでパラメータリカバリーをパラメータ推定のチェックで使ってきた。しかし，実際は複数の生成モデルが用いられることがある。パラメータ推定後の相対モデル比較において，データ生成過程で用いられた生成モデルがちゃんと選ばれるか確認するモデルリカバリーという考えもある。例えば，特定の生成モデルAから生成されたシミュレーションデータに対して，複数の生成モデルA ,B,Cを用いてパラメータ推定をした場合に，モデル比較においてBやCよりもAが選ばれる必要がある。モデルリカバリーは，全ての生成モデルから異なる値のパラメータを用いてシミュレーションデータを生成し，それらに対して，全ての生成モデルを用いてパラメータ推定を行うことを全ての組み合わせで行う。モデルリカバリーによって，検討しているモデルが研究目的から妥当か，追加すべきモデルはないか，パラメータ推定で識別不可能なモデルはないかを検討することができる。</p>
+<div id="モデルリカバリーmodel-recovery" class="section level2">
+<h2>モデルリカバリー（Model Recovery）</h2>
+<p>これまでパラメータリカバリーをパラメータ推定のチェックに用いてきました。特定のモデルのパラメータ推定の精度を調べる上では，パラメータリカバリーが使えます。ただし，そもそもデータ生成に用いたれたモデルがモデル選択でちゃんと選ばれるのかについては，検討ができていません。生成モデルはあくまで研究者が仮定したものであって，複数の生成モデルが存在すると考えられるので，データからちゃんとモデルが選択できることが重要です。</p>
+<p>パラメータ推定後の相対モデル比較において，データ生成過程で用いられた生成モデルがちゃんと選ばれるか確認するモデルリカバリーという考えがあります。例えば，特定の生成モデルAから生成されたシミュレーションデータに対して，複数の生成モデルA ,B,Cを用いてパラメータ推定してモデル比較した場合，BやCよりもAが選ばれる必要があります。これを検討するのがモデルリカバリーです。モデルリカバリーでは，全ての生成モデルから異なる値のパラメータを用いてシミュレーションデータを生成し，それらに対して，全ての生成モデルを用いてパラメータ推定を行うことを全ての組み合わせで行います。モデルリカバリーによって，検討しているモデルが研究目的から妥当か，追加すべきモデルはないか，パラメータ推定で識別不可能なモデルはないかを検討することができます。</p>
 <div id="モデルリカバリーで用いるモデル" class="section level3">
 <h3>モデルリカバリーで用いるモデル</h3>
-<p>今回は２つの生成モデルを考える。</p>
+<p>あまり複雑にしないために，これまで用いてきたモデルとそのモデルを一部改変したモデルを考えます。</p>
 <ul>
-<li>上記で検討した事前分布をおいた強化学習モデル</li>
-<li>上記からβを除外した強化学習モデル（β=1に仮定したモデルともいえる）</li>
+<li>上記で検討した事前分布をおいた強化学習モデル（Model 1）</li>
+<li>上記からβを除外した強化学習モデル（Model 2, β=1に仮定したモデルともいえます）</li>
 </ul>
 <div id="αとβを仮定したモデルから生成されたデータのモデルリカバリー" class="section level4">
 <h4>αとβを仮定したモデルから生成されたデータのモデルリカバリー</h4>
-<p>まずは，これまでと同様なαもβも存在する強化学習モデルでデータを生成します。それに対して，それと一致したモデル（上記のq_learning_prior_WBIC.stan）と一致しないモデル（以下のq_learning_prior_non_beta_WBIC.stan）を使って推定することで，モデルリカバリーをしてみます。</p>
+<p>まずは，これまでと同様なαもβも存在する強化学習モデル(Model 1)でデータを生成します。それに対して，それと一致したモデル（Model 1, 上記のq_learning_prior_WBIC.stan）と一致しないモデル（Model 2, 以下のq_learning_prior_non_beta_WBIC.stan）を使って推定することで，モデルリカバリーをします。</p>
 <p>q_learning_prior_non_beta_WBIC.stanは，以下のようなコードになります。簡単にいうと，q_learning_weak_info_single_WBIC.stanからbetaを抜いただけです。</p>
 <pre><code>data {
   int&lt;lower=1&gt; trial;
@@ -738,10 +739,8 @@ model {
   matrix[trial,2] Q;
   Q[1, 1] = 0;
   Q[1, 2] = 0;
-  
-  //学習率の事前分布にベータ分布，逆温度の事前分布にガンマ分布
+  //学習率の事前分布にベータ分布
   alpha ~ beta(2, 2);
-  
   for ( t in 1:trial) {
     // 対数尤度を足す
     target += (1/log(trial))*log(exp(Q[t,choice[t]])/(exp(Q[t,choice[t]])+exp(Q[t,3-choice[t]])));
@@ -774,39 +773,26 @@ generated quantities {
 }</code></pre>
 <p>まずは，q_learning_prior_non_beta_WBIC.stanをコンパイルします。</p>
 <pre><code>q_learning_prior_non_beta_WBIC &lt;- cmdstan_model(&#39;rl/q_learning_prior_non_beta_WBIC.stan&#39;)</code></pre>
-<p>さて，以下のコードを走らせて，αとβを仮定したモデルで生成されたデータをαとβを仮定するモデルとαだけを仮定するモデルでフィッティングした時に，モデルが選択される確率を計算します。</p>
-<p>hist(rbeta(1000, 2, 2)) hist(rgamma(1000, 2, 0.5))</p>
+<p>さて，以下のコードを走らせて，αとβを仮定したモデル(Model 1)で生成されたデータをαとβを仮定するモデル(Model 1)とαだけを仮定するモデル(Model 2)でフィッティングした時に，モデルが選択される確率を計算します。</p>
 </div>
 <div id="αのみを仮定したモデルから生成されたデータのモデルリカバリー" class="section level4">
 <h4>αのみを仮定したモデルから生成されたデータのモデルリカバリー</h4>
-<p>次は，αのみを仮定したモデル（βは仮定しない，つまり，βを１に固定するモデル）で生成されたデータをαとβを仮定するモデルとαだけを仮定するモデルでフィッティングした時に，モデルが選択される確率を計算します。</p>
-<p>整理すると以下のようになります。</p>
-<pre class="r"><code>simulated_model &lt;- c(&quot;1 alpha &amp; beta&quot;,&quot;1 alpha &amp; beta&quot;,&quot;2 alpha&quot;,&quot;2 alpha&quot;)
-fit_model &lt;- c(&quot;1 alpha &amp; beta&quot;,&quot;2 alpha&quot;,&quot;1 alpha &amp; beta&quot;,&quot;2 alpha&quot;)
-prob &lt;- c(fit_both_sim_both, fit_alpha_sim_both, fit_both_sim_alpha, fit_alpha_sim_alpha)
+<p>次は，αのみを仮定したモデル（Model 2, βは仮定しない，つまり，βを１に固定するモデル）で生成されたデータをαとβを仮定するモデル(Model 1)とαだけを仮定するモデル(Model 2)でフィッティングした時に，モデルが選択される確率を計算します。</p>
+<p>ヒートマップ形式で図示します。alphaだけのモデル(Model 2)で生成したデータのパタメータ推定において，高い確率でalphaだけのモデル(Model 2)が選択されています。一方，alphaとbetaの両方があるモデル(Model 1)で生成したデータのパラメータ推定においては，alphaとbetaの両方があるモデル(Model 1)の方が選択される確率は高いもののalphaだけのモデル(Model 2)が選択されることがあります。偶然，設定したパラメータがβが１付近になってモデル識別が難しくなるケースがあったり，alphaとbetaの両方があるモデル(Model 1)の方が推定するパラメータが多いというのもあるかもしれません。こんな感じでモデルリカバリーの検討を行います。</p>
+<pre class="r"><code>simulated_model &lt;- factor(c(&quot;Model 1&quot;,&quot;Model 1&quot;,&quot;Model 2&quot;,&quot;Model 2&quot;), levels = c(&quot;Model 1&quot;,&quot;Model 2&quot;))
+fit_model &lt;- factor(c(&quot;Model 1&quot;,&quot;Model 2&quot;,&quot;Model 1&quot;,&quot;Model 2&quot;), levels = c(&quot;Model 2&quot;,&quot;Model 1&quot;))
+Probability &lt;- c(fit_model1_sim_model1, fit_model2_sim_model1, fit_model1_sim_model2, fit_model2_sim_model2)
+model_recovery &lt;- tibble(simulated_model, fit_model, Probability)
 
-model_recovery &lt;- tibble(simulated_model, fit_model, prob)
-
-ggplot(model_recovery, aes(x = fit_model, y = simulated_model, fill = prob)) +
+ggplot(model_recovery, aes(x = fit_model, y = simulated_model, fill = Probability)) +
   geom_tile() +
-  geom_text(aes(label = round(prob, digits = 1)), color = &quot;white&quot;)</code></pre>
+  scale_fill_gradient(low = &quot;white&quot;, high = &quot;red&quot;) +
+  geom_text(aes(label = round(Probability, digits = 2)), color = &quot;white&quot;)　+
+  xlab(&quot;Fit Model&quot;) +
+  ylab(&quot;Simulated Model&quot;)</code></pre>
 <p><img src="how-to-cognitive-modeling-rl3_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 </div>
-</div>
-<div id="階層ベイズ" class="section level2">
-<h2>階層ベイズ</h2>
-<ul>
-<li><p>これまで１名のデータをごとに推定をしてきたが，多くの心理学研究では，複数の参加者が研究に参加している。</p></li>
-<li><p>個人ごとに推定する方法でも個人差は検討できるが，試行数が少ないとと推定は不安定になる。また，参加者間変動も考慮していない。</p></li>
-<li><p>集団における各参加者のパラメタのばらつきもモデルに組み込んでベイズ推定する階層ベイズを用いると，個人差も検討することができ,推定も安定する。階層ベイズでは,個々の参加者から推定されるパラメタの分布も考慮できるので,個人のパラメタとグループのパラメタの傾向を同時制約的に推定できる。個人差も検討できるし、推定するパラメタも安定する。試行数を増やしにくい臨床研究で使いやすい！</p></li>
-</ul>
-<p>上記の２つのモデルで作成して，比較してみる。</p>
-<p>Schaaf, J. V., Jepma, M., Visser, I., &amp; Huizenga, H. M. (2019). A hierarchical Bayesian approach to assess learning and guessing strategies in reinforcement learning. Journal of Mathematical Psychology, 93, 102276.</p>
-<p>Steingroever, H., Wetzels, R., &amp; Wagenmakers, E.-J. (2014). Absolute performance of reinforcement-learning models for the Iowa Gambling Task. Decision (Washington, D.C.), 1(3), 161–183.</p>
-<ul>
-<li>階層ベイズモデルやモデル選択に関しては，「StanとRでベイズ統計モデリング」(松浦健太郎, 2016, 共立出版)，「行動データの計算論モデリング」（片平健太郎，2018，オーム社），「社会科学のためのベイズ統計モデリング」（浜田宏ら，2019，朝倉書店）などが詳しい。</li>
-</ul>
 </div>
 <div id="f-モデルシミュレーションと選択的影響テスト" class="section level2">
 <h2>F モデル・シミュレーションと選択的影響テスト</h2>
@@ -820,9 +806,6 @@ ggplot(model_recovery, aes(x = fit_model, y = simulated_model, fill = prob)) +
 <li>Heathcote, A., Brown, S. D., &amp; Wagenmakers, E.-J. (2015). An Introduction to Good Practices in Cognitive Modeling. In B. U. Forstmann &amp; E.-J. Wagenmakers (Eds.), An Introduction to Model-Based Cognitive Neuroscience (pp. 25–48). Springer New York.</li>
 <li>Palminteri, S., Wyart, V., &amp; Koechlin, E. (2017). The Importance of Falsification in Computational Cognitive Modeling. Trends in Cognitive Sciences, 21(6), 425–433.</li>
 <li>Voss, A., Rothermund, K., &amp; Voss, J. (2004). Interpreting the parameters of the diffusion model: an empirical validation. Memory &amp; Cognition, 32(7), 1206–1220.</li>
-<li>松浦健太郎(2016).StanとRでベイズ統計モデリング 共立出版</li>
-<li>片平健太郎(2018). 行動データの計算論モデリング オーム社</li>
-<li>浜田宏ら(2019). 社会科学のためのベイズ統計モデリング 朝倉書店</li>
 </ul>
 </div>
 
