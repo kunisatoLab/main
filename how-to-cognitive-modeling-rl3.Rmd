@@ -13,7 +13,7 @@ Busemeyer & Diederich(2010), Heathcote (2014), Palminteri et al.(2017)を参考�
 - E 相対モデル比較
 - F モデル・シミュレーションと選択的影響テスト
 
-<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl1.html" target="_blank">「強化学習モデル: 最尤推定」</a>と<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル: ベイズ推定(1)」</a>では，ABCDとすすめてきました。今回は，今回は，EとFについて説明し（相対モデル比較に関連づけてモデル・リカバリーの説明もします），最後に階層モデルについて説明をします。
+<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl1.html" target="_blank">「強化学習モデル: 最尤推定」</a>と<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル: ベイズ推定(1)」</a>では，ABCDとすすめてきました。今回は，今回は，EとFについて説明します（相対モデル比較に関連づけてモデル・リカバリーの説明もします）。
 
 ### 使用するRパッケージ
 
@@ -563,8 +563,8 @@ fit_model2_sim_model2 <- (n_simulation - better_model1) / n_simulation
 ヒートマップ形式で図示します。alphaだけのモデル(Model 2)で生成したデータのパタメータ推定において，高い確率でalphaだけのモデル(Model 2)が選択されています。一方，alphaとbetaの両方があるモデル(Model 1)で生成したデータのパラメータ推定においては，alphaとbetaの両方があるモデル(Model 1)の方が選択される確率は高いもののalphaだけのモデル(Model 2)が選択されることがあります。偶然，設定したパラメータがβが１付近になってモデル識別が難しくなるケースがあったり，alphaとbetaの両方があるモデル(Model 1)の方が推定するパラメータが多いというのもあるかもしれません。こんな感じでモデルリカバリーの検討を行います。
 
 ```{r}
-simulated_model <- factor(c("Model 1","Model 1","Model 2","Model 2"), levels = c("Model 1","Model 2"))
-fit_model <- factor(c("Model 1","Model 2","Model 1","Model 2"), levels = c("Model 2","Model 1"))
+simulated_model <- factor(c("Model 1","Model 1","Model 2","Model 2"), levels = c("Model 2","Model 1"))
+fit_model <- factor(c("Model 1","Model 2","Model 1","Model 2"), levels = c("Model 1","Model 2"))
 Probability <- c(fit_model1_sim_model1, fit_model2_sim_model1, fit_model1_sim_model2, fit_model2_sim_model2)
 model_recovery <- tibble(simulated_model, fit_model, Probability)
 
