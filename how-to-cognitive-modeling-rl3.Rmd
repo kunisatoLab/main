@@ -31,7 +31,7 @@ library(bridgesampling)
 
 <a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル: ベイズ推定(1)」</a>と同じく，人工データを生成するために，実験状況の入ったsim_dataの準備とq_learning_sim関数を準備をします。
 
-```{r, echo=TRUE, message=TRUE, warning=TRUE}
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
 sim_data <- tibble(trial = 1:80,
                    prob_s1 = rep(c(0.2, 0.8), each = 40),
                    prob_s2 = rep(c(0.8, 0.2), each = 40),
@@ -287,7 +287,7 @@ q_learning_WBIC_sample <- rstan::read_stan_csv(q_learning_WBIC_mcmc$output_files
 q_learning_prior_WBIC_sample <- rstan::read_stan_csv(q_learning_prior_WBIC_mcmc$output_files())
 ```
 
-予想に反して，無情報事前分布の方がWBICが低くなりました（低いほどよい）。一方，sub02では，弱情報の方がWBICが小さくなりました。個人ごとには適切なモデルや事前分布は違う可能性があるので，階層モデルを作って評価が必要も思われます。
+予想に反して，無情報事前分布の方がWBICが低くなりました（低いほどよい）。一方，sub02では，有情報の方がWBICが小さくなりました。個人ごとには適切なモデルや事前分布は違う可能性があるので，階層モデルを作って評価が必要も思われます。
 
 ```{r}
 WBIC_non <- -mean(rowSums(rstan::extract(q_learning_WBIC_sample)$log_lik))
@@ -312,7 +312,7 @@ paste("有情報事前分布のWBICは",WBIC_prior)
 - 上記からβを除外した強化学習モデル（Model 2, β=1に仮定したモデルともいえます）
 
 
-#### αとβを仮定したモデルから生成されたデータのモデルリカバリー
+#### αとβを仮定したモデル(Model 1)から生成されたデータのモデルリカバリー
 
 まずは，これまでと同様なαもβも存在する強化学習モデル(Model 1)でデータを生成します。それに対して，それと一致したモデル（Model 1, 上記のq_learning_prior_WBIC.stan）と一致しないモデル（Model 2, 以下のq_learning_prior_non_beta_WBIC.stan）を使って推定することで，モデルリカバリーをします。
 
@@ -375,10 +375,10 @@ q_learning_prior_non_beta_WBIC <- cmdstan_model('rl/q_learning_prior_non_beta_WB
 
 
 ```
-q_learning_prior_non_beta_WBIC <- cmdstan_model('rl/q_learning_prior_non_beta_WBIC.stan')
+q_learning_prior_non_beta_WBIC <- cmdstan_model('q_learning_prior_non_beta_WBIC.stan')
 ```
 
-さて，以下のコードを走らせて，αとβを仮定したモデル(Model 1)で生成されたデータをαとβを仮定するモデル(Model 1)とαだけを仮定するモデル(Model 2)でフィッティングした時に，モデルが選択される確率を計算します。
+さて，以下のコードを走らせて，αとβを仮定したモデル(Model 1)で生成されたデータをαとβを仮定するモデル(Model 1)とαだけを仮定するモデル(Model 2)でフィッティングした時に，モデルが選択される確率を計算します。以下では，100回シミュテーションデータを生成して，MCMCで推定をするのでかなり時間がかかると思います（メモリもかなり使うと予想されます）。
 
 
 ```{r include=FALSE}
@@ -424,11 +424,99 @@ fit_model1_sim_model1 <- better_model1/n_simulation
 fit_model2_sim_model1 <- (n_simulation - better_model1) / n_simulation
 ```
 
-#### αのみを仮定したモデルから生成されたデータのモデルリカバリー
+```
+better_model1 <- 0
+n_simulation <- 100
+for (i in 1:n_simulation) {
+  alpha_set <- rbeta(1, 2, 2)
+  beta_set <- rgamma(1, 2, 0.5)
+  #データ生成
+  data_2 <- q_learning_sim(alpha = alpha_set, beta = beta_set, sim_data)
+  print(paste("進捗状況：",i,"/",n_simulation))
+  #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
+  tryCatch({
+    with_beta_WBIC <- q_learning_prior_WBIC$sample(
+      data = list(trial = nrow(data_2),
+                   reward = data_2$reward,
+                   choice = data_2$choice + 1),
+      seed = 123,
+      chains = 4,
+      iter_warmup = 500,
+      iter_sampling = 3000,
+      parallel_chains = 4)
 
-次は，αのみを仮定したモデル（Model 2, βは仮定しない，つまり，βを１に固定するモデル）で生成されたデータをαとβを仮定するモデル(Model 1)とαだけを仮定するモデル(Model 2)でフィッティングした時に，モデルが選択される確率を計算します。
+    non_beta_WBIC <- q_learning_prior_non_beta_WBIC$sample(
+      data = list(trial = nrow(data_2),
+                   reward = data_2$reward,
+                   choice = data_2$choice + 1),
+      seed = 123,
+      chains = 4,
+      iter_warmup = 500,
+      iter_sampling = 3000,
+      parallel_chains = 4)
+      
+    with_beta_WBIC_sample <- rstan::read_stan_csv(with_beta_WBIC$output_files())
+    WBIC_with_beta <- -mean(rowSums(rstan::extract(with_beta_WBIC_sample)$log_lik))
+    non_beta_WBIC_sample <- rstan::read_stan_csv(non_beta_WBIC$output_files())
+    WBIC_no_beta <- -mean(rowSums(rstan::extract(non_beta_WBIC_sample)$log_lik))
+    better_model1 <- better_model1 + ifelse(WBIC_with_beta < WBIC_no_beta, 1, 0)
+  },error = function(e) {message(e)})
+}
+
+fit_model1_sim_model1 <- better_model1/n_simulation
+fit_model2_sim_model1 <- (n_simulation - better_model1) / n_simulation
+```
+
+
+#### αのみを仮定したモデル(Model 2)から生成されたデータのモデルリカバリー
+
+次は，αのみを仮定したモデル（Model 2, βは仮定しない，つまり，βを１に固定するモデル）で生成されたデータをαとβを仮定するモデル(Model 1)とαだけを仮定するモデル(Model 2)でフィッティングした時に，モデルが選択される確率を計算します。以下では，100回シミュテーションデータを生成して，MCMCで推定をするのでかなり時間がかかると思います（メモリもかなり使うと予想されます）。
 
 ```{r include=FALSE}
+better_model1 <- 0
+n_simulation <- 100
+beta_set <- 1
+for (i in 1:n_simulation) {
+    alpha_set = alpha_set + 0.01
+    #データ生成
+    data_2 <- q_learning_sim(alpha = alpha_set, beta = beta_set, sim_data)
+    print(paste("進捗状況：",i,"/",n_simulation))
+    #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
+    tryCatch({
+      with_beta_WBIC <- q_learning_prior_WBIC$sample(
+        data = list(trial = nrow(data_2),
+                   reward = data_2$reward,
+                   choice = data_2$choice + 1),
+        seed = 123,
+        chains = 4,
+        iter_warmup = 500,
+        iter_sampling = 3000,
+        parallel_chains = 4)
+
+      non_beta_WBIC <- q_learning_prior_non_beta_WBIC$sample(
+        data = list(trial = nrow(data_2),
+                   reward = data_2$reward,
+                   choice = data_2$choice + 1),
+        seed = 123,
+        chains = 4,
+        iter_warmup = 500,
+        iter_sampling = 3000,
+        parallel_chains = 4)
+      
+    with_beta_WBIC_sample <- rstan::read_stan_csv(with_beta_WBIC$output_files())
+    WBIC_with_beta <- -mean(rowSums(rstan::extract(with_beta_WBIC_sample)$log_lik))
+    non_beta_WBIC_sample <- rstan::read_stan_csv(non_beta_WBIC$output_files())
+    WBIC_no_beta <- -mean(rowSums(rstan::extract(non_beta_WBIC_sample)$log_lik))
+    better_model1 <- better_model1 + ifelse(WBIC_with_beta < WBIC_no_beta, 1, 0)
+  },error = function(e) {message(e)})
+}
+
+fit_model1_sim_model2 <- better_model1 / n_simulation
+fit_model2_sim_model2 <- (n_simulation - better_model1) / n_simulation
+```
+
+
+```
 better_model1 <- 0
 n_simulation <- 100
 beta_set <- 1
@@ -483,7 +571,7 @@ model_recovery <- tibble(simulated_model, fit_model, Probability)
 ggplot(model_recovery, aes(x = fit_model, y = simulated_model, fill = Probability)) +
   geom_tile() +
   scale_fill_gradient(low = "white", high = "red") +
-  geom_text(aes(label = round(Probability, digits = 2)), color = "white")　+
+  geom_text(aes(label = round(Probability, digits = 2)), color = "black")　+
   xlab("Fit Model") +
   ylab("Simulated Model")
 ```

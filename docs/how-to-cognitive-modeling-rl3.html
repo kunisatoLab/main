@@ -474,95 +474,6 @@ for (i in 1:length(file_names)) {
   # データの保存
   data_long &lt;- rbind(data_long, tmp_data)
 }</code></pre>
-<pre><code>## 
-## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   trial_type = col_character(),
-##   trial_index = col_double(),
-##   time_elapsed = col_double(),
-##   internal_node_id = col_character(),
-##   rt = col_character(),
-##   stimulus = col_character(),
-##   key_press = col_character(),
-##   success = col_logical(),
-##   button_pressed = col_double(),
-##   left_right_s1 = col_double(),
-##   left_right_s2 = col_double(),
-##   reward_s1 = col_double(),
-##   reward_s2 = col_double()
-## )
-## 
-## 
-## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   trial_type = col_character(),
-##   trial_index = col_double(),
-##   time_elapsed = col_double(),
-##   internal_node_id = col_character(),
-##   rt = col_character(),
-##   stimulus = col_character(),
-##   key_press = col_character(),
-##   success = col_logical(),
-##   button_pressed = col_double(),
-##   left_right_s1 = col_double(),
-##   left_right_s2 = col_double(),
-##   reward_s1 = col_double(),
-##   reward_s2 = col_double()
-## )
-## 
-## 
-## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   trial_type = col_character(),
-##   trial_index = col_double(),
-##   time_elapsed = col_double(),
-##   internal_node_id = col_character(),
-##   rt = col_character(),
-##   stimulus = col_character(),
-##   key_press = col_character(),
-##   success = col_logical(),
-##   button_pressed = col_double(),
-##   left_right_s1 = col_double(),
-##   left_right_s2 = col_double(),
-##   reward_s1 = col_double(),
-##   reward_s2 = col_double()
-## )
-## 
-## 
-## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   trial_type = col_character(),
-##   trial_index = col_double(),
-##   time_elapsed = col_double(),
-##   internal_node_id = col_character(),
-##   rt = col_character(),
-##   stimulus = col_character(),
-##   key_press = col_character(),
-##   success = col_logical(),
-##   button_pressed = col_double(),
-##   left_right_s1 = col_double(),
-##   left_right_s2 = col_double(),
-##   reward_s1 = col_double(),
-##   reward_s2 = col_double()
-## )
-## 
-## 
-## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   trial_type = col_character(),
-##   trial_index = col_double(),
-##   time_elapsed = col_double(),
-##   internal_node_id = col_character(),
-##   rt = col_character(),
-##   stimulus = col_character(),
-##   key_press = col_character(),
-##   success = col_logical(),
-##   button_pressed = col_double(),
-##   left_right_s1 = col_double(),
-##   left_right_s2 = col_double(),
-##   reward_s1 = col_double(),
-##   reward_s2 = col_double()
-## )</code></pre>
 </div>
 </div>
 <div id="e-相対モデル比較" class="section level2">
@@ -721,8 +632,8 @@ paste(&quot;無情報事前分布のWBICは&quot;,WBIC_non)</code></pre>
 <li>上記で検討した事前分布をおいた強化学習モデル（Model 1）</li>
 <li>上記からβを除外した強化学習モデル（Model 2, β=1に仮定したモデルともいえます）</li>
 </ul>
-<div id="αとβを仮定したモデルから生成されたデータのモデルリカバリー" class="section level4">
-<h4>αとβを仮定したモデルから生成されたデータのモデルリカバリー</h4>
+<div id="αとβを仮定したモデルmodel-1から生成されたデータのモデルリカバリー" class="section level4">
+<h4>αとβを仮定したモデル(Model 1)から生成されたデータのモデルリカバリー</h4>
 <p>まずは，これまでと同様なαもβも存在する強化学習モデル(Model 1)でデータを生成します。それに対して，それと一致したモデル（Model 1, 上記のq_learning_prior_WBIC.stan）と一致しないモデル（Model 2, 以下のq_learning_prior_non_beta_WBIC.stan）を使って推定することで，モデルリカバリーをします。</p>
 <p>q_learning_prior_non_beta_WBIC.stanは，以下のようなコードになります。簡単にいうと，q_learning_weak_info_single_WBIC.stanからbetaを抜いただけです。</p>
 <pre><code>data {
@@ -773,11 +684,91 @@ generated quantities {
 }</code></pre>
 <p>まずは，q_learning_prior_non_beta_WBIC.stanをコンパイルします。</p>
 <pre><code>q_learning_prior_non_beta_WBIC &lt;- cmdstan_model(&#39;rl/q_learning_prior_non_beta_WBIC.stan&#39;)</code></pre>
-<p>さて，以下のコードを走らせて，αとβを仮定したモデル(Model 1)で生成されたデータをαとβを仮定するモデル(Model 1)とαだけを仮定するモデル(Model 2)でフィッティングした時に，モデルが選択される確率を計算します。</p>
+<p>さて，以下のコードを走らせて，αとβを仮定したモデル(Model 1)で生成されたデータをαとβを仮定するモデル(Model 1)とαだけを仮定するモデル(Model 2)でフィッティングした時に，モデルが選択される確率を計算します。以下では，100回シミュテーションデータを生成して，MCMCで推定をするのでかなり時間がかかると思います（メモリもかなり使うと予想されます）。</p>
+<pre><code>better_model1 &lt;- 0
+n_simulation &lt;- 100
+for (i in 1:n_simulation) {
+  alpha_set &lt;- rbeta(1, 2, 2)
+  beta_set &lt;- rgamma(1, 2, 0.5)
+  #データ生成
+  data_2 &lt;- q_learning_sim(alpha = alpha_set, beta = beta_set, sim_data)
+  print(paste(&quot;進捗状況：&quot;,i,&quot;/&quot;,n_simulation))
+  #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
+  tryCatch({
+    with_beta_WBIC &lt;- q_learning_prior_WBIC$sample(
+      data = list(trial = nrow(data_2),
+                   reward = data_2$reward,
+                   choice = data_2$choice + 1),
+      seed = 123,
+      chains = 4,
+      iter_warmup = 500,
+      iter_sampling = 3000,
+      parallel_chains = 4)
+
+    non_beta_WBIC &lt;- q_learning_prior_non_beta_WBIC$sample(
+      data = list(trial = nrow(data_2),
+                   reward = data_2$reward,
+                   choice = data_2$choice + 1),
+      seed = 123,
+      chains = 4,
+      iter_warmup = 500,
+      iter_sampling = 3000,
+      parallel_chains = 4)
+      
+    with_beta_WBIC_sample &lt;- rstan::read_stan_csv(with_beta_WBIC$output_files())
+    WBIC_with_beta &lt;- -mean(rowSums(rstan::extract(with_beta_WBIC_sample)$log_lik))
+    non_beta_WBIC_sample &lt;- rstan::read_stan_csv(non_beta_WBIC$output_files())
+    WBIC_no_beta &lt;- -mean(rowSums(rstan::extract(non_beta_WBIC_sample)$log_lik))
+    better_model1 &lt;- better_model1 + ifelse(WBIC_with_beta &lt; WBIC_no_beta, 1, 0)
+  },error = function(e) {message(e)})
+}
+
+fit_model1_sim_model1 &lt;- better_model1/n_simulation
+fit_model2_sim_model1 &lt;- (n_simulation - better_model1) / n_simulation</code></pre>
 </div>
-<div id="αのみを仮定したモデルから生成されたデータのモデルリカバリー" class="section level4">
-<h4>αのみを仮定したモデルから生成されたデータのモデルリカバリー</h4>
-<p>次は，αのみを仮定したモデル（Model 2, βは仮定しない，つまり，βを１に固定するモデル）で生成されたデータをαとβを仮定するモデル(Model 1)とαだけを仮定するモデル(Model 2)でフィッティングした時に，モデルが選択される確率を計算します。</p>
+<div id="αのみを仮定したモデルmodel-2から生成されたデータのモデルリカバリー" class="section level4">
+<h4>αのみを仮定したモデル(Model 2)から生成されたデータのモデルリカバリー</h4>
+<p>次は，αのみを仮定したモデル（Model 2, βは仮定しない，つまり，βを１に固定するモデル）で生成されたデータをαとβを仮定するモデル(Model 1)とαだけを仮定するモデル(Model 2)でフィッティングした時に，モデルが選択される確率を計算します。以下では，100回シミュテーションデータを生成して，MCMCで推定をするのでかなり時間がかかると思います（メモリもかなり使うと予想されます）。</p>
+<pre><code>better_model1 &lt;- 0
+n_simulation &lt;- 100
+beta_set &lt;- 1
+for (i in 1:n_simulation) {
+    alpha_set = alpha_set + 0.01
+    #データ生成
+    data_2 &lt;- q_learning_sim(alpha = alpha_set, beta = beta_set, sim_data)
+    print(paste(&quot;進捗状況：&quot;,i,&quot;/&quot;,n_simulation))
+    #パラメータ推定(推定がミスった時用にtryCatch関数を準備)
+    tryCatch({
+      with_beta_WBIC &lt;- q_learning_prior_WBIC$sample(
+        data = list(trial = nrow(data_2),
+                   reward = data_2$reward,
+                   choice = data_2$choice + 1),
+        seed = 123,
+        chains = 4,
+        iter_warmup = 500,
+        iter_sampling = 3000,
+        parallel_chains = 4)
+
+      non_beta_WBIC &lt;- q_learning_prior_non_beta_WBIC$sample(
+        data = list(trial = nrow(data_2),
+                   reward = data_2$reward,
+                   choice = data_2$choice + 1),
+        seed = 123,
+        chains = 4,
+        iter_warmup = 500,
+        iter_sampling = 3000,
+        parallel_chains = 4)
+      
+    with_beta_WBIC_sample &lt;- rstan::read_stan_csv(with_beta_WBIC$output_files())
+    WBIC_with_beta &lt;- -mean(rowSums(rstan::extract(with_beta_WBIC_sample)$log_lik))
+    non_beta_WBIC_sample &lt;- rstan::read_stan_csv(non_beta_WBIC$output_files())
+    WBIC_no_beta &lt;- -mean(rowSums(rstan::extract(non_beta_WBIC_sample)$log_lik))
+    better_model1 &lt;- better_model1 + ifelse(WBIC_with_beta &lt; WBIC_no_beta, 1, 0)
+  },error = function(e) {message(e)})
+}
+
+fit_model1_sim_model2 &lt;- better_model1 / n_simulation
+fit_model2_sim_model2 &lt;- (n_simulation - better_model1) / n_simulation</code></pre>
 <p>ヒートマップ形式で図示します。alphaだけのモデル(Model 2)で生成したデータのパタメータ推定において，高い確率でalphaだけのモデル(Model 2)が選択されています。一方，alphaとbetaの両方があるモデル(Model 1)で生成したデータのパラメータ推定においては，alphaとbetaの両方があるモデル(Model 1)の方が選択される確率は高いもののalphaだけのモデル(Model 2)が選択されることがあります。偶然，設定したパラメータがβが１付近になってモデル識別が難しくなるケースがあったり，alphaとbetaの両方があるモデル(Model 1)の方が推定するパラメータが多いというのもあるかもしれません。こんな感じでモデルリカバリーの検討を行います。</p>
 <pre class="r"><code>simulated_model &lt;- factor(c(&quot;Model 1&quot;,&quot;Model 1&quot;,&quot;Model 2&quot;,&quot;Model 2&quot;), levels = c(&quot;Model 1&quot;,&quot;Model 2&quot;))
 fit_model &lt;- factor(c(&quot;Model 1&quot;,&quot;Model 2&quot;,&quot;Model 1&quot;,&quot;Model 2&quot;), levels = c(&quot;Model 2&quot;,&quot;Model 1&quot;))
