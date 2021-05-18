@@ -478,7 +478,7 @@ for (i in 1:length(file_names)) {
 </div>
 <div id="e-相対モデル比較" class="section level2">
 <h2>E 相対モデル比較</h2>
-<p><a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル: ベイズ推定(1)」</a>の最後に検討したように，sub01のデータの推定結果からは，有情報事前分布の方が良さそうに思えますが，ここはモデル比較をしてみたいと思います。モデル比較する場合には，以下の２種類があります。今回は，予測をしたいという話ではないので，WBICを使用します。</p>
+<p>ここでは，sub02を対象にして，モデル比較をしてみたいと思います。モデル比較する場合には，以下の２種類があります。今回は，予測をしたいという話ではないので，WBICを使用します。</p>
 <ul>
 <li><p>予測の良さに基づくモデル選択法：KL距離をベースにしたものであり，予測をする上で悪いものを避けるという保守的なモデル選択ができる。例えば，AIC, DIC，WAICなどがあります。</p></li>
 <li><p>ベイズ的なモデル選択法(モデルと事前分布からみてどのくらいデータが意外か。この意外性が小さいほど良いモデルと考えられる)：BIC, WBIC, ベイズファクター,自由エネルギー</p></li>
@@ -549,8 +549,8 @@ model {
   Q[1, 2] = 0;
   
   //学習率の事前分布にベータ分布，逆温度の事前分布にガンマ分布
-  alpha ~ beta(2, 2); 
-  beta ~ gamma(2, 0.5);
+  alpha ~ beta(1.2, 1.2); 
+  beta ~ gamma(4.82, 0.88);
   
   for ( t in 1:trial) {
     // 対数尤度を足す
@@ -586,9 +586,9 @@ generated quantities {
 <p>推定してモデル比較してみましょう。まずは，モデルをコンパイルします。</p>
 <pre><code>q_learning_WBIC &lt;- cmdstan_model(&#39;q_learning_WBIC.stan&#39;)
 q_learning_prior_WBIC &lt;- cmdstan_model(&#39;q_learning_prior_WBIC.stan&#39;)</code></pre>
-<p>それでは，sub01で推定をしてみましょう！</p>
+<p>それでは，sub02で推定をしてみましょう！</p>
 <pre><code>data_individual &lt;- data_long %&gt;% 
-  filter(id == 1)
+  filter(id == 2)
 
 q_learning_WBIC_mcmc &lt;- q_learning_WBIC$sample(
         data = list(trial = nrow(data_individual),
@@ -597,7 +597,7 @@ q_learning_WBIC_mcmc &lt;- q_learning_WBIC$sample(
         seed = 123,
         chains = 4,
         iter_warmup = 500,
-        iter_sampling = 2000,
+        iter_sampling = 3000,
         parallel_chains = 4)
 
 q_learning_prior_WBIC_mcmc &lt;- q_learning_prior_WBIC$sample(
@@ -607,18 +607,18 @@ q_learning_prior_WBIC_mcmc &lt;- q_learning_prior_WBIC$sample(
         seed = 123,
         chains = 4,
         iter_warmup = 500,
-        iter_sampling = 10000,
+        iter_sampling = 3000,
         parallel_chains = 4)
 
 q_learning_WBIC_sample &lt;- rstan::read_stan_csv(q_learning_WBIC_mcmc$output_files())
 q_learning_prior_WBIC_sample &lt;- rstan::read_stan_csv(q_learning_prior_WBIC_mcmc$output_files())</code></pre>
-<p>予想に反して，無情報事前分布の方がWBICが低くなりました（低いほどよい）。一方，sub02では，有情報の方がWBICが小さくなりました。個人ごとには適切なモデルや事前分布は違う可能性があるので，階層モデルを作って評価が必要も思われます。</p>
+<p>sub02について，WBICを確認したところ，有情報事前分布の方がWBICが低くなりました。なお，sub01においては，無情報事前分布の方がWBICは低くなっています。ただし，sub01もsub02も無情報事前分布では，十分な収束ができておらず，そもそもモデル比較の前の問題があります。</p>
 <pre class="r"><code>WBIC_non &lt;- -mean(rowSums(rstan::extract(q_learning_WBIC_sample)$log_lik))
 WBIC_prior &lt;- -mean(rowSums(rstan::extract(q_learning_prior_WBIC_sample)$log_lik))
 paste(&quot;無情報事前分布のWBICは&quot;,WBIC_non)</code></pre>
-<pre><code>## [1] &quot;無情報事前分布のWBICは 3.42081097633143&quot;</code></pre>
+<pre><code>## [1] &quot;無情報事前分布のWBICは 52.6072371191108&quot;</code></pre>
 <pre class="r"><code>paste(&quot;有情報事前分布のWBICは&quot;,WBIC_prior)</code></pre>
-<pre><code>## [1] &quot;有情報事前分布のWBICは 6.43904859965286&quot;</code></pre>
+<pre><code>## [1] &quot;有情報事前分布のWBICは 49.5455223126708&quot;</code></pre>
 </div>
 </div>
 <div id="モデルリカバリーmodel-recovery" class="section level2">
@@ -651,7 +651,7 @@ model {
   Q[1, 1] = 0;
   Q[1, 2] = 0;
   //学習率の事前分布にベータ分布
-  alpha ~ beta(2, 2);
+  alpha ~ beta(1.2, 1.2); 
   for ( t in 1:trial) {
     // 対数尤度を足す
     target += (1/log(trial))*log(exp(Q[t,choice[t]])/(exp(Q[t,choice[t]])+exp(Q[t,3-choice[t]])));
@@ -688,8 +688,8 @@ generated quantities {
 <pre><code>better_model1 &lt;- 0
 n_simulation &lt;- 100
 for (i in 1:n_simulation) {
-  alpha_set &lt;- rbeta(1, 2, 2)
-  beta_set &lt;- rgamma(1, 2, 0.5)
+  alpha_set &lt;- rbeta(1, 1.2, 1.2)
+  beta_set &lt;- rgamma(1, 4.82, 0.88)
   #データ生成
   data_2 &lt;- q_learning_sim(alpha = alpha_set, beta = beta_set, sim_data)
   print(paste(&quot;進捗状況：&quot;,i,&quot;/&quot;,n_simulation))
@@ -733,7 +733,7 @@ fit_model2_sim_model1 &lt;- (n_simulation - better_model1) / n_simulation</code>
 n_simulation &lt;- 100
 beta_set &lt;- 1
 for (i in 1:n_simulation) {
-    alpha_set = alpha_set + 0.01
+    alpha_set = runif(1,0, 1)
     #データ生成
     data_2 &lt;- q_learning_sim(alpha = alpha_set, beta = beta_set, sim_data)
     print(paste(&quot;進捗状況：&quot;,i,&quot;/&quot;,n_simulation))
@@ -769,7 +769,12 @@ for (i in 1:n_simulation) {
 
 fit_model1_sim_model2 &lt;- better_model1 / n_simulation
 fit_model2_sim_model2 &lt;- (n_simulation - better_model1) / n_simulation</code></pre>
-<p>ヒートマップ形式で図示します。alphaだけのモデル(Model 2)で生成したデータのパタメータ推定において，高い確率でalphaだけのモデル(Model 2)が選択されています。一方，alphaとbetaの両方があるモデル(Model 1)で生成したデータのパラメータ推定においては，alphaとbetaの両方があるモデル(Model 1)の方が選択される確率は高いもののalphaだけのモデル(Model 2)が選択されることがあります。偶然，設定したパラメータがβが１付近になってモデル識別が難しくなるケースがあったり，alphaとbetaの両方があるモデル(Model 1)の方が推定するパラメータが多いというのもあるかもしれません。こんな感じでモデルリカバリーの検討を行います。</p>
+<p>ヒートマップ形式で図示します。</p>
+<ul>
+<li>alphaとbetaの両方があるモデル(Model 1)で生成したデータのパラメータ推定で，alphaとbetaの両方があるモデル(Model 1)の方が高い確率で選択されています。</li>
+<li>alphaだけのモデル(Model2)で生成したデータのパタメータ推定で，alphaだけのモデル(Model2)の方が高い確率で選択されています。</li>
+</ul>
+<p>偶然，設定したβが１付近になってモデル識別が難しくなるケースがあったりするかもしれません。なお，今回は100回だけにしていますが，繰り返し回数を増やしたほうが良いかもしれません。</p>
 <pre class="r"><code>simulated_model &lt;- factor(c(&quot;Model 1&quot;,&quot;Model 1&quot;,&quot;Model 2&quot;,&quot;Model 2&quot;), levels = c(&quot;Model 2&quot;,&quot;Model 1&quot;))
 fit_model &lt;- factor(c(&quot;Model 1&quot;,&quot;Model 2&quot;,&quot;Model 1&quot;,&quot;Model 2&quot;), levels = c(&quot;Model 1&quot;,&quot;Model 2&quot;))
 Probability &lt;- c(fit_model1_sim_model1, fit_model2_sim_model1, fit_model1_sim_model2, fit_model2_sim_model2)
