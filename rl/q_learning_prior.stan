@@ -16,8 +16,8 @@ model {
   Q[1, 2] = 0;
   
   //学習率の事前分布にベータ分布，逆温度の事前分布にガンマ分布
-  alpha ~ beta(2, 2); 
-  beta ~ gamma(2, 0.5);
+  alpha ~ beta(1.2, 1.2); 
+  beta ~ gamma(4.82, 0.88);
   
   for ( t in 1:trial) {
     // 対数尤度を足す

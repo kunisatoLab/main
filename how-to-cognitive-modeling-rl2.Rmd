@@ -277,7 +277,7 @@ parameter_recovery_mle <- data.frame(alpha_true = alpha_true[1:length(alpha_esti
 
 #### パラメータリカバリ（最尤推定）の確認
 
-パラメータリカバリーのチェックをしましょう。散布図を書いて，真値（研究者がデータ生成時に設定した値）と推定された値が強い相関を示しているか確認します（データ生成時や推定時に確率的な変動が生じるので，完全一致はありません）。最尤推定だと，一部のパラメータは推定ミスをすることがあります。
+パラメータリカバリーのチェックをしましょう。散布図を書いて，真値（研究者がデータ生成時に設定した値）と推定された値が強い相関を示しているか確認します（データ生成時や推定時に確率的な変動が生じるので，完全一致はありません）。最尤推定だと，一部のパラメータは推定ミスをすることがあります。真値とはずれて，極端に大きなαの値(つまり１付近の値)や低いαの値が確認できます。ちょっと気になりますね。
 
 ```{r}
 parameter_recovery_mle %>% 
@@ -286,7 +286,7 @@ parameter_recovery_mle %>%
 ```
 
 
-どうもβの推定値の中にとても大きな値になってしまったものがあるようです。βの最大値は制約をかけてないので，すごく大きくなることがあります。
+どうもβの推定値の中にとても大きな値になってしまったものがあるようです。βの最大値は制約をかけてないので，すごく大きくなることがあります。これも気になります。
 
 
 ```{r}
@@ -461,7 +461,7 @@ parameter_recovery_mcmc <- data.frame(alpha_true = alpha_true,
 
 #### パラメータリカバリ（ベイズ推定）の確認
 
-パラメータリカバリーのチェックをしましょう。散布図を書いて，真値（研究者がデータ生成時に設定した値）と推定された値が強い相関を示しているか確認します（データ生成時や推定時に確率的な変動が生じるので，完全一致はありません）。
+パラメータリカバリーのチェックをしましょう。散布図を書いて，真値（研究者がデータ生成時に設定した値）と推定された値が強い相関を示しているか確認します（データ生成時や推定時に確率的な変動が生じるので，完全一致はありません）。最尤推定と同様に，真値と結構ずれて低い推定値などがあって気になるところです。
 
 ```{r}
 parameter_recovery_mcmc %>% 
@@ -479,25 +479,27 @@ parameter_recovery_mcmc %>%
 
 ### 事前分布の活用
 
-- 上記の無情報の事前分布の場合だと，ベータがとても大きな値になる点が気にかかるところです。そこで事前分布にも情報をもたせることにします。
+上記の最尤推定や無情報の事前分布の場合だと，ベータがとても大きな値になる点が気にかかるところです。そこで事前分布にも情報をもたせることにします。最尤推定にはないベイズ推定の特徴は，事前分布と尤度からパラメータの事後分布を推定する点です。例えば，逆転学習課題でのパタメータ推定において，おおよそパラメータの分布が分かっていると，それを事前分布に使って，推定を安定化させることができます。例えば，Kanen et al.(2019)では，学習率αはden Ouden et al.(2013)を参考にベータ分布を事前分布に用い，逆温度βはGershman(2016)を参考にガンマ分布を用いています（なお，Karen et al.(2019)で用いるのは逆温度ではなく報酬感受性ですが，意味は同じです）。
 
-- αについては，0や１に近い値を取ることは稀であると考えられるので，以下のベータ分布beta(2,2)のような形状だと推定が安定するかもしれません。
+
+- 学習率αは極端に０や１に近い値が推定されることがありますが，実際は0や１に近い値を取ることは稀であると考えられるので，den Ouden et al.(2013)が用いているベータ分布(beta(α = 1.2,β = 1.2))のような形状だと推定が安定するかもしれません。
 
 ```{r}
 alpha = seq(0,1, length=100)
-plot(alpha, dbeta(alpha, 2, 2), ylab="density", type ="l", col=4)
+plot(alpha, dbeta(alpha, 1.2, 1.2), ylab="density", type ="l", col=4)
 ```
 
-βは極端に大きな値をとりましたが，βがあまりに大きくても意味はないので，裾広がりなガンマ分布(gamma(2,0.5))を使うことで，極端に大きな推定値を避けられるかもしれません。
+
+- 学習率βは極端に大きな値が推定されることがありますが，実際はあまりに大きな推定値は少ないですし，大きくてもその効果は地位ので，Gershman(2016)が用いているガンマ分布(gamma(α = 4.82,β = 0.88))のような形状だと，極端に大きな推定値を避けられるかもしれません。
 
 ```{r}
 beta = seq(0,15, length=500)
-plot(beta, dgamma(beta, 2, 0.5), ylab="density", type ="l", col=4)
+plot(beta, dgamma(beta, 4.82, 0.88), ylab="density", type ="l", col=4)
 ```
 
 ### 情報の有る事前分布を用いた場合のパラメータリカバリ
 
-上記を踏まえて，αの事前分布にベータ分布，ベータの事前分布にガンマ分布を仮定したStanコードを書いて，q_learning_prior.stanという名前で保存します。
+上記を踏まえて，αの事前分布にベータ分布，βの事前分布にガンマ分布を仮定したStanコードを書いて，q_learning_prior.stanという名前で保存します。
 
 ```
 data {
@@ -515,8 +517,8 @@ model {
   Q[1, 2] = 0;
   
   //学習率の事前分布にベータ分布，逆温度の事前分布にガンマ分布
-  alpha ~ beta(2, 2); 
-  beta ~ gamma(2, 0.5);
+  alpha ~ beta(1.2, 1.2); 
+  beta ~ gamma(4.82, 0.88);
   
   for ( t in 1:trial) {
     // 対数尤度を足す
@@ -576,7 +578,7 @@ q_learning_prior_mcmc <- q_learning_prior$sample(
 q_learning_prior_mcmc$summary()
 ```
 
-以下はMCMCについての診断結果です。収束診断の問題もないかと思います。
+以下はMCMCについての診断結果です。
 
 ```{r}
 q_learning_prior_mcmc$cmdstan_diagnose()
@@ -851,6 +853,7 @@ ggplot() +
 q_values <- q_learning_ll(mean(mcmc_samples$alpha),mean(mcmc_samples$beta),data_individual)
 ```
 
+sub01のトレースプロットや事後分布をみる限りでは，有情報事前分布の方が推定がうまくいっているように見えます。
 
 さて，ここまでで，ベイズ推定が出来るようになりました。次は<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl3.html" target="_blank">「強化学習モデル: ベイズ推定(2)」</a>で，モデル比較などに取り組みます。
 
@@ -858,5 +861,8 @@ q_values <- q_learning_ll(mean(mcmc_samples$alpha),mean(mcmc_samples$beta),data_
 ## 引用・参考文献
 
 - Busemeyer, J. R., & Diederich, A. (2010). Cognitive Modeling. SAGE.
+- den Ouden, H. E. M., Daw, N. D., Fernandez, G., Elshout, J. A., Rijpkema, M., Hoogman, M., Franke, B., & Cools, R. (2013). Dissociable effects of dopamine and serotonin on reversal learning. Neuron, 80(4), 1090–1100.
+- Gershman, S. J. (2016). Empirical priors for reinforcement learning models. Journal of Mathematical Psychology, 71, 1–6.
 - Heathcote, A., Brown, S. D., & Wagenmakers, E.-J. (2015). An Introduction to Good Practices in Cognitive Modeling. In B. U. Forstmann & E.-J. Wagenmakers (Eds.), An Introduction to Model-Based Cognitive Neuroscience (pp. 25–48). Springer New York.
+- Kanen, J. W., Ersche, K. D., Fineberg, N. A., Robbins, T. W., & Cardinal, R. N. (2019). Computational modelling reveals contrasting effects on reinforcement learning and cognitive flexibility in stimulant use disorder and obsessive-compulsive disorder: remediating effects of dopaminergic D2/3 receptor agents. Psychopharmacology, 236(8), 2337–2358.
 - Palminteri, S., Wyart, V., & Koechlin, E. (2017). The Importance of Falsification in Computational Cognitive Modeling. Trends in Cognitive Sciences, 21(6), 425–433.
