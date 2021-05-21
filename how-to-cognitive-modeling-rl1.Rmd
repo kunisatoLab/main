@@ -781,7 +781,7 @@ print(paste("最尤推定値: α =",result_pso$par[1],"β =",result_pso$par[2], 
 ```{r}
 method <- c("grid", "optim", "pso")
 alpha <- c(result_grid$calc_results$store_alpha[maxIndex],result_optim$par[1],result_pso$par[1])
-beta <- c(result_grid$calc_results$store_beta[maxIndex],result_optim$par[2],result_pso$par[1])
+beta <- c(result_grid$calc_results$store_beta[maxIndex],result_optim$par[2],result_pso$par[2])
 loglikelihood <- c(result_grid$calc_results$store_loglike[maxIndex],-result_optim$value,-result_pso$value)
 
 compare_table <- tibble(method,alpha,beta, loglikelihood)
