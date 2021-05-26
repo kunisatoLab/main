@@ -621,14 +621,14 @@ parameter_recovery_mle &lt;- data.frame(alpha_true = alpha_true[1:length(alpha_e
 <p>結果の要約を確認してみましょう。</p>
 <pre class="r"><code>q_learning_mcmc$summary()</code></pre>
 <pre><code>## # A tibble: 3 x 10
-##   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
-##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1 lp__     -39.7   -39.4   1.11  0.772 -41.9   -38.7    1.00    1517.    1660.
-## 2 alpha      0.335   0.318 0.115 0.107   0.181   0.557  1.00    1968.    1383.
-## 3 beta       2.56    2.53  0.576 0.569   1.67    3.55   1.00    1882.    2052.</code></pre>
+##   variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
+##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 lp__     -37.5   -37.1   1.13   0.799  -39.7   -36.4    1.00    1578.    1900.
+## 2 alpha      0.326   0.312 0.0959 0.0885   0.197   0.510  1.00    1892.    1693.
+## 3 beta       2.74    2.73  0.584  0.566    1.84    3.74   1.00    2187.    2025.</code></pre>
 <p>以下はMCMCについての診断結果です。</p>
 <pre class="r"><code>q_learning_mcmc$cmdstan_diagnose()</code></pre>
-<pre><code>## Processing csv files: /tmp/Rtmpdwazpf/q_learning-202105180219-1-07d706.csv, /tmp/Rtmpdwazpf/q_learning-202105180219-2-07d706.csv, /tmp/Rtmpdwazpf/q_learning-202105180219-3-07d706.csv, /tmp/Rtmpdwazpf/q_learning-202105180219-4-07d706.csv
+<pre><code>## Processing csv files: /tmp/RtmpS3XHIz/q_learning-202105260852-1-079c26.csv, /tmp/RtmpS3XHIz/q_learning-202105260852-2-079c26.csv, /tmp/RtmpS3XHIz/q_learning-202105260852-3-079c26.csv, /tmp/RtmpS3XHIz/q_learning-202105260852-4-079c26.csv
 ## 
 ## Checking sampler transitions treedepth.
 ## Treedepth satisfactory for all transitions.
@@ -727,8 +727,8 @@ parameter_recovery_mcmc &lt;- data.frame(alpha_true = alpha_true,
 <p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
 </div>
-<div id="事前分布の活用" class="section level3">
-<h3>事前分布の活用</h3>
+<div id="情報事前分布の活用" class="section level3">
+<h3>情報事前分布の活用</h3>
 <p>上記の最尤推定や無情報の事前分布の場合だと，ベータがとても大きな値になる点が気にかかるところです。そこで事前分布にも情報をもたせることにします。最尤推定にはないベイズ推定の特徴は，事前分布と尤度からパラメータの事後分布を推定する点です。例えば，逆転学習課題でのパタメータ推定において，おおよそパラメータの分布が分かっていると，それを事前分布に使って，推定を安定化させることができます。例えば，Kanen et al.(2019)では，学習率αはden Ouden et al.(2013)を参考にベータ分布を事前分布に用い，逆温度βはGershman(2016)を参考にガンマ分布を用いています（なお，Karen et al.(2019)で用いるのは逆温度ではなく報酬感受性ですが，意味は同じです）。</p>
 <ul>
 <li>学習率αは極端に０や１に近い値が推定されることがありますが，実際は0や１に近い値を取ることは稀であると考えられるので，den Ouden et al.(2013)が用いているベータ分布(beta(α = 1.2,β = 1.2))のような形状だと推定が安定するかもしれません。</li>
@@ -792,14 +792,14 @@ model {
 <p>結果の要約を確認してみましょう。</p>
 <pre class="r"><code>q_learning_prior_mcmc$summary()</code></pre>
 <pre><code>## # A tibble: 3 x 10
-##   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
-##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1 lp__     -38.6   -38.2   1.13  0.750 -40.8   -37.5    1.00    1602.    1730.
-## 2 alpha      0.327   0.310 0.109 0.103   0.184   0.525  1.00    1838.    1656.
-## 3 beta       2.73    2.70  0.553 0.538   1.88    3.69   1.00    1887.    2107.</code></pre>
+##   variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
+##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 lp__     -36.2   -35.9   1.11   0.783  -38.4   -35.2    1.00    1677.    2005.
+## 2 alpha      0.320   0.308 0.0907 0.0846   0.200   0.492  1.00    2270.    1613.
+## 3 beta       2.88    2.85  0.561  0.562    2.00    3.84   1.00    2422.    2108.</code></pre>
 <p>以下はMCMCについての診断結果です。</p>
 <pre class="r"><code>q_learning_prior_mcmc$cmdstan_diagnose()</code></pre>
-<pre><code>## Processing csv files: /tmp/Rtmpdwazpf/q_learning_prior-202105180224-1-7b3b19.csv, /tmp/Rtmpdwazpf/q_learning_prior-202105180224-2-7b3b19.csv, /tmp/Rtmpdwazpf/q_learning_prior-202105180224-3-7b3b19.csv, /tmp/Rtmpdwazpf/q_learning_prior-202105180224-4-7b3b19.csv
+<pre><code>## Processing csv files: /tmp/RtmpS3XHIz/q_learning_prior-202105260856-1-7b0039.csv, /tmp/RtmpS3XHIz/q_learning_prior-202105260856-2-7b0039.csv, /tmp/RtmpS3XHIz/q_learning_prior-202105260856-3-7b0039.csv, /tmp/RtmpS3XHIz/q_learning_prior-202105260856-4-7b0039.csv
 ## 
 ## Checking sampler transitions treedepth.
 ## Treedepth satisfactory for all transitions.
@@ -854,8 +854,8 @@ parameter_recovery_prior_mcmc &lt;- data.frame(alpha_true = alpha_true,
                                      beta_true = beta_true,
                                      alpha_estimated = alpha_estimated,
                                      beta_estimated = beta_estimated)</code></pre>
-<div id="有情報事前分布を用いた場合のパラメータリカバリの確認" class="section level4">
-<h4>有情報事前分布を用いた場合のパラメータリカバリの確認</h4>
+<div id="情報事前分布を用いた場合のパラメータリカバリの確認" class="section level4">
+<h4>情報事前分布を用いた場合のパラメータリカバリの確認</h4>
 <p>いい感じにパラメータリカバリーできています。無情報事前分布のときのようにすごく大きなβが発生しなくなっています。</p>
 <pre class="r"><code>parameter_recovery_prior_mcmc %&gt;% 
   ggplot(aes(x = alpha_true, y = alpha_estimated)) +
@@ -945,8 +945,8 @@ ggplot() +
 <p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-27-4.png" width="672" /></p>
 <pre class="r"><code>q_values &lt;- q_learning_ll(mean(mcmc_samples$alpha),mean(mcmc_samples$beta),data_individual)</code></pre>
 </div>
-<div id="個人のパラメータ推定有情報事前分布" class="section level3">
-<h3>個人のパラメータ推定（有情報事前分布）</h3>
+<div id="個人のパラメータ推定情報事前分布" class="section level3">
+<h3>個人のパラメータ推定（情報事前分布）</h3>
 <p>sub01</p>
 <pre><code>data_individual &lt;- data_long %&gt;% 
   filter(id == 1)

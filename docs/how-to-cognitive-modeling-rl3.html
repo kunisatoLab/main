@@ -612,7 +612,7 @@ q_learning_prior_WBIC_mcmc &lt;- q_learning_prior_WBIC$sample(
 
 q_learning_WBIC_sample &lt;- rstan::read_stan_csv(q_learning_WBIC_mcmc$output_files())
 q_learning_prior_WBIC_sample &lt;- rstan::read_stan_csv(q_learning_prior_WBIC_mcmc$output_files())</code></pre>
-<p>sub02について，WBICを確認したところ，有情報事前分布の方がWBICが低くなりました。なお，sub01においては，無情報事前分布の方がWBICは低くなっています。ただし，sub01もsub02も無情報事前分布では，十分な収束ができておらず，そもそもモデル比較の前の問題があります。</p>
+<p>sub02について，WBICを確認したところ，情報事前分布の方がWBICが低くなりました。なお，sub01においては，無情報事前分布の方がWBICは低くなっています。ただし，sub01もsub02も無情報事前分布では，十分な収束ができておらず，そもそもモデル比較の前の問題があります。</p>
 <pre class="r"><code>WBIC_non &lt;- -mean(rowSums(rstan::extract(q_learning_WBIC_sample)$log_lik))
 WBIC_prior &lt;- -mean(rowSums(rstan::extract(q_learning_prior_WBIC_sample)$log_lik))
 paste(&quot;無情報事前分布のWBICは&quot;,WBIC_non)</code></pre>
@@ -629,7 +629,7 @@ paste(&quot;無情報事前分布のWBICは&quot;,WBIC_non)</code></pre>
 <h3>モデルリカバリーで用いるモデル</h3>
 <p>あまり複雑にしないために，これまで用いてきたモデルとそのモデルを一部改変したモデルを考えます。</p>
 <ul>
-<li>上記で検討した事前分布をおいた強化学習モデル（Model 1）</li>
+<li>上記で検討した情報事前分布をおいた強化学習モデル（Model 1）</li>
 <li>上記からβを除外した強化学習モデル（Model 2, β=1に仮定したモデルともいえます）</li>
 </ul>
 <div id="αとβを仮定したモデルmodel-1から生成されたデータのモデルリカバリー" class="section level4">
