@@ -67,6 +67,8 @@ set_jsPsych()
 
 index.Rmdを開いてみましょう。まずは練習で，以下の青で囲ったKnitをクリックしてみましょう。しばらくすると，HTMLファイルが出力されて（index.html），「こんにちわあ」と表示されます。あとは，ご自身の作りたい行動課題の要素を追加していくとR Markdownから行動課題のHTMLファイルが作れるようになります（jsPsych自体のチュートリアルは[こちら](https://kunisatolab.github.io/main/code_tips.html)を確認ください）。
 
+**以降のスクリーンショット画像はjsPsychのバージョンなどが古いままになっていますが，そこは適宜最新版に置き換えて読んでください**
+
 ![](fig/pavlovia05.png)
 
 <br />

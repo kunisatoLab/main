@@ -420,6 +420,7 @@ div.tocify {
 <pre><code>set_jsPsych()</code></pre>
 <p><br /></p>
 <p>index.Rmdを開いてみましょう。まずは練習で，以下の青で囲ったKnitをクリックしてみましょう。しばらくすると，HTMLファイルが出力されて（index.html），「こんにちわあ」と表示されます。あとは，ご自身の作りたい行動課題の要素を追加していくとR Markdownから行動課題のHTMLファイルが作れるようになります（jsPsych自体のチュートリアルは<a href="https://kunisatolab.github.io/main/code_tips.html">こちら</a>を確認ください）。</p>
+<p><strong>以降のスクリーンショット画像はjsPsychのバージョンなどが古いままになっていますが，そこは適宜最新版に置き換えて読んでください</strong></p>
 <p><img src="fig/pavlovia05.png" /></p>
 <p><br /></p>
 <p>ご自身の課題が完成したら，index.Rmd内のjsブロックのタイムラインの設定のところのpavlovia_init，fullscreen（全画面表示のためのプラグイン），pavlovia_finishのコメントアウトをとります（つまり，行頭の//を消します）。pavlovia_initとpavlovia_finishの設定がないと，Pavloviaでのデータ収集はできません。なお，pavlovia_initとpavlovia_finishをタイムラインにいれると課題はローカルでは正常動作しなくなります（PavloviaにPush（アップロード）したら正常に動きます）。</p>
