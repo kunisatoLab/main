@@ -51,16 +51,16 @@ Project nameに研究名とか課題名をいれてください（参加者に�
 
 ## Pavlovia用の実験課題の作成
 
-次に，ここまで設定したRstudio上のPavloviaの課題リポジトリ上でR Markdownを使って行動課題を作っていきます（pavloviaからクローンしたフォルダ内でR Markdownで行動課題を作ります）。その際に，jsPsychRmd(https://github.com/ykunisato/jsPsychRmd )を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の```devtools::install_github("ykunisato/jsPsychRmd")```を打ち込んで，インストールしてから，```library(jsPsychRmd)```を実行してください。
+次に，ここまで設定したRstudio上のPavloviaの課題リポジトリ上でR Markdownを使って行動課題を作っていきます（pavloviaからクローンしたフォルダ内でR Markdownで行動課題を作ります）。その際に，jsPsychRmd(https://github.com/ykunisato/jsPsychRmd )を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の```remotes::install_github("ykunisato/jsPsychRmd")```を打ち込んで，インストールしてから，```library(jsPsychRmd)```を実行してください。
 
 ```
 library(jsPsychRmd)
 ```
 
-jsPsychRmdが読み込めたら，以下をConsoleに打ち込みます。以下を実行すると，jsPsychを使って行動課題のHTMLを出力するR Markdownファイル（index.Rmd），jsPsychのライブラリ(jspsych-6.1.0)，刺激をいれるstimuliフォルダを作ります。
+jsPsychRmdが読み込めたら，以下をConsoleに打ち込みます。以下を実行すると，jsPsychを使って行動課題のHTMLを出力するR Markdownファイル（index.Rmd），jsPsychのライブラリ(jspsych-6.3.1)，刺激をいれるstimuliフォルダを作ります。
 
 ```
-set_jsPsych(file_name = "stroop", folder = FALSE, pavlovia = TRUE)
+set_jsPsych()
 ```
 
 <br />
