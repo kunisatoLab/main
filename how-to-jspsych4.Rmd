@@ -43,7 +43,7 @@ tags$script(src='jspsych-6.3.1/plugins/jspsych-audio-keyboard-response.js')
 - 秋の田のかりほの庵の苫をあらみ　わが衣手は露にぬれつつ
 
 ```
-download.file("http://www9.nhk.or.jp/das/audio/D0002110/D0002110101_00000_A_001.m4a","audio/a1.m4a") 
+download.file("http://www9.nhk.or.jp/das/audio/D0002110/D0002110101_00000_A_001.m4a","stimuli/a1.m4a") 
 ```
 
 <br>
@@ -75,7 +75,7 @@ var instructions = {
 ```
 var hundred_poems1  = {
     type: 'audio-keyboard-response',
-    stimulus: 'audio/a1.m4a',
+    stimulus: 'stimuli/a1.m4a',
     choices: ['1', '2','3','4'],
     prompt: "<p style='text-align:left'>これから流れる百人一首は以下のどれでしょうか？１から４のキーで選んでください</p>"+
     "<p style='text-align:left'>1 あしびきの山鳥の尾のしだり尾の　ながながし夜をひとりかも寝む</p>"+
@@ -83,6 +83,7 @@ var hundred_poems1  = {
     "<p style='text-align:left'>3 秋の田のかりほの庵の苫をあらみ　わが衣手は露にぬれつつ</p>"+
     "<p style='text-align:left'>4 田子の浦にうち出でてみれば白妙の　富士の高嶺に雪は降りつつ</p>"
 };
+
 ```
 
 <br>
@@ -143,7 +144,7 @@ tags$script(src='jspsych-6.3.1/plugins/jspsych-video-slider-response.js')
 ```
 <br>
 
-音声と同様に<a href="https://www.nhk.or.jp/archives/creative/material/" target="_blank">NHK CREATIVE LIBRARY</a>を使いましょう。正直なんでもいいのですが，あまり長くない動画を適当に選んで，download.file()を使ってダウンロードして，"video"フォルダにv1という名前をつけて保存してください（拡張子はmp4を想定していますが，ダウンロードしたファイルがそうじゃない場合は，以降のコードも修正ください）。
+音声と同様に<a href="https://www.nhk.or.jp/archives/creative/material/" target="_blank">NHK CREATIVE LIBRARY</a>を使いましょう。正直なんでもいいのですが，あまり長くない動画を適当に選んで，ダウンロードして，"stimuli"フォルダにv1という名前をつけて保存してください（拡張子はmp4を想定していますが，ダウンロードしたファイルがそうじゃない場合は，以降のコードも修正ください）。
 
 まず，以下のような教示をします。
 ```
@@ -158,12 +159,12 @@ var instructions = {
 
 <br>
 
-次に，video-slider-responseプラグインを使って，動画を呈示します。sources:で動画ファイルを指定します。そのままだと大きい場合が多いので，width:で大きさを調整します。labels: でスライダーのラベルをつけられます。今回は嫌い-どちらでもない-好きの３つのラベルをつけます。prompt:で教示を指定します。デフォルトでは，下に「Continue」ボタンがでてきますが，これは，「button_label: "次へ"」とすることで，「次へ」ボタンに変更します。
+次に，video-slider-responseプラグインを使って，動画を呈示します。stimulus:で動画ファイルを指定します。そのままだと大きい場合が多いので，width:で大きさを調整します。labels: でスライダーのラベルをつけられます。今回は嫌い-どちらでもない-好きの３つのラベルをつけます。prompt:で教示を指定します。デフォルトでは，下に「Continue」ボタンがでてきますが，これは，「button_label: "次へ"」とすることで，「次へ」ボタンに変更します。
 
 ```
 var movie1 = {
     type: 'video-slider-response',
-    sources:['video/v1.mp4'],
+    stimulus: ['stimuli/v1.mp4'],
     width: 600,
     labels: ["嫌い", "どちらでもない", "好き"],
     prompt: "<p>この動画がどのくらい好きか嫌いか，マウスでスライダーを動かして，評定してください</p>",

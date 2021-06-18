@@ -397,8 +397,8 @@ div.tocify {
 <p><br></p>
 <p>本研究室では，上記を避けるために，以下のフローを使います。</p>
 <ul>
-<li>(調査だけの場合)Google Formやqualtricsなどのオンラインツールを使ってデータ収集→生データ保管&amp;匿名化処理(国里がやります)→匿名化済みデータをRで前処理</li>
-<li>(行動課題を行う場合)jsPsychをsurveryツールを使ってデータ収集→生データ保管&amp;匿名化処理(国里がやります)→匿名化済みデータをRで前処理</li>
+<li>(調査だけの場合)Google Formやqualtricsなどのオンラインツールを使ってデータ収集→生データ保管&amp;匿名化処理→匿名化済みデータをRで前処理</li>
+<li>(行動課題を行う場合)jsPsychをsurveryツールを使ってデータ収集→生データ保管&amp;匿名化処理→匿名化済みデータをRで前処理</li>
 </ul>
 <p>紙でのデータ収集は止めて，Google Formやサーバー上においたjsPsychを使ってデータ収取をします。これによって，入力ミスというのはなくなります（プログラミングミスはあり得ますが，間違いに気づけます）。そして，インターネット経由でデータを収集する場合は，できるだけ厳格なデータ管理が必要になります。そのため，サーバーなどの設定，生データの保管，データから個人情報や個人が特定できる情報を削除する匿名化処理は，国里が行います。匿名化されたデータをRで前処理して，統計解析などを行ってください。</p>
 <p><br></p>
@@ -406,6 +406,8 @@ div.tocify {
 <div id="jspsychで質問紙を実施してみよう" class="section level2">
 <h2>jsPsychで質問紙を実施してみよう！</h2>
 <p>Google Formでの調査票の作成方法は，すでに多くの情報がインターネットにありますし，そもそも簡単に作れます。以下では，jsPsychで作った行動課題と一緒に質問紙をとる方法について学んでいきましょう。以下では簡単な解説をしていきますが，山形大学人文社会科学部の小林正法先生のHPでは，<a href="https://www.notion.so/5448a1f2bd59485bb4b1a70d581faa94" target="_blank">多肢選択</a>と<a href="https://www.notion.so/Likert-64aa8ae3ecad49bba8e3936438282476" target="_blank">Likert</a>について，使い方とカスタマイズについても説明があるので，是非とも参照ください。</p>
+<p><strong>まず，以下をRstudioのConsoleで実行して，フォルダとファイルを準備します。</strong></p>
+<pre><code>jsPsychRmd::set_jsPsych(folder = &quot;survey&quot;, rc = TRUE)</code></pre>
 <p>jsPsychでは，以下の５つのプラグインが用意されています。それぞれ簡単に説明します。</p>
 <ul>
 <li>jspsych-survey-html-form</li>
@@ -414,6 +416,17 @@ div.tocify {
 <li>jspsych-survey-multi-select</li>
 <li>jspsych-survey-text</li>
 </ul>
+<p><br></p>
+<p>そこで，最初のタグの設定は，５つのプラグインを読み込んで，以下のようになります。</p>
+<pre><code>library(htmltools)
+tagList(
+tags$script(src=&#39;jspsych-6.3.1/jspsych.js&#39;),
+tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-survey-html-form.js&#39;),
+tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-survey-likert.js&#39;),
+tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-survey-multi-choice.js&#39;),
+tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-survey-multi-select.js&#39;),
+tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-survey-text.js&#39;)
+)</code></pre>
 <p><br></p>
 </div>
 <div id="jspsych-survey-html-form" class="section level2">
@@ -488,9 +501,10 @@ var likert = {
   button_label: '次へ',
 };
 </script>
+<p>timeline.push(likert)を追加して，knitして，確認してください。</p>
 <div id="演習課題2" class="section level3">
 <h3>演習課題2</h3>
-<p>サイエンス社の「心理測定尺度集Ⅰ～Ⅵ」から好きな尺度を１つ選んでsurvey-likertで質問票を作ってみよう！</p>
+<p>心理学で使われる尺度を１つ選んでsurvey-likertで質問票を作ってみよう！その際に，<a href="https://www.jspsych.org/plugins/jspsych-survey-likert/" class="uri">https://www.jspsych.org/plugins/jspsych-survey-likert/</a> を参考に，randomize_question_orderをtureにして実施してみよう！</p>
 <p><br></p>
 </div>
 </div>
@@ -522,9 +536,10 @@ var multi_choice_h = {
   ],
   button_label: &#39;次へ&#39;
 };</code></pre>
+<p>timeline.push(multi_choice)とtimeline.push(multi_choice_h)を追加して，knitして，確認してください。</p>
 <div id="演習課題3" class="section level3">
 <h3>演習課題3</h3>
-<p>サイエンス社の「心理測定尺度集Ⅰ～Ⅵ」から好きな尺度を１つ選んでssurvey-multi-choiceで質問票を作ってみよう！</p>
+<p>演習課題2で選んだ心理尺度について，survey-multi-choiceを使って，質問票を作ってみよう！</p>
 <p><br></p>
 </div>
 </div>
@@ -552,6 +567,7 @@ var multi_choice_h = {
     button_label: &#39;次へ&#39;,
     randomize_question_order: true
 };</code></pre>
+<p>timeline.push(multi_select)を追加して，knitして，確認してください。</p>
 <div id="演習課題4" class="section level3">
 <h3>演習課題4</h3>
 <p>大学の心理学の各研究室名を選択肢にいれて，希望研究室（複数回答可）を聞く質問を作ってみよう！</p>
@@ -569,6 +585,7 @@ var multi_choice_h = {
   ],
   button_label: &#39;次へ&#39;,
 };</code></pre>
+<p>timeline.push(survey_text)を追加して，knitして，確認してください。</p>
 <div id="演習課題5" class="section level3">
 <h3>演習課題5</h3>
 <p>心理学を学ぼうとおもったきっかけ自由記述で回答してもらうような質問を作ってみよう！</p>
@@ -580,7 +597,7 @@ var multi_choice_h = {
 <ul>
 <li>1ページ目:ラジオボタン形式で，性別と利き手を尋ねる。</li>
 <li>2ページ目:フォーム形式，大学名，学部名，学科名を尋ねる。</li>
-<li>3ページ目:サイエンス社の「心理測定尺度集Ⅰ～Ⅵ」から好きな尺度を１つ選んでLikert形式で尋ねる。</li>
+<li>3ページ目:心理尺度（演習課題２）を１つ選んでLikert形式で尋ねる。</li>
 <li>4ページ目:月曜日から金曜日で大学に来ている日を尋ねる（複数回答可にする）。</li>
 <li>5ページ目:調査に回答した感想を自由記述形式で尋ねる。</li>
 </ul>

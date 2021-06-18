@@ -411,7 +411,7 @@ tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-audio-keyboard-response.js&#3
 <ul>
 <li>秋の田のかりほの庵の苫をあらみ　わが衣手は露にぬれつつ</li>
 </ul>
-<pre><code>download.file(&quot;http://www9.nhk.or.jp/das/audio/D0002110/D0002110101_00000_A_001.m4a&quot;,&quot;audio/a1.m4a&quot;) </code></pre>
+<pre><code>download.file(&quot;http://www9.nhk.or.jp/das/audio/D0002110/D0002110101_00000_A_001.m4a&quot;,&quot;stimuli/a1.m4a&quot;) </code></pre>
 <p><br></p>
 <p>上記でダウンロードした音声が鳴ったら，正しい歌を選んでもらうのですが，「秋の田の・・・」以外に以下の３つも呈示して，４択にしてみましょう。</p>
 <ul>
@@ -432,14 +432,15 @@ tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-audio-keyboard-response.js&#3
 <p>音声を呈示してキーボードで反応取得する場合は，audio-keyboard-responseプラグインを使います。stimulus:で音声刺激を指定します。今回は，“audio”フォルダを作って，そこに音声ファイルにa1という名前をつけて保存しています（拡張子はm4aです）。４つの歌を呈示して反応を取るので，choiceでは４つキーを設定します（適当に1,2,3,4としました）。最後にpromptに教示と選択肢の歌を書いて呈示します（みやすさを考えて左揃えにしました）。</p>
 <pre><code>var hundred_poems1  = {
     type: &#39;audio-keyboard-response&#39;,
-    stimulus: &#39;audio/a1.m4a&#39;,
+    stimulus: &#39;stimuli/a1.m4a&#39;,
     choices: [&#39;1&#39;, &#39;2&#39;,&#39;3&#39;,&#39;4&#39;],
     prompt: &quot;&lt;p style=&#39;text-align:left&#39;&gt;これから流れる百人一首は以下のどれでしょうか？１から４のキーで選んでください&lt;/p&gt;&quot;+
     &quot;&lt;p style=&#39;text-align:left&#39;&gt;1 あしびきの山鳥の尾のしだり尾の　ながながし夜をひとりかも寝む&lt;/p&gt;&quot;+
     &quot;&lt;p style=&#39;text-align:left&#39;&gt;2 春過ぎて夏来にけらし白妙の　衣干すてふ天の香具山&lt;/p&gt;&quot;+
     &quot;&lt;p style=&#39;text-align:left&#39;&gt;3 秋の田のかりほの庵の苫をあらみ　わが衣手は露にぬれつつ&lt;/p&gt;&quot;+
     &quot;&lt;p style=&#39;text-align:left&#39;&gt;4 田子の浦にうち出でてみれば白妙の　富士の高嶺に雪は降りつつ&lt;/p&gt;&quot;
-};</code></pre>
+};
+</code></pre>
 <p><br></p>
 <p>教示ブロックと音声呈示ブロックができたので，timelineにpushして，開始してみましょう！</p>
 <pre><code>var timeline = [];
@@ -484,7 +485,7 @@ tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js&#39
 tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-video-slider-response.js&#39;)
 )</code></pre>
 <p><br></p>
-<p>音声と同様に<a href="https://www.nhk.or.jp/archives/creative/material/" target="_blank">NHK CREATIVE LIBRARY</a>を使いましょう。正直なんでもいいのですが，あまり長くない動画を適当に選んで，download.file()を使ってダウンロードして，“video”フォルダにv1という名前をつけて保存してください（拡張子はmp4を想定していますが，ダウンロードしたファイルがそうじゃない場合は，以降のコードも修正ください）。</p>
+<p>音声と同様に<a href="https://www.nhk.or.jp/archives/creative/material/" target="_blank">NHK CREATIVE LIBRARY</a>を使いましょう。正直なんでもいいのですが，あまり長くない動画を適当に選んで，ダウンロードして，“stimuli”フォルダにv1という名前をつけて保存してください（拡張子はmp4を想定していますが，ダウンロードしたファイルがそうじゃない場合は，以降のコードも修正ください）。</p>
 <p>まず，以下のような教示をします。</p>
 <pre><code>var instructions = {
   type: &quot;html-keyboard-response&quot;,
@@ -494,10 +495,10 @@ tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-video-slider-response.js&#39;
   post_trial_gap: 1000
 };</code></pre>
 <p><br></p>
-<p>次に，video-slider-responseプラグインを使って，動画を呈示します。sources:で動画ファイルを指定します。そのままだと大きい場合が多いので，width:で大きさを調整します。labels: でスライダーのラベルをつけられます。今回は嫌い-どちらでもない-好きの３つのラベルをつけます。prompt:で教示を指定します。デフォルトでは，下に「Continue」ボタンがでてきますが，これは，「button_label: “次へ”」とすることで，「次へ」ボタンに変更します。</p>
+<p>次に，video-slider-responseプラグインを使って，動画を呈示します。stimulus:で動画ファイルを指定します。そのままだと大きい場合が多いので，width:で大きさを調整します。labels: でスライダーのラベルをつけられます。今回は嫌い-どちらでもない-好きの３つのラベルをつけます。prompt:で教示を指定します。デフォルトでは，下に「Continue」ボタンがでてきますが，これは，「button_label: “次へ”」とすることで，「次へ」ボタンに変更します。</p>
 <pre><code>var movie1 = {
     type: &#39;video-slider-response&#39;,
-    sources:[&#39;video/v1.mp4&#39;],
+    stimulus: [&#39;stimuli/v1.mp4&#39;],
     width: 600,
     labels: [&quot;嫌い&quot;, &quot;どちらでもない&quot;, &quot;好き&quot;],
     prompt: &quot;&lt;p&gt;この動画がどのくらい好きか嫌いか，マウスでスライダーを動かして，評定してください&lt;/p&gt;&quot;,
