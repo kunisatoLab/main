@@ -2,9 +2,15 @@
 title: "紀要論文・報告書・研究論文以外の原稿など"
 ---
 
+### 2021
+
+- [22] 国里愛彦 (2021). 在外研究報告　専修人間科学論集　心理学篇, 11, 35-37. [リンク](https://senshu-u.repo.nii.ac.jp/?action=pages_view_main&active_action=repository_view_main_item_detail&item_id=11902&item_no=1&page_id=13&block_id=21)
+
+- [21] 国里愛彦 (2021). アムステルダムで研究法を学んだ一年間 心理学ワールド 90号　[リンク](https://psych.or.jp/publication/world090/pw18/)
+
 ### 2020
 
-- [20] 国里愛彦　(2020). あなたの解析，再現できますか？統計解析の再現可能性を高めるために 週刊医学界新聞 第3357号　2020年2月3日 [リンク](http://www.igaku-shoin.co.jp/paperDetail.do?id=PA03357_03)
+- [20] 国里愛彦 (2020). あなたの解析，再現できますか？統計解析の再現可能性を高めるために 週刊医学界新聞 第3357号　2020年2月3日 [リンク](http://www.igaku-shoin.co.jp/paperDetail.do?id=PA03357_03)
 
 - [19] 国里愛彦　(2020). 自著を語る「計算論的精神医学: 情報処理過程から読み解く精神障害」　心理学ワールド 88号　[リンク](https://psych.or.jp/publication/world088/pw18)
 
