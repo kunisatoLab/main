@@ -275,8 +275,6 @@ services:
 sudo docker-compose -f dir_docker_compose/rstudio/docker-compose.yml up -d
 
 ```
-<!--
-まだうまく動かないなあ。
 
 ### Shinyの用意
 
@@ -292,6 +290,7 @@ sudo vim dir_docker_compose/shiny/docker-compose.yml
 vimで開いたdocker-compose.ymlに，以下を変更したその下のコードを貼り付けてください。改変した内容をコピペできたら，escキーをタイプして，```:wq```とタイプします（保存されます）。
 
 - traefik.frontend.ruleのドメイン名を自分のものに変更する。
+- volumesの左側の./shinyは，.のところをGCP上でpwdをした時にでてくるカレントディレクトにする必要があるかもしれません。
 
 ```
 version: '3'
@@ -310,14 +309,16 @@ services:
     container_name: shiny
     restart: always
     volumes:
-      - ./shiny/shinyapps:/srv/shiny-server
-      - ./shiny/shinylog:/var/log/shiny-server 
+      - （要変更）/shiny/shinyapps:/srv/shiny-server
+      - （要変更）/shiny/shinylog:/var/log/shiny-server 
     labels:
       - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.frontend.rule=Host:shiny.ドメイン名
-      - traefik.port=3838
-      - traefik.protocol=http
+      - traefik.http.routers.shiny.rule=PathPrefix(`/`)
+      - traefik.http.services.shiny.loadbalancer.server.port=3838
+      - traefik.http.services.shiny.loadbalancer.sticky.cookie=true
+      - traefik.http.services.shiny.loadbalancer.sticky.cookie.name=stickysvr
 ```
 
 以下を実行して，用意したコンテナを起動します。イメージのダウンロードなどにしばらく時間がかかります。
@@ -326,7 +327,81 @@ services:
 sudo docker-compose -f dir_docker_compose/shiny/docker-compose.yml up -d
 
 ```
--->
+
+shinyの入り口用のindex.htmlを作ります。
+
+```
+sudo vim shiny/shinyapps/index.html 
+```
+
+適当にタイトルとh1とliあたりは変更ください。
+
+```
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>Shinyアプリ</title>
+  </head>
+  <body>
+    <h1>Shinyアプリ</h1>
+    <p>以下が私の作成したShinyアプリです</p>
+    <ul>
+     <li><a href="/app01/">app01</a></li>
+    </ul>
+  </body>
+</html>
+```
+
+確認用にapp01を作ります。まず，shiny/shinyapps内にapp01フォルダを作ります。その上で，app01内にui.Rを作ります。なお，server.Rとui.Rは，[第85回日本心理学会TWS「Shiny 入門」](https://github.com/tyosem/jpa2021)を参考にさせていただきました。
+
+```
+sudo mkdir -p shiny/shinyapps/app01
+sudo vim shiny/shinyapps/app01/ui.R 
+```
+
+vimで開いたui.Rに以下を貼り付けて保存します（保存は，escで:wq）。
+
+```
+library(shiny)
+shinyUI(fluidPage(
+  titlePanel("階級値の数を変更できるヒストグラム"),  
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+                  "階級値の数:",
+                  min = 1,
+                  max = 50,
+                  value = 30)
+    ),
+    mainPanel(
+      plotOutput("distPlot") 
+    )
+  )
+))
+```
+
+app01内にserver.Rを作ります。
+
+```
+sudo vim shiny/shinyapps/app01/server.R
+```
+
+vimで開いたui.Rに以下を貼り付けて保存します（保存は，escで:wq）。
+
+```
+library(shiny)
+shinyServer(function(input, output) {
+  output$distPlot <- renderPlot({
+    x <- faithful[, 2]
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+  })
+})
+```
+
+shiny.ドメイン名でアクセスしてindex.htmlが表示されるか，shiny.ドメイン名/app01にアクセスして機能しているか確認してください。以降は，ローカルで新しいアプリを作ったら，必要に応じてindex.htmlを変更し，shiny/shinyapps内に新しいアプリのフォルダ(ui.Rやserver.Rを含んだもの)をアップください。
+
 
 ### Jupyter notebookの用意
 

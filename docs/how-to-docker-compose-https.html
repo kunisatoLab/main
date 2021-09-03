@@ -579,26 +579,20 @@ services:
 <p>以下を実行して，用意したコンテナを起動します。イメージのダウンロードなどにしばらく時間がかかります。doneとでてきたら，終了です。</p>
 <pre><code>sudo docker-compose -f dir_docker_compose/rstudio/docker-compose.yml up -d
 </code></pre>
-<!--
-まだうまく動かないなあ。
-
-### Shinyの用意
-
-まず，ホームディレクトリ内にdocker-compose.ymlを入れるdir_docker_composeディレクトリとさらにその中にshinyディレクトリを作ります。さらにshinyのファイルをおくディレクトリのshinyとその下にshinyappsとshinylogディレクトリを作ります。そして，dir_docker_compose/shiny内にvimでshiny用のdocker-compose.ymlを作ります。以下のコマンドを実行ください。
-
-```
-sudo mkdir -p dir_docker_compose/shiny
+</div>
+<div id="shinyの用意" class="section level3">
+<h3>Shinyの用意</h3>
+<p>まず，ホームディレクトリ内にdocker-compose.ymlを入れるdir_docker_composeディレクトリとさらにその中にshinyディレクトリを作ります。さらにshinyのファイルをおくディレクトリのshinyとその下にshinyappsとshinylogディレクトリを作ります。そして，dir_docker_compose/shiny内にvimでshiny用のdocker-compose.ymlを作ります。以下のコマンドを実行ください。</p>
+<pre><code>sudo mkdir -p dir_docker_compose/shiny
 sudo mkdir -p shiny/shinyapps
 sudo mkdir -p shiny/shinylog
-sudo vim dir_docker_compose/shiny/docker-compose.yml
-```
-
-vimで開いたdocker-compose.ymlに，以下を変更したその下のコードを貼り付けてください。改変した内容をコピペできたら，escキーをタイプして，```:wq```とタイプします（保存されます）。
-
-- traefik.frontend.ruleのドメイン名を自分のものに変更する。
-
-```
-version: '3'
+sudo vim dir_docker_compose/shiny/docker-compose.yml</code></pre>
+<p>vimで開いたdocker-compose.ymlに，以下を変更したその下のコードを貼り付けてください。改変した内容をコピペできたら，escキーをタイプして，<code>:wq</code>とタイプします（保存されます）。</p>
+<ul>
+<li>traefik.frontend.ruleのドメイン名を自分のものに変更する。</li>
+<li>volumesの左側の./shinyは，.のところをGCP上でpwdをした時にでてくるカレントディレクトにする必要があるかもしれません。</li>
+</ul>
+<pre><code>version: &#39;3&#39;
 
 networks:
   proxy:
@@ -614,23 +608,68 @@ services:
     container_name: shiny
     restart: always
     volumes:
-      - ./shiny/shinyapps:/srv/shiny-server
-      - ./shiny/shinylog:/var/log/shiny-server 
+      - （要変更）/shiny/shinyapps:/srv/shiny-server
+      - （要変更）/shiny/shinylog:/var/log/shiny-server 
     labels:
       - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.frontend.rule=Host:shiny.ドメイン名
-      - traefik.port=3838
-      - traefik.protocol=http
-```
-
-以下を実行して，用意したコンテナを起動します。イメージのダウンロードなどにしばらく時間がかかります。
-
-```
-sudo docker-compose -f dir_docker_compose/shiny/docker-compose.yml up -d
-
-```
--->
+      - traefik.http.routers.shiny.rule=PathPrefix(`/`)
+      - traefik.http.services.shiny.loadbalancer.server.port=3838
+      - traefik.http.services.shiny.loadbalancer.sticky.cookie=true
+      - traefik.http.services.shiny.loadbalancer.sticky.cookie.name=stickysvr</code></pre>
+<p>以下を実行して，用意したコンテナを起動します。イメージのダウンロードなどにしばらく時間がかかります。</p>
+<pre><code>sudo docker-compose -f dir_docker_compose/shiny/docker-compose.yml up -d
+</code></pre>
+<p>shinyの入り口用のindex.htmlを作ります。</p>
+<pre><code>sudo vim shiny/shinyapps/index.html </code></pre>
+<p>適当にタイトルとh1とliあたりは変更ください。</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Shinyアプリ&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Shinyアプリ&lt;/h1&gt;
+    &lt;p&gt;以下が私の作成したShinyアプリです&lt;/p&gt;
+    &lt;ul&gt;
+     &lt;li&gt;&lt;a href=&quot;/app01/&quot;&gt;app01&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>確認用にapp01を作ります。まず，shiny/shinyapps内にapp01フォルダを作ります。その上で，app01内にui.Rを作ります。なお，server.Rとui.Rは，<a href="https://github.com/tyosem/jpa2021">第85回日本心理学会TWS「Shiny 入門」</a>を参考にさせていただきました。</p>
+<pre><code>sudo mkdir -p shiny/shinyapps/app01
+sudo vim shiny/shinyapps/app01/ui.R </code></pre>
+<p>vimで開いたui.Rに以下を貼り付けて保存します（保存は，escで:wq）。</p>
+<pre><code>library(shiny)
+shinyUI(fluidPage(
+  titlePanel(&quot;階級値の数を変更できるヒストグラム&quot;),  
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput(&quot;bins&quot;,
+                  &quot;階級値の数:&quot;,
+                  min = 1,
+                  max = 50,
+                  value = 30)
+    ),
+    mainPanel(
+      plotOutput(&quot;distPlot&quot;) 
+    )
+  )
+))</code></pre>
+<p>app01内にserver.Rを作ります。</p>
+<pre><code>sudo vim shiny/shinyapps/app01/server.R</code></pre>
+<p>vimで開いたui.Rに以下を貼り付けて保存します（保存は，escで:wq）。</p>
+<pre><code>library(shiny)
+shinyServer(function(input, output) {
+  output$distPlot &lt;- renderPlot({
+    x &lt;- faithful[, 2]
+    bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)
+    hist(x, breaks = bins, col = &#39;darkgray&#39;, border = &#39;white&#39;)
+  })
+})</code></pre>
+<p>shiny.ドメイン名でアクセスしてindex.htmlが表示されるか，shiny.ドメイン名/app01にアクセスして機能しているか確認してください。以降は，ローカルで新しいアプリを作ったら，必要に応じてindex.htmlを変更し，shiny/shinyapps内に新しいアプリのフォルダ(ui.Rやserver.Rを含んだもの)をアップください。</p>
 </div>
 <div id="jupyter-notebookの用意" class="section level3">
 <h3>Jupyter notebookの用意</h3>
