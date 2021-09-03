@@ -1,5 +1,5 @@
 ---
-title: "Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法"
+title: "Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW，shiny)をHTTPS化する方法"
 output: html_document
 ---
 
@@ -275,6 +275,58 @@ services:
 sudo docker-compose -f dir_docker_compose/rstudio/docker-compose.yml up -d
 
 ```
+<!--
+まだうまく動かないなあ。
+
+### Shinyの用意
+
+まず，ホームディレクトリ内にdocker-compose.ymlを入れるdir_docker_composeディレクトリとさらにその中にshinyディレクトリを作ります。さらにshinyのファイルをおくディレクトリのshinyとその下にshinyappsとshinylogディレクトリを作ります。そして，dir_docker_compose/shiny内にvimでshiny用のdocker-compose.ymlを作ります。以下のコマンドを実行ください。
+
+```
+sudo mkdir -p dir_docker_compose/shiny
+sudo mkdir -p shiny/shinyapps
+sudo mkdir -p shiny/shinylog
+sudo vim dir_docker_compose/shiny/docker-compose.yml
+```
+
+vimで開いたdocker-compose.ymlに，以下を変更したその下のコードを貼り付けてください。改変した内容をコピペできたら，escキーをタイプして，```:wq```とタイプします（保存されます）。
+
+- traefik.frontend.ruleのドメイン名を自分のものに変更する。
+
+```
+version: '3'
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+  
+services:
+  shiny:
+    image: rocker/shiny:latest
+    networks:
+      - proxy
+    container_name: shiny
+    restart: always
+    volumes:
+      - ./shiny/shinyapps:/srv/shiny-server
+      - ./shiny/shinylog:/var/log/shiny-server 
+    labels:
+      - traefik.docker.network=proxy
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:shiny.ドメイン名
+      - traefik.port=3838
+      - traefik.protocol=http
+```
+
+以下を実行して，用意したコンテナを起動します。イメージのダウンロードなどにしばらく時間がかかります。
+
+```
+sudo docker-compose -f dir_docker_compose/shiny/docker-compose.yml up -d
+
+```
+-->
 
 ### Jupyter notebookの用意
 

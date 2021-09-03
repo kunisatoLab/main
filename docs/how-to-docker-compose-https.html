@@ -11,9 +11,9 @@
 
 
 
-<title>Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法</title>
+<title>Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW，shiny)をHTTPS化する方法</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -299,12 +299,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -381,7 +381,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法</h1>
+<h1 class="title toc-ignore">Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW，shiny)をHTTPS化する方法</h1>
 
 </div>
 
@@ -579,6 +579,58 @@ services:
 <p>以下を実行して，用意したコンテナを起動します。イメージのダウンロードなどにしばらく時間がかかります。doneとでてきたら，終了です。</p>
 <pre><code>sudo docker-compose -f dir_docker_compose/rstudio/docker-compose.yml up -d
 </code></pre>
+<!--
+まだうまく動かないなあ。
+
+### Shinyの用意
+
+まず，ホームディレクトリ内にdocker-compose.ymlを入れるdir_docker_composeディレクトリとさらにその中にshinyディレクトリを作ります。さらにshinyのファイルをおくディレクトリのshinyとその下にshinyappsとshinylogディレクトリを作ります。そして，dir_docker_compose/shiny内にvimでshiny用のdocker-compose.ymlを作ります。以下のコマンドを実行ください。
+
+```
+sudo mkdir -p dir_docker_compose/shiny
+sudo mkdir -p shiny/shinyapps
+sudo mkdir -p shiny/shinylog
+sudo vim dir_docker_compose/shiny/docker-compose.yml
+```
+
+vimで開いたdocker-compose.ymlに，以下を変更したその下のコードを貼り付けてください。改変した内容をコピペできたら，escキーをタイプして，```:wq```とタイプします（保存されます）。
+
+- traefik.frontend.ruleのドメイン名を自分のものに変更する。
+
+```
+version: '3'
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+  
+services:
+  shiny:
+    image: rocker/shiny:latest
+    networks:
+      - proxy
+    container_name: shiny
+    restart: always
+    volumes:
+      - ./shiny/shinyapps:/srv/shiny-server
+      - ./shiny/shinylog:/var/log/shiny-server 
+    labels:
+      - traefik.docker.network=proxy
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:shiny.ドメイン名
+      - traefik.port=3838
+      - traefik.protocol=http
+```
+
+以下を実行して，用意したコンテナを起動します。イメージのダウンロードなどにしばらく時間がかかります。
+
+```
+sudo docker-compose -f dir_docker_compose/shiny/docker-compose.yml up -d
+
+```
+-->
 </div>
 <div id="jupyter-notebookの用意" class="section level3">
 <h3>Jupyter notebookの用意</h3>
@@ -881,6 +933,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
