@@ -590,7 +590,7 @@ sudo vim dir_docker_compose/shiny/docker-compose.yml</code></pre>
 <p>vimで開いたdocker-compose.ymlに，以下を変更したその下のコードを貼り付けてください。改変した内容をコピペできたら，escキーをタイプして，<code>:wq</code>とタイプします（保存されます）。</p>
 <ul>
 <li>traefik.frontend.ruleのドメイン名を自分のものに変更する。</li>
-<li>volumesの左側の./shinyは，.のところをGCP上でpwdをした時にでてくるカレントディレクトにする必要があるかもしれません。</li>
+<li>volumesの左側の/shiny/・・・の前には，GCP上でpwdをした時にでてくるカレントディレクトにする必要があるかもしれません（私の環境では・・・）。</li>
 </ul>
 <pre><code>version: &#39;3&#39;
 
