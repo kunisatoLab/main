@@ -48,7 +48,7 @@ RStudioでFile→New Project..→Version Contriol→Gitで，コピーしたURL�
 
 ### Simple Reaction Time Taskの準備
 
-jsPsychのチュートリアルにあるSimple Reaction Time Taskを作ります。jsPsychSheetのリポジトリ内のexperimentフォルダ内に課題をおきます。すでに，experimentフォルダ内には，Simple Reaction Time Taskが配置されていますが，以下では，Rmarkdownで再度作りましょう。
+jsPsychのチュートリアルにあるSimple Reaction Time Taskを作ります。jsPsychSheetのリポジトリ内のexperimentフォルダ内に課題をおきます(2021/9/8 追記。現在，experimentフォルダがなくなっているようです，ご自身で追加をお願いします)。すでに，experimentフォルダ内には，Simple Reaction Time Taskが配置されていますが，以下では，Rmarkdownで再度作りましょう。
 
 - RStudioでexperimentフォルダをカレントワーキングディレクトリにする
 
