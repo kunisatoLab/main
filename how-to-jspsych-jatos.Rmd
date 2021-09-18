@@ -145,3 +145,29 @@ exit
 以下のような画面がでてきます。Comp.Result IDの４も５も私が試しにやってみた結果ですが，４の方は，途中でやめており，５は最後まで取り組みました。参加者の反応データは，た```Export Results```をクリックして，全てか選択したものを出力できます（txt形式で出力されます）。
 
 <img src="fig/jatos_fig15.png" width="600">
+
+
+## おまけ：jsPsychとlab.jsをまぜてJATOSで動かす方法
+
+jsPsychで作った課題とlab.jsで作った課題をJATOS上でまとめて動かしたい状況があるかと思います。例えば，jsPsychでちょっとややこしい行動課題を作って，lab.jsでアンケートを作った場合は，可能ならそれぞれをJATOS上で統合して実行したいと思います。
+
+### jsPsych課題の準備
+
+jsPsych課題は以下のGitHubリポジトリの構造を意識して設定をします。多くの場合，
+
+https://github.com/ykunisato/template-jsPsych-task
+
+
+<img src="fig/jatos_fig17.png" width="600">
+
+
+### lab.js課題の準備
+
+index.htmlの名前を変更して，１つ上の階層におきます。
+<img src="fig/jatos_fig16.png" width="600">
+
+### JATOSify
+
+
+
+
