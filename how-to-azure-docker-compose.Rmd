@@ -12,7 +12,7 @@ output: html_document
 
 ## 1. Azureを使えるようにする
 
-[Azure の無料アカウントを今すぐ作成しましょう](https://azure.microsoft.com/ja-jp/free/search/?&ef_id=Cj0KCQjwv5uKBhD6ARIsAGv9a-whRIoTM98n-zb93e2KEXcyS_aPYbSmJgplgKGVxSHq9H94ZosaXQQaAgBCEALw_wcB:G:s&OCID=AID2200208_SEM_Cj0KCQjwv5uKBhD6ARIsAGv9a-whRIoTM98n-zb93e2KEXcyS_aPYbSmJgplgKGVxSHq9H94ZosaXQQaAgBCEALw_wcB:G:s&gclid=Cj0KCQjwv5uKBhD6ARIsAGv9a-whRIoTM98n-zb93e2KEXcyS_aPYbSmJgplgKGVxSHq9H94ZosaXQQaAgBCEALw_wcB)からアカウントを作成します。
+[Azure の無料アカウントを今すぐ作成しましょう](https://azure.microsoft.com/ja-jp/free/)からアカウントを作成します。
 
 
 私はMicrosoftの認証でこけることがたまにあって，ちょっと苦労しました・・・
