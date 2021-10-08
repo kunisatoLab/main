@@ -121,9 +121,9 @@ title: "Code & Tips"
 
 ## 心理学的ネットワークモデリング
 
-- [心理学的ネットワーク分析入門1(準備中)](how-to-psychological-network1.html) ☆
+- [心理ネットワーク入門1](how-to-psychological-network1.html) ☆
 
-- [心理学的ネットワーク分析入門2(準備中)](how-to-psychological-network2.html) ☆
+- [心理ネットワーク入門2](how-to-psychological-network2.html) ☆
 
 <br />
 
