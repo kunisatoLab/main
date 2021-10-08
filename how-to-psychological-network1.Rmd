@@ -4,19 +4,19 @@ title: "心理ネットワーク入門１：横断データ"
 
 ## 心理ネットワークとは？
 
-心理ネットワーク（精神病理ネットワーク）については，まずは以下の２つの論文を読んでください。以降は，その前提で，技術的な側面のみを解説します。
+心理ネットワーク（精神病理ネットワーク）については，まずは以下の２つの論文を読んでください。以降は，それを前提として，技術的な側面のみを解説します。
 
 - [樫原 潤・伊藤正哉(印刷中) 心理ネットワークアプローチがもたらす「臨床革命」—認知行動療法の文脈に基づく展望— 認知行動療法研究](https://www.jstage.jst.go.jp/article/jjbct/advpub/0/advpub_20-015/_article/-char/ja/)
 - [樫原 潤(2019) 精神病理ネットワークの応用可能性―うつ病治療のテイラー化を促進するために― 心理学評論  62(2),143-165](https://www.jstage.jst.go.jp/article/sjpr/62/2/62_143/_article/-char/ja)
 
 
-心理ネットワークとは，観察可能な変数を表すノードと統計的関係を表すエッジから構成されるものです(Epskamp, Borsboom & Fried, 2018)。心理ネットワークモデルは，reflective latent variable models(SEMや因子分析などです)のように，潜在変数を仮定してそれから各項目・症状を説明するのではなく，症状間のネットワーク構造を検討します。
+心理ネットワークとは，観察可能な変数を表すノードと統計的関係を表すエッジから構成されるものです(Epskamp, Borsboom & Fried, 2018　以下の内容は基本的にEpskamp et al., 2018に従っています)。心理ネットワークモデルは，因子分析やSEMなどのように潜在変数を仮定してそれから各項目・症状を説明するのではなく，症状（心理変数）間のネットワーク構造を検討します。
 
 心理ネットワークは，以下の図のように，観察可能な変数を表すノードは円で，関係を表すエッジは線でプロットされます。
 
 ![](fig/net01.png)
 
-## 心理学的ネットワーク分析の手順
+### 心理学的ネットワーク分析の手順
 
 心理ネットワーク分析は，おおよそ以下の４ステップからなります。
 
@@ -40,48 +40,31 @@ title: "心理ネットワーク入門１：横断データ"
 ### ２つのノードの関係(エッジの符号)
 
 
-横断データに対する心理ネットワークでは，エッジに方向性がない無向ネットワークが用いられます。
+横断データに対する心理ネットワークでは，エッジに方向性がない無向ネットワークが用いられます。エッジの色は符号を意味していて，青もしくは緑の場合は正，赤の場合は負を表します。エッジが正（青色もしくは緑色）の場合は，２つのノード間には正の関係性が存在します（片方が増えると，もう一方も増える）。エッジが負（赤色）の場合は，２つのノード間には負の関係性が存在します（片方が増えると，もう一方は減る）。また，エッジの太さは，関係の強さを意味します。この場合の関係の強さとは，全体のノードからの影響を考慮した時の２つのノード間の関係の強さになります。そして，エッジの長さは，エッジの強さの逆数になります。つまり，ノード間の関係が強ければ強いほど，エッジの長さが短くなります。分かりやすいか微妙な例ですが，パーティ会場で関係性の近い２人のコミュニケーションは近い距離でなされるイメージをもつと良いかなと思います。
 
-- エッジの色は符号を意味する（緑が正，赤が負）。
-
-- エッジが正の場合は，２つのノード間には正の関係性が存在する（片方が増えると，もう一方も増える）
-
-- エッジが負の場合は，２つのノード間には負の関係性が存在する（片方が増えると，もう一方は減る）
+![](fig/net01.png)
 
 
-- エッジの太さは，強さを意味する。強さは，全体のノードを考慮しときの２つのノードの関係の強さになる。
+### ノードの中心性指標
 
-- エッジの長さは，エッジの強さの逆数になる（強いほど短い）。
-- パーティ会場で，関係性の近い２人のコミュニケーションは近い距離でなされるイメージ
+心理ネットワークは，重み付けネットワークのため，その他のネットワークと違って，グローバルなネットワーク特性の指標（small worldness, density, global clustering）が使えません。そこで，各ノードの他のノードの影響性のようなローカルなネットワーク特性（中心性指標）を用います。そのようなローカルなネットワーク特性としては，strength，closeness，betweenessの３つがあります。
+
+#### Strength
+
+Strength（重み付けのないネットワークの場合は，degreeと言う）は，あるノードがつながっている全てのエッジの強さを合計したものです。あるノードが他のノードとどのくらい強くつながっているのかを表す指標であり，そのノードの全体に対する影響力を表しているといえます。
+
+以下のようなネットワークを例にして，ノード１のStrengthを計算してみましょう。ノード1とノード2の間には，0.3の緑のエッジがあります。ノード1とノード3の間には，0.1の緑のエッジがあります。ノード1とノード6の間には，0.2の緑のエッジがあります。最後にノード1とノード4の間には，0.2の赤のエッジがあります。これらを合計した0.8がノード１のStrengthになります。ここの計算では，エッジの正負は問われません。なお，Strengthは接続しているノードの合計ですので，ノードが増えるほど大きくなるのでプロットする際には標準化されます。これは他の指標も同様です。
 
 ![](fig/net03.png)
 
+#### closeness
 
-### ノードの中心性指標(strength，closeness，betweeness)
+Closenessは，あるノードと他の全てのノード間の最短経路長の合計の逆数になります。なにそれ？と思ったかもしれません。まず，ノード間の最短経路長とは，あるノードから別のノードまで最短距離でいける距離です。この距離というのは，エッジの強さの逆数になります。つまり，エッジの強さが0.1ならばその逆数は1/0.1で10になり，エッジの強さが0.5ならば1/0.5で2になります。最短経路長は，この距離を使って，あるノードから別のノードまでの距離を計算して，最も短い距離でいける距離を計算します。そして，あるノードへの他の全てのノードとの最短経路長を計算して，合計したものの逆数がClosenessになります。
 
-- 心理学的ネットワークは，重み付けネットワークのため，グローバルなネットワーク特性の指標がが使えない。
-
-- 各ノードの他のノードの影響性のようなローカルなネットワーク特性（中心性指標）を用いる。
-
-
+ちょっと具体例で計算してみましょう。以下の図で，ノード１からノード２まで
+ノード１と３のエッジの強さは0.1なので距離は10です。
 
 
-
-![](fig/net05.png)
-
-### Strength
-
-- Strength（重み付けのないネットワークの場合は，degreeと言う）は，あるノードがつながっている全てのエッジの強さを合計したものである。
-
-- 右の場合，1と2のエッジが.green[0.3], 1と3のエッジが.green[0.1],1と6のエッジが.green[0.2],1と4のエッジが.green[0.2]だったら，.green[0.8]となる。
-
-- そのノードの全体に対する影響力を表している。
-
-### closeness
-
-- Closenessは，あるノードと他の全てのノード間の最短経路長の合計の逆数である。
-
-- エッジの強さの逆数が距離になる(1と3の強さが0.1なら10になる)。
 - 最短経路長は，この距離を使って，特定のノードから特定のノードまで最短で行ける距離を計算する(1と３は直接つながっているが，1と2が0.5,2と3が0.2なら合計は7になる。この場合は，間接経路が早い)。
 
 あるノードから他のノードまでの最短経路長を計算して合計したものの逆数がClosenessになる。
@@ -90,7 +73,9 @@ title: "心理ネットワーク入門１：横断データ"
 
 - あるノードから他のノードの拡散の速さを表現する
 
-### betweeness
+![](fig/net03.png)
+
+#### betweeness
 
 
 - Betweennessは，2つのノード間の最短経路上にあるノードが何回あるのかである。
@@ -99,12 +84,7 @@ title: "心理ネットワーク入門１：横断データ"
 
 - Betweennessは，2つの他のノードの接続においてどのくらい重要かを示す。影響性の流れを変える影響力をもつノードとして考えられる。
 
-
-
-以下のようにプロットされることが多い。
-
-![](fig/net04.png)
-
+![](fig/net03.png)
 
 ## Gaussian Graphical Model(GGM)
 
@@ -136,7 +116,8 @@ $$
 
 $$\boldsymbol{E}=\left(\begin{array}{ll}1 & 0 \\ 0 & 1\end{array}\right)$$
 
-精度行列の具体例(Epskamp et al., 2018)
+精度行列の具体例
+Epskamp, S., Waldorp, L. J., Mõttus, R., & Borsboom, D. (2018)
 
 - 分散共分散行列( $\mathbf{\Sigma}$ ) のAを用意する。
 
@@ -199,6 +180,7 @@ $$\operatorname{Cor}\left(Y_{i}, Y_{j} \mid \boldsymbol{y}_{-(i, j)}\right)=-\fr
 
 - Hamburgのプライマリケアを受診した3404名からデータを収集している。
 
+以降では，樫原さんの[Kashihara_Ito_2020](https://ytake2.github.io/CBT_research_methodology/kashihara/)も参考にしています。こちらも，是非とも参照ください。
 
 
 ### 使用するRパッケージとデータの読み込み
@@ -324,8 +306,4 @@ res_nct
 
 - Epskamp, S., Borsboom, D., & Fried, E. I. (2018). Estimating psychological networks and their accuracy: A tutorial paper. Behavior Research Methods, 50(1), 195–212.
 - Jordan, P., Shedden-Mora, M. C., & Löwe, B. (2017). Psychometric analysis of the Generalized Anxiety Disorder scale (GAD-7) in primary care using modern item response theory. PloS One, 12(8), e0182162.
-- Epskamp, S. (2020). Psychometric network models from time-series and panel data. Psychometrika, 85(1), 206–231.
-- Epskamp, S., van Borkulo, C. D., van der Veen, D. C., Servaas, M. N., Isvoranu, A.-M., Riese, H., & Cramer, A. O. J. (2018). Personalized Network Modeling in Psychopathology: The Importance of Contemporaneous and Temporal Connections. Clinical Psychological Science, 6(3), 416–427.
 - Epskamp, S., Waldorp, L. J., Mõttus, R., & Borsboom, D. (2018). The Gaussian Graphical Model in Cross-Sectional and Time-Series Data. Multivariate Behavioral Research, 53(4), 453–480.
-- Aalbers, G., McNally, R. J., Heeren, A., de Wit, S., & Fried, E. I. (2019). Social media and depression symptoms: A network perspective. Journal of Experimental Psychology. General, 148(8), 1454–1462.
-- Beard, C., Millner, A. J., Forgeard, M. J. C., Fried, E. I., Hsu, K. J., Treadway, M. T., Leonard, C. V., Kertz, S. J., & Björgvinsson, T. (2016). Network analysis of depression and anxiety symptom relationships in a psychiatric sample. Psychological Medicine, 46(16), 3359–3369.
