@@ -407,8 +407,8 @@ div.tocify {
 </ol>
 <p>ここで注意すべき点は，一般的なネットワーク科学で扱うネットワークの場合は，エッジは観察可能です（例えば，電力網ネットワークのエッジは直接観察・測定可能です）。しかし，心理ネットワークのエッジは，データから推定されます（重み付けネットワーク）。そのため，サンプルサイズの影響も受けますので，ネットワークのエッジの精度も検討する必要があります。また，ネットワーク科学では，グローバルなネットワーク特性の指標が使われます(small worldness, density, global clustering)。しかし，心理ネットワークのような重み付けネットワークでは使えません。そのため，２つのノードの関係や１つのノードがどのような影響力をもつのか（中心性の指標）といったローカルなネットワーク特性を用いることが多いです。</p>
 </div>
-<div id="有向ネットワークと無向ネットワーク" class="section level3">
-<h3>有向ネットワークと無向ネットワーク</h3>
+<div id="有向無向ネットワーク" class="section level3">
+<h3>有向・無向ネットワーク</h3>
 <p>心理ネットワークの話の前に，有向ネットワークと無向ネットワークについて説明をしておきます。まず，有向ネットワークとはエッジに方向性があるネットワークになります。以下の図ようにエッジが矢印になっているネットワークです。この矢印の方向には因果関係が想定されています。例えば，「活動性低下→抑うつ気分増加」となっていましたら，活動低下が原因で抑うつ気分増加するという意味になります。ただし，「活動性低下→抑うつ気分増加」と聞いて，「活動性低下←抑うつ気分増加」もありえるのではないかと感じた方もおられるかもしれません。そのとおりでして，因果関係を言うには，まず原因は結果に時間的に先行する必要がありますし，因果に関連する変数が全て測定された上で，原因と結果が巡回しない（非巡回）必要があります。観察研究によって収集された心理学のデータの場合，時間的な前後関係は時系列データによって示せても，非巡回となるとかなり難しいかと思います。そのため，横断データに対する心理ネットワークでは，エッジに方向性がない無向ネットワークが用いられます。</p>
 <p><img src="fig/net02.png" /></p>
 </div>
@@ -420,131 +420,92 @@ div.tocify {
 <div id="ノードの中心性指標" class="section level3">
 <h3>ノードの中心性指標</h3>
 <p>心理ネットワークは，重み付けネットワークのため，その他のネットワークと違って，グローバルなネットワーク特性の指標（small worldness, density, global clustering）が使えません。そこで，各ノードの他のノードの影響性のようなローカルなネットワーク特性（中心性指標）を用います。そのようなローカルなネットワーク特性としては，strength，closeness，betweenessの３つがあります。</p>
-<div id="strength" class="section level4">
-<h4>Strength</h4>
+<p><strong>Strength</strong></p>
 <p>Strength（重み付けのないネットワークの場合は，degreeと言う）は，あるノードがつながっている全てのエッジの強さを合計したものです。あるノードが他のノードとどのくらい強くつながっているのかを表す指標であり，そのノードの全体に対する影響力を表しているといえます。</p>
 <p>以下のようなネットワークを例にして，ノード１のStrengthを計算してみましょう。ノード1とノード2の間には，0.3の緑のエッジがあります。ノード1とノード3の間には，0.1の緑のエッジがあります。ノード1とノード6の間には，0.2の緑のエッジがあります。最後にノード1とノード4の間には，0.2の赤のエッジがあります。これらを合計した0.8がノード１のStrengthになります。ここの計算では，エッジの正負は問われません。なお，Strengthは接続しているノードの合計ですので，ノードが増えるほど大きくなるのでプロットする際には標準化されます。これは他の指標も同様です。</p>
 <p><img src="fig/net03.png" /></p>
-</div>
-<div id="closeness" class="section level4">
-<h4>closeness</h4>
+<p><strong>Closeness</strong></p>
 <p>Closenessは，あるノードと他の全てのノード間の最短経路長の合計の逆数になります。なにそれ？と思ったかもしれません。まず，ノード間の最短経路長とは，あるノードから別のノードまで最短距離でいける距離です。この距離というのは，エッジの強さの逆数になります。つまり，エッジの強さが0.1ならばその逆数は1/0.1で10になり，エッジの強さが0.5ならば1/0.5で2になります。最短経路長は，この距離を使って，あるノードから別のノードまでの距離を計算して，最も短い距離でいける距離を計算します。そして，あるノードへの他の全てのノードとの最短経路長を計算して，合計したものの逆数がClosenessになります。</p>
-<p>ちょっと具体例で計算してみましょう。以下の図で，ノード１からノード２まで ノード１と３のエッジの強さは0.1なので距離は10です。</p>
-<ul>
-<li>最短経路長は，この距離を使って，特定のノードから特定のノードまで最短で行ける距離を計算する(1と３は直接つながっているが，1と2が0.5,2と3が0.2なら合計は7になる。この場合は，間接経路が早い)。</li>
-</ul>
-<p>あるノードから他のノードまでの最短経路長を計算して合計したものの逆数がClosenessになる。</p>
-<ul>
-<li><p>Closenessは，あるノードがどのくらい.green[間接的に]他のノードとつながっているのか(Strengthは，あるノードがどのくらい.green[直説的に]他のノードとつながっているのか)。</p></li>
-<li><p>あるノードから他のノードの拡散の速さを表現する</p></li>
-</ul>
+<p>ちょっと具体例で計算してみましょう。以下の図で，ノード１からノード３の最短経路長を調べてみましょう。ノード３からノード１に行くには，(1)ノード３からノード１に直接移動する，(2)ノード３からノード２を経由してノード１へ移動する，(3)ノード３からノード６を経由してノード１にいくの３つがあります。まず，(1)のノード１から３への直接経路については，ノード１と３のエッジの強さは0.1なので距離は10です。次に，(2)のノード２を経由する間接経路は，ノード３と２のエッジが0.1で距離10,ノード２とノード１のエッジが0.3で距離3.33なので，合計13.33になります。最後に，(3)のノード６を経由する間接経路は，ノード3と6のエッジが0.05で距離20，ノード6とノード１が0.2で距離５なので合計25となります。(1)(2)(3)を比較すると，ノード１から３の直接経路の長さが最短経路長となります。ただ，もしノード３と２のエッジが0.2の場合は，ノード２を経由する間接経路が最短経路になります。なお，以下の図は，手作業で作ったので強さと距離んの関係が適切ではありません，ご理解のほどよろしくお願いいたします。</p>
+<p>このような感じで，あるノードから他のノードまでの最短経路長をそれぞれ計算していって，それらを合計したものの逆数がClosenessになります。Closenessは，あるノードがどのくらい間接的な影響を含めて他のノードとつながっているのかを示しています(一方，Strengthは，あるノードがどのくらい直説的に他のノードとつながっているのかを示しています）。つまり，あるノードから他のノードへの拡散の速さを表現していると言えます。</p>
 <p><img src="fig/net03.png" /></p>
-</div>
-<div id="betweeness" class="section level4">
-<h4>betweeness</h4>
-<ul>
-<li><p>Betweennessは，2つのノード間の最短経路上にあるノードが何回あるのかである。</p></li>
-<li><p>例えば，4と2の最短経路上に１がある。２つのノードの最短経路を計算して，その上にあるノードをカウントしていくとbetweenessになる。</p></li>
-<li><p>Betweennessは，2つの他のノードの接続においてどのくらい重要かを示す。影響性の流れを変える影響力をもつノードとして考えられる。</p></li>
-</ul>
+<p><strong>Betweeness</strong></p>
+<p>Betweennessは，2つのノード間の最短経路上に，あるノードが何回あるのかを示しています。先程，Clonenessで最短経路を計算しましたが，その最短経路上に，特定のノードが登場する回数を見ることで，そのノードが影響性の流れにおいてどの程度の影響力を持つのかを検討できます。以下の図の場合，ノード4と2の最短経路は，ノード４からノード１を経由してノード１に行くというものです。このように，ノード４とノード２の最短経路上には，ノード１があります。このようにして，特定のノード（今回はノード１）が最短経路上に何回出てくるのかカウントすることでBetweenessが計算できます。このように，Betweennessは，あるノードが2つのノードの接続においてどのくらい重要かを示すものです。このノードによっては，影響性の流れを変えることができるので，心理的介入などにおいても重視される指標といえるかもしれません。</p>
 <p><img src="fig/net03.png" /></p>
-</div>
 </div>
 </div>
 <div id="gaussian-graphical-modelggm" class="section level2">
 <h2>Gaussian Graphical Model(GGM)</h2>
-<ul>
-<li><p>変数間の関係がある・ないというグラフを作る場合に，確率分布と結びつけるようなモデルをpairwaise Markov graphと呼ぶ。</p></li>
-<li><p>無向ネットワークモデルの推定では，pairwise Markov random fieldがよく使われる。</p></li>
-<li><p>データが連続かつ正規分布の場合には，多変量正規分布を用いたGaussian Graphical Model(GGM)が適用される。心理ネットワーク分析では，GGMがよく用いられる。</p></li>
-<li><p>yは確率変数Yの実現値で，中心化をしたものとする（値から平均値を引いている）。</p></li>
-</ul>
-<p>→平均0, 分散共分散行列が <span class="math inline">\(\mathbf{\Sigma}\)</span> の正規分布に従う（Cはcaseつまりデータフレームの行に対応する）。</p>
+<p>変数間の関係がある・ないというグラフを作る場合に，確率分布と結びつけるようなモデルのことをベアワイズ・マルコフ・グラフ(pairwise Markov graph)と呼びます。そして，心理ネットワークで用いる無向ネットワークモデルの推定では，ペアワイズ・マルコフ確率場(pairwise Markov random field)がよく使われます。さらに，無向ネットワークでも，データが連続かつ正規分布の場合には，多変量正規分布を用いたGaussian Graphical Model(GGM)が用いられます。心理学で収集するデータは，連続変数かつ正規分布を仮定できることも多いので，心理ネットワーク分析ではGGMがよく用いられます。</p>
+<p>GGMでは，以下のように，<span class="math inline">\(y_{C}\)</span> は平均0, 分散共分散行列 <span class="math inline">\(\mathbf{\Sigma}\)</span> の多変量正規分布に従う。ここでのyは確率変数ベクトルYの実現値で，中心化をしたものである（中心化は値から平均値を引く手続きです）。<span class="math inline">\(y_{C}\)</span> のCはcaseつまりデータフレームの行に対応しており，yはベクトルなので，１つの値ではなく複数の変数が収められている（例. y[c=1,1]は１人目の不安得点，y[c=2,1]は2人目の不安得点, y[c=1,2]は１人目のうつ得点など）。そして，分散共分散行列 <span class="math inline">\(\mathbf{\Sigma}\)</span>は，ベクトルyに含まれる変数間の分散共分散行列になります。</p>
 <p><span class="math display">\[
 y_{C} \sim N(\mathbf{0}, \mathbf{\Sigma})
 \]</span></p>
-<div id="精度行列" class="section level3">
-<h3>精度行列</h3>
-<ul>
-<li>Kは精度行列であり，分散共分散行列の逆行列になる。</li>
-</ul>
+<div id="分散共分散行列精度行列偏相関行列" class="section level3">
+<h3>分散共分散行列→精度行列→偏相関行列</h3>
+<p>GGMでは，<span class="math inline">\(y_{C}\)</span> は平均0, 分散共分散行列 <span class="math inline">\(\mathbf{\Sigma}\)</span> の多変量正規分布に従うとして，その分散共分散行列から偏相関行列を算出します。具体的な手続きとしては，分散共分散行列からその逆行列である精度行列を計算し，精度行列から偏相関行列を計算します。なんだかややこしそうですが，そうでもありません。</p>
+<p>まず，Kは精度行列です。この精度行列Kは，分散共分散行列の逆行列になります。</p>
 <p><span class="math display">\[
 \boldsymbol{K}=\boldsymbol{\Sigma}^{-1}
 \]</span></p>
-<ul>
-<li>逆行列は，ｎ次正方行列Aに掛けた場合に以下のような単位行列Eとなるような行列のことである。</li>
-</ul>
-<p><span class="math display">\[\boldsymbol{E}=\left(\begin{array}{ll}1 &amp; 0 \\ 0 &amp; 1\end{array}\right)\]</span></p>
-<p>精度行列の具体例 Epskamp, S., Waldorp, L. J., Mõttus, R., &amp; Borsboom, D. (2018)</p>
-<ul>
-<li>分散共分散行列( <span class="math inline">\(\mathbf{\Sigma}\)</span> ) のAを用意する。</li>
-</ul>
+<p>逆行列って何？ってなるかもしれないのですが，逆行列は，ｎ次正方行列Aに掛けた場合に以下のような単位行列Eとなるような行列のことです。分散共分散行列に何か行列をかけ合わせた時に，以下のような単位行列Eになるようなものがここで知りたい逆行列です。どうやって逆行列計算するの？って思われたかもしれませんが，以降はパソコンに頼ってRで計算させつつ分散共分散行列から精度行列を経由して，偏相関行列を計算してみましょう。</p>
+<p><span class="math display">\[\boldsymbol{E}=\left[\begin{array}{lcc}1 &amp; 0 \\ 0 &amp; 1\end{array}\right]\]</span> 以降の計算は，Epskamp, Waldorp, Mõttus &amp; Borsboom(2018)に記載されている例を用います。まず，以下のような分散共分散行列( <span class="math inline">\(\mathbf{\Sigma}\)</span> ) Aを使って，これを偏相関行列にします。Aは以下の通りです。Rで計算できますので，以下をコピペして実行ください。変数１と変数２は負の関連があり，変数１と変数３は正の関連があり，変数２と変数３は関連は弱そうです。</p>
 <pre class="r"><code>A &lt;- matrix(c(1,-0.26,0.31,-0.26,1,-0.08,0.31,-0.08,1), 3, 3)
 A</code></pre>
 <pre><code>##       [,1]  [,2]  [,3]
 ## [1,]  1.00 -0.26  0.31
 ## [2,] -0.26  1.00 -0.08
 ## [3,]  0.31 -0.08  1.00</code></pre>
-<ul>
-<li>分散共分散行列Aの逆行列をsolveで計算する。</li>
-</ul>
+<p>さて，この分散共分散行列Aの逆行列，つまりAの精度行列を計算しましょう。手計算だと大変なので，ここはサクッとRのsolve()関数に計算させます。以下を実行ください。精度行列では，一部符号が逆転していますね（必ずではないです）。逆行列の計算では，特定の変数間の関連について他の変数の影響も考慮することになります。そのため，この精度行列（分散共分散行列の逆行列）を使って，偏相関行列を求めることができます。なお，逆行列が存在する行列は正則行列と呼ばれます。</p>
 <pre class="r"><code>inv_A &lt;- solve(A)
 inv_A</code></pre>
 <pre><code>##            [,1]          [,2]          [,3]
 ## [1,]  1.1789330  0.2790710919 -0.3431435365
 ## [2,]  0.2790711  1.0725015306 -0.0007119161
 ## [3,] -0.3431435 -0.0007119161  1.1063175430</code></pre>
-<p>以下の式で精度行列から偏相関係数を求めることができる。</p>
-<p><span class="math display">\[\operatorname{Cor}\left(Y_{i}, Y_{j} \mid \boldsymbol{y}_{-(i, j)}\right)=-\frac{\kappa_{i j}}{\sqrt{\kappa_{i i}} \sqrt{\kappa_{j j}}}\]</span></p>
-<pre class="r"><code>-1 * cov2cor(inv_A)</code></pre>
+<p>以下の式を使って，上記で算出した精度行列から偏相関係数を求めることができます。</p>
+<p><span class="math display">\[\operatorname{Cor}\left(Y_{i}, Y_{j} \mid \boldsymbol{y}_{-(i, j)}\right)=-\frac{\kappa_{i j}}{\sqrt{\kappa_{i i}} \sqrt{\kappa_{j j}}}\]</span> これは手計算でも簡単にできるのですが，現代人なので，Rのstatsパッケージのcov2cor関数を使って偏相関行列を計算をしちゃいましょう。あまり大きな変化はないかもしれませんが，変数２と３の関係が分散共分散行列行列よりも小さくなり，関係がないと言ってもよいかと思われます。この偏相関行列の偏相関係数をエッジにしてネットワークを描きます。</p>
+<pre class="r"><code>library(stats)
+-1 * cov2cor(inv_A)</code></pre>
 <pre><code>##            [,1]          [,2]          [,3]
 ## [1,] -1.0000000 -0.2481826016  0.3004632529
 ## [2,] -0.2481826 -1.0000000000  0.0006535667
 ## [3,]  0.3004633  0.0006535667 -1.0000000000</code></pre>
+<p>GGMは比較的シンプルなもので，多変量正規分布の分散共分散行列から偏相関行列を計算して，それを用いてネットワークを書くというものです。</p>
 </div>
 </div>
 <div id="クロスセクショナルデータのggm" class="section level2">
 <h2>クロスセクショナルデータのGGM</h2>
-<ul>
-<li><p>推定は簡単なので，最尤推定，最小二乗法，ベイズどれを使っても良い。</p></li>
-<li><p>精度行列を求める方法としては，分散共分散行列の逆行列の計算でもできるけど，ネットワークを疎(sparse)にするために，正則化(regularization)をする。</p></li>
-<li><p>正則化は，機械学習などにおいて発展してきた手法で，モデルの複雑さに罰則をかけて，過学習を避ける。GGMでは，LASSO(least absokute shrinkage and selection operator)が使われる。</p></li>
-<li><p>正則化をざっくり説明すると，多数の変数を使って予測をする場合に，影響力が弱い変数の影響をゼロに近づけるような工夫を導入することで（影響力の有る変数が減ると複雑じゃなくなる，つまりこれが複雑さへの罰則。その強さを調整するパラメータがある），不要なエッジを除くことができる。</p></li>
-<li><p>特にLASSOの一種のGraphical LASSOは，精度行列に直接的に罰則をかけられ，分散共分散行列があれば計算でき，一般的に他の方法よりも早い。GLASSOのパラメータ調整では，EBICを使うのが良い。</p></li>
-</ul>
-<div id="rパッケージ" class="section level3">
-<h3>Rパッケージ</h3>
-<ul>
-<li><p>分散共分散行列の逆行列化と標準化:corpcor, qgraph</p></li>
-<li><p>GLASSO: glasso, huge(EBICとクロスバリデーション), qgraph(EBICでパラメータチューニングするglasso)</p></li>
-<li><p>parcor: GGMを推定する他のLASSOが使える</p></li>
-<li><p>BDgraph: 無向構造のベイズ推定できる</p></li>
-<li><p>ggmやlvnet: GGMのフィッティングや推定で使える。</p></li>
-</ul>
-</div>
+<p>GGMは上記で説明をしたように，推定は簡単なので，最尤推定，最小二乗法，ベイズどれを使っても良いです。ただし，精度行列を求める方法としては，分散共分散行列の逆行列の計算でもできるけど，ネットワークのエッジが多すぎるとネットワークの理解がしにくくなります。そのため，ネットワークを疎(sparse)にするような手法が用いられることが多いです。そのような手法の１つとして，正則化(regularization)があります。正則化は，機械学習などにおいて発展してきた手法で，モデルの複雑さに罰則をかけて，過学習を避けるような手法です。ざっくり説明すると，多数の変数を使って予測をする場合に，影響力が弱い変数の影響をゼロに近づけるような工夫を導入することで，不要なエッジを除くことができる。影響力は弱いけそ存在している変数が減るとモデルが複雑じゃなくなりますが，複雑さに罰則をかけると，影響力は弱いけそ存在している変数の影響をゼロに近づけるようになります。このようにして，解釈に置いて煩雑なエッジを減らすことができます。GGMでは，LASSO(least absokute shrinkage and selection operator)が使われます。特にLASSOの一種のGraphical LASSOは，精度行列に直接的に罰則をかけられ，分散共分散行列があれば計算でき，一般的に他の方法よりも早いです。そして，このGLASSOのパラメータ調整では，EBICを使うのが推奨されています。</p>
 <div id="ggmの解釈法" class="section level3">
 <h3>GGMの解釈法</h3>
+<p>GGMで計算されるエッジはどのように解釈されるでしょうか？まず，偏相関になりますので，通常の２変数間の相関係数ではなく，２変数以外の影響も考慮した２変数の関係になります。なので，ネットワークに含まれる変数の違いによっては，値が異なる可能性もありますし，２変数だけでなくネットワーク全体を考慮した解釈が必要になります。その際の解釈としては，つい「変数Aによって変数Bが引き起こされた」のような因果に踏み込んだ解釈をしてしまいますが，横断データのGGMで得られたエッジからそのような方向性をもった解釈は難しいです。できる解釈としては，(1)予測可能性の示唆と(2)因果関係の示唆になります。まず，因果関係は不明ではありますが，他の変数の影響を考慮しても，ある変数から別の変数が予測できているとはいえるので，A-B-Cという形でエッジがある場合に，BはAかCを予測する可能性があります。もちろん，最終的には縦断調査によって予測ができるかどうか検証する必要はあります。次に，因果関係の仮定を満たすことはできないし，効果の方向性は不明だが，そのエッジにはなんらかの因果的な効果がある可能性はあります。この結果を踏まえて，より因果関係に踏み込めるような研究を行うことができると思います。どちらも歯に物が挟まったような表現ですが，多くの場合心理ネットワークは探索的に実施されることからも，強い理論的予測による仮説検証の結果のような解釈をしないように気をつける必要があります。</p>
+</div>
+<div id="rパッケージ" class="section level3">
+<h3>Rパッケージ</h3>
+<p>偏相関行列の計算自体は複数のRパッケージで可能になりますので，心理ネットワーク分析に使えるRパッケージは複数あります。ただし，心理ネットワーク分析の中心地でもあるアムステルダム大学の<a href="http://sachaepskamp.com/">Sacha Epskamp</a>が開発した<a href="https://cran.r-project.org/web/packages/qgraph/index.html">qgraph</a>と<a href="https://cran.r-project.org/web/packages/bootnet/index.html">bootnet</a>があれば，横断データの心理ネットワーク分析は実施できます。</p>
 <ul>
-<li><p>予測効果：因果関係は分からないけど，ある変数から別の変数が予測できるとはいえる。A-B-Cの場合，BはAかCを予測するとはいえる。</p></li>
-<li><p>因果関係の示唆：因果推論の仮定を満たすことは難しいが，GGMでは同様のことができる。GGMでは，効果の方向性はわからないけど，エッジに因果的な効果がある可能性があると解釈できる。</p></li>
+<li><a href="https://cran.r-project.org/web/packages/qgraph/index.html">qgraph</a>:ネットワークのプロットと推定</li>
+<li><a href="https://cran.r-project.org/web/packages/bootnet/index.html">bootnet</a>: 様々な種類のネットワーク推定</li>
 </ul>
+<p>なお，アムステルダム大学で開発しているベイズ統計と頻度論統計のGUIソフトウェアである<a href="https://jasp-stats.org/">JASP</a>には，心理ネットワーク分析が組み込まれており，簡単に実施して見る上ではかなり有用と思います。JASPは国里を含む日本語化チームにより2021年9月(v0.15)より一部が日本語化されています。心理ネットワーク分析の説明は，<a href="https://jasp-stats.org/2018/03/20/perform-network-analysis-jasp/">こちら</a>をご確認ください。</p>
 </div>
 </div>
 <div id="心理ネットワーク分析を試してみよう" class="section level2">
 <h2>心理ネットワーク分析を試してみよう！</h2>
-<ul>
-<li><p><a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0182162">Jordan, P., Shedden-Mora, M. C., &amp; Löwe, B. (2017). Psychometric analysis of the Generalized Anxiety Disorder scale (GAD-7) in primary care using modern item response theory. PloS One, 12(8), e0182162.</a></p></li>
-<li><p>GAD-7について項目反応理論を用いた検討を行った研究</p></li>
-<li><p>Hamburgのプライマリケアを受診した3404名からデータを収集している。</p></li>
-</ul>
-<p>以降では，樫原さんの<a href="https://ytake2.github.io/CBT_research_methodology/kashihara/">Kashihara_Ito_2020</a>も参考にしています。こちらも，是非とも参照ください。</p>
-<div id="使用するrパッケージとデータの読み込み" class="section level3">
-<h3>使用するRパッケージとデータの読み込み</h3>
+<p>さて，以下では，実際にRで心理ネットワーク分析を実行してみましょう。その題材として， <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0182162">Jordan, P., Shedden-Mora, M. C., &amp; Löwe, B. (2017). Psychometric analysis of the Generalized Anxiety Disorder scale (GAD-7) in primary care using modern item response theory. PloS One, 12(8), e0182162.</a>を選びました。この研究は，不安の症状評価で用いられるGAD-7について項目反応理論を用いた検討を行った研究です。Hamburgのプライマリケアを受診した3404名からデータを収集しており，比較的サンプルサイズが大きいのと，雑誌のサイト上でデータを公開していることから，以下の心理ネットワーク分析の練習で使ってみましょう。なお，以降のRコードは，樫原さんの<a href="https://ytake2.github.io/CBT_research_methodology/kashihara/">Kashihara_Ito_2020</a>も参考にしています。こちらも，是非とも参照ください。</p>
+<div id="使用するrパッケージの読み込み" class="section level3">
+<h3>使用するRパッケージの読み込み</h3>
+<p>Jordan et al.(2017)のデータがSPSS形式で配布されているのでSPSS形式のデータを読み込むforeignパッケージとデータ処理用にtidyverseパッケージを読み込みます。そして，心理ネットワーク分析では，上述したbootnetパッケージとqgraphパッケージを読み込みます。</p>
 <pre class="r"><code>library(tidyverse)
 library(foreign)
 library(bootnet)
-library(qgraph)
-download.file(&quot;https://doi.org/10.1371/journal.pone.0182162.s004&quot;,&quot;pone.0182162.s004.sav&quot;)
+library(qgraph)</code></pre>
+</div>
+<div id="データの読み込み" class="section level3">
+<h3>データの読み込み</h3>
+<p>Jordan et al.(2017)のデータを雑誌のサイトからdownload.fileでダウンロードして，それを読み込みます。変数名がややこしかったので，renameで名前を変更しています。</p>
+<pre class="r"><code>download.file(&quot;https://doi.org/10.1371/journal.pone.0182162.s004&quot;,&quot;pone.0182162.s004.sav&quot;)
 data &lt;- read.spss(&quot;pone.0182162.s004.sav&quot;, 
                   to.data.frame=TRUE)
 # データの整理
@@ -558,101 +519,47 @@ data_gad &lt;- data %&gt;%
          phq9f = S_PHQ9_f, phq9g = S_PHQ9_g, 
          phq9h = S_PHQ9_h, phq9i = S_PHQ9_i) %&gt;% 
   select(gad7a, gad7b, gad7c, gad7d, gad7e, gad7f, gad7g)</code></pre>
-<p>ネットワークの推定とプロット</p>
+</div>
+<div id="ネットワークの推定とプロット" class="section level3">
+<h3>ネットワークの推定とプロット</h3>
+<p>bootnetパッケージのestimateNetwork()関数でネットワークを推定します。ここでは，EBICでパラメータ調整をするGLASSOを使っています。それから，推定したネットワークをプロットします。</p>
 <pre class="r"><code>results_gad &lt;- estimateNetwork(data_gad,default = &quot;EBICglasso&quot;)
 plot(results_gad, layout = &quot;spring&quot;,labels = TRUE)</code></pre>
-<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>中心性の指標のプロット</p>
-<pre class="r"><code>centralityPlot(results_gad, include = c(&quot;Strength&quot;, &quot;Betweenness&quot;, &quot;Closeness&quot;))</code></pre>
 <p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>エッジの精度</p>
-<pre class="r"><code>accuracy_edge &lt;- bootnet(results_gad, nBoots = 2500, nCores =4, statistics =   c(&quot;edge&quot;, &quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))</code></pre>
-<pre><code>## Note: bootnet will store only the following statistics:  edge, strength, closeness, betweenness</code></pre>
-<pre><code>## Estimating sample network...</code></pre>
-<pre><code>## Estimating Network. Using package::function:
-##   - qgraph::EBICglasso for EBIC model selection
-##     - using glasso::glasso</code></pre>
-<pre><code>## Note: Network with lowest lambda selected as best network: assumption of sparsity might be violated.</code></pre>
-<pre><code>## Warning in EBICglassoCore(S = S, n = n, gamma = gamma, penalize.diagonal =
-## penalize.diagonal, : A dense regularized network was selected (lambda &lt; 0.1 *
-## lambda.max). Recent work indicates a possible drop in specificity. Interpret the
-## presence of the smallest edges with care. Setting threshold = TRUE will enforce
-## higher specificity, at the cost of sensitivity.</code></pre>
-<pre><code>## Bootstrapping...</code></pre>
-<pre><code>## Computing statistics...</code></pre>
-<pre><code>## Warning: `tbl_df()` was deprecated in dplyr 1.0.0.
-## Please use `tibble::as_tibble()` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
-<pre class="r"><code>plot(accuracy_edge, labels = FALSE, order = &quot;sample&quot;)</code></pre>
-<pre><code>## Warning: `mutate_()` was deprecated in dplyr 0.7.0.
-## Please use `mutate()` instead.
-## See vignette(&#39;programming&#39;) for more help
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
-<pre><code>## Warning: `select_()` was deprecated in dplyr 0.7.0.
-## Please use `select()` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
-<pre><code>## Warning: `summarise_()` was deprecated in dplyr 0.7.0.
-## Please use `summarise()` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
-<pre><code>## Warning: `group_by_()` was deprecated in dplyr 0.7.0.
-## Please use `group_by()` instead.
-## See vignette(&#39;programming&#39;) for more help
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
-<pre><code>## Warning: `filter_()` was deprecated in dplyr 0.7.0.
-## Please use `filter()` instead.
-## See vignette(&#39;programming&#39;) for more help
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
-<pre><code>## Warning: `arrange_()` was deprecated in dplyr 0.7.0.
-## Please use `arrange()` instead.
-## See vignette(&#39;programming&#39;) for more help
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
+<pre class="r"><code>accuracy_edge &lt;- bootnet(results_gad, nBoots = 2500, nCores =4, statistics =   c(&quot;edge&quot;, &quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))
+plot(accuracy_edge, labels = FALSE, order = &quot;sample&quot;)</code></pre>
+<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="中心性の指標のプロット" class="section level3">
+<h3>中心性の指標のプロット</h3>
+<pre class="r"><code>centralityPlot(results_gad, include = c(&quot;Strength&quot;, &quot;Betweenness&quot;, &quot;Closeness&quot;))</code></pre>
 <p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<pre class="r"><code>stability_centrality &lt;- bootnet(results_gad, nBoots = 2500, type = &quot;case&quot;, nCores =4, statistics =  c(&quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))</code></pre>
-<pre><code>## Note: bootnet will store only the following statistics:  strength, closeness, betweenness</code></pre>
-<pre><code>## Estimating sample network...</code></pre>
-<pre><code>## Estimating Network. Using package::function:
-##   - qgraph::EBICglasso for EBIC model selection
-##     - using glasso::glasso</code></pre>
-<pre><code>## Note: Network with lowest lambda selected as best network: assumption of sparsity might be violated.</code></pre>
-<pre><code>## Warning in EBICglassoCore(S = S, n = n, gamma = gamma, penalize.diagonal =
-## penalize.diagonal, : A dense regularized network was selected (lambda &lt; 0.1 *
-## lambda.max). Recent work indicates a possible drop in specificity. Interpret the
-## presence of the smallest edges with care. Setting threshold = TRUE will enforce
-## higher specificity, at the cost of sensitivity.</code></pre>
-<pre><code>## Bootstrapping...</code></pre>
-<pre><code>## Computing statistics...</code></pre>
-<pre class="r"><code>plot(stability_centrality, c(&quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))</code></pre>
-<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>stability_centrality &lt;- bootnet(results_gad, nBoots = 2500, type = &quot;case&quot;, nCores =4, statistics =  c(&quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))
+plot(stability_centrality, c(&quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))</code></pre>
+<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <pre class="r"><code>corStability(stability_centrality)</code></pre>
 <pre><code>## === Correlation Stability Analysis === 
 ## 
 ## Sampling levels tested:
 ##    nPerson Drop%   n
-## 1      851  75.0 230
-## 2     1116  67.2 264
-## 3     1381  59.4 235
-## 4     1645  51.7 269
-## 5     1910  43.9 257
-## 6     2175  36.1 228
-## 7     2440  28.3 249
-## 8     2704  20.6 253
-## 9     2969  12.8 236
-## 10    3234   5.0 279
+## 1      851  75.0 224
+## 2     1116  67.2 274
+## 3     1381  59.4 254
+## 4     1645  51.7 238
+## 5     1910  43.9 253
+## 6     2175  36.1 265
+## 7     2440  28.3 263
+## 8     2704  20.6 239
+## 9     2969  12.8 241
+## 10    3234   5.0 249
 ## 
 ## Maximum drop proportions to retain correlation of 0.7 in at least 95% of the samples:
 ## 
-## betweenness: 0.439 
-##   - For more accuracy, run bootnet(..., caseMin = 0.361, caseMax = 0.517) 
+## betweenness: 0.517 
+##   - For more accuracy, run bootnet(..., caseMin = 0.439, caseMax = 0.594) 
 ## 
-## closeness: 0.672 
-##   - For more accuracy, run bootnet(..., caseMin = 0.594, caseMax = 0.75) 
+## closeness: 0.75 (CS-coefficient is highest level tested)
+##   - For more accuracy, run bootnet(..., caseMin = 0.672, caseMax = 1) 
 ## 
 ## strength: 0.75 (CS-coefficient is highest level tested)
 ##   - For more accuracy, run bootnet(..., caseMin = 0.672, caseMax = 1) 
@@ -685,33 +592,16 @@ data_gad_female &lt;- data_gad_gender %&gt;%
 <div id="男女別のプロットの作成" class="section level2">
 <h2>男女別のプロットの作成</h2>
 <pre class="r"><code>network_males &lt;- estimateNetwork(data_gad_male, default = &quot;EBICglasso&quot;, 
-                                 corMethod = &quot;cor&quot;)</code></pre>
-<pre><code>## Estimating Network. Using package::function:
-##   - qgraph::EBICglasso for EBIC model selection
-##     - using glasso::glasso</code></pre>
-<pre><code>## Note: Network with lowest lambda selected as best network: assumption of sparsity might be violated.</code></pre>
-<pre><code>## Warning in EBICglassoCore(S = S, n = n, gamma = gamma, penalize.diagonal =
-## penalize.diagonal, : A dense regularized network was selected (lambda &lt; 0.1 *
-## lambda.max). Recent work indicates a possible drop in specificity. Interpret the
-## presence of the smallest edges with care. Setting threshold = TRUE will enforce
-## higher specificity, at the cost of sensitivity.</code></pre>
-<pre class="r"><code>network_females &lt;- estimateNetwork(data_gad_female, default = &quot;EBICglasso&quot;, 
-                                   corMethod = &quot;cor&quot;)</code></pre>
-<pre><code>## Estimating Network. Using package::function:
-##   - qgraph::EBICglasso for EBIC model selection
-##     - using glasso::glasso
-## Note: Network with lowest lambda selected as best network: assumption of sparsity might be violated.</code></pre>
-<pre><code>## Warning in EBICglassoCore(S = S, n = n, gamma = gamma, penalize.diagonal =
-## penalize.diagonal, : A dense regularized network was selected (lambda &lt; 0.1 *
-## lambda.max). Recent work indicates a possible drop in specificity. Interpret the
-## presence of the smallest edges with care. Setting threshold = TRUE will enforce
-## higher specificity, at the cost of sensitivity.</code></pre>
-<pre class="r"><code>L &lt;- averageLayout(network_males, network_females)
+                                 corMethod = &quot;cor&quot;)
+network_females &lt;- estimateNetwork(data_gad_female, default = &quot;EBICglasso&quot;, 
+                                   corMethod = &quot;cor&quot;)
+
+L &lt;- averageLayout(network_males, network_females)
 Max &lt;- max(abs(c(getWmat(network_males), getWmat(network_females)))) 
 layout(t(1:2))
 plot(network_males, layout = L, title = &quot;Males&quot;, maximum = Max) 
 plot(network_females, layout = L, title = &quot;Females&quot;, maximum = Max)</code></pre>
-<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 <div id="ネットワーク比較テスト" class="section level2">
 <h2>ネットワーク比較テスト</h2>
@@ -720,48 +610,48 @@ res_nct</code></pre>
 <pre><code>## 
 ##  NETWORK INVARIANCE TEST 
 ##  Test statistic M:  0.1053291 
-##  p-value 0.26 
+##  p-value 0.28 
 ## 
 ##  GLOBAL STRENGTH INVARIANCE TEST 
 ##  Global strength per group:  2.99519 3.048776 
 ##  Test statistic S:  0.05358564 
-##  p-value 0.14 
+##  p-value 0.1 
 ## 
 ##  EDGE INVARIANCE TEST 
 ## 
 ##     Var1  Var2 p-value
-## 8  gad7a gad7b    0.82
-## 15 gad7a gad7c    0.65
-## 16 gad7b gad7c    0.80
-## 22 gad7a gad7d    0.77
-## 23 gad7b gad7d    0.69
-## 24 gad7c gad7d    0.82
-## 29 gad7a gad7e    0.03
-## 30 gad7b gad7e    0.97
+## 8  gad7a gad7b    0.77
+## 15 gad7a gad7c    0.70
+## 16 gad7b gad7c    0.77
+## 22 gad7a gad7d    0.81
+## 23 gad7b gad7d    0.63
+## 24 gad7c gad7d    0.78
+## 29 gad7a gad7e    0.00
+## 30 gad7b gad7e    0.93
 ## 31 gad7c gad7e    1.00
 ## 32 gad7d gad7e    0.73
-## 36 gad7a gad7f    0.42
-## 37 gad7b gad7f    0.17
-## 38 gad7c gad7f    0.55
-## 39 gad7d gad7f    0.82
-## 40 gad7e gad7f    0.81
-## 43 gad7a gad7g    0.67
-## 44 gad7b gad7g    0.12
+## 36 gad7a gad7f    0.45
+## 37 gad7b gad7f    0.19
+## 38 gad7c gad7f    0.49
+## 39 gad7d gad7f    0.85
+## 40 gad7e gad7f    0.77
+## 43 gad7a gad7g    0.71
+## 44 gad7b gad7g    0.14
 ## 45 gad7c gad7g    0.24
-## 46 gad7d gad7g    0.44
+## 46 gad7d gad7g    0.36
 ## 47 gad7e gad7g    0.94
-## 48 gad7f gad7g    0.35
+## 48 gad7f gad7g    0.19
 ## 
 ##  CENTRALITY INVARIANCE TEST 
 ##  
 ##       strength expectedInfluence
-## gad7a     0.50              0.50
-## gad7b     0.60              0.60
-## gad7c     0.94              0.94
-## gad7d     0.34              0.34
-## gad7e     0.04              0.03
-## gad7f     0.47              0.47
-## gad7g     0.99              0.99</code></pre>
+## gad7a     0.44              0.44
+## gad7b     0.57              0.58
+## gad7c     0.92              0.92
+## gad7d     0.31              0.31
+## gad7e     0.04              0.02
+## gad7f     0.45              0.45
+## gad7g     0.92              0.92</code></pre>
 </div>
 <div id="文献" class="section level2">
 <h2>文献</h2>
