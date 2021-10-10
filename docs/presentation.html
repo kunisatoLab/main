@@ -13,12 +13,22 @@
 
 <title>国際会議発表</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,6 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +72,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -112,40 +88,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +122,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +134,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +145,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +173,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,7 +298,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -416,7 +377,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -426,6 +387,12 @@ div.tocify {
 
 
 <div id="section" class="section level3">
+<h3>2021</h3>
+<ul>
+<li>[44] Toyama, A. &amp; Kunisato, Y. (2021). Characteristic learning process in insomnia. The 54th Annual Meeting of the Society for Mathematical Psychology, July 1-12, Virtual.</li>
+</ul>
+</div>
+<div id="section-1" class="section level3">
 <h3>2019</h3>
 <ul>
 <li><p>[43] Kunisato, Y. (2019). Relationship between metacognition of reversal learning and interoception, anxiety, and depression. The First European Congress on Clinical Psychology and Psychological Treatment of EACLIPT November 1, Dresden, Germany.</p></li>
@@ -433,14 +400,14 @@ div.tocify {
 <li><p>[41] Hata, K., Ono, H., Ogawa, Y., Takeshita, W., Kunisato, Y., &amp; Suzuki, S. (2019). Development and validation of the activity restriction scale for cancer patients (Sickness Impact Profile for Cancer Patients: SIP-C). The 9th World Congress of Behavioural and Cognitive Therapies, July 20, Berlin, Germany.</p></li>
 </ul>
 </div>
-<div id="section-1" class="section level3">
+<div id="section-2" class="section level3">
 <h3>2017</h3>
 <ul>
 <li><p>[40] Sakamoto, J., Nagai, T., Kunisato, Y., Sawa, K., Takata, N.(2017). Bayesian modeling of human activity data based on the gamma family of dynamic models. Presented at the 50th Annual Meeting of the Society for Mathematical Psychology, July 23, Warwick, Coventry, UK.</p></li>
 <li><p>[39] Somatori, K., Kunisato, Y(2017). Do depressive symptoms influence randomness in decision making in the reversal learning task? – A hierarchical Bayesian modeling approach - The 50th Annual Meeting of the Society for Mathematical Psychology, July 23, Coventry, England.</p></li>
 </ul>
 </div>
-<div id="section-2" class="section level3">
+<div id="section-3" class="section level3">
 <h3>2016</h3>
 <ul>
 <li><p>[38] Sakamoto, J., Somatori, K., &amp; Kunisato, Y. (2016). Healthy university sutudents’ day-to-day pain variability , depression, and pain-catastrophising: using the experience sampling method and Bayesian linear model. Poster session presented at the 46th annual Congress of the European Association for Behavioural and Cognitive Therapies, September 1, Stockholm, Sweden.</p></li>
@@ -456,7 +423,7 @@ div.tocify {
 <li><p>[28] Sakamoto, J., Somatori, K., &amp; Kunisato, Y. (2016). Bayesian liner model for partial missing experience sampling method data: pain variability in healthy university students. Poster session presented at the 31st International Congress of Psychology, July 29, Yokohama, Japan.</p></li>
 </ul>
 </div>
-<div id="section-3" class="section level3">
+<div id="section-4" class="section level3">
 <h3>2015</h3>
 <ul>
 <li><p>[27] Sakamoto, J., Somatori, K., Okubo, M., &amp; Kunisato, Y. (2015). Depression and Intertemporal Choice of Pain: Maximum Likelihood Estimation vs. Hierarchical Bayesian Analysis. The 48th Annual Meeting of the Society for Mathematical Psychology, July 18, Newport Beach, California, USA.</p></li>
@@ -464,7 +431,7 @@ div.tocify {
 <li><p>[25] Tanaka, T., Kunisato, Y., Okada, K., &amp; Okubo, M. (2015). Why people frequently commit the base-rate fallacy. The 48th Annual Meeting of the Society for Mathematical Psychology, July 18, Newport Beach, California, USA.</p></li>
 </ul>
 </div>
-<div id="section-4" class="section level3">
+<div id="section-5" class="section level3">
 <h3>2014</h3>
 <ul>
 <li><p>[24] Kunisato, Y., Okamoto Y., Yoshimura S., Ueda K., Matsunaga M., Okada G., Nishiyama Y., Katsuragawa T., Suzuki S., Yamawaki S. (2014) The Volume of Right Superior Temporal Gyrus Mediated the Affect of Rumination to Treatment Response to CBT in Patients with Depression The European Association for Behavioural and Cognitive Therapies, September 10 - 13 , Hague, Netherlands.</p></li>
@@ -472,7 +439,7 @@ div.tocify {
 <li><p>[22] Ogawa, Y., Koga, H., Takei, Y., Shimada, M., Nagao, A., Sasaki, M., Kunisato, Y., Suyama, H., Ito, D., Koseki, M., Koseki, S., Tanigawa, K., &amp; Suzuki,S. 2014 Communication behaviors of cancer patients who hesitate when talking to their doctors. 28th International Congress of Applied Psychology, July 8-13, Paris, French(EP-080029)</p></li>
 </ul>
 </div>
-<div id="section-5" class="section level3">
+<div id="section-6" class="section level3">
 <h3>2013</h3>
 <ul>
 <li><p>[21] Ogawa, Y., Takei, Y., Koga, H., Shimada, M., Nagao, A., Sasaki, M., Kunisato, Y., Tanigawa, K., Suzuki, S. (2013). Characteristics of Cancer Outpatients who Hesitate to Speak with their Doctors During Medical Consultations, The 4th Asian Cognitive Behavior Therapy (CBT) Conference, August 23 - 25, Tokyo, Japan.</p></li>
@@ -480,7 +447,7 @@ div.tocify {
 <li><p>[19] Yada, S., Machida, Y., Son, S., Shimizu, K., Kunisato, Y., Kaneko, Y., Suyama, H., Shirai, M., Suzuki, S. (2013). The Relationship between Periods of Sick Leave and Automatic Thoughts among Employees with Depression, The 4th Asian Cognitive Behavior Therapy (CBT) Conference, August 23 - 25, Tokyo, Japan.</p></li>
 </ul>
 </div>
-<div id="section-6" class="section level3">
+<div id="section-7" class="section level3">
 <h3>2012</h3>
 <ul>
 <li><p>[18] Kunisato,Y., Okamoto, Y., Okada, G., Nishiyama, Y., Kanai, Y., Sasaki-Aoki, S., Iwanaga, M., Yamawaki, S. (2012). DELAY DISCOUNTING CORRELATED WITH ACC AND PFC: A VBM STUDY, The 16th Congress of International Society for Biomedical Research on Alcoholism (ISBRA), September 10-11, Sapporo, Japan. (Abstbook of The 16th Congress of ISBRA, P99, 2012).</p></li>
@@ -491,7 +458,7 @@ div.tocify {
 <li><p>[13] Kunisato, Y., Okamoto, Y., Okada, G., Nishiyama, Y., Kanai, Y., Sasaki- Aoki, S., Yoshimura, S., Katsuragawa, T., Suzuki, S., &amp; Yamawaki, S.(2012).The Association between Brain’s Default Mode Network and Anhedonia: a Resting State FMRI Study, The 12th International Congress of Behavioral Medicine (ICBM), August 29, Budapest, Hungary.(International Journal of Behavioral Medicine, 19 (Suppl 1), s258, 2012)</p></li>
 </ul>
 </div>
-<div id="section-7" class="section level3">
+<div id="section-8" class="section level3">
 <h3>2011</h3>
 <ul>
 <li><p>[12] Toki, S., Okamoto, Y., Onoda, K., Yoshimura, S., Kunisato, Y., Okada, G., Yamawaki, S. (2011). Hippocampal Activation predicts Treatment Response to Antidepressant for Depression, The 50 th annual meeting of American College of Neuropsychopharmacology (ACNP), December 7, Hawaii, USA. (Abstbook of The 50 th annual meeting of American College of Neuropsychopharmacology, p324, 2011).</p></li>
@@ -502,7 +469,7 @@ div.tocify {
 <li><p>[7] Son, S., Ishihara, N., Suyama, H., Tanoue, A., Shimizu, K., Kunisato, Y., &amp; Suzuki, S.(2011). The relations between cognitive coping strategies for work-stress, and positive-negative stress response. the 3rd Asian Cognitive Behavior Therapy Conference, July 15, Seoul, Korea.(Abstbook of 3rd Asian Cognitive Behavioral Therapy Conference: Searching for Asian CBT Model of Therapy and Practice, p95, 2011.)</p></li>
 </ul>
 </div>
-<div id="section-8" class="section level3">
+<div id="section-9" class="section level3">
 <h3>2010</h3>
 <ul>
 <li><p>[6] Demoto, Y., Okamoto, Y., Okada, G., Kunisato, Y., Aoyama, S., Onoda, K., Munakata, A., Nomura, M., Yamawaki, S. (2010). The effects of acute tryptophan depletion and personality trait on future reward prediction. XXVII Congress of the CINP(Collegium Internationale Neuro-Psychopharmacologicum), Jun6-Jun10, Hong Kong, China. (Abstruct in The International Journal of Neuropsychopharmacology,13, p145-146, 2010.)</p></li>
@@ -511,13 +478,13 @@ div.tocify {
 <li><p>[3] Kunisato, Y., Takagaki, K., Okajima, I., Nakajima, S., Ishikawa, S., Kanai, Y., Sakano, Y., Okamoto, Y., Yamawaki, S. (2010). Development and validity of the Japanese version of Environmental Reward Observation Scale (EROS). 6th World Congress of behavioral and cognitive therapies, Jun2 - Jun 5, Boston, USA. (Abstbook of 6th WORLD CONGRESS OF BEHAVIORAL AND COGNITIVE THERAPIES Translating Science into Practice ,p114)</p></li>
 </ul>
 </div>
-<div id="section-9" class="section level3">
+<div id="section-10" class="section level3">
 <h3>2009</h3>
 <ul>
 <li>[2] Onoda, K., Okamoto, Y., Kunisato, Y., Okada, G., Yamaguchi, S., &amp; Yamawaki, S. (2009). High/low discounting rates in reward prediction are differentially involved in dorsal/ventral striatum. 18th The International Society for Brain Electromagnetic Topography (ISBET2009), September 29 -October 2, Kyoto, Japan.(Abstruct in the abstbook of 18th The International Society for Brain Electromagnetic Topography, p63)</li>
 </ul>
 </div>
-<div id="section-10" class="section level3">
+<div id="section-11" class="section level3">
 <h3>2008</h3>
 <ul>
 <li>[1] Kunisato, Y., Ueda, K., &amp; Suzuki, S. (2008). Relation between the depression and the sensitivity to reward and punishment. 10th International Congress of Behavioral Medicine, August 27-30, Tokyo, Japan.(Abstbook of 10th International Congress of Behavioral Medicine,p199)</li>
@@ -556,7 +523,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -565,6 +532,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

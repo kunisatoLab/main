@@ -533,9 +533,9 @@ data_gad &lt;- data %&gt;%
 </div>
 <div id="ネットワークの推定とプロット" class="section level3">
 <h3>ネットワークの推定とプロット</h3>
-<p>bootnetパッケージのestimateNetwork()関数でネットワークを推定します。ここでは，EBICでモデル選択して，パラメータ調整をするGLASSOを使っています。GAD-7は，不安症状について，「まったくない」から「ほとんど毎日」の４件法で頻度を問うものです。順序変数と考えられるので，通常の分散共分散ではなくて，ポリコリック相関（順序変数の相関）を計算します。cor_autoになっており，これは自動的に順序変数のポリコリック相関を計算するものです。</p>
+<p>早速，エッジの推定をしましょう。bootnetパッケージのestimateNetwork()関数を使います。エッジの推定にあたり，EBICでモデル選択して，パラメータ調整をするGLASSOを使います(defaultで“EBICglasso”を指定する）。GAD-7は，不安症状について，「まったくない」から「ほとんど毎日」の４件法で頻度を問います。これは，順序変数と考えられるので，通常の分散共分散ではなくて，ポリコリック相関（順序変数の相関）を計算します。corMethodで “cor_auto”を指定すれば，自動的に順序変数にはポリコリック相関を計算してエッジの推定をしてくれます（なお，“cor_auto”では７件法以下は順序変数として扱います）。</p>
 <pre class="r"><code>results_gad &lt;- estimateNetwork(data_gad,default = &quot;EBICglasso&quot;, corMethod = &quot;cor_auto&quot;)</code></pre>
-<p>それから，推定したネットワークをプロットします。</p>
+<p>推定したエッジをネットワークとしてプロットしてみましょう（layoutは“spring”を指定します）</p>
 <pre class="r"><code>plot(results_gad, layout = &quot;spring&quot;,labels = TRUE)</code></pre>
 <p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
@@ -544,37 +544,60 @@ data_gad &lt;- data %&gt;%
 <p>エッジの重みの正確度を評価する方法として，95%信頼区間を使う方法があります。その際に，ブートストラップ法を用いる。ブートストラップ法は，データ元から復元抽出（無作為に取り出したデータを戻してから取り出すことを繰り返すこと，つまり同じデータを取り出すことがある）を繰り返して，何度も取り出したデータから推定値を計算して，誤差などの性質を明らかにする方法です。95%信頼区間もブートストラップ法を用いて計算できます。</p>
 <p>ブートストラップ法には，ノンパラメトリックとパラメトリックがあります。ノンパラメトリックブートストラップは常に使えますが，パラメトリックブートストラップはデータのパラメトリックモデルがある場合のみ使用できます。基本的にはノンパラメトリックブートストラップを使います。正則化されてない，ノンパラメトリックでは結果が不安定である，ノンパラとパラメトリックで比較したい場合のみパラメトリックブートストラップを使います。</p>
 <p>ちなみに，ブートストラップで推定した95%信頼区間は，０をまたぐかどうかで有意性の確認にも使えますが，心理ネットワークモデルの場合は正則化されているので，避けるほうが良い。あくまで，エッジの重みの正確度を調べるために使いましょう。</p>
-<pre class="r"><code>accuracy_edge &lt;- bootnet(results_gad, nBoots = 2500, nCores =4, statistics =   c(&quot;edge&quot;, &quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))
-plot(accuracy_edge, labels = FALSE, order = &quot;sample&quot;)</code></pre>
-<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>それでは，エッジの重みの正確度を推定をしましょう。bootnetパッケージのbootnet()関数を使います。先程推定した結果を使って，nBootsでサンプル数を決めます。プロットをなめらかにするために2500サンプルにします。nCoresで並列処理をして計算を高速化します。以下では，４コアにしていますが，お手持ちのPCのコア数に合わせて変更ください。中心性指標も計算するために，statisticsで指定をします。</p>
+<pre class="r"><code>accuracy_edge &lt;- bootnet(results_gad, nBoots = 2500, nCores =4, statistics =   c(&quot;edge&quot;, &quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))</code></pre>
+<p>summaryで推定結果を確認できます。ただ，以下のプロットのほうが確認がしやすいです。</p>
+<pre class="r"><code>summary(accuracy_edge)</code></pre>
+<pre><code>## # A tibble: 42 × 17
+##    type  id    node1 node2  sample   mean      sd CIlower CIupper   q2.5   q97.5
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+##  1 betw… gad7a gad7a &quot;&quot;     2      1.50   1.18    -0.367   4.37   0       4     
+##  2 betw… gad7b gad7b &quot;&quot;     2      3.17   1.88    -1.76    5.76   2       8     
+##  3 betw… gad7c gad7c &quot;&quot;     0      1.66   2.35    -4.70    4.70   0       8     
+##  4 betw… gad7d gad7d &quot;&quot;    12      9.37   2.26     7.49   16.5    4      12     
+##  5 betw… gad7e gad7e &quot;&quot;     0      0.970  1.85    -3.71    3.71   0       6     
+##  6 betw… gad7f gad7f &quot;&quot;     0      0.376  0.814   -1.63    1.63   0       2     
+##  7 betw… gad7g gad7g &quot;&quot;     0      1.11   1.62    -3.24    3.24   0       6     
+##  8 clos… gad7a gad7a &quot;&quot;     0.0252 0.0256 0.00148  0.0222  0.0281 0.0227  0.0284
+##  9 clos… gad7b gad7b &quot;&quot;     0.0260 0.0262 0.00168  0.0226  0.0294 0.0232  0.0297
+## 10 clos… gad7c gad7c &quot;&quot;     0.0252 0.0256 0.00172  0.0217  0.0286 0.0223  0.0289
+## # … with 32 more rows, and 6 more variables: q2.5_non0 &lt;dbl&gt;, mean_non0 &lt;dbl&gt;,
+## #   q97.5_non0 &lt;dbl&gt;, var_non0 &lt;dbl&gt;, sd_non0 &lt;dbl&gt;, prop0 &lt;dbl&gt;</code></pre>
+<p>それでは，プロットしてみましょう。サンプルサイズが大きいためか，95%信頼区間の幅が狭いですね。</p>
+<pre class="r"><code>plot(accuracy_edge, labels = FALSE, order = &quot;sample&quot;)</code></pre>
+<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 <div id="中心性の指標のプロット" class="section level3">
 <h3>中心性の指標のプロット</h3>
+<p>中心性の指標は，qgraphパッケージのcontralityPlot関数でプロットできます。中心性指標は複数あるので，includeで“Strength”, “Betweenness”, “Closeness”の３つを指定します。</p>
 <pre class="r"><code>centralityPlot(results_gad, include = c(&quot;Strength&quot;, &quot;Betweenness&quot;, &quot;Closeness&quot;))</code></pre>
-<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 <div id="中心性指標の安定性stability" class="section level3">
 <h3>中心性指標の安定性(Stability)</h3>
 <p>中心性指標の正確度の解釈ができるように，データのサブセットを用いて，中心性指標の順序がどのくらい安定しているか検討します。具体的には，参加者を減らしていった場合（ケースドロップ）もしくはノードを減らしていった場合（ノードドロップ）にどのくらい中心性指標の順序が安定しているかを検討します。ノードドロップは解釈が難しくなるので（ノードをへらすと別のネットワークになるのは当然なので評価しにくい），ケースドロップを使用するのが良いかと思います。</p>
 <p>中心性指標の安定性は，CS係数(correlation stability coefficient)によって評価します。CSはドロップできるケースの最大比率を表現しています。具体的には，参加者数を減らしていった場合に，元の中心性指標とドロップした中心性指標間に0.7以上の相関がブートストラップしたサンプルの95%にあるような最大のドロップケース比率である。多少恣意的な基準にはなるが，中心性の解釈をする上では，CS係数が0.25未満は不適切であり，できればCS係数は0.5を越えている必要がある(Epskamp, Borsboom, &amp; Fried, 2018)。</p>
-<pre class="r"><code>stability_centrality &lt;- bootnet(results_gad, nBoots = 2500, type = &quot;case&quot;, nCores =4, statistics =  c(&quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))
-plot(stability_centrality, c(&quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))</code></pre>
-<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>中心性指標の安定性は，エッジの重みの正確度と同様にbootnetを使います。typeで”case”を指定するとケースドロップ時の安定性を推定します。なお，中心性の指標は複数あるので，statisticsで“strength”, “closeness”, “betweenness”を指定します。</p>
+<pre class="r"><code>stability_centrality &lt;- bootnet(results_gad, nBoots = 2500, type = &quot;case&quot;, nCores =4, statistics =  c(&quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))</code></pre>
+<p>プロットして確認します。</p>
+<pre class="r"><code>plot(stability_centrality, c(&quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))</code></pre>
+<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>CS係数を確認します。StrengthとClosenessはCS係数が0.5を超えていますが，Betweenessの順序については，解釈ができません。</p>
 <pre class="r"><code>corStability(stability_centrality)</code></pre>
 <pre><code>## === Correlation Stability Analysis === 
 ## 
 ## Sampling levels tested:
 ##    nPerson Drop%   n
-## 1      851  75.0 250
-## 2     1116  67.2 248
-## 3     1381  59.4 273
-## 4     1645  51.7 244
-## 5     1910  43.9 246
-## 6     2175  36.1 222
-## 7     2440  28.3 236
-## 8     2704  20.6 267
-## 9     2969  12.8 278
-## 10    3234   5.0 236
+## 1      851  75.0 245
+## 2     1116  67.2 254
+## 3     1381  59.4 259
+## 4     1645  51.7 240
+## 5     1910  43.9 248
+## 6     2175  36.1 269
+## 7     2440  28.3 253
+## 8     2704  20.6 238
+## 9     2969  12.8 272
+## 10    3234   5.0 222
 ## 
 ## Maximum drop proportions to retain correlation of 0.7 in at least 95% of the samples:
 ## 
@@ -592,13 +615,21 @@ plot(stability_centrality, c(&quot;strength&quot;, &quot;closeness&quot;, &quot;
 <div id="有意差検定" class="section level3">
 <h3>有意差検定</h3>
 <p>ブートストラップを活用して，エッジの重みの比較や中心性指標の比較もできる。例えば，項目１と項目２のエッジは，項目１と項目３のエッジよりも大きいことを確認したい場合や項目１のノードのStrengthは項目２のノードのStrengthよりも大きいことを確認したい時です。これには，ブートストラップ差異検定(bootstrapped difference test)と呼ばれます。具体的には，比較したいエッジ（中心性指標）のブートストラップ値の差を計算して，その差の95%信頼区間を計算することで，０をまたぐかどうかで差の有無を判断できます。なお，この際に，０をまたぐことは，そこに差があることを示しますが，０をまたがないことでエッジや中心性指標が等しいとはいえない点に注意が必要です。</p>
+<p>最もStrengthの高いgadbと最も低いgadfを比較します。bootnetパッケージのdifferenceTest関数で検討できます。実行すると，95%CIが0をまたいでいることが分かります。</p>
+<pre class="r"><code>differenceTest(accuracy_edge, 2, 6, &quot;strength&quot;)   </code></pre>
+<pre><code>## # A tibble: 1 × 6
+##   id1   id2   measure   lower  upper significant
+##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt;      
+## 1 gad7b gad7f strength -0.591 -0.405 TRUE</code></pre>
+<pre class="r"><code>plot(accuracy_edge, &quot;edge&quot;, plot = &quot;difference&quot;, onlyNonZero = TRUE, order = &quot;sample&quot;)  </code></pre>
+<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>plot(accuracy_edge,&quot;strength&quot;)</code></pre>
+<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 </div>
 <div id="ネットワーク比較テストgad7の性差" class="section level2">
 <h2>ネットワーク比較テスト(GAD7の性差）</h2>
-<pre class="r"><code>library(NetworkComparisonTest)
-
-data_gad_gender &lt;- data %&gt;% 
+<pre class="r"><code>data_gad_gender &lt;- data %&gt;% 
   rename(gad7a = S_GAD7_a, gad7b = S_GAD7_b, gad7c = S_GAD7_c, gad7d = S_GAD7_d, 
          gad7e = S_GAD7_e, gad7f = S_GAD7_f, gad7g = S_GAD7_g, phq9a = S_PHQ9_a, 
          phq9b = S_PHQ9_b, phq9c = S_PHQ9_c, phq9d = S_PHQ9_d, phq9e = S_PHQ9_e, 
@@ -628,57 +659,58 @@ Max &lt;- max(abs(c(getWmat(network_males), getWmat(network_females))))
 layout(t(1:2))
 plot(network_males, layout = L, title = &quot;Males&quot;, maximum = Max) 
 plot(network_females, layout = L, title = &quot;Females&quot;, maximum = Max)</code></pre>
-<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 <div id="ネットワーク比較テスト" class="section level2">
 <h2>ネットワーク比較テスト</h2>
-<pre class="r"><code>res_nct &lt;- NCT(data_gad_male, data_gad_female,progressbar=FALSE,test.edges=TRUE, test.centrality=TRUE)
+<pre class="r"><code>library(NetworkComparisonTest)
+res_nct &lt;- NCT(data_gad_male, data_gad_female,progressbar=FALSE,test.edges=TRUE, test.centrality=TRUE)
 res_nct</code></pre>
 <pre><code>## 
 ##  NETWORK INVARIANCE TEST 
 ##  Test statistic M:  0.1053291 
-##  p-value 0.29 
+##  p-value 0.33 
 ## 
 ##  GLOBAL STRENGTH INVARIANCE TEST 
 ##  Global strength per group:  2.99519 3.048776 
 ##  Test statistic S:  0.05358564 
-##  p-value 0.09 
+##  p-value 0.07 
 ## 
 ##  EDGE INVARIANCE TEST 
 ## 
 ##     Var1  Var2 p-value
-## 8  gad7a gad7b    0.78
-## 15 gad7a gad7c    0.64
-## 16 gad7b gad7c    0.83
-## 22 gad7a gad7d    0.76
-## 23 gad7b gad7d    0.68
-## 24 gad7c gad7d    0.88
-## 29 gad7a gad7e    0.01
+## 8  gad7a gad7b    0.82
+## 15 gad7a gad7c    0.68
+## 16 gad7b gad7c    0.84
+## 22 gad7a gad7d    0.68
+## 23 gad7b gad7d    0.64
+## 24 gad7c gad7d    0.83
+## 29 gad7a gad7e    0.02
 ## 30 gad7b gad7e    0.93
 ## 31 gad7c gad7e    1.00
-## 32 gad7d gad7e    0.69
-## 36 gad7a gad7f    0.38
-## 37 gad7b gad7f    0.17
-## 38 gad7c gad7f    0.56
-## 39 gad7d gad7f    0.88
-## 40 gad7e gad7f    0.75
-## 43 gad7a gad7g    0.74
+## 32 gad7d gad7e    0.75
+## 36 gad7a gad7f    0.32
+## 37 gad7b gad7f    0.16
+## 38 gad7c gad7f    0.50
+## 39 gad7d gad7f    0.87
+## 40 gad7e gad7f    0.79
+## 43 gad7a gad7g    0.71
 ## 44 gad7b gad7g    0.15
-## 45 gad7c gad7g    0.35
-## 46 gad7d gad7g    0.40
-## 47 gad7e gad7g    0.89
-## 48 gad7f gad7g    0.29
+## 45 gad7c gad7g    0.28
+## 46 gad7d gad7g    0.42
+## 47 gad7e gad7g    0.90
+## 48 gad7f gad7g    0.36
 ## 
 ##  CENTRALITY INVARIANCE TEST 
 ##  
 ##       strength expectedInfluence
-## gad7a     0.45              0.45
-## gad7b     0.65              0.65
-## gad7c     0.88              0.88
-## gad7d     0.34              0.34
-## gad7e     0.04              0.04
-## gad7f     0.38              0.38
-## gad7g     0.95              0.95</code></pre>
+## gad7a     0.37              0.37
+## gad7b     0.56              0.56
+## gad7c     0.95              0.95
+## gad7d     0.35              0.35
+## gad7e     0.01              0.01
+## gad7f     0.40              0.40
+## gad7g     0.91              0.91</code></pre>
 </div>
 <div id="文献" class="section level2">
 <h2>文献</h2>

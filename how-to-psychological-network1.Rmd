@@ -200,14 +200,14 @@ data_gad <- data %>%
 
 ### ネットワークの推定とプロット
 
-bootnetパッケージのestimateNetwork()関数でネットワークを推定します。ここでは，EBICでモデル選択して，パラメータ調整をするGLASSOを使っています。GAD-7は，不安症状について，「まったくない」から「ほとんど毎日」の４件法で頻度を問うものです。順序変数と考えられるので，通常の分散共分散ではなくて，ポリコリック相関（順序変数の相関）を計算します。cor_autoになっており，これは自動的に順序変数のポリコリック相関を計算するものです。
+早速，エッジの推定をしましょう。bootnetパッケージのestimateNetwork()関数を使います。エッジの推定にあたり，EBICでモデル選択して，パラメータ調整をするGLASSOを使います(defaultで"EBICglasso"を指定する）。GAD-7は，不安症状について，「まったくない」から「ほとんど毎日」の４件法で頻度を問います。これは，順序変数と考えられるので，通常の分散共分散ではなくて，ポリコリック相関（順序変数の相関）を計算します。corMethodで "cor_auto"を指定すれば，自動的に順序変数にはポリコリック相関を計算してエッジの推定をしてくれます（なお，"cor_auto"では７件法以下は順序変数として扱います）。
 
 
 ```{r message=FALSE, warning=FALSE}
 results_gad <- estimateNetwork(data_gad,default = "EBICglasso", corMethod = "cor_auto")
 ```
 
-それから，推定したネットワークをプロットします。
+推定したエッジをネットワークとしてプロットしてみましょう（layoutは"spring"を指定します）
 
 ```{r message=FALSE, warning=FALSE}
 plot(results_gad, layout = "spring",labels = TRUE)
@@ -224,14 +224,27 @@ plot(results_gad, layout = "spring",labels = TRUE)
 
 ちなみに，ブートストラップで推定した95%信頼区間は，０をまたぐかどうかで有意性の確認にも使えますが，心理ネットワークモデルの場合は正則化されているので，避けるほうが良い。あくまで，エッジの重みの正確度を調べるために使いましょう。
 
+それでは，エッジの重みの正確度を推定をしましょう。bootnetパッケージのbootnet()関数を使います。先程推定した結果を使って，nBootsでサンプル数を決めます。プロットをなめらかにするために2500サンプルにします。nCoresで並列処理をして計算を高速化します。以下では，４コアにしていますが，お手持ちのPCのコア数に合わせて変更ください。中心性指標も計算するために，statisticsで指定をします。
+
 ```{r message=FALSE, warning=FALSE}
 accuracy_edge <- bootnet(results_gad, nBoots = 2500, nCores =4, statistics =   c("edge", "strength", "closeness", "betweenness"))
+```
+summaryで推定結果を確認できます。ただ，以下のプロットのほうが確認がしやすいです。
+
+```{r message=FALSE, warning=FALSE}
+summary(accuracy_edge)
+```
+
+それでは，プロットしてみましょう。サンプルサイズが大きいためか，95%信頼区間の幅が狭いですね。
+
+```{r message=FALSE, warning=FALSE}
 plot(accuracy_edge, labels = FALSE, order = "sample")
 ```
 
+
 ### 中心性の指標のプロット
 
-
+中心性の指標は，qgraphパッケージのcontralityPlot関数でプロットできます。中心性指標は複数あるので，includeで"Strength", "Betweenness", "Closeness"の３つを指定します。
 
 ```{r message=FALSE, warning=FALSE}
 centralityPlot(results_gad, include = c("Strength", "Betweenness", "Closeness"))
@@ -245,14 +258,19 @@ centralityPlot(results_gad, include = c("Strength", "Betweenness", "Closeness"))
 
 中心性指標の安定性は，CS係数(correlation stability coefficient)によって評価します。CSはドロップできるケースの最大比率を表現しています。具体的には，参加者数を減らしていった場合に，元の中心性指標とドロップした中心性指標間に0.7以上の相関がブートストラップしたサンプルの95%にあるような最大のドロップケース比率である。多少恣意的な基準にはなるが，中心性の解釈をする上では，CS係数が0.25未満は不適切であり，できればCS係数は0.5を越えている必要がある(Epskamp, Borsboom, & Fried, 2018)。
 
-
+中心性指標の安定性は，エッジの重みの正確度と同様にbootnetを使います。typeで”case”を指定するとケースドロップ時の安定性を推定します。なお，中心性の指標は複数あるので，statisticsで"strength", "closeness", "betweenness"を指定します。
 
 ```{r message=FALSE, warning=FALSE}
 stability_centrality <- bootnet(results_gad, nBoots = 2500, type = "case", nCores =4, statistics =  c("strength", "closeness", "betweenness"))
+```
+
+プロットして確認します。
+
+```{r message=FALSE, warning=FALSE}
 plot(stability_centrality, c("strength", "closeness", "betweenness"))
 ```
 
-
+CS係数を確認します。StrengthとClosenessはCS係数が0.5を超えていますが，Betweenessの順序については，解釈ができません。
 
 ```{r message=FALSE, warning=FALSE}
 corStability(stability_centrality)
@@ -262,13 +280,24 @@ corStability(stability_centrality)
 
 ブートストラップを活用して，エッジの重みの比較や中心性指標の比較もできる。例えば，項目１と項目２のエッジは，項目１と項目３のエッジよりも大きいことを確認したい場合や項目１のノードのStrengthは項目２のノードのStrengthよりも大きいことを確認したい時です。これには，ブートストラップ差異検定(bootstrapped difference test)と呼ばれます。具体的には，比較したいエッジ（中心性指標）のブートストラップ値の差を計算して，その差の95%信頼区間を計算することで，０をまたぐかどうかで差の有無を判断できます。なお，この際に，０をまたぐことは，そこに差があることを示しますが，０をまたがないことでエッジや中心性指標が等しいとはいえない点に注意が必要です。
 
+最もStrengthの高いgadbと最も低いgadfを比較します。bootnetパッケージのdifferenceTest関数で検討できます。実行すると，95%CIが0をまたいでいることが分かります。
 
+```{r message=FALSE, warning=FALSE}
+differenceTest(accuracy_edge, 2, 6, "strength")   
+```
+
+```{r message=FALSE, warning=FALSE}
+plot(accuracy_edge, "edge", plot = "difference", onlyNonZero = TRUE, order = "sample")  
+```
+
+
+```{r message=FALSE, warning=FALSE}
+plot(accuracy_edge,"strength")
+```
 
 ## ネットワーク比較テスト(GAD7の性差）
 
 ```{r}
-library(NetworkComparisonTest)
-
 data_gad_gender <- data %>% 
   rename(gad7a = S_GAD7_a, gad7b = S_GAD7_b, gad7c = S_GAD7_c, gad7d = S_GAD7_d, 
          gad7e = S_GAD7_e, gad7f = S_GAD7_f, gad7g = S_GAD7_g, phq9a = S_PHQ9_a, 
@@ -309,6 +338,7 @@ plot(network_females, layout = L, title = "Females", maximum = Max)
 ## ネットワーク比較テスト
 
 ```{r message=FALSE, warning=FALSE}
+library(NetworkComparisonTest)
 res_nct <- NCT(data_gad_male, data_gad_female,progressbar=FALSE,test.edges=TRUE, test.centrality=TRUE)
 res_nct
 ```
