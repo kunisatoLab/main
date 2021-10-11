@@ -459,7 +459,7 @@ NetworkComparisonTestパッケージのNCT関数を使って， permutationベ�
 
 ```{r message=FALSE, warning=FALSE}
 library(NetworkComparisonTest)
-res_nct <- NCT(network_male, network_female, test.edges=TRUE, test.centrality=TRUE)
+res_nct <- NCT(network_male, network_female, progressbar=FALSE, test.edges=TRUE, test.centrality=TRUE)
 ```
 
 結果をプロットしてみます。what="network"で，ネットワーク構造の差異の検定結果が示されます。what="strength"
