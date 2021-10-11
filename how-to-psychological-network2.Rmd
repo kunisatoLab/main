@@ -10,14 +10,13 @@ title: "心理ネットワーク入門１：縦断データ"
 1. １名を対象に繰り返し測定を行った時系列データ
 2. １名以上の複数参加者を対象に繰り返し測定を行った時系列データ
 
----
 
 # 1名の時系列データ
 
 - １名から得た時系列データにもネットワーク分析ができる。
 - 例えば，認知行動療法中のうつ病患者に毎回抑うつの質問紙を行ったデータなど。
 - クロスセクショナルのGMMでは時系列情報が考慮されてないので（時系列データには自己相関があるので，前の測定からの影響を除外しないといけない），時系列を考慮した分析をする必要がある。
----
+
 
 # Vector Auto-regression(VAR)
 
@@ -27,14 +26,14 @@ $$\begin{aligned} \boldsymbol{y}_{t} &=\boldsymbol{B} \boldsymbol{y}_{t-1}+\bold
 
 - Bは時間的予測効果を意味している。この係数を使って作ったグラフは，有向ネットワークであり，.green[temporal network]と呼ばれる。temporal networkは，１つ前からの予測を可視化できる。時間的な予測は因果の要件の１つなので，temporal networkは因果の可能性のある関連を見ているかもしれない。
 
----
+
 # contemporaneous network
 
 $$\begin{aligned} \boldsymbol{y}_{t} &=\boldsymbol{B} \boldsymbol{y}_{t-1}+\boldsymbol{\varepsilon}_{t} \\ \boldsymbol{\varepsilon}_{T} & \sim N(\boldsymbol{0}, \boldsymbol{\Theta}) \end{aligned}$$
 
 - 上の式の誤差は，平均0，分散共分散行列 $\boldsymbol{\Theta}$ の正規分布に従う。この分散共分散行列 $\boldsymbol{\Theta}$ の逆行列（つまり精度行列）を使うと同時点のGGMの推定値が得られる。
 - GGMの推定値を使って無向グラフがかけて，これは，.green[contemporaneous network]と呼ばれる。このネットワークにおけるエッジは，同時点の全変数の影響だけでなく，時間的効果も統制している。
----
+
 # GVAR
 
 - GGMによるcontemporaneous networkを明示的に組み込んだVARをgraphical VAR(GVAR)と呼ぶ。
@@ -43,11 +42,10 @@ $$\boldsymbol{y}_{T} \mid \boldsymbol{y}_{T-1}=\boldsymbol{y}_{t-1} \sim N\left(
 
 - もし，測定間隔が長くて，それぞれが独立と考えられ（つまり時間効果ない)， $\boldsymbol{B}$ が0なら，普通のGGMになる。つまり，GVARはGGMの時系列データへの拡張と考えられる。
 
----
+
 
 # 例：エクササイズと活気との関係
 
-<img style=float:right src="pic/net1.png" width="500">
 
 - Temporal networkの活気はぐるっと回る矢印がある。１つ前に活気が高い人は次も高い。
 - １つ前にエクササイズをしたら，活気が下がっている。エクササイズは活気の低下を予想できる。
@@ -78,13 +76,12 @@ $$\boldsymbol{y}_{t}=\boldsymbol{B} \boldsymbol{y}_{t-1}+\boldsymbol{\varepsilon
 
 # 複数参加者の時系列データ
 
-<img style=float:right src="pic/net2.png" width="550">
+![](fig/net04.png)
 
-.med[
 - 経験サンプリングなどの複数回にわたる縦断データの場合は，マルチレベル分析を考える。
 - １人から複数回測定したデータはその個人に帰属し（ネストする），個人のレベルと全体のレベルの階層性をもつ。
-- 全体としての平均的なネットワークがあって，その下に個人差を追加した個々の参加者のネットワークがあると考える。]
----
+- 全体としての平均的なネットワークがあって，その下に個人差を追加した個々の参加者のネットワークがあると考える。
+
 # マルチレベルGVAR
 
 - GVARモデルのマルチレベル分析をする場合に，個々のGVARは，以下のようになる
@@ -92,15 +89,15 @@ $$\boldsymbol{y}_{t}=\boldsymbol{B} \boldsymbol{y}_{t-1}+\boldsymbol{\varepsilon
 $$\begin{aligned} \boldsymbol{y}_{[t, p]} &=\boldsymbol{\mu}_{p}+\boldsymbol{B}_{p}\left(\boldsymbol{y}_{[t-1, p]}-\boldsymbol{\mu}_{p}\right)+\boldsymbol{\varepsilon}_{[t, p]} \\ \boldsymbol{\varepsilon}_{[T, p]} & \sim N\left(\mathbf{0}, \boldsymbol{\Theta}_{p}\right) \\ \boldsymbol{\Theta}_{p}^{-1} &=\boldsymbol{K}_{p}^{(\boldsymbol{\theta})} \end{aligned}$$
 - 各参加者を表す添字のpが追加されたのと，各参加者の定常平均ベクトル $\boldsymbol{\mu}_{p}$ が追加された。pがついているものは全て，特定の個人の推定値を意味する。
 
----
 
 - $\boldsymbol{B}_{*}$ と $\boldsymbol{K}_{*}^{(\boldsymbol{\Theta})}$ は，集団における平均的なパラメータ（これで全体のtemporal networkとcontemporaneous networkが描ける）。こういうのを固定効果(fixed effect)と呼ぶ。
 - 個々の参加者ごとに $\boldsymbol{B}_{P}$ と $\boldsymbol{K}_{P}^{(\boldsymbol{\Theta})}$ があります。この個々の参加者と集団との偏差（ $\boldsymbol{B}_{p}-\boldsymbol{B}_{*}$ ）をランダムエフェクト(random effect)と呼ぶ。
 
 $$\begin{aligned} \mathcal{E}\left(\boldsymbol{\mu}_{P}\right) &=\mathbf{0} \\ \mathcal{E}\left(\boldsymbol{B}_{P}\right) &=\boldsymbol{B}_{*} \\ \mathcal{E}\left(\boldsymbol{K}_{P}^{(\boldsymbol{\Theta})}\right) &=\boldsymbol{K}_{*}^{(\boldsymbol{\Theta})} \end{aligned}$$
 - 平均的なネットワーク構造を知りたい場合は，固定効果を検討し，個人差興味がある場合はランダム効果を検討する。
----
-<img style=float:right src="pic/net3.png" width="550">
+
+![](fig/net05.png)
+
 
 - レベル1にランダム効果を仮定するだけでなく，レベル2にランダム効果を仮定できる。
 
@@ -109,28 +106,26 @@ $$\begin{aligned} \mathcal{E}\left(\boldsymbol{\mu}_{P}\right) &=\mathbf{0} \\ \
 - なので，以下のように， $\boldsymbol{\mu}_{P}$ だけ考慮することにする。 $\boldsymbol{\mu}_{P}$ は平均0，分散共分散行列 $\mathbf{\Omega}$ の正規分布に従う。
 
 $$\boldsymbol{\mu}_{P} \sim N(\mathbf{0}, \mathbf{\Omega})$$
----
 - $\mathbf{\Omega}$ を使って，精度行列を得ます。
 - ここで得られた精度行列によるネットワークを.green[between-subject network]と呼びます。これは各参加者の定常平均間のネットワークである。
 
 $$
 \boldsymbol{K}^{(\mathbf{\Omega})}=\mathbf{\Omega}^{-1}
 $$
----
+
 # 推定法
-.med[
+
 - pooled and individual LASSO:参加者内で中心化したデータを全てつかってTemporalとContemporaneous networkを推定する。そして，参加者の平均値をつかって，Between-subject networkを推定する。graphicalVARとsparseTSCGMパッケージでできる。欠点は，マルチレベル推定ではないこと，欠測値処理ができないこと。利点は，推定が早く，変数が多くても推定できる。
 - Bayesian multilevel:柔軟なマルチレベル推定ができる（自由度はとても高いし，得られる情報も多い）。推定が遅く，モデル選択ができなくて，Contemporaneous networkのランダム効果の推定は難しい。MPlusが必要。
 - Two-step frequentist multilevel:(1)参加者内予測子として参加者内で中心化したラグ変数(temporal)，参加者間予測子として全ての他の変数の平均値(between)をいれたマルチレベル重回帰分析を行う，(2)(1)の残差にマルチレベル重回帰分析(contemporaneous)を行う。マルチレベル解析はできているが，変数が８を超えると厳しい。mlVARパッケージできる。
-]
 
----
+
 # 測定回数を増やすか参加者を増やすか？
 
 - 参加者数が増えるとネットワーク構造の固定効果やBetween-subject networkが推定しやすくなる。
 
 - 参加者の測定回数が増えると，Temporal networkとContemporaneous networkが推定しやすくなる。
----
+
 
 # 時系列データの推定法まとめ
 
@@ -142,12 +137,12 @@ GGMによる心理学的ネットワーク分析は，データの種類によ�
 
 - 複数の時系列データ：Temporal network，Contemporaneous network，Between-subject network
 
----
+
 # 横断データのネットワーク分析再考
 
 - クロスセクショナル(横断)データは，１時点における複数参加者のデータであり，参加者間（between subject）ネットワークを検討できる。
 - しかし，参加者内変動（個人の平均値を中心とした参加者内の変動）が含まれており，純粋に参加者間変動（参加者内での平均の参加者間変動）をだけをみているとは限らない。
----
+
 
 # 横断データのネットワーク分析再考
 
@@ -158,7 +153,7 @@ $$\boldsymbol{y}_{[T, p]} \sim N\left(\boldsymbol{\mu}_{p}, \boldsymbol{\Sigma}_
 - この時のある個人の平均定常得点 $\boldsymbol{\mu}_{p}$は，平均0,分散共分散 $\boldsymbol{\Omega}$ の正規分布に従う。これは，マルチレベルの場合は，集団レベルの話になる。
 
 $$\boldsymbol{\mu}_{P} \sim N(\mathbf{0}, \boldsymbol{\Omega})$$
----
+
 
 # 横断データのネットワーク分析再考
 
@@ -170,13 +165,12 @@ $$\boldsymbol{K}^{(\boldsymbol{\Omega})}=\boldsymbol{\Omega}^{-1}$$
 
 $$K_{p}={\mathbf{\Sigma}}_{p}^{-1}$$
 
----
 # 横断データのネットワーク分析再考
 
 - ある参加者pのある時点Tにおける観測について考えると，そこには個々の観測を生成する分散共分散行列から得られるGGM（参加者内ネットワーク）とその個々の観測を生成する正規分布の平均を生成する正規分布の分散共分散行列から得られるGGM（参加者間ネットワーク）の２種類が含まれる。
 - クロスセクショナルデータの場合だと， $\mathbf{\Sigma}$は分からないので，すべての参加者で共通の $\boldsymbol{\Sigma}_{*}$を想定する。
 - ただ， $\boldsymbol{\mu}_{p}$は正規分布するので，その分散共分散行列からえられるGGMには， $\boldsymbol{\Sigma}_{*}$と $\boldsymbol{\Omega}$が混ざっている。 
----
+
 
 # 横断データのネットワーク分析再考
 
@@ -185,12 +179,12 @@ $$K_{p}={\mathbf{\Sigma}}_{p}^{-1}$$
 - $\boldsymbol{\Omega}$は，特性レベルの変動性を表しており，変数Aが高い人ほど変数Bも高いと考えられる。例えば，平均的に疲れている人は，平均的に集中が難しい。
 
 $$\boldsymbol{K}=\left(\boldsymbol{\Sigma}_{*}+\boldsymbol{\Omega}\right)^{-1}$$
----
+
 
 # 横断データのネットワーク分析再考
 
 - クロスセクショナルデータの場合，GGMでは，参加者間変動だけでなく，参加者内変動が混ざってしまうので，.green[参加者内変動の少ないような変数（より特性的なものや期間を区切った症状評価尺度）だと参加者間ネットワークの解釈がしやすくなる]。
----
+
 
 # 研究例：Aalbers et al.(2019)
 
@@ -198,30 +192,22 @@ $$\boldsymbol{K}=\left(\boldsymbol{\Sigma}_{*}+\boldsymbol{\Omega}\right)^{-1}$$
 - ソーシャルメディアの受動的な利用とうつとの関係を検討した研究
 - 大学生125名を対象に，毎日７回の測定（ソーシャルメディアの受動的利用，うつ症状，孤独，ストレスの１２項目）を14日間実施している。
 - 解析では，Two-step frequentist multilevel(mlVARを使用）
----
-# 研究例：Aalbers et al.(2019)
-<img style=float:right src="pic/net16.png" width="600">
+
 - Contemporaneous Network: 受動的にソーシャルメディアを使うほど，アンヘドニア，集中力低下，疲労，孤独感が高かった。
----
-# 研究例：Aalbers et al.(2019)
-<img style=float:right src="pic/net17.png" width="600">
+
 - Temporal network: 疲労と孤独感は時間の経過とともに受動的なソーシャルメディアの利用の増加を予測した。
 - 反対方向のソーシャルメディアから抑うつやストレスを予測することはなかった。
 
----
-# 研究例：Aalbers et al.(2019)
-<img style=float:right src="pic/net18.png" width="800">
-
 - Between-subject network(左が相関，右が偏相関):相関では受動的なメディア利用とうつに相関があったが，統制した偏相関では，これらの関連は消えた。
 - 複数参加者の時系列データは，重層的な関連性を示す。
----
+
 
 # Aalbers et al.(2019)の解析をやってみよう！
 
 
 https://osf.io/djw8f/
 
----
+
 
 # 文献
 
