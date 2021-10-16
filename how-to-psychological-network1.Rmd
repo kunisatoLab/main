@@ -226,10 +226,12 @@ plot(results_gad, layout = "spring",labels = TRUE)
 
 ちなみに，ブートストラップで推定した95%信頼区間は，０をまたぐかどうかで有意性の確認にも使えますが，心理ネットワークモデルの場合は正則化されているので，避けるほうが良い。あくまで，エッジの重みの正確度を調べるために使いましょう。
 
-それでは，エッジの重みの正確度を推定をしましょう。bootnetパッケージのbootnet()関数を使います。先程推定した結果を使って，nBootsでサンプル数を決めます。プロットをなめらかにするために2500サンプルにします。nCoresで並列処理をして計算を高速化します。以下では，４コアにしていますが，お手持ちのPCのコア数に合わせて変更ください。中心性指標も計算するために，statisticsで指定をします。
+それでは，エッジの重みの正確度を推定をしましょう。bootnetパッケージのbootnet()関数を使います。先程推定した結果を使って，nBootsでサンプル数を決めます。プロットをなめらかにするために2500サンプルにします。nCoresで並列処理をして計算を高速化します。以下では，４コアにしていますが，お手持ちのPCのコア数に合わせて変更ください(以下のコードは国里のゼミのコア数の少ないサーバーを使うことを想定したコードです。コア４つ以上ある方は，コメントアウトした方を利用ください)。中心性指標も計算するために，statisticsで指定をします。
 
 ```{r message=FALSE, warning=FALSE}
-accuracy_edge <- bootnet(results_gad, nBoots = 2500, nCores =4, statistics =   c("edge", "strength", "closeness", "betweenness"))
+accuracy_edge <- bootnet(results_gad, nBoots = 2500, nCores =1, statistics =   c("edge", "strength", "closeness", "betweenness"))
+
+# accuracy_edge <- bootnet(results_gad, nBoots = 2500, nCores =4, statistics =   c("edge", "strength", "closeness", "betweenness"))
 ```
 summaryで推定結果を確認できます。ただ，以下のプロットのほうが確認がしやすいです。
 
@@ -260,10 +262,12 @@ centralityPlot(results_gad, include = c("Strength", "Betweenness", "Closeness"))
 
 中心性指標の安定性は，CS係数(correlation stability coefficient)によって評価します。CSはドロップできるケースの最大比率を表現しています。具体的には，参加者数を減らしていった場合に，元の中心性指標とドロップした中心性指標間に0.7以上の相関がブートストラップしたサンプルの95%にあるような最大のドロップケース比率である。多少恣意的な基準にはなるが，中心性の解釈をする上では，CS係数が0.25未満は不適切であり，できればCS係数は0.5を越えている必要がある(Epskamp, Borsboom, & Fried, 2018)。
 
-中心性指標の安定性は，エッジの重みの正確度と同様にbootnetを使います。typeで”case”を指定するとケースドロップ時の安定性を推定します。なお，中心性の指標は複数あるので，statisticsで"strength", "closeness", "betweenness"を指定します。
+中心性指標の安定性は，エッジの重みの正確度と同様にbootnetを使います。typeで”case”を指定するとケースドロップ時の安定性を推定します。なお，中心性の指標は複数あるので，statisticsで"strength", "closeness", "betweenness"を指定します。以下のコードは国里ゼミのコア数の少ないサーバーを使うことを想定したコードです。コア４つ以上ある方は，コメントアウトした方を利用ください。
 
 ```{r message=FALSE, warning=FALSE}
-stability_centrality <- bootnet(results_gad, nBoots = 2500, type = "case", nCores =4, statistics =  c("strength", "closeness", "betweenness"))
+stability_centrality <- bootnet(results_gad, nBoots = 2500, type = "case", nCores =1, statistics =  c("strength", "closeness", "betweenness"))
+
+# stability_centrality <- bootnet(results_gad, nBoots = 2500, type = "case", nCores =4, statistics =  c("strength", "closeness", "betweenness"))
 ```
 
 プロットして確認します。
@@ -395,10 +399,12 @@ plot(bridge_centrality, include = c("Bridge Strength",
 ```
 
 
-bootnetでブリッジ中心性指標の安定性を検討できます。ただし，Bridge Expected Influencには対応していないようです。
+bootnetでブリッジ中心性指標の安定性を検討できます。ただし，Bridge Expected Influencには対応していないようです。以下のコードは国里ゼミのコア数の少ないサーバーを使うことを想定したコードです。コア４つ以上ある方は，コメントアウトした方を利用ください。
 
 ```{r message=FALSE, warning=FALSE}
-stability_centrality_bridge <- bootnet(res_bridge, nBoots = 2500, type = "case", nCores =4, statistics =  c("bridgeStrength","bridgeCloseness","bridgeBetweenness"), communities = group)
+stability_centrality_bridge <- bootnet(res_bridge, nBoots = 2500, type = "case", nCores =1, statistics =  c("bridgeStrength","bridgeCloseness","bridgeBetweenness"), communities = group)
+
+#stability_centrality_bridge <- bootnet(res_bridge, nBoots = 2500, type = "case", nCores =4, statistics =  c("bridgeStrength","bridgeCloseness","bridgeBetweenness"), communities = group)
 ```
 
 CS係数を算出すると，このデータについては，bridgeClosenessのCS係数を係数が0.25以下ですので，解釈は避けたほうが良さそうです。
