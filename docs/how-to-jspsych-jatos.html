@@ -13,8 +13,8 @@
 
 <title>jsPsychを用いたWEB実験の実施：JATOSでローカルでもサーバーでも実施してみよう！</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -411,8 +411,8 @@ div.tocify {
 <h2>ローカルのJATOSでjsPsychを使えるようにする</h2>
 <div id="jatosをdockerで準備する" class="section level3">
 <h3>JATOSをDockerで準備する。</h3>
-<p>まず，ローカルのパソコンにJATOSを用意します。インストール方法はいくつかありますが，dockerが簡単かと思います。dockerの導入方法は，<a href="https://ykunisato.github.io/jpa2020-tws-002/02.html">2 事前準備（Dockerとは）</a> を参照ください。以下のコマンドをターミナル(Macの場合。Windowsの場合は，コマンドプロンプト)で実行してください。</p>
-<pre><code>docker run -d -p 9000:9000 --name jatos jatos/jatos:latest</code></pre>
+<p>まず，ローカルのパソコンにJATOSを用意します。インストール方法はいくつかありますが，dockerが簡単かと思います。dockerの導入方法は，<a href="https://ykunisato.github.io/jpa2020-tws-002/02.html">2 事前準備（Dockerとは）</a> を参照ください。以下のコマンドをターミナル(Macの場合。Windowsの場合は，コマンドプロンプトかつ，$(pwd)の代わりに“%cd%”にする)で実行してください。カレントディレクトにjatosというフォルダができるかと思います。</p>
+<pre><code>docker run -d -p 9000:9000 -v $(pwd)/jatos/study_assets_root:/opt/docker/study_assets_root --name jatos jatos/jatos:latest</code></pre>
 <p>ターミナル（コマンドプロンプト）でのインストール作業が終わったら，ブラウザのURLバーに<code>localhost:9000</code>を打ち込みます。</p>
 <p>以下のような画面がブラウザ上に出てくるので，Usernameに<code>admin</code>,Passwordに<code>admin</code>をいれてください（chromeだとパスワードについてのエラーが出るかもしれないですが，とりあえず，気にしなくて良いです）。</p>
 <p><img src="fig/jatos_fig3.png" width="600"></p>
@@ -421,17 +421,10 @@ div.tocify {
 <h3>JATOSで実験を登録する</h3>
 <p>以下のような画面になったら，<code>＋New Study</code>をクリックします。</p>
 <p><img src="fig/jatos_fig1.png" width="600"></p>
-<p>以下のような画面になったら，<code>Title</code>に課題名を入れ，<code>Study assets' directory name</code>にディレクトリ名を入れて，<code>Create</code>をクリックします。こうすると，dockerで用意したJATOSの/opt/docker/study_assets_root/内に実験課題用のフォルダが作られます（以下の場合は，/opt/docker/study_assets_root内にrlというフォルダ作られます）。</p>
+<p>以下のような画面になったら，<code>Title</code>に課題名を入れ，<code>Study assets' directory name</code>にディレクトリ名を入れて，<code>Create</code>をクリックします。こうすると，dockerで用意したJATOSの/opt/docker/study_assets_root/内に実験課題用のフォルダが作られます（以下の場合は，/opt/docker/study_assets_root内にrlというフォルダ作られます）。そして，dockerで-vを使ってvolume設定をしていますので，カレントディレクトリ内のjatosフォルダ内のstudy_assets_root内に同様にディレクトリが作成されます。</p>
 <p><img src="fig/jatos_fig2.png" width="600"></p>
-<p>上記で準備した/opt/docker/study_assets_root/rl内にjsPsychの課題のファイルをコピーします。以下のようなコマンドをターミナル（コマンドプロンプトの場合は修正が必要に思います）で実行します（なお，今回は，Downloads/rl/内にファイルをおいています。フォルダ名は上記と同じにしています）。</p>
-<pre><code>docker cp  Downloads/rl/ jatos:/opt/docker/study_assets_root/</code></pre>
-<p>コピーができているか一応確認します。dokcerのイメージ内に入ります。</p>
-<pre><code>docker exec -i -t jatos bash</code></pre>
-<p>/opt/docker/study_assets_root/rl内をlsで確認をします。コピーしたファイルがあればOKです。</p>
-<pre><code>ls study_assets_root/rl</code></pre>
-<p>確認ができたら，以下のコマンドでイメージから出ます。</p>
-<pre><code>exit</code></pre>
-<p>さて，/opt/docker/study_assets_root/rlにコピーしたファイルを読み込みます。以下のように，<code>Components</code>をクリックして，<code>+New</code>をクリックします。</p>
+<p>カレントディレクトリ/jatos/study_assets_root内にjsPsychの課題のファイルをコピーします。これで，結果として/opt/docker/study_assets_root/rl内にjsPsychの課題のファイルをコピーされます。</p>
+<p>コピーできたら，以下のように，<code>Components</code>をクリックして，<code>+New</code>をクリックします。</p>
 <p><img src="fig/jatos_fig4.png" width="600"></p>
 <p><code>Title</code>に課題名をいれて，<code>HTML file path</code>で課題のHTMLファイル名をいれて，<code>Create</code>をクリックします。なお，実験が複数の課題やコンポーネントからなる場合は，複数回登録をしてください。</p>
 <p><img src="fig/jatos_fig5.png" width="600"></p>
