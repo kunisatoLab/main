@@ -31,10 +31,10 @@ jatos.onLoad(function() {
 ## ローカルのJATOSでjsPsychを使えるようにする
 ### JATOSをDockerで準備する。
 
-まず，ローカルのパソコンにJATOSを用意します。インストール方法はいくつかありますが，dockerが簡単かと思います。dockerの導入方法は，[2 事前準備（Dockerとは）](https://ykunisato.github.io/jpa2020-tws-002/02.html) を参照ください。以下のコマンドをターミナル(Macの場合。Windowsの場合は，コマンドプロンプトかつ，$(pwd)の代わりに"%cd%"にする)で実行してください。カレントディレクトにjatosというフォルダができるかと思います。
+まず，ローカルのパソコンにJATOSを用意します。インストール方法はいくつかありますが，dockerが簡単かと思います。dockerの導入方法は，[2 事前準備（Dockerとは）](https://ykunisato.github.io/jpa2020-tws-002/02.html) を参照ください。以下のコマンドをターミナル(Macの場合。Windowsの場合は，コマンドプロンプトかつ，$(pwd)の代わりに"%cd%"にする)で実行してください。カレントディレクトにjatosというフォルダができるかと思います。なお，デフォルトでは日本ではないタイムゾーンになって日本時間とずれるので，-e TZ=Asia/Tokyoを追加しています。
 
 ```
-docker run -d -p 9000:9000 -v $(pwd)/jatos/study_assets_root:/opt/docker/study_assets_root --name jatos jatos/jatos:latest
+docker run -d -p 9000:9000 -e TZ=Asia/Tokyo -v $(pwd)/jatos/study_assets_root:/opt/docker/study_assets_root --name jatos jatos/jatos:latest
 ```
 
 ターミナル（コマンドプロンプト）でのインストール作業が終わったら，ブラウザのURLバーに```localhost:9000```を打ち込みます。
