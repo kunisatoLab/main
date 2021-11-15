@@ -421,6 +421,14 @@ const i1_3=&quot;data:stimuli/png;base64,iVBORw0KGgoAAAANSUhEUgAAAa...
 }</code></pre>
 </div>
 </div>
+<div id="対面実験をjatosを使って行う場合のローカルバックアップ" class="section level3">
+<h3>対面実験をJATOSを使って行う場合の，ローカルバックアップ</h3>
+<p>今後は，対面実験でもJATOSを使ってデータ収集をするということが出てくるかもしれません。ただ，ネットワークのエラーでJATOSのサーバーに保存することができないことが稀にあるようです。そこで，初期化時のon_finishのところに以下のようなコードをいれておくと，JATOSだけでなく，ローカルにも保存できるようになります。</p>
+<pre><code>var today = new Date();
+var save_filename = jatos.workerId + &#39;_&#39; +  jatos.componentProperties.title + &#39;_&#39; +  today.getFullYear() + &#39;_&#39; + today.getMonth() + &#39;_&#39; + today.getDate() + &#39;_&#39; + today.getHours() + &#39;h&#39; +　today.getMinutes() + &#39;m.txt&#39;;
+jsPsych.data.get().localSave(&#39;json&#39;, save_filename);</code></pre>
+<pre><code></code></pre>
+</div>
 
 <footer>
   <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
