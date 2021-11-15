@@ -42,6 +42,8 @@ title: "Code & Tips"
 
 - [jsPsychを用いたWEB実験(JATOSを使う方法)](how-to-jspsych-jatos.html)　○
 
+- [jsPsychをJATOSで使う際のTips](tips-jspsych-jatos.html)　○
+
 - [PsychoPyを用いた認知課題の作成](https://github.com/ykunisato/training-of-psychopy)
 
 - [Presentationを用いた認知課題の作成](how-to-presentation.html)

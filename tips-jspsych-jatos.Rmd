@@ -1,0 +1,61 @@
+---
+title: "jsPsychをJATOSで使う際のTips"
+---
+
+### サーバー負荷を低くして画像を呈示する
+
+サーバー上で動かしている[JSTOS(Just Another Tool for Online Studies)](https://www.jatos.org/)でjsPsych課題
+を実行する際には，サーバー負荷を考える必要があります。特に，複数の画像刺激を呈示するような実験課題だと，サーバー負荷が高くなります。実際，４０枚くらいの画像刺激を呈示する実験課題をJATOSで実行すると，ローカルと比べて，画像呈示に若干のタイムラグがあるように感じます。どうしたものかなと思っていたら，[立命館大学の高橋康介先生の解説](https://scrapbox.io/ru-takalab/cognition.run+jsPsych+Data_URI_scheme%E3%81%A7%E3%82%B5%E3%83%BC%E3%83%90%E3%81%AB%E5%84%AA%E3%81%97%E3%81%84%E3%82%AA%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%B3%E5%AE%9F%E9%A8%93)を発見して，Data URI schemeの活用方法を知りました。詳しくは高橋先生の資料を読んでいただきたいのですが，自分のゼミ向けに少しまとめておきます。
+
+
+画像呈示時にHTMLファイル外の画像を読み込むのではなく，Data URI schemeを使って画像をテキストデータにした上で，それを課題のコード内に埋め込みます。このように画像ファイルを外部において読み込むのではなくて，HTMLファイル（もしくはjsファイル）内に埋め込んでしまうことで，サーバーがリクエストを送ることが減るので画像の表示速度が上がります。
+
+
+#### 1.画像ファイルをテキストデータにする
+
+Data URI schemeを使って画像をテキストデータにします。うちのゼミの場合は，刺激は，「stimuli」というフォルダに置いていると思います。そのフォルダ内の画像をテキストデータにします。その際に，[高橋先生のシェルスクリプト](https://github.com/ru-takalab/tips/blob/main/001_jsPsych_DataURI/imgs2uri.sh)を使います。うちのゼミの場合は，simuliフォルダを使っているので，以下のようなスクリプトになります（以下はpngファイルですが，拡張子を変えればjpegなども可能です）。以下のスクリプトをstimuliフォルダと同じ階層にstim2uri.shという名前で保存します（名前はなんでもいいです）。
+
+```
+echo "" > stimuli.js
+for f in stimuli/*.png; do
+  out=$(echo "const $(basename $f .png)=""\"data:stimuli/png;base64,")$(base64 $f)"\";"
+  echo $out >> stimuli.js
+done
+```
+
+Macユーザーはターミナル，うちのゼミ生はRstudio sereverを使っているので，RstudioのTerminalに以下を打ち込みます。しばらくすると，stimuli.jsという名前のファイルができると思います。
+
+```
+bash stim2uri.sh 
+```
+#### 2.Data URIを課題に埋め込む
+
+stimuli.jsを開くと以下のような感じになっていると思います。画像をテキストファイルにしているので，かなり長いと思います。エディタで折り返しをオンにしている場合は，オフにしておかないと見にくいかと思います。
+
+```
+const i1_1="data:stimuli/png;base64,iVBORw0KGgoAAAANSUhEUgAAAb...
+const i1_2="data:stimuli/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZ...
+const i1_3="data:stimuli/png;base64,iVBORw0KGgoAAAANSUhEUgAAAa...
+...
+```
+
+このstimuli.jsを外部ファイルとして読み込むこともできますが，なんか面倒だったので，stimuli.jsの中身を単純にコピペしちゃいましょう。うちのゼミだと，jsPsychのメインのコードは，task.jsに記述することになっているので，こちらに貼り付けちゃいます。
+
+
+stimuli.jsの内容を貼り付けると，const 変数名="dhaifhsdafvlr..."の変数名がjsPsychで使えます。なので，上の例だと，以下のように画像の配列を作っちゃって，プラグインのstimulusで使えば，画像が呈示できます。
+
+```
+var images = [i1_1, i1_2, i1_3,...]
+```
+
+#### 3.JATOSでの保存時の注意
+
+Data URI schemeを使って画像を埋め込むと，刺激呈示もラグを感じることがなくなりました。これでめでたしといきたいのですが，今度は，JATOSで結果が保存できなくなりました。エラーをみると，5MBを超えているから保存できないようです。そんなに結果のデータが重いわけがないと思って確認してみると，結果のstimulus内に上記のData URIでテキスト化したデータが入っています。これ１つが画像に相当する情報になるので，重くなったようです。そこで，データ保存時にstimulusは保存しないように，以下のように.ignore()を使ってみると，問題なく保存できました。
+
+```
+on_finish: function() {
+  var resultJson = jsPsych.data.get().ignore('stimulus').json();
+  jatos.submitResultData(resultJson, jatos.startNextComponent);
+}
+```
+
