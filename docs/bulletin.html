@@ -13,8 +13,8 @@
 
 <title>紀要論文・報告書・研究論文以外の原稿など</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -299,12 +299,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
+<div class="col-sm-12 col-md-4 col-lg-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -389,6 +389,7 @@ div.tocify {
 <div id="section" class="section level3">
 <h3>2021</h3>
 <ul>
+<li><p>[24] 片平健太郎・国里愛彦(2021). <a href="https://bsd.neuroinf.jp/wiki/%E3%83%89%E3%83%AA%E3%83%95%E3%83%88%E6%8B%A1%E6%95%A3%E3%83%A2%E3%83%87%E3%83%AB">ドリフト拡散モデル</a> 脳科学辞典　</p></li>
 <li><p>[23] 国里愛彦 (2021). 心理学研究の舞台裏─コロナ禍１年目を振り返って 心理学ワールド 90号　<a href="https://psych.or.jp/publication/world095/pw07">リンク</a></p></li>
 <li><p>[22] 国里愛彦 (2021). 在外研究報告　専修人間科学論集　心理学篇, 11, 35-37. <a href="https://senshu-u.repo.nii.ac.jp/?action=pages_view_main&amp;active_action=repository_view_main_item_detail&amp;item_id=11902&amp;item_no=1&amp;page_id=13&amp;block_id=21">リンク</a></p></li>
 <li><p>[21] 国里愛彦 (2021). アムステルダムで研究法を学んだ一年間 心理学ワールド 90号　<a href="https://psych.or.jp/publication/world090/pw18/">リンク</a></p></li>
@@ -491,9 +492,6 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
