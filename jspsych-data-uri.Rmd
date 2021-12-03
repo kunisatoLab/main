@@ -1,5 +1,5 @@
 ---
-title: "jsPsychをJATOSで使う際のTips"
+title: "Data URIによってJATOSサーバーの負荷を低くする方法"
 ---
 
 ### サーバー負荷を低くして画像を呈示する
@@ -57,22 +57,5 @@ on_finish: function() {
   var resultJson = jsPsych.data.get().ignore('stimulus').json();
   jatos.submitResultData(resultJson, jatos.startNextComponent);
 }
-```
-
-### 対面実験をJATOSを使って行う場合の，ローカルバックアップ
-
-今後は，対面実験でもJATOSを使ってデータ収集をするということが出てくるかもしれません。ただ，ネットワークのエラーでJATOSのサーバーに保存することができないことが稀にあるようです。そこで，初期化時のon_finishのところに以下のようなコードをいれておくと，JATOSだけでなく，ローカルにも保存できるようになります。
-
-```
-var today = new Date();
-var save_filename = jatos.workerId + '_' +  jatos.componentProperties.title + '_' +  today.getFullYear() + '_' + today.getMonth() + '_' + today.getDate() + '_' + today.getHours() + 'h' +　today.getMinutes() + 'm.txt';
-jsPsych.data.get().localSave('json', save_filename);
-```
-
-
-
-
-```
-
 ```
  

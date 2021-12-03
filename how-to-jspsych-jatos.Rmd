@@ -1,8 +1,8 @@
 ---
-title: "jsPsychを用いたWEB実験の実施：JATOSでローカルでもサーバーでも実施してみよう！"
+title: "JATOSをDockerを使ってローカルPCに導入する方法"
 ---
 
-[JSTOS(Just Another Tool for Online Studies)](https://www.jatos.org/)を用いて，jsPsychで作成した実験課題をローカルもしくはオンラインで実施してみましょう。
+[JSTOS(Just Another Tool for Online Studies)](https://www.jatos.org/)を用いて，jsPsychで作成した実験課題をローカルで実施してみましょう。
 
 ### JATOSで用いるためにjsPsychのコードを修正する
 
@@ -27,23 +27,6 @@ jatos.onLoad(function() {
   });
 });
 ```
-
-## ローカルのJATOSでjsPsychを使えるようにする
-### JATOSをDockerで準備する。
-
-まず，ローカルのパソコンにJATOSを用意します。インストール方法はいくつかありますが，dockerが簡単かと思います。dockerの導入方法は，[2 事前準備（Dockerとは）](https://ykunisato.github.io/jpa2020-tws-002/02.html) を参照ください。以下のコマンドをターミナル(Macの場合。Windowsの場合は，コマンドプロンプトかつ，$(pwd)の代わりに"%cd%"にする)で実行してください。カレントディレクトにjatosというフォルダができるかと思います。なお，デフォルトでは日本ではないタイムゾーンになって日本時間とずれるので，-e TZ=Asia/Tokyoを追加しています。
-
-```
-docker run -d -p 9000:9000 -e TZ=Asia/Tokyo -v $(pwd)/jatos/study_assets_root:/opt/docker/study_assets_root --name jatos jatos/jatos:latest
-```
-
-ターミナル（コマンドプロンプト）でのインストール作業が終わったら，ブラウザのURLバーに```localhost:9000```を打ち込みます。
-
-以下のような画面がブラウザ上に出てくるので，Usernameに```admin```,Passwordに```admin```をいれてください（chromeだとパスワードについてのエラーが出るかもしれないですが，とりあえず，気にしなくて良いです）。
-
-<img src="fig/jatos_fig3.png" width="600">
-
-
 
 ### JATOSで実験を登録する
 
@@ -70,9 +53,7 @@ docker run -d -p 9000:9000 -e TZ=Asia/Tokyo -v $(pwd)/jatos/study_assets_root:/o
 
 <img src="fig/jatos_fig6.png" width="600">
 
-## JATOSサーバー上でjsPsychを使えるようにする
 
-ウェブ実験を行う場合は，なんらかのサーバー上にJATOSをおいて実施します。GCPで準備する場合は，[Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法](https://kunisatolab.github.io/main/how-to-docker-compose-https.html)を参照ください。それ以外にも[CentOS 8 & Nginx で JATOS 環境を作って，lab.js でオンライン実験を組むときに嵌まりそうなポイント](https://note.com/yoshi_majima/n/na07efd09097b)や[OpenSesame で心理学実験をしてみよう #2 JATOS サーバを使ったオンライン実験を設定してみよう](https://note.com/yoshi_majima/n/n304703126b22)などの有益な日本語資料もあるのでご自身の興味に合わせてご準備ください。
 
 ### ローカルのJATOSで準備した課題をエクスポートする
 

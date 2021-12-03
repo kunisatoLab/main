@@ -1,0 +1,12 @@
+---
+title: "JATOSでjsPsych課題のローカルバックアップをとる方法"
+---
+
+
+JATOSのデータ管理は便利ですので，対面実験でもサーバー上のJATOSを使ってデータ収集をするということがあるかと思います。ただ，ネットワークのエラーでJATOSのサーバーに保存することができないことが稀にあるようです。そこで，初期化時のon_finishのところに以下のようなコードをいれておくと，JATOSだけでなく，ローカルにも保存できるようになります。
+
+```
+var today = new Date();
+var save_filename = jatos.workerId + '_' +  jatos.componentProperties.title + '_' +  today.getFullYear() + '_' + today.getMonth() + '_' + today.getDate() + '_' + today.getHours() + 'h' +　today.getMinutes() + 'm.txt';
+jsPsych.data.get().localSave('json', save_filename);
+```
