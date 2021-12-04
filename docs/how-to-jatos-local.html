@@ -386,13 +386,31 @@ div.tocify {
 </div>
 
 
+<p><a href="https://www.jatos.org/">JATOS</a>は，オンライン実験を実施する上で便利なサーバー用アプリケーションです。ただ，ローカルのパソコンにもインストールはできて，オンライン実験だけでなく対面実験でも利用可能です。そのため，JATOSは対面とオンラインをシームレスにつないで研究を行う上では，とても便利なツールに思います。以下では，ローカルパソコンにJATOSをDockerを使ってインストールする方法について説明をします。</p>
+<div id="dockerを準備する" class="section level3">
+<h3>Dockerを準備する</h3>
+<p>Docker以外の方法もありますが，個人的にはDockerなら１行コピペするだけで設定できるので楽と思います。Dockerの導入方法は，<a href="https://ykunisato.github.io/jpa2020-tws-002/02.html">2 事前準備（Dockerとは）</a> を参照ください。Macは簡単なのですが，Windowsは少し手順が必要になります。</p>
+</div>
 <div id="jatosをdockerで準備する" class="section level3">
 <h3>JATOSをDockerで準備する。</h3>
-<p>まず，ローカルのパソコンにJATOSを用意します。インストール方法はいくつかありますが，dockerが簡単かと思います。dockerの導入方法は，<a href="https://ykunisato.github.io/jpa2020-tws-002/02.html">2 事前準備（Dockerとは）</a> を参照ください。以下のコマンドをターミナル(Macの場合。Windowsの場合は，コマンドプロンプトかつ，$(pwd)の代わりに“%cd%”にする)で実行してください。カレントディレクトにjatosというフォルダができるかと思います。なお，デフォルトでは日本ではないタイムゾーンになって日本時間とずれるので，-e TZ=Asia/Tokyoを追加しています。</p>
+<p>Dockerがインストールできたら，以下のコマンドを実行します。なお，デフォルトでは日本ではないタイムゾーンになって日本時間とずれるので，-e TZ=Asia/Tokyoを追加しています。</p>
+<div id="macの場合" class="section level4">
+<h4>Macの場合</h4>
+<p>ターミナルを開いて，以下をコピペして実行ください。</p>
 <pre><code>docker run -d -p 9000:9000 -e TZ=Asia/Tokyo -v $(pwd)/jatos/study_assets_root:/opt/docker/study_assets_root --name jatos jatos/jatos:latest</code></pre>
-<p>ターミナル（コマンドプロンプト）でのインストール作業が終わったら，ブラウザのURLバーに<code>localhost:9000</code>を打ち込みます。</p>
-<p>以下のような画面がブラウザ上に出てくるので，Usernameに<code>admin</code>,Passwordに<code>admin</code>をいれてください（chromeだとパスワードについてのエラーが出るかもしれないですが，とりあえず，気にしなくて良いです）。</p>
+</div>
+<div id="windowsの場合" class="section level4">
+<h4>Windowsの場合</h4>
+<p>コマンドプロンプトを開いて，以下をコピペして実行してください。</p>
+<pre><code>docker run -d -p 9000:9000 -e TZ=Asia/Tokyo -v %cd%/jatos/study_assets_root:/opt/docker/study_assets_root --name jatos jatos/jatos:latest</code></pre>
+</div>
+</div>
+<div id="ブラウザで確認をする" class="section level3">
+<h3>ブラウザで確認をする</h3>
+<p>上記のインストール作業が終わったら，カレントディレクトにjatosというフォルダができるかと思います(さらに，その下にstudy_assets_rootというフォルダができると思います)。それでは，ブラウザで確認しましょう。ブラウザのURLバーに<code>localhost:9000</code>を打ち込みます。</p>
+<p>以下のような画面がブラウザ上に出てくるので，Usernameに<code>admin</code>,Passwordに<code>admin</code>をいれてください。</p>
 <p><img src="fig/jatos_fig3.png" width="600"></p>
+<p>JATOSの使用法については，<a href="https://kunisatolab.github.io/main/how-to-jspsych-jatos-local.html">こちら</a>を御覧ください。</p>
 </div>
 
 <footer>

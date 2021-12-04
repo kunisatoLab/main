@@ -2,17 +2,39 @@
 title: "JATOSをDockerを使ってローカルPCに導入する方法"
 ---
 
+[JATOS](https://www.jatos.org/)は，オンライン実験を実施する上で便利なサーバー用アプリケーションです。ただ，ローカルのパソコンにもインストールはできて，オンライン実験だけでなく対面実験でも利用可能です。そのため，JATOSは対面とオンラインをシームレスにつないで研究を行う上では，とても便利なツールに思います。以下では，ローカルパソコンにJATOSをDockerを使ってインストールする方法について説明をします。
+
+### Dockerを準備する
+
+Docker以外の方法もありますが，個人的にはDockerなら１行コピペするだけで設定できるので楽と思います。Dockerの導入方法は，[2 事前準備（Dockerとは）](https://ykunisato.github.io/jpa2020-tws-002/02.html) を参照ください。Macは簡単なのですが，Windowsは少し手順が必要になります。
+
 
 ### JATOSをDockerで準備する。
 
-まず，ローカルのパソコンにJATOSを用意します。インストール方法はいくつかありますが，dockerが簡単かと思います。dockerの導入方法は，[2 事前準備（Dockerとは）](https://ykunisato.github.io/jpa2020-tws-002/02.html) を参照ください。以下のコマンドをターミナル(Macの場合。Windowsの場合は，コマンドプロンプトかつ，$(pwd)の代わりに"%cd%"にする)で実行してください。カレントディレクトにjatosというフォルダができるかと思います。なお，デフォルトでは日本ではないタイムゾーンになって日本時間とずれるので，-e TZ=Asia/Tokyoを追加しています。
+Dockerがインストールできたら，以下のコマンドを実行します。なお，デフォルトでは日本ではないタイムゾーンになって日本時間とずれるので，-e TZ=Asia/Tokyoを追加しています。
+
+#### Macの場合
+
+ターミナルを開いて，以下をコピペして実行ください。
 
 ```
 docker run -d -p 9000:9000 -e TZ=Asia/Tokyo -v $(pwd)/jatos/study_assets_root:/opt/docker/study_assets_root --name jatos jatos/jatos:latest
 ```
 
-ターミナル（コマンドプロンプト）でのインストール作業が終わったら，ブラウザのURLバーに```localhost:9000```を打ち込みます。
+#### Windowsの場合
 
-以下のような画面がブラウザ上に出てくるので，Usernameに```admin```,Passwordに```admin```をいれてください（chromeだとパスワードについてのエラーが出るかもしれないですが，とりあえず，気にしなくて良いです）。
+コマンドプロンプトを開いて，以下をコピペして実行してください。
+
+```
+docker run -d -p 9000:9000 -e TZ=Asia/Tokyo -v %cd%/jatos/study_assets_root:/opt/docker/study_assets_root --name jatos jatos/jatos:latest
+```
+
+### ブラウザで確認をする
+
+上記のインストール作業が終わったら，カレントディレクトにjatosというフォルダができるかと思います(さらに，その下にstudy_assets_rootというフォルダができると思います)。それでは，ブラウザで確認しましょう。ブラウザのURLバーに```localhost:9000```を打ち込みます。
+
+以下のような画面がブラウザ上に出てくるので，Usernameに```admin```,Passwordに```admin```をいれてください。
 
 <img src="fig/jatos_fig3.png" width="600">
+
+JATOSの使用法については，[こちら](https://kunisatolab.github.io/main/how-to-jspsych-jatos-local.html)を御覧ください。
