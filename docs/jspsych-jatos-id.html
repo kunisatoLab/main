@@ -11,7 +11,7 @@
 
 
 
-<title>Code &amp; Tips</title>
+<title>JATOSでコンポーネント間でIDなどの対応づけをする方法</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -381,143 +381,59 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Code &amp; Tips</h1>
+<h1 class="title toc-ignore">JATOSでコンポーネント間でIDなどの対応づけをする方法</h1>
 
 </div>
 
 
-<p>☆は，学部ゼミでの必修事項,○は推奨事項です。</p>
-<div id="ゼミで使うツール" class="section level2">
-<h2>ゼミで使うツール</h2>
 <ul>
-<li>Slack: ゼミ内での連絡で使います(スマホとPCにアプリを入れておきましょう)。</li>
-<li>RStudio Server: データ収集（調査票，実験課題の作成），データ解析，卒論・修論の執筆のために使います。</li>
-<li>GitHub: 卒論・修論に関連した各種ファイルを指導教員と共有したり，バージョン管理するために使います。</li>
-<li>OSF:事前登録で使います。整理された研究内容のアップロードにも使います。</li>
-<li>場合によっては，Google DocやQualtricsを使うこともあります。</li>
+<li>注意：以下の解説は，jsPsych6.1に基づいて書いています。後日7.1に対応させます。</li>
 </ul>
-</div>
-<div id="ゼミの準備" class="section level2">
-<h2>ゼミの準備</h2>
-<ul>
-<li><p><a href="how-to-github.html">GitHubの準備</a> ☆</p></li>
-<li><p><a href="how-to-osf.html">OSFの準備</a> ☆</p></li>
-<li><p><a href="how-to-write-with-rstudio.html">RStudioで卒論・修論を書く準備</a>　☆</p></li>
-<li><p><a href="how-to-labnote.html">ラボノートの準備</a> ☆</p></li>
-</ul>
-<p><br /></p>
-</div>
-<div id="認知課題" class="section level2">
-<h2>認知課題</h2>
-<ul>
-<li><p><a href="how-to-jspsych1.html">jsPsychを用いた認知課題の作成1: jsPsychとJavaScript入門</a>　☆</p></li>
-<li><p><a href="how-to-jspsych2.html">jsPsychを用いた認知課題の作成2: ストループ課題</a>　☆</p></li>
-<li><p><a href="how-to-jspsych3.html">jsPsychを用いた認知課題の作成3: 逆転学習課題</a>　☆</p></li>
-<li><p><a href="how-to-jspsych4.html">jsPsychを用いた認知課題の作成4: 音声や動画の呈示と同意画面について</a>　☆</p></li>
-<li><p><a href="https://github.com/ykunisato/training-of-psychopy">PsychoPyを用いた認知課題の作成</a></p></li>
-<li><p><a href="how-to-presentation.html">Presentationを用いた認知課題の作成</a></p></li>
-</ul>
-</div>
-<div id="web実験の実施方法" class="section level2">
-<h2>WEB実験の実施方法</h2>
-<ul>
-<li><p><a href="how-to-jspsych-firebase.html">jsPsychを用いたWEB実験(Firebaseを使う方法)</a></p></li>
-<li><p><a href="how-to-jspsych-pavlovia.html">jsPsychを用いたWEB実験(Pavloviaを使う方法)</a></p></li>
-<li><p><a href="how-to-jspsych-google-sheet.html">jsPsychを用いたWEB実験(Google Spreadsheetを使う方法)</a></p></li>
-</ul>
-</div>
-<div id="jatosを用いた実験実施方法" class="section level2">
-<h2>JATOSを用いた実験実施方法</h2>
-<ul>
-<li><p><a href="how-to-jatos-local.html">JATOSをDockerを使ってローカルPCに導入する方法</a>　○</p></li>
-<li><p><a href="how-to-jatos-web.html">JATOSをDockerを使ってサーバーに導入する方法</a>　○</p></li>
-<li><p><a href="how-to-jspsych-jatos-local.html">JATOSをローカルで使用する方法</a>　○</p></li>
-<li><p><a href="how-to-jspsych-jatos-web.html">JATOSをサーバーで使用する方法</a>　○</p></li>
-<li><p><a href="how-to-labjs-jspsych-jatos.html">jsPsychとlab.jsをまぜてJATOSで動かす方法</a></p></li>
-<li><p><a href="jspsych-data-uri.html">Data URIによってJATOSサーバーの負荷を低くする方法</a>　</p></li>
-<li><p><a href="jspsych-jatos-id.html">JATOSでコンポーネント間でIDなどの対応づけをする方法</a></p></li>
-<li><p><a href="japsych-jatos-locak-backup.html">JATOSでローカルにもバックアップをとる方法</a></p></li>
-</ul>
-<p><br /></p>
-</div>
-<div id="調査" class="section level2">
-<h2>調査</h2>
-<ul>
-<li><p><a href="how-to-jspsych5.html">jsPsychを用いた質問紙の作成</a>　☆</p></li>
-<li><p><a href="how-to-surveyjs.html">SurveyJSを用いた質問紙の作成</a>　☆</p></li>
-<li><p><a href="https://mrunadon.github.io/%E7%B0%A1%E5%8D%984%E3%82%B9%E3%83%86%E3%83%83%E3%83%97%E3%81%A7%E7%B5%8C%E9%A8%93%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AA%E3%83%B3%E3%82%B0%E8%87%AA%E5%8B%95%E8%AA%BF%E6%9F%BB%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%81%AE%E6%A7%8B%E7%AF%89/">GoogleFormsとGoogleAppsScriptによる 経験サンプリング自動調査システム(Mr. Unadonブログ)</a></p></li>
-</ul>
-<p><br /></p>
-</div>
-<div id="データ解析" class="section level2">
-<h2>データ解析</h2>
-<ul>
-<li><p><a href="how-to-R-language.html">R言語の基本</a> ☆</p></li>
-<li><p><a href="how-to-dataHandling.html">認知課題の解析データセット作成</a>　☆</p></li>
-<li><p><a href="how-to-open-data.html">オープンデータの利用法</a></p></li>
-<li><p><a href="https://ykunisato.github.io/ccp-lab-slide/open_data/open_data.html">オープンデータの作り方</a></p></li>
-<li><p><a href="how-to-preregistration-aspredicted.html">事前登録をしてみよう！</a></p></li>
-<li><p><a href="how-to-reproducible-analysis.html">再生可能なデータ解析入門</a>　</p></li>
-<li><p><a href="how-to-rstudio-gce-https.html">Docker-composeを使ってGCE上のRstudio serverをHTTPS化する方法</a></p></li>
-<li><p><a href="how-to-docker-compose-https.html">Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法</a></p></li>
-<li><p><a href="https://ykunisato.github.io/ccp-lab-slide/spring_seminar_JSSP_2021/secondary_analysis/slide.html#1">２次分析研究</a></p></li>
-<li><p><a href="https://ykunisato.github.io/jpa2020-tws-002/">今日からできる再現可能な論文執筆(JPA2020・TWS)</a></p></li>
-</ul>
-<p><br /></p>
-</div>
-<div id="認知モデリング" class="section level2">
-<h2>認知モデリング</h2>
-<ul>
-<li><p><a href="how-to-cognitive-modeling-rl1.html">強化学習モデル: 最尤推定</a>　☆</p></li>
-<li><p><a href="how-to-cognitive-modeling-rl2.html">強化学習モデル: ベイズ推定(1)</a>　○</p></li>
-<li><p><a href="how-to-cognitive-modeling-rl3.html">強化学習モデル: ベイズ推定(2)</a>　○</p></li>
-<li><p><a href="how-to-cognitive-modeling-rl4.html">強化学習モデル: ベイズ推定(3)</a>　○</p></li>
-<li><p><a href="how-to-cognitive-modeling-rl4.html">強化学習事態でのベイズ推論モデル（準備中）</a>　○</p></li>
-<li><p><a href="how-to-cognitive-modeling-ssm1.html">逐次サンプリングモデル：DDM(準備中)</a>　○</p></li>
-<li><p><a href="how-to-cognitive-modeling-ssm2.html">逐次サンプリングモデル: LBA(準備中)</a>　○</p></li>
-<li><p><a href="how-to-hBayesDM.html">hBayesDMでベイジアン認知モデリング</a></p></li>
-<li><p><a href="how-to-graphicalModel.html">Rを用いたグラフィカルモデルの作成</a></p></li>
-<li><p><a href="https://ykunisato.github.io/lbaStan/lbaStan.html">LBAモデルを用いた反応時間の解析</a></p></li>
-<li><p><a href="https://ykunisato.github.io/hlbaStan/hlbaStan.html">LBAモデルを用いた反応時間の解析:階層ベイズ編</a></p></li>
-</ul>
-<p><br /></p>
-</div>
-<div id="メタ分析" class="section level2">
-<h2>メタ分析</h2>
-<ul>
-<li><p><a href="how-to-meta1.html">メタ分析</a>　☆</p></li>
-<li><p><a href="how-to-meta2.html">ネットワークメタ分析</a>　☆</p></li>
-</ul>
-<p><br /></p>
-</div>
-<div id="心理学的ネットワークモデリング" class="section level2">
-<h2>心理学的ネットワークモデリング</h2>
-<ul>
-<li><p><a href="how-to-psychological-network1.html">心理ネットワーク入門1</a> ☆</p></li>
-<li><p><a href="how-to-psychological-network2.html">心理ネットワーク入門2</a> ☆</p></li>
-</ul>
-<p><br /></p>
-</div>
-<div id="rパッケージ" class="section level2">
-<h2>Rパッケージ</h2>
-<ul>
-<li><a href="https://ykunisato.github.io/lcmr/">latent cause model（開発中）</a></li>
-</ul>
-<p><br /></p>
-</div>
-<div id="ラボノート" class="section level2">
-<h2>ラボノート</h2>
-<ul>
-<li><a href="how-to-elabftw.html">電子ラボノートeLabFTWの導入方法</a></li>
-</ul>
-<p><br /></p>
-</div>
-<div id="論文作成" class="section level2">
-<h2>論文作成</h2>
-<ul>
-<li><a href="how-to-google-doc.html">自動執筆量記録・報告システム</a></li>
-</ul>
-</div>
+<p>JATOSはコンポーネントを組み合わせて１つの課題を作ることができます。以下のように，ID入力，Stroop課題，質問紙のようにコンポーネントに分けたうえで，１つの課題として実施ができます。具体的には，左上の「Run」を押すと，上から順番に実行されます（ウェブ実験でURLのリンクを配布する場合も同じです）。独立したコンポーネントを用意しておけば，あとは組み合わせでいろいろなバリエーションの課題を行うことができます。また，<a href="https://kunisatolab.github.io/main/how-to-labjs-jspsych-jatos.html">jsPsychとlab.jsをまぜてJATOSで動かす</a>ことも可能です。</p>
+<p><img src="fig/jatos_fig23.png" width="600"></p>
+<p>ただ，複数のコンポーネントを統合して課題を行った場合には少し工夫も必要です。以下の赤で囲った部分のResultsにjsPsychで設定した情報がJSON形式で保存され，出力して解析に利用できます。ただし，出力されたファイル内には，JATOS側で指定するWorker IDなどは含まれません（JATOS上では確認できますが，それが出力はされない）。また，jsPsych内で設定をしないかぎりはタスク名などの情報も含まれないので，Rなどで一括処理する際に若干不便です。さらに，匿名の参加者によるオンライン実験の場合は良いのですが，対面実験などでID入力をしてIDで対応づけをしたい場合もあるかと思います。その場合，以下のtask00_IDでIDを入力しても，それが次のtask02_stroopには入らないのでちょっと不便です。</p>
+<p><img src="fig/jatos_fig23.png" width="600"></p>
+<p>そこで，JATOSで複数コンポーネントからなる課題を行う場合は，JATOSが用意している関数を用いてコンポーネント間でIDの対応づけをします。なお，JATOSの関数については，<a href="https://www.jatos.org/jatos.js-Reference.html">JATOSのサイトのリファレンス</a>に詳しいです。思ったよりいろいろな関数が用意されていて，使いこなすと課題の幅が広がりそうです。</p>
+<p>さて，具体的な関数について説明します。以下のように，survey-textを使って，参加者からID入力を求めるとします（対面実験で研究者が入力することもあるかと思います）。その際に，on_finishでJATOSの関数を用いてJATOS側のWorker IDや課題名を追加し，さらに入力したIDを他のコンポーネントでも使えるようにします。</p>
+<pre><code>var id = {
+  type: &#39;survey-text&#39;,
+  questions: [
+    {prompt: &#39;参加IDを記入して，「登録」を押してください&#39;, columns: 50, name: &#39;ID&#39;}
+  ],
+  button_label: &quot;登録&quot;,
+  on_finish: function(data){
+    var worker_ID = jatos.workerId;
+    jsPsych.data.addProperties({workerID: worker_ID});
+    var task_name = jatos.componentProperties.title;
+    jsPsych.data.addProperties({taskName: task_name});
+    var responses = JSON.parse(data.responses);
+    subjectID = responses.ID;
+    jsPsych.data.addProperties({participantCode: subjectID});
+    jatos.studySessionData = subjectID;
+  }
+}</code></pre>
+<p>以下，それぞれ説明します。</p>
+<p>まず，JATOS側で自動的に生成される参加者固有IDのWorkerIDをjsPsychのdataにいれます。jatos.workerIdでWorkerIDが取得できるので，それをJSON形式にしてjsPsych.data.addPropertieで保存します。</p>
+<pre><code>var worker_ID = jatos.workerId;
+jsPsych.data.addProperties({workerID: worker_ID});</code></pre>
+<p>次に，JATOSで課題設定時につけたコンポーネント名をjsPsychのdataにいれます。jatos.componentProperties.titleでコンポーネント名が取得できるので，それをJSON形式にしてjsPsych.data.addPropertieで保存します。私はWorkerIDとコンポーネント名で解析の前処理ができたので良いのですが，他にもJATOS側から情報をもってくることができます。</p>
+<pre><code>var task_name = jatos.componentProperties.title;
+jsPsych.data.addProperties({taskName: task_name});</code></pre>
+<p>最後に，今度は，参加者から得た反応をresponseにいれて，そこからIDを抽出してsubjectIDにいれて保存します。そして，そのsubjectIDをjatos.studySessionDataにいれることで，これ以降に実行されるコンポーネントでsubjectIDを受け取って利用できるようにします。</p>
+<pre><code>var responses = JSON.parse(data.responses);
+subjectID = responses.ID;
+jsPsych.data.addProperties({participantCode: subjectID});
+jatos.studySessionData = subjectID;</code></pre>
+<p>その後に実行されてるコンポーネントでも，同様にWorkerIdとコンポーネント名を保存します。そして，jatos.studySessionDataの受け取りは，jatos.studySessionDataをinput_idにいれて，それをjsPsych側で保存しています。簡単ですね。</p>
+<pre><code>on_finish: function(data){
+  var worker_ID = jatos.workerId;
+  jsPsych.data.addProperties({workerID: worker_ID});
+  var task_name = jatos.componentProperties.title;
+  jsPsych.data.addProperties({taskName: task_name});
+  var input_id = jatos.studySessionData; 
+  jsPsych.data.addProperties({inputID: input_id});
+}</code></pre>
+<p>ちょっと面倒な気もしなくもないですが，このような一手間をかけておくと，あとでJATOSから出力される結果をRで処理する際の処理が随分と楽になるかと思います。特にウェブ実験で参加者が多い場合には，とても楽になるかと思います。</p>
 
 <footer>
   <p>Copyright &copy; 2013-2021 Yoshihiko Kunisato. All rights reserved </p>
