@@ -61,9 +61,9 @@ title: "Code & Tips"
 
 - [Data URIによってJATOSサーバーの負荷を低くする方法](jspsych-data-uri.html)　
 
-- [JATOSでコンポーネント間でIDをやり取りする方法](jsPsych-jatos-id.html)
+- [JATOSでコンポーネント間でIDなどの対応づけをする方法](jsPsych-jatos-id.html)
 
-- [JATOSでコンポーネント間でIDをやり取りする方法](japsych-jatos-locak-backup.html)
+- [JATOSでローカルにもバックアップをとる方法](japsych-jatos-locak-backup.html)
 
 <br />
 
