@@ -11,7 +11,7 @@
 
 
 
-<title>jsPsychを用いたWEB実験の実施：JATOSでローカルでもサーバーでも実施してみよう！</title>
+<title>JATOSをDockerを使ってサーバーに導入する方法</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -381,14 +381,193 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">jsPsychを用いたWEB実験の実施：JATOSでローカルでもサーバーでも実施してみよう！</h1>
+<h1 class="title toc-ignore">JATOSをDockerを使ってサーバーに導入する方法</h1>
 
 </div>
 
 
-<div id="jatosサーバー上でjspsychを使えるようにする" class="section level2">
-<h2>JATOSサーバー上でjsPsychを使えるようにする</h2>
-<p>ウェブ実験を行う場合は，なんらかのサーバー上にJATOSをおいて実施します。GCPで準備する場合は，<a href="https://kunisatolab.github.io/main/how-to-docker-compose-https.html">Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法</a>を参照ください。それ以外にも<a href="https://note.com/yoshi_majima/n/na07efd09097b">CentOS 8 &amp; Nginx で JATOS 環境を作って，lab.js でオンライン実験を組むときに嵌まりそうなポイント</a>や<a href="https://note.com/yoshi_majima/n/n304703126b22">OpenSesame で心理学実験をしてみよう #2 JATOS サーバを使ったオンライン実験を設定してみよう</a>などの有益な日本語資料もあるのでご自身の興味に合わせてご準備ください。</p>
+<p>JATOSを使ってウェブ実験を行う場合は，なんらかのサーバーに設置をします。GCPで準備する場合は，<a href="https://kunisatolab.github.io/main/how-to-docker-compose-https.html">Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法</a>や眞嶋先生の<a href="https://note.com/yoshi_majima/n/n1b4a7015cb5f">Google Cloud Platform を使って JATOS サーバを動かす</a>を参照ください。ここでは，さくらインターネットのVPSを使う方法について説明をします。なお，国里はサーバーについての専門的な教育をうけたわけではないので，誤りなどもあるかもございません。もしありましたらご連絡をください。また，以下の内容に関して問題などが生じた際の責任はとれませんので，ご自身の責任の下でお試しください。</p>
+<div id="さくらvpsとは" class="section level3">
+<h3>さくらVPSとは</h3>
+<p>JATOSのサーバーととして，グーグルのGCPを使うのも良いのですが，１人研究者や小さな研究室でJATOSだけを動かす場合には若干コスパが悪いかもしれません。さくらインターネットなどのVPS (仮想専用サーバー)を使うほうが，コストも低く抑えることができます。VPSの説明は，<a href="https://knowledge.sakura.ad.jp/7938/?_ga=2.22855035.1526841308.1639691597-439904822.1634817163">こちら</a>が分かりやすいです。簡単にいうとサーバー管理会社にあるサーバーをユーザーごとに仮想的に分割して使えて，自由にアプリなどをインストールしたりできます。完全な専有サーバーよりもコストが安いのが特徴です（毎月２千円弱）。以下では，さくらVPSにJATOSを導入する方法について説明をしていきます。</p>
+<p>まず，<a href="https://vps.sakura.ad.jp/">さくらインターネット</a>で，アカウントを作成して，VPSの契約をします。ウェブ実験の規模や内容によって変わってくると思いますが，とりあえず２GB・仮想３Coreで良いかと思います。それでVPSの契約をして，Ubuntu 20.04をOSに選択し，スタートアップリストはなしにします。これで，JATOSをおくサーバーは用意できました。</p>
+</div>
+<div id="サーバーへの接続と作業用アカウントの設定" class="section level3">
+<h3>サーバーへの接続と作業用アカウントの設定</h3>
+<p>まず，最初にローカルのパソコンのターミナルからSSH接続をします（以降のローカルでの作業はMacをベースに説明しますが，Windowsユーザーの方はターミナルをコマンドプロンプトに読み変えると良いかと思います）。＜IP＞にはご自身が契約したVPSのIPアドレスをいれて，以下をターミナルで実行します。パスワードを聞かれると思うので入力するとログインできると思います。</p>
+<pre><code>ssh ubuntu@&lt;IP&gt;</code></pre>
+<p>ログインできたら，以降の作業で使う作業用アドミンアカウト名を追加します。作業用アドミンアカウト名を英語で用意し，adduserすると色々と聞かれますが，適切な難易度のパスワードを設定する他は，エンターを押していくので問題ないです。</p>
+<pre><code>sudo adduser 作業用アドミンアカウト名
+sudo usermod -aG sudo 作業用アドミンアカウト名</code></pre>
+<p>ターミナルにexitを打って，一度サーバーから出てから，作業用アドミンアカウト名でログインできるかやってみましょう。ログイン時には設定したパスワードを打ってください。ログインできたら一度exitでログアウトしてください。</p>
+<pre><code>ssh 作業用アドミンアカウト名@&lt;IP&gt;</code></pre>
+</div>
+<div id="公開鍵接続の設定" class="section level3">
+<h3>公開鍵接続の設定</h3>
+<p>パスワード認証によるログインではセキュリティ上不安がありますので，公開鍵での接続にしましょう。ローカルのターミナルで以下のコマンドをうつと公開鍵が作られます。</p>
+<pre><code>ssh-keygen -t rsa</code></pre>
+<p>作った鍵をサーバーにアップしましょう（以下はMacの場合のパスの例です）。</p>
+<pre><code>scp /Users/ユーザー名/.ssh/id_rsa.pub 作業用アドミンアカウト名@ホスト名:~/id_rsa.pub</code></pre>
+<p>サーバーでの設定をしていきます。</p>
+<pre><code>cd /home/作業用アドミンアカウト名/
+mkdir .ssh
+cat id_rsa.pub &gt; .ssh/authorized_keys
+sudo chown -R 作業用アドミンアカウト名 ~/.ssh/
+rm -f id_rsa.pub</code></pre>
+<p>さらに，サーバーの設定をします。まずviでsshd_configを開きます。</p>
+<pre><code>sudo vi /etc/ssh/sshd_config</code></pre>
+<p>開いたファイルの内，以下を変更します。コメントアウトされている場合は＃を削除する。なお，viで入力するにはiをタイプしてから入力します。</p>
+<ul>
+<li>PubkeyAuthentication yes</li>
+<li>AuthorizedKeysFile .ssh/authorized_keys</li>
+</ul>
+<p>変更ができたら，「Esc」キーを打ってから，「:wq」と打って保存します。設定を反映させるために，以下を実行します。</p>
+<pre><code>sudo systemctl restart sshd</code></pre>
+<p>それでは，今度は，ローカルの設定をしていきましょう。ローカルのターミナルを開いて，sshのconfigを編集します（まだないなら以下で新規作成されます）。</p>
+<pre><code>vi /Users/ユーザー名/.ssh/config</code></pre>
+<p>ひらいたファイルに以下を打ちます。Hostの横のjatosはなんでもいいのですが，覚えやすい簡単なものがいいと思います。以下の日本語になっているところはそれぞれ変更ください。</p>
+<pre><code>Host jatos
+  HostName サーバーのホスト名
+  IdentityFile  /Users/ユーザー名/.ssh/id_rsa
+  User 作業用アドミンアカウト名</code></pre>
+<p>これで，以下をうつだけでサーバーに接続できるようになるかと思います。公開鍵で接続ができるようになったら，サーバーのsshd_configをPasswordAuthentication noにしておきます。</p>
+<pre><code>ssh jatos</code></pre>
+</div>
+<div id="ポートを変更する" class="section level3">
+<h3>ポートを変更する</h3>
+<p>さくらVPSでは22ポートを使うのですが，攻撃を避けるために22以外のポートを使うことをおすすめします。以下でsshd_configを開いて，Portを任意の数字に変更します。</p>
+<pre><code>sudo vi /etc/ssh/sshd_config</code></pre>
+<p>なお，さくらはサーバーの設定の外側でパケットフィルタを用意しているので，カスタムTCPで自分が設定したPort番号を設定します。ポートが設定できたら公開鍵接続に関する設定においてもポートを追加します。</p>
+<p>設定を開きます。</p>
+<pre><code>vi /Users/ユーザー名/.ssh/config</code></pre>
+<p>ポートを追加します。</p>
+<pre><code>Host jatos
+  HostName サーバーのホスト名
+  IdentityFile  /Users/ユーザー名/.ssh/id_rsa
+  User 作業用アドミンアカウト名
+  Port 設定したポート番号</code></pre>
+<p>以下で接続ができたら，２２番portは閉じます（パケットフィルタを切る）。</p>
+<pre><code>ssh jatos</code></pre>
+<p>ここまでのサーバーに安全に接続する方法の設定が一番たいへんな気もします。ですが，ここまででミスってもOSを再インストールすればいいだけなので，変な感じになったら再インインストールをすればよいかと思います。</p>
+</div>
+<div id="dockerのインストール" class="section level3">
+<h3>Dockerのインストール</h3>
+<p>さて，Dockerをいれていきます。サーバーに接続をして，以下を実行していきます。</p>
+<pre><code>sudo apt update</code></pre>
+<pre><code>sudo apt install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common</code></pre>
+<pre><code>curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</code></pre>
+<pre><code>sudo apt-key fingerprint 0EBFCD88</code></pre>
+<pre><code>sudo add-apt-repository \
+   &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable&quot;</code></pre>
+<pre><code>sudo apt install docker-ce docker-ce-cli containerd.io</code></pre>
+<p>同様に，docker-composeをインストールします。</p>
+<pre><code>sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</code></pre>
+</div>
+<div id="dockerでtreafikを準備する" class="section level3">
+<h3>DockerでTreafikを準備する</h3>
+<p>Dockerが入ったらTreafikを用意します。TreafikはHttps化を実現するリバースプロキシ＆ロードバランサです。これをつかうと，ユーザーがJATOSサーバーに接続するさいにHTTPSで接続できるようになります。まず，以下をサーバー上で実行します。１行目でdocker-composeで使うサーバー外につながるネットワークを用意します。２〜３行目でtraefik用フォルダと設定ファイルを作成します。４行目で，あとで，SSL暗号化の内容を書込み可能なように設定します。</p>
+<pre><code>sudo docker network create proxy
+sudo mkdir -p /opt/traefik
+sudo touch /opt/traefik/{traefik.toml,docker-compose.yml,acme.json}
+sudo chmod 0600 /opt/traefik/acme.json</code></pre>
+<p>traefik用のdocker-composeファイルを設定します。以下のコマンドをターミナルに打ち込みます。なんか画面が出てきますが，ほぼ空欄になっていると思います。</p>
+<pre><code>sudo vim /opt/traefik/docker-compose.yml</code></pre>
+<p>そこで，以下をコピペして貼り付けします。それから，escキーをタイプしてから，:wqとタイプします（保存されます）。</p>
+<pre><code>version: &#39;2&#39;
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+
+services:
+  traefik:
+    image: traefik:v1.7.30
+    command: --docker
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/traefik/traefik.toml:/traefik.toml
+      - /opt/traefik/acme.json:/acme.json
+    container_name: traefik
+    restart: always</code></pre>
+<p>次にtraefik用のtomlファイルを設定します。以下のコマンドをターミナルに打ち込みます。なんか画面が出てきますが，ほぼ空欄になっていると思います。</p>
+<pre><code>sudo vim /opt/traefik/traefik.toml</code></pre>
+<p>そこで，以下の内容を一部改変して，コピペして貼り付けします（改変はご自身のエディタですると楽かなと思います）。改変は，(1)[docker]ってところのdomainをご自身のドメイン名に変更する，(2)[acme]ってところのemailをご自身のメールアドレスにしてください。改変した内容をコピペできたら，escキーをタイプして，:wqとタイプします（保存されます）。ドメインはさくらインターネットでもとれますし，googleなどもサービスを用意しています。</p>
+<pre><code>defaultEntryPoints = [&quot;https&quot;,&quot;http&quot;]
+
+[entryPoints]
+  [entryPoints.http]
+  address = &quot;:80&quot;
+    [entryPoints.http.redirect]
+    entryPoint = &quot;https&quot;
+  [entryPoints.https]
+  address = &quot;:443&quot;
+  [entryPoints.https.tls]
+
+[retry]
+
+[docker]
+endpoint = &quot;unix:///var/run/docker.sock&quot;
+domain = &quot;ドメイン名&quot;
+watch = true
+exposedByDefault = false
+
+[acme]
+  email = &quot;メールアドレス&quot;
+  entryPoint = &quot;https&quot;
+  storage = &quot;acme.json&quot;
+  caServer = &quot;https://acme-v02.api.letsencrypt.org/directory&quot;
+  onHostRule = true
+  [acme.httpChallenge]
+  entryPoint = &quot;http&quot;</code></pre>
+<p>では，設定した内容を元にして，traefikを起動するのですが，さくらのパケットフィルタリングの制限をかけた状態でtraefikを立ち上げると，Let’s Encryptからの認証を得られないので，80/443番をあけておきましょう。パケットフィルタリングの設定ができたら，以下を実行します。しばらくして，doneって出てきたら成功です。</p>
+<pre><code>sudo docker-compose -f /opt/traefik/docker-compose.yml up -d</code></pre>
+</div>
+<div id="dockerでjatosを準備する" class="section level3">
+<h3>DockerでJATOSを準備する</h3>
+<p>サーバー上で以下を実行して，JATOS用のdocker-compose.ymlを用意します。</p>
+<pre><code>sudo mkdir dir_docker_compose/jatos
+sudo vim dir_docker_compose/jatos/docker-compose.yml</code></pre>
+<p>空欄のファイルだとおもいますので，以下をコピペして貼り付けします（下から３つ目のドメイン名はご自身のドメイン名を利用ください）。それから，escキーをタイプしてから，:wqとタイプします（保存されます）。doneって出てきたら成功です。</p>
+<pre><code>version: &#39;3&#39;
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+
+services:
+  jatos:
+    image: jatos/jatos:latest
+    networks:
+      - internal
+      - proxy
+    container_name: jatos
+    restart: always
+    labels:
+      - traefik.docker.network=proxy
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:ドメイン名
+      - traefik.port=9000
+      - traefik.protocol=http</code></pre>
+<p>これでご自身のドメイン名のURLにJATOSが用意されているかと思います。最初は，ID:admin, パスワード:adminに設定されていますので，立ち上がったらすぐにadminのパスワードを変更ください。あとは，adminでユーザーを追加したりできますし，JATOSでウェブ実験ができるようになっていると思います。</p>
 </div>
 
 <footer>
