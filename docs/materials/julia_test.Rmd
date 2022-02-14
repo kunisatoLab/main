@@ -1,0 +1,68 @@
+---
+title: "JuliaをRMarkdownで使うテスト"
+output: html_document
+---
+
+JuliaをRMarkdownで使う場合は，以下のようにknitrの設定をします。
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_engines$set(julia = JuliaCall::eng_juliacall)
+```
+
+そして，最初に使う場合は，StatsPlotsのインストール時のエラーを回避するために，以下の環境変数を設定します。これは，最初にjuliaを使うので，時間がかかります。この操作は初回だけでいいです。
+
+```{julia}
+ENV["LD_LIBRARY_PATH"] = ""
+```
+
+
+次に，パッケージを使う場合は，以下のようにPkgを使って，インストール（add）して，事前にコンパイルしておきます(precompile)。
+
+```{julia}
+import Pkg
+Pkg.update()
+Pkg.add("StatsPlots")
+Pkg.add("Turing")
+Pkg.precompile()
+```
+
+インストールしたパッケージを読み込んでみましょう。たまに，エラーでるので，その時は，再度実行するか，一度Rを立ち上げ直してみてください（RStrudioの右上の電源ボタンです）。
+
+```{julia}
+using Turing
+using StatsPlots
+```
+
+以下では，Turingのチュートリアルにある内容を実行してみます。たまに，エラーでるので，その時は，再度実行するか，一度Rを立ち上げ直してみてください（RStrudioの右上の電源ボタンです）。
+
+```{julia}
+@model function gdemo(x, y)
+  s² ~ InverseGamma(2, 3)
+  m ~ Normal(0, sqrt(s²))
+  x ~ Normal(m, sqrt(s²))
+  y ~ Normal(m, sqrt(s²))
+end
+
+chn = sample(gdemo(1.5, 2), HMC(0.1, 5), 1000)
+
+describe(chn)
+```
+
+StatsPlotsを使ってプロットします。たまに，エラーでるので，その時は，再度実行するか，一度Rを立ち上げ直してみてください（RStrudioの右上の電源ボタンです）。
+
+```{julia}
+plot(chn)
+```
+
+juliaのオブジェクトはRStudio上では表示されないのですが，JuliaCall::julia_evalを使って，Rにもってくることができます。以下では，上のchnに入っているサンプルをRにもってきて，ggplotでプロットしています。
+
+```{r}
+m <- JuliaCall::julia_eval("chn[:m]")
+library(tidyverse)
+tibble(m=m) %>% 
+  ggplot(aes(x=m)) +
+  geom_density(fill="blue",alpha=.2)
+```
+
+未解決な問題：よくわからないけど，StatsPlotsやPlotsをつかうとMarkdownがうまくknitできないです。よくわからない。ただ，RMarkdown上で作業はできます。
