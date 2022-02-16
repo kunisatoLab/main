@@ -1,7 +1,4 @@
----
-title: "JuliaをRMarkdownで使うテスト"
-output: html_document
----
+# JuliaをRMarkdownで使うテスト
 
 JuliaをRMarkdownで使う場合は，以下のようにknitrの設定をします。
 
@@ -15,17 +12,23 @@ knitr::knit_engines$set(julia = JuliaCall::eng_juliacall)
 ```{julia}
 ENV["LD_LIBRARY_PATH"] = ""
 ```
-
+using Distributions
+using Random
 
 次に，パッケージを使う場合は，以下のようにPkgを使って，インストール（add）して，事前にコンパイルしておきます(precompile)。
 
 ```{julia}
 import Pkg
 Pkg.update()
+Pkg.add("Distributions")
+Pkg.add("Random")
+Pkg.add("SymPy")
 Pkg.add("StatsPlots")
 Pkg.add("Turing")
 Pkg.precompile()
 ```
+
+
 
 インストールしたパッケージを読み込んでみましょう。たまに，エラーでるので，その時は，再度実行するか，一度Rを立ち上げ直してみてください（RStrudioの右上の電源ボタンです）。
 
