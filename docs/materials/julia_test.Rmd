@@ -3,12 +3,6 @@ title: "JuliaをRMarkdownで使うテスト"
 output: html_document
 ---
 
-まず，最初に以下のコードをRコンソール上で実行します。
-
-```
-JuliaCall::julia_setup()
-```
-
 JuliaをRMarkdownで使う場合は，以下のようにknitrの設定をします。
 
 ```{r setup, include=FALSE}
@@ -16,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::knit_engines$set(julia = JuliaCall::eng_juliacall)
 ```
 
-そして，最初に使う場合は，StatsPlotsのインストール時のエラーを回避するために，以下の環境変数を設定します。これは，最初にjuliaを使うので，時間がかかります。この操作は初回だけでいいです。
+そして，最初に使う場合は，StatsPlotsのインストール時のエラーを回避するために，以下の環境変数を設定します。これは，最初にjuliaを使うので，時間がかかります。この操作は初回だけでいいです。もしエラーがでたら，エラーの内容をみて，Rstudio内のTerminalに「julia」とタイプして，エラーにかかれていることを実行するとうまくいくと思います（何かをビルドし直すようにいわれたりします）。
 
 ```{julia}
 ENV["LD_LIBRARY_PATH"] = ""
