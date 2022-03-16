@@ -13,8 +13,8 @@
 
 <title>GitHubの準備</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -299,12 +303,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -386,31 +390,16 @@ div.tocify {
 </div>
 
 
-<div id="ゼミでのgithubの活用" class="section level2">
-<h2>ゼミでのGitHubの活用</h2>
-<p>本ゼミでは，GitHubを活用して，以下のことを行います。</p>
-<ul>
-<li>ラボノート</li>
-<li>演習課題</li>
-<li>卒論や修論での作業のバージョン管理</li>
-</ul>
+<p>本ゼミでは，GitHubを活用して，ゼミの演習課題や卒論・修論のバージョン管理を行います。</p>
 <p><br /> <br /></p>
-</div>
 <div id="githubアカウントの作成" class="section level2">
 <h2>GitHubアカウントの作成</h2>
 <p>GoogleでGitHubと検索するか，<a href="https://github.com/" target="_blank">GitHub</a>をクリックください。そして，Sign Upをクリックしてください。</p>
 <p><img src="fig/github_fig3.png" /> <br /> <br /> <br /></p>
-<p>以下のような画面になったら，英語でユーザー名，メールアドレス，パスワードをいれてアカウントを作ってください。メールアドレスは大学から発行された心理学科のメールアドレスを登録ください。</p>
+<p>以下のような画面になったら，英語でユーザー名，メールアドレス，パスワードをいれてアカウントを作ってください。メールアドレスは大学から発行された<strong>心理学科のメールアドレス</strong>を登録ください。</p>
 <p><img src="fig/github_fig4.png" /></p>
 <p><br /> <br /></p>
-<p><strong>アカウントの用意ができたら，slackで国里にアカウント名を知らせてください。</strong></p>
-<p><br /> <br /></p>
-</div>
-<div id="githubのpersonal-access-tokenpatの作成" class="section level2">
-<h2>GitHubのPersonal Access Token(PAT)の作成</h2>
-<p>以下のサイトを参考にして，GitHubのPersonal Access Token(PAT)を作成します（説明の７は一番上のrepoにチェックするだけでいいです）。</p>
-<p><a href="https://docs.github.com/ja/github/authenticating-to-github/creating-a-personal-access-token" target="_blank">個人アクセストークンを使用する</a></p>
-<p><strong>PATはパスワードと同じなので，厳重に管理ください（個人で保管をしてください）</strong></p>
+<p><strong>アカウントの用意ができたら，slackで国里にアカウント名を知らせてください。</strong>　国里が作成した学生用プライベートリポジトリを共有します。</p>
 <p><br /> <br /></p>
 </div>
 <div id="ざっくりとgithubの仕組みを知ろう" class="section level2">
@@ -419,25 +408,36 @@ div.tocify {
 <p>(1)以降の手順としては，まず国里がGitHub上にプライベート・リポジトリを作っておくので，みなさんは自分のパソコン（もしくは私が用意したRStudioサーバー）にPull(初回時はCloneと言う。ダウンロードと同じ意味)して，リポジトリをもってきます。</p>
 <p>(2)そのリポジトリ内で作業をします。作業をすると，コード，データ（データ共有の同意を得た匿名化処理済みのデータ），卒論・修論などのファイルがリポジトリ内に追加されたり，変更が加えられると思います。ファイルに変更を加えたら，こまめにCommitをして変更履歴を残します（大きめは変更を加えたらかならずCommitする）。</p>
 <p>(3)変更履歴が残せたら，Pushしてクラウド上のGitHubのリポジトリに反映させます（Psuhはアップロードと同じ意味）。</p>
-<p>卒論・修論では，GitHubリポジトリからPullして自分のPCを最新の状態にして，作業したらその都度Commitし，Pushしてリポジトリも最新の状態に保つというサイクルを回していくことになります。なんだか面倒だなあという気もするかもしれませんが，変更履歴を残すことは透明性の高い研究をすすめる上での重要ですし，色々と作業をしたけど前の状態に戻したいときにも便利です。</p>
+<p>卒論・修論では，GitHubリポジトリからPullして自分のPCを最新の状態にして，作業したらその都度Commitし，Pushしてリポジトリを最新の状態に保つというサイクルを回していくことになります。なんだか面倒だなあという気もするかもしれませんが，変更履歴を残すことは透明性の高い研究をすすめる上での重要ですし，色々と作業をしたけど前の状態に戻したいときにも便利です。</p>
 <p><img src="fig/github_fig1.png" /> <br /> <br /> <br /></p>
 </div>
-<div id="rstudioでgithubを使う準備をするアカウントとpatの登録" class="section level2">
-<h2>RStudioでGitHubを使う準備をする（アカウントとPATの登録）</h2>
+<div id="githubへの公開鍵接続の設定" class="section level2">
+<h2>GitHubへの公開鍵接続の設定</h2>
+<p>GitHubへのアクセスは，RStudioで用意されている公開鍵を使ったSSH接続の設定をしましょう。なんだかややこしそうですが，通常のパスワード認証よりも安全性高く接続できると思ってください。</p>
+<p>RStudioで「Tools」をクリックして，「Global Options…」をクリックします。「Git/SVN」で「Create RSA Key…」をクリックします。</p>
+<p><img src="fig/git_ssh1.png" /></p>
+<p>Passphraseを設定したほうがGitHubへのアクセスに対しては強固ではありますが，Passphraseが有用な状況というのは，サーバーに侵入されている状態なので，あまり意味がないので，ここでは設定をしません。</p>
+<p><img src="fig/git_ssh2.png" /></p>
+<p>以下のようにRSA Keyが作られます。鍵をコピーします（View Public Keyでも確認できます）。</p>
+<p><img src="fig/git_ssh3.png" /></p>
+<p>GitHubにログインして，右上のアカウントのアイコンをクリックして，「Settings」をクリックします。そして，以下の画面にあるように「SSH and GPG keys」をクリックし，「New SSH key」をクリックします。</p>
+<p><img src="fig/git_ssh4.png" /></p>
+<p>適当にタイトルを決めて(例えば，「lab rstudio server」とか)，上記のRSA Keyをコピペします。これで登録完了です。</p>
+<p><img src="fig/git_ssh5.png" /></p>
+<p><br /> <br /> <br /></p>
+</div>
+<div id="rstudioでgithubを使う準備をする" class="section level2">
+<h2>RStudioでGitHubを使う準備をする</h2>
 <p>以下のコードを修正して（ご自身のユーザー名とメールアドレスに変更），Rstudioの<strong>Console</strong>にコピペしてください。</p>
 <pre><code>usethis::use_git_config(user.name = &quot;GitHubに登録したユーザー名&quot;, user.email = &quot;GitHubに登録したメールアドレス&quot;)</code></pre>
-<p>次にRstudioの<strong>Console</strong>に以下をコピペしてください。“? Enter password or token:”と聞かれるので，上記で設定したPersonal Access Token(PAT)をコピペください。</p>
-<pre><code>gitcreds::gitcreds_set()</code></pre>
-<p>最後に，Terminalに以下をコピペしてください。これで，登録したPATが一年ほど保持されます。</p>
-<pre><code>git config --global credential.helper &#39;cache --timeout=30000000&#39;</code></pre>
-<p>※なお，サーバーの再起動などをするとこの情報が消えることがあるので，もしRStudioからGithubへの接続ができない場合は，PATなどの再登録をしてください。</p>
+<p>※なお，サーバーの再起動などをするとこの情報が消えることがあるので，もしRStudioからGithubへの接続ができない場合は，RSA Keyの発行からやり直してください。</p>
 <p><br /> <br /></p>
 </div>
 <div id="githubリポジトリを自分の手元にもってくるclone" class="section level2">
 <h2>GitHubリポジトリを自分の手元にもってくる(Clone)</h2>
 <p><a href="https://github.com/" target="_blank">GitHub</a>に移動します。どうも自分のリポジトリ(Repositories)が見えないことがあるのですが，以下の画像の左上の赤い枠で囲った部分をクリックすると下にRepositoriesが出てきて，みなさんの名前のリポジトリが見えると思います。そのリポジトリをクリックします。</p>
 <p><img src="fig/github_fig5.png" /> <br /> <br /> <br /></p>
-<p>自分の名前のGitHubリポジトリにいって，下のような画面のHTTPSが押された状態の右端（赤で囲った部分）をクリックします。クリックすると，URLがコピーされます。</p>
+<p>自分の名前のGitHubリポジトリにいって，下のような画面で，SSHを選択して，右端（赤で囲った部分）をクリックします（以下の画面ではHTTPSが選択されているので注意）。クリックすると，URLがコピーされます。</p>
 <p><img src="fig/github_fig6.png" /> <br /> <br /> <br /></p>
 <p>次に，ゼミのRStudioサーバーに移動します。以下のようにRStudio上でFile → New Project→Version Control→Gitと進んで，コピーしたURLと保存するフォルダの設定します。これで，Clone完了です。</p>
 <p>＊ゼミのRstudio serverを使っている場合は，“Create project as subdirectory of:”でBrowseをクリックして，Homeをchooseする必要があるかもしれません。</p>
@@ -449,7 +449,7 @@ div.tocify {
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2021 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -489,6 +489,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

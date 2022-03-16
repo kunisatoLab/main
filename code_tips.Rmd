@@ -10,7 +10,14 @@ title: "Code & Tips"
 - RStudio Server: データ収集（調査票，実験課題の作成），データ解析，卒論・修論の執筆のために使います。
 - GitHub: 卒論・修論に関連した各種ファイルを指導教員と共有したり，バージョン管理するために使います。
 - OSF:事前登録で使います。整理された研究内容のアップロードにも使います。
-- 場合によっては，Google DocやQualtricsを使うこともあります。
+- Googleスライド：ゼミでの口頭発表の際に使います。
+- Googleドキュメント：ゼミでのディスカッションのメモなどに使います。
+- Meet: 大学が契約しているGoogleクラスルームのMeetです。対面でも画面共有で使います。
+- JupyterHub: PythonやJuliaを用いたデータ解析のために使います(PythonとJuliaを使う学生のみアカウントを発行します)。
+- JATOS: jsPsychで作成した認知課題・質問紙でデータ収集するために使います（JATOSでデータ収集する学生にのみアカウントを発行します）。
+
+＊国里のゼミではパソコンが必須になります。コロナ対策のためパソコンのあるゼミ室ではなく，広い教室を使うので各自ノートパソコンを持ってくるようにしてください。ノートパソコンがない・持ってこれない場合は，国里の方で毎回貸し出し可能ですので，申し出てください。
+
 
 ## ゼミの準備
 
@@ -18,9 +25,9 @@ title: "Code & Tips"
 
 - [OSFの準備](how-to-osf.html) ☆
 
-- [RStudioで卒論・修論を書く準備](how-to-write-with-rstudio.html)　☆
+- [RStudioで研究を行う準備](how-to-write-with-rstudio.html)　☆
 
-- [ラボノートの準備](how-to-labnote.html) ☆
+- [研究室での日々のルーティン作業](how-to-labnote.html) ☆
 
 <br />
 
@@ -142,7 +149,7 @@ title: "Code & Tips"
 
 - [心理ネットワーク入門1](how-to-psychological-network1.html) ☆
 
-- [心理ネットワーク入門2](how-to-psychological-network2.html) ☆
+- [心理ネットワーク入門2（準備中）](how-to-psychological-network2.html) ☆
 
 <br />
 

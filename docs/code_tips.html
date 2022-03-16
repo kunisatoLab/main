@@ -13,7 +13,7 @@
 
 <title>Code &amp; Tips</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -394,16 +398,21 @@ div.tocify {
 <li>RStudio Server: データ収集（調査票，実験課題の作成），データ解析，卒論・修論の執筆のために使います。</li>
 <li>GitHub: 卒論・修論に関連した各種ファイルを指導教員と共有したり，バージョン管理するために使います。</li>
 <li>OSF:事前登録で使います。整理された研究内容のアップロードにも使います。</li>
-<li>場合によっては，Google DocやQualtricsを使うこともあります。</li>
+<li>Googleスライド：ゼミでの口頭発表の際に使います。</li>
+<li>Googleドキュメント：ゼミでのディスカッションのメモなどに使います。</li>
+<li>Meet: 大学が契約しているGoogleクラスルームのMeetです。対面でも画面共有で使います。</li>
+<li>JupyterHub: PythonやJuliaを用いたデータ解析のために使います(PythonとJuliaを使う学生のみアカウントを発行します)。</li>
+<li>JATOS: jsPsychで作成した認知課題・質問紙でデータ収集するために使います（JATOSでデータ収集する学生にのみアカウントを発行します）。</li>
 </ul>
+<p>＊国里のゼミではパソコンが必須になります。コロナ対策のためパソコンのあるゼミ室ではなく，広い教室を使うので各自ノートパソコンを持ってくるようにしてください。ノートパソコンがない・持ってこれない場合は，国里の方で毎回貸し出し可能ですので，申し出てください。</p>
 </div>
 <div id="ゼミの準備" class="section level2">
 <h2>ゼミの準備</h2>
 <ul>
 <li><p><a href="how-to-github.html">GitHubの準備</a> ☆</p></li>
 <li><p><a href="how-to-osf.html">OSFの準備</a> ☆</p></li>
-<li><p><a href="how-to-write-with-rstudio.html">RStudioで卒論・修論を書く準備</a>　☆</p></li>
-<li><p><a href="how-to-labnote.html">ラボノートの準備</a> ☆</p></li>
+<li><p><a href="how-to-write-with-rstudio.html">RStudioで研究を行う準備</a>　☆</p></li>
+<li><p><a href="how-to-labnote.html">研究室での日々のルーティン作業</a> ☆</p></li>
 </ul>
 <p><br /></p>
 </div>
