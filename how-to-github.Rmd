@@ -57,7 +57,7 @@ Passphraseを設定したほうがGitHubへのアクセスに対しては強固�
 
 ![](fig/git_ssh2.png) 
 
-以下のようにRSA Keyが作られます。鍵をコピーします（View Public Keyでも確認できます）。
+以下のようにRSA Keyが作られます。とりあえず，「close」を押して閉じます。「View Public Key」をクリックして，鍵を表示させて，コピーします。
 
 ![](fig/git_ssh3.png) 
 

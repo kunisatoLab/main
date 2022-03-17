@@ -2,20 +2,22 @@
 title: "RStudioで卒論・修論を書く準備"
 ---
 
-## 卒論・修論をRStudio上で執筆する理由
-
-- SPSSなどの解析結果をWordやExcelにコピー＆ペーストするやり方だとどこかでミスが生じることがあります（間違った数値をコピペしてしまうなど）。R Markdown上で解析も執筆も一緒にやってしまえば，このようなミスはなくなります。
-- 解析に修正が必要になった時に，R Markdown上で解析も執筆も一緒にやっておけば，すぐに修正が反映されて，ミスが減ります。
-- 国里が作成した<a href="https://github.com/ykunisato/senshuRmd" target="_blank">senshuRmd</a>パッケージを使えば，最終的なフォーマット調整も引用文献処理も自動的にやってくれるので楽です。
-- 研究指導でも，データやコードをいじりつつ検討ができて，有意義な研究指導が期待できます。
-- GitHubでのバージョン管理もRStudio上で簡単にできます。
-- 透明性の高い研究実践や仕事のやり方が身につきます
+国里のゼミでは，卒論・修論に関わる作業は，基本的にRStudioサーバー上で行います（データの収集のための認知課題・質問紙の作成，データ解析，論文執筆）。理由としては，(1)RやRStudioは卒業・終了後も使えるオープンソースソフトである,(2)サーバーなのでゼミ生が自宅からでもアクセスして作業できる（パソコンのスペックも選ばない），(3)解析と執筆をつなげることで再現性を高めることができる，解析結果のコピペミスなどのエラーを避けることができる,(4)国里が指導したり，トラブル対処がしやすいなどがあります。最初は面倒そうに思うかもですが，慣れるとかなり楽になるかとおもいます。
 
 <br>
 
-## senshuRmdパッケージを使ってみよう！
+## psyinfrパッケージを使ってみよう！
 
-<a href="https://github.com/ykunisato/senshuRmd" target="_blank">senshuRmd</a>は，専修大学人間科学部心理学科での卒論・修論用にフォーマット調整をしたRMarkdownテンプレートになります。以下では，senshuRmdを既にインストールし(国里ゼミのRstudio serverには最初からインストールされています)，<a href="https://kunisatolab.github.io/main/how-to-github.html" target="_blank">GitHubの準備</a>もできているという前提ですすめます。
+<a href="https://github.com/ykunisato/psyinfr" target="_blank">psyinfr</a>は，心理学のインフラ整備に使えるRパッケージとして，国里が作成したものです。psyinfrには，(1)卒論・修論用のフォルダ作成機能，(2)卒論・修論執筆用テンプレート，(3)jsPsychを用いた認知課題・質問紙作成用機能，(4)ラボノート(兼GitHub連携)機能，(5)高負荷計算機能（オマケ）があります。ゼミ生のみなさんは，(1)から(4)を使って，たまに(5)を使う人もいるという感じかと思います。
+
+
+
+psyinfrを使うにあたって，まず，<a href="https://kunisatolab.github.io/main/how-to-github.html" target="_blank">GitHubの準備</a>をして，RStudioに作業用のGitHubリポジトリを用意をしましょう。 psyinfrは以下でRにインストールできますが，ゼミ生の場合はサーバーにインストール済みです。
+
+```{r eval=FALSE, include=TRUE}
+remotes::install_github("ykunisato/psyinfr")
+```
+
 
 
 <br>
@@ -37,8 +39,8 @@ title: "RStudioで卒論・修論を書く準備"
 <br>
 上記の設定を手動でするは面倒なので，senshuRmdが自動でやってくれます。**RstudioのConsoleに以下のコードをコピペして実行してみましょう。**
 
-```
-senshuRmd::set_rc_ccp()
+```{r eval=FALSE, include=TRUE}
+psyinfr::set_rc()
 ```
 
 以下のような感じでフォルダができます。ゼミでは，このフォルダ構成を維持しつつ作業を行います。なんかいじっちゃってよくわからなくなったら，上記の研究室用Research Compendiumを確認ください。
