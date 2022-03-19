@@ -4,9 +4,9 @@ title: "jsPsychを用いた認知課題の作成1: jsPsychとJavaScript入門"
 
 本ページでは，jsPsychを用いた認知課題の作成をRstudioで行う方法について解説をします。本ページでは，以下の内容を解説しています。
 
-1. RstudioでjsPsychを使用するまでの準備
-2. こんにちわjsPsych(文字を画面に表示)
-3. JavaScriptの基本
+1. RstudioでjsPsychを使用する準備をする
+2. jsPsychで画面に文字を表示する
+3. JavaScriptの基本を学ぶ
 
 <br>
 
@@ -14,13 +14,14 @@ title: "jsPsychを用いた認知課題の作成1: jsPsychとJavaScript入門"
 
 jsPsychとは，ウェブブラウザー（Microsoft Edge,Google Chrome,Safariなど）上で行動実験を行うためのJavaScriptライブラリーです。そもそもJavaScriptを上手く使えば，ウェブブラウザーで動作する行動実験課題は作成できます。しかし，全て一から作っていると大変です。そこで，jsPsychのライブラリーを活用することで，より楽に実験課題を作成することができます。
 
-jsPsychの情報としては，<a href="https://www.jspsych.org/" target="_blank">jsPsychのオフィシャルサイト</a>に豊富にありますし，日本語でも九州大学文学部心理学研究室の黒木大一朗先生の<a href="https://sites.google.com/site/webdeshinri/home" target="_blank">ウェブブラウザで心理学実験と調査jsPsych</a>にて詳細に解説されています[^1]。分からないことがあれば，まず，この２つのサイトを参照すると良いかと思います。
+jsPsychの情報としては，<a href="https://www.jspsych.org/" target="_blank">jsPsychのオフィシャルサイト</a>に豊富にありますし，日本語でも九州大学文学部心理学研究室の黒木大一朗先生の<a href="https://sites.google.com/site/webdeshinri/home" target="_blank">ウェブブラウザで心理学実験と調査jsPsych</a>にて詳細に解説されています[^1]。分からないことがあれば，まず，この２つのサイトを参照すると良いかと思います。また，国里も参加していますが，jsPsychやlab.jsのユーザー会であるpsyJSもあります。psyJSに興味がある方は，<a href="https://docs.google.com/forms/d/e/1FAIpQLSceA62ngL2M4UrRwo-imU2gAwLgdJg9P6s11TT22MThG8pT-A/viewform?usp=sf_link" target="_blank">こちらの登録フォーム</a>からご参加ください。
 
-jsPsychは，de Leeuw, J. R. 氏が開発したもので，使用する際には，以下の作成論文を引用するようにしましょう（卒論や修論で何らかのオープンソースソフトウェアを使ったら，必ず作成論文を引用してください）。
+
+jsPsychは，de Leeuw, J. R. 氏が開発したもので，使用する際には，以下の作成論文を必ず引用するようにしましょう（卒論や修論で何らかのオープンソースソフトウェアを使ったら，必ず作成論文を引用してください）。
 
 - de Leeuw, J. R. (2015). jsPsych: A JavaScript library for creating behavioral experiments in a web browser. Behavior Research Methods, 47(1), 1-12. doi:10.3758/s13428-014-0458-y.
 
-また，黒木大一朗先生がjsPsychに関する非常に便利なプラグインのjspsych-psychophysicsを開発されています。あとで紹介するjsPsychRmdでは，jspsych-psychophysicsも使えます。もし，jspsych-psychophysicsを使った場合は，以下の黒木先生の論文を必ず引用してください。
+また，黒木大一朗先生がjsPsychに関する非常に便利なプラグインのjspsych-psychophysicsを開発されています。もし，jspsych-psychophysicsを使った場合は，以下の黒木先生の論文を必ず引用してください。
 
 - Kuroki, D. (2021). A new jsPsych plugin for psychophysics, providing accurate display duration and stimulus onset asynchrony. Behav Res 53, 301–310  https://doi.org/10.3758/s13428-020-01445-w
 
@@ -33,7 +34,7 @@ jsPsychを使うには，実験課題に関するフォルダを作って，最�
 
 ### 1.1 RstudioでjsPsychを使う準備
 
-早速，RStudioを開きましょう。なお，以降の解説は，<a href="https://kunisatolab.github.io/main/how-to-write-with-rstudio.html" target="_blank">RStudioで卒論・修論を書く準備</a> で，Research Compendiumの準備ができた前提で進めます(国里ゼミのRstudio serverにはすでにjsPsychRmdがインストールされているので省略しますが，まだインストールしてない場合は，<a href="https://github.com/ykunisato/jsPsychRmd" target="_blank">こちら</a>を見て，インストールください)。
+早速，RStudioを開きましょう。なお，以降の解説は，<a href="https://kunisatolab.github.io/main/how-to-write-with-rstudio.html" target="_blank">RStudioで卒論・修論を書く準備</a> で，Research Compendiumの準備ができた前提で進めます。
 
 
 ![](fig/jspsych1_fig5.png)

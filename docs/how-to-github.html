@@ -13,7 +13,7 @@
 
 <title>GitHubの準備</title>
 
-<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -394,12 +394,13 @@ div.tocify {
 <p><br /> <br /></p>
 <div id="githubアカウントの作成" class="section level2">
 <h2>GitHubアカウントの作成</h2>
-<p>GoogleでGitHubと検索するか，<a href="https://github.com/" target="_blank">GitHub</a>をクリックください。そして，Sign Upをクリックしてください。</p>
+<p>GoogleでGitHubと検索するか，<a href="https://github.com/" target="_blank">GitHub</a>をクリックください。そして，Sign
+Upをクリックしてください。</p>
 <p><img src="fig/github_fig3.png" /> <br /> <br /> <br /></p>
 <p>以下のような画面になったら，英語でユーザー名，メールアドレス，パスワードをいれてアカウントを作ってください。メールアドレスは大学から発行された<strong>心理学科のメールアドレス</strong>を登録ください。</p>
 <p><img src="fig/github_fig4.png" /></p>
 <p><br /> <br /></p>
-<p><strong>アカウントの用意ができたら，slackで国里にアカウント名を知らせてください。</strong>　国里が作成した学生用プライベートリポジトリを共有します。</p>
+<p><strong>アカウントの用意ができたら，slackで国里にアカウント名を知らせてください。</strong>　国里が学生用プライベートリポジトリとゼミ生用マテリアルリポジトリを共有します。</p>
 <p><br /> <br /></p>
 </div>
 <div id="ざっくりとgithubの仕組みを知ろう" class="section level2">
@@ -414,15 +415,21 @@ div.tocify {
 <div id="githubへの公開鍵接続の設定" class="section level2">
 <h2>GitHubへの公開鍵接続の設定</h2>
 <p>GitHubへのアクセスは，RStudioで用意されている公開鍵を使ったSSH接続の設定をしましょう。なんだかややこしそうですが，通常のパスワード認証よりも安全性高く接続できると思ってください。</p>
-<p>RStudioで「Tools」をクリックして，「Global Options…」をクリックします。「Git/SVN」で「Create RSA Key…」をクリックします。</p>
+<p>RStudioで「Tools」をクリックして，「Global
+Options…」をクリックします。「Git/SVN」で「Create RSA
+Key…」をクリックします。</p>
 <p><img src="fig/git_ssh1.png" /></p>
 <p>Passphraseを設定したほうがGitHubへのアクセスに対しては強固ではありますが，Passphraseが有用な状況というのは，サーバーに侵入されている状態なので，あまり意味がないので，ここでは設定をしません。そのままCreateをクリックします。</p>
 <p><img src="fig/git_ssh2.png" /></p>
-<p>以下のようにRSA Keyが作られます。とりあえず，「close」を押して閉じます。「View Public Key」をクリックして，鍵を表示させて，コピーします。</p>
+<p>以下のようにRSA
+Keyが作られます。とりあえず，「close」を押して閉じます。「View Public
+Key」をクリックして，鍵を表示させて，コピーします。</p>
 <p><img src="fig/git_ssh3.png" /></p>
-<p>GitHubにログインして，右上のアカウントのアイコンをクリックして，「Settings」をクリックします。そして，以下の画面にあるように「SSH and GPG keys」をクリックし，「New SSH key」をクリックします。</p>
+<p>GitHubにログインして，右上のアカウントのアイコンをクリックして，「Settings」をクリックします。そして，以下の画面にあるように「SSH
+and GPG keys」をクリックし，「New SSH key」をクリックします。</p>
 <p><img src="fig/git_ssh4.png" /></p>
-<p>適当にタイトルを決めて(例えば，「lab rstudio server」とか)，上記のRSA Keyをコピペします。これで登録完了です。</p>
+<p>適当にタイトルを決めて(例えば，「lab rstudio server」とか)，上記のRSA
+Keyをコピペします。これで登録完了です。</p>
 <p><img src="fig/git_ssh5.png" /></p>
 <p><br /> <br /> <br /></p>
 </div>
@@ -430,19 +437,26 @@ div.tocify {
 <h2>RStudioでGitHubを使う準備をする</h2>
 <p>以下のコードを修正して（ご自身のユーザー名とメールアドレスに変更），Rstudioの<strong>Console</strong>にコピペしてください。</p>
 <pre><code>usethis::use_git_config(user.name = &quot;GitHubに登録したユーザー名&quot;, user.email = &quot;GitHubに登録したメールアドレス&quot;)</code></pre>
-<p>※なお，サーバーの再起動などをするとこの情報が消えることがあるので，もしRStudioからGithubへの接続ができない場合は，RSA Keyの発行からやり直してください。</p>
+<p>※なお，サーバーの再起動などをするとこの情報が消えることがあるので，もしRStudioからGithubへの接続ができない場合は，RSA
+Keyの発行からやり直してください。</p>
 <p><br /> <br /></p>
 </div>
-<div id="githubリポジトリを自分の手元にもってくるclone" class="section level2">
+<div id="githubリポジトリを自分の手元にもってくるclone"
+class="section level2">
 <h2>GitHubリポジトリを自分の手元にもってくる(Clone)</h2>
 <p><a href="https://github.com/" target="_blank">GitHub</a>に移動します。どうも自分のリポジトリ(Repositories)が見えないことがあるのですが，以下の画像の左上の赤い枠で囲った部分をクリックすると下にRepositoriesが出てきて，みなさんの名前のリポジトリが見えると思います。そのリポジトリをクリックします。</p>
 <p><img src="fig/github_fig5.png" /> <br /> <br /> <br /></p>
 <p>自分の名前のGitHubリポジトリにいって，下のような画面で，SSHを選択して，右端（赤で囲った部分）をクリックします（以下の画面ではHTTPSが選択されているので注意）。クリックすると，URLがコピーされます。</p>
 <p><img src="fig/github_fig6.png" /> <br /> <br /> <br /></p>
-<p>次に，ゼミのRStudioサーバーに移動します。以下のようにRStudio上でFile → New Project→Version Control→Gitと進んで，コピーしたURLと保存するフォルダの設定します。これで，Clone完了です。</p>
-<p>＊ゼミのRstudio serverを使っている場合は，“Create project as subdirectory of:”でBrowseをクリックして，Homeをchooseする必要があるかもしれません。</p>
+<p>次に，ゼミのRStudioサーバーに移動します。以下のようにRStudio上でFile
+→ New Project→Version
+Control→Gitと進んで，コピーしたURLと保存するフォルダの設定します。これで，Clone完了です。</p>
+<p>＊ゼミのRstudio serverを使っている場合は，“Create project as
+subdirectory
+of:”でBrowseをクリックして，Homeをchooseする必要があるかもしれません。</p>
 <p><img src="fig/github_gif3.gif" /> <br /> <br /> <br /></p>
-<p>一度，GitHubのプロジェクトを作っておくと，RStudioはそれを記憶しているので，以下のようにFile→Recent Projetsで作成したプロジェクトが出てくるので，それをクリックすれば，GitHubプロジェクトが開けます。</p>
+<p>一度，GitHubのプロジェクトを作っておくと，RStudioはそれを記憶しているので，以下のようにFile→Recent
+Projetsで作成したプロジェクトが出てくるので，それをクリックすれば，GitHubプロジェクトが開けます。</p>
 <p>RStudioのプロジェクトは，解析などで使うファイルやフォルダをひとまとめにしてくれるものです（今回の場合は，GitHubリポジトリがプロジェクトになります）。RStudioを使う場合は，必ずプロジェクトファイルを作りましょう。</p>
 <p><img src="fig/github_gif4.gif" /> <br /> <br /> <br /></p>
 <p>さて，Cloneができると最初の準備は終わりです！</p>
