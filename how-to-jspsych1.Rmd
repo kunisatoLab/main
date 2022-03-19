@@ -40,8 +40,8 @@ jsPsychを使うには，実験課題に関するフォルダを作って，最�
 
 **以下のコードをRStudioのConsoleにコピペして実行してください。**実行すると，ダウンロードに少し時間がかかります。しばらくすると，index.Rmdというファイルが開き，exerciseフォルダ内にhelloというフォルダができて，index.Rmdとその他必要なフォルダやファイルが準備されます。これで，jsPsychのプログラミング準備完了です！
 
-```
-jsPsychRmd::set_jsPsych(folder = "hello", rc = TRUE)
+```{r eval=FALSE, include=TRUE}
+psyinfr::set_cbat("stroop","7.2.1")
 ```
 
 ＊国里ゼミ以外でResearch Compendiumを使ってない場合は，", rc = TRUE"を削除して実行してください。

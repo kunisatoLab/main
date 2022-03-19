@@ -11,10 +11,10 @@
 
 
 
-<title>ラボノートの準備</title>
+<title>研究室での日々のルーティン作業</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -299,12 +303,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -381,32 +385,61 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">ラボノートの準備</h1>
+<h1 class="title toc-ignore">研究室での日々のルーティン作業</h1>
 
 </div>
 
 
-<p>日々の研究の記録を丁寧に残して，実験した内容，発見や仮説などをタイムスタンプをつけて残すことは研究公正において重要になります。ただ，既存のラボノートや電子ラボノートは簡単なものでなく，心理学ではなかなか定着していない状況があります。そこで，Rから使える電子ラボノート的パッケージとして<a href="https://github.com/ykunisato/eln4Rmd" target="_blank">eln4Rmd</a>を作っています（国里ゼミのRstudio serverには既にインストールされていますが，インストール方法は，<a href="https://github.com/ykunisato/eln4Rmd" target="_blank">eln4Rmd</a>をご確認ください）。</p>
-<p>eln4Rmdは，研究した日の電子ラボノートを作る機能と作ったノートをGitHub（もしくはOSF）と連携させてタイムスタンプを押す機能の２つからなります。</p>
+<p>卒論・修論への取り組む際に，以下のルーティンを意識しましょう。</p>
+<ol style="list-style-type: decimal">
+<li><strong>研究開始</strong>RStudioサーバーを開いて，GitHubからプルする（Rstudioサーバーを最新の状態にする）。</li>
+<li><strong>研究</strong>卒論・修論の作業をする（調べたこと考えたことのメモ，データ収集準備，解析，執筆などなど）</li>
+<li><strong>研究終了</strong>ラボノートを書いてコミットした上でGitHubにプッシュする。</li>
+</ol>
+<p>この１〜３を繰り返していくことで，卒論・修論ができていきます。日々の研究の記録を丁寧に残して，実験した内容，発見や仮説などをタイムスタンプをつけて残すことは研究公正において重要になります。ただ，既存のラボノートや電子ラボノートは簡単なものでなく，心理学ではなかなか定着していない状況があります。そこで，<a
+href="https://github.com/ykunisato/psyinfr">psyinfr</a>パッケージにはRから使える簡易な電子ラボノートを用意しています。</p>
 <p><br /></p>
-<div id="電子ラボノートを作る" class="section level3">
-<h3>(1)電子ラボノートを作る</h3>
-<p><strong>R StudioのConsoleに，eln4Rmd::elnjp_pdf(rc = TRUE)をタイプすると，日付のついた電子ラボノート用Rmdファイルが作成されます。</strong>これをknitするとPDFファイルが出力されます。</p>
-<pre><code>eln4Rmd::elnjp_pdf(rc = TRUE)</code></pre>
-<p>senshuRmdのResearch Compendiumを使っておらず，特定のフォルダに電子ラボノートを作りたい方は，rc = FALSEで実行ください。もし研究した日に記録するのを忘れて別の日に記録を残したい場合は，replace_dayで日付を指定できます（ただ，タイムスタンプは実際の作成した日にはなります）。以下の場合は，2021-04-01に指定しています。また，分かりやすいようにファイル名に名前を足すこともadd_nameでできます。以下の場合は，april_fool_expを指定しています。結果として，“2021-04-01_april_fool_exp.Rmd”という名前のファイルができます。ただ，<strong>基本的には，上記のeln4Rmd::elnjp_pdf(rc = TRUE)を使うようにしてください。</strong></p>
-<pre><code>eln4Rmd::elnjp_pdf(add_name = &quot;april_fool_exp&quot; , replace_day = &quot;2021-04-01&quot;, rc = TRUE)</code></pre>
-<p><br /></p>
+<p>以下の作業をする場合は，<a
+href="https://kunisatolab.github.io/main/how-to-github.html">GitHubの設定</a>と<a
+href="https://kunisatolab.github.io/main/how-to-write-with-rstudio.html">Research
+Compendiumの設定</a>を事前にしておきましょう。</p>
+<div id="研究開始" class="section level3">
+<h3>(1)研究開始</h3>
+<p>R
+StudioのConsoleに，以下のコードを打ち込みます。それだけです（これだけなので覚えてね）。</p>
+<pre class="r"><code>psyinfr::researchIn()</code></pre>
+<p><img src="fig/labnote01.png" /> <br /></p>
+<p>すると，GitHubからプルしてRstudioサーバーを最新の状態になって，日付のついた電子ラボノート用Rmdファイルを作成されます。</p>
+<p><img src="fig/labnote03.png" /> <br /></p>
 </div>
-<div id="githubと連携させてタイムスタンプを押す" class="section level3">
-<h3>(2)GitHubと連携させてタイムスタンプを押す</h3>
-<p>作成したラボノートにはタイムスタンプが必要です。タイムスタンプをつけないと，その日にちゃんと記録したのかの保証ができないので，電子ラボノートとして機能させる場合は，以下のようにGitHubと連携をさせてください。</p>
-<p><strong>作成したPDFを確認してから，以下の関数をConsoleで実行するとPDFという名前のフォルダを作ってそこにPDFを保存したうえ，コミットをした上で，GitHubにプッシュしてくれます</strong>(GitHubにタイムスタンプが残ります）。事前にGitHubの設定をしておかないといけないですが，そができていれば，以下の関数だけでタイムスタンプも押せます。</p>
-<pre><code>eln4Rmd::up_elnjp_git(rc = TRUE)</code></pre>
-<p>研究するたびに（１）と(2)を繰り返すだけです。なお，elnjp_pdf()で，add_nameやreplace_dayを指定している場合は，up_elnjp_git()でも同様の指定をしてください。</p>
+<div id="研究" class="section level3">
+<h3>(2)研究</h3>
+<p>さて，卒論・修論の作業をしましょう。RStuidoでの卒論・修論の作業となると，データ収集準備・データ解析・執筆となるかと思うかもしれませんが，それよりも，卒論・修論に関して調べたこと・考えたことのメモをしっかり残しましょう。</p>
+<p>卒論・修論に関して調べたこと・考えたことのメモは，ラボノートに書きましょう。ラボノートには以下のように書き込めます。ゼミでホワイトボードを使った場合は，その写真をアップするのも良いと思います。</p>
+<p><img src="fig/labnote04.png" /> <br /></p>
+</div>
+<div id="研究終了" class="section level3">
+<h3>(3)研究終了</h3>
+<p>その日の研究が終わったら，以下のコードを打ち込みます。それだけです（これだけなので覚えてね）。</p>
+<pre class="r"><code>psyinfr::researchOut()</code></pre>
+<p><img src="fig/labnote05.png" /> <br /></p>
+<p>実行すると，まずその日のラボノートをRMarkdownからPDFに変換します（なにかRMarkdownの記述に問題があるとエラーがでます）。それをlabnoteフォルダ内のPDFフォルダにコピーして，最後にコミットをした上でGitHubにプッシュします。これらが自動で行われます。</p>
+<p><img src="fig/labnote06.png" /> <br /></p>
+<p>GitHubで確認すると，自動で入るコミットメッセージとともにラボノートがPDFフォルダに入っています。これで，あとで確認ができます。</p>
+<p><img src="fig/labnote07.png" /> <br /></p>
+</div>
+<div id="まとめ" class="section level2">
+<h2>まとめ</h2>
+<p>日々の研究では，以下の１〜３を以下のコマンドを使って繰り返します。</p>
+<ol style="list-style-type: decimal">
+<li><strong>研究開始</strong><code>psyinfr::researchIn()</code></li>
+<li><strong>研究</strong></li>
+<li><strong>研究終了</strong>　<code>psyinfr::researchOut()</code></li>
+</ol>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2021 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -446,6 +479,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
