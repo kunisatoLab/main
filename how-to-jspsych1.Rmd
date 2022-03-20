@@ -36,10 +36,7 @@ jsPsychを使うには，実験課題に関するフォルダを作って，最�
 
 早速，RStudioを開きましょう。なお，以降の解説は，<a href="https://kunisatolab.github.io/main/how-to-write-with-rstudio.html" target="_blank">RStudioで研究を行う準備</a> で，Research Compendiumの準備ができた前提で進めます。
 
-
-![](fig/jspsych1_fig5.png)
-
-**以下のコードをRStudioのConsoleにコピペして実行してください。**実行すると，ダウンロードに少し時間がかかります。しばらくすると，index.Rmdというファイルが開き，exerciseフォルダ内にhelloというフォルダができて，index.Rmdとその他必要なフォルダやファイルが準備されます。これで，jsPsychのプログラミング準備完了です！
+**以下のコードをRStudioのConsoleにコピペして実行してください。**実行すると，ダウンロードに少し時間がかかります。しばらくすると，index.Rmdというファイルが開き，Research Compendiumのexerciseフォルダ内にhelloというフォルダができて，index.Rmdとその他必要なフォルダやファイルが準備されます。これで，jsPsychのプログラミング準備完了です！
 
 ```{r eval=FALSE, include=TRUE}
 psyinfr::set_cbat("stroop","7.2.1")
