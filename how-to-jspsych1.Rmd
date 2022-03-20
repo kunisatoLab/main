@@ -34,7 +34,7 @@ jsPsychを使うには，実験課題に関するフォルダを作って，最�
 
 ### 1.1 RstudioでjsPsychを使う準備
 
-早速，RStudioを開きましょう。なお，以降の解説は，<a href="https://kunisatolab.github.io/main/how-to-write-with-rstudio.html" target="_blank">RStudioで卒論・修論を書く準備</a> で，Research Compendiumの準備ができた前提で進めます。
+早速，RStudioを開きましょう。なお，以降の解説は，<a href="https://kunisatolab.github.io/main/how-to-write-with-rstudio.html" target="_blank">RStudioで研究を行う準備</a> で，Research Compendiumの準備ができた前提で進めます。
 
 
 ![](fig/jspsych1_fig5.png)
