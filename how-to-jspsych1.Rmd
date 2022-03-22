@@ -38,83 +38,106 @@ jsPsychを使うには，実験課題に関するフォルダを作って，最�
 
 **以下のコードをRStudioのConsoleにコピペして実行してください。**実行すると，ダウンロードに少し時間がかかります。しばらくすると，index.Rmdというファイルが開き，Research Compendiumのexerciseフォルダ内にhelloというフォルダができて，index.Rmdとその他必要なフォルダやファイルが準備されます。これで，jsPsychのプログラミング準備完了です！
 
-```{r eval=FALSE, include=TRUE}
-psyinfr::set_cbat("stroop","7.2.1")
-```
-
-＊国里ゼミ以外でResearch Compendiumを使ってない場合は，", rc = TRUE"を削除して実行してください。
-
-"hello"フォルダ内の説明をすると以下のようなファイルとフォルダが用意されます。
-
-- index.Rmd: jsPsychで課題を作る際にメインのファイルとなるRmdファイルです。
-- jspsych-6.3.1: jsPsychのサイトからダウンロードしたjsPsychのライブラリです。
-- stimuli: 刺激をいれるフォルダです。
-
-
-![](fig/jspsych1_fig16.png)
-
-
-
-### 1.2 R MarkdonとjsPsychで行動課題を作る
-
-R Markdown(.Rmd)は，文章とプログラミングコードをまとめてHTMLファイルにして出力してくれるものです。jsPsychはHTMLのプラグインなので，R Markdownを使うことで，jsPsychを組み込んだ実験課題の動作するHTMLファイルを出力できます。
-
-さきほど開かれたindex.Rmdを確認して，以下の図で赤い四角で囲ったKnitをクリックしてみましょう。Knitをクリックすると，RmdからHTMLファイルが作成されます。画面上に「こんにちは！」というのが出てきたら，成功です。
-
-
-![](fig/jspsych1_fig17.png)
+もし，Research Compendiumを設定されてない場合は，エラーがでますが，カレントディレクトリーにexerciseという名前のフォルダを作ってもらえば，動作すると思います。
 
 <br>
 
+```{r eval=FALSE, include=TRUE}
+psyinfr::set_cbat("hello","7.2.1")
+```
+
+![](fig/jspsych1_fig16.png)
+
+<br>
+
+"hello"フォルダを開くと以下のファイルがあります。以降で使うのは，基本的にdemo_hello.htmlだけです。
+
+- demo_hello.html: ローカルでのデータ収集や動作確認に使うHTMLファイル
+- hello.html: JATOS上でデータ収集を行う際に使うHTMLファイル
+- hello: JavaScriptファイルや刺激などをいれるフォルダ
+
+![](fig/jspsych1_fig19.png) 
+
+<br>
+
+さらに"hello"フォルダを開くと以下のファイルがあります。以降で使うのは，基本的にtask.jsだけです（認知課題によってはstimuliなどを使う）。
+
+- task.js: 認知課題の説明をするフォルダ
+- stimuli: 刺激などをいれるフォルダ
+- jspsych: jsPsychライブラリがおかれたフォルダ 
+- demo_jspsych_init.js~jatos_jspsych_run.js: task.jsの設定だけで認知課題が動くようにするためのファイル達
+
+![](fig/jspsych1_fig20.png) 
+
+<br>
+
+
+#### psyinfr::set_cbat()のフォルダ構成について(専門家向け)
+
+psyinfr::set_cbat()で第１引数に課題名を指定すると課題名のフォルダ内に左端（１層目）のHTMLファイルとフォルダを用意します。「demo_タスク名.html」は，ローカルPCやサーバー上で認知課題を実行するための各種設定の入ったHTMLファイルです。課題作成中の確認などでも使えます。そして，「タスク名.html」はJATOS上で認知課題を実行するための各種設定の入ったHTMLファイルです。これらのHTMLファイルはプラグイン追加以外では編集をせず，タスク名フォルダ（以下ではhelloフォルダ）以下のファイルを編集することで認知課題を作っていきます。
+
+１層目の課題名フォルダ内（以下だとhelloフォルダ）に，事前に用意されたjavaScriptファイル(demo_jspsych_init.js~jatos_jspsych_run.js),jsPsychライブラリのあるフォルダ(jspsych)，刺激をおくフォルダ(stimuli)，課題のjavaScriptファイル(task.js)があります。基本的には，task.jsを編集することで認知課題を作っていきます。jspsychフォルダは基本的にはいじりませんし，事前に用意されたjavaScriptファイル(demo_jspsych_init.js~jatos_jspsych_run.js)は，task.jsの変更をすれば，「demo_タスク名.html」と「タスク名.html」の両方に変更が反映させるように調整するためのファイル群です。psyinfr::set_cbat()の設計思想としては，認知課題の作成者は基本的に「task.js」を編集していけば，認知課題が作れるというものです（編集すべきファイルを限定して，作業に集中しやすくしました）。また，ゼミや研究者でフォルダ形式を定めることで，可読性と組み合わせが可能になるように工夫をしています。
+
+
+![](fig/jspsych1_fig21.png) 
+
+<br>
+
+### 1.2 HTMLファイルをブラウザで開いてみる
+
+
+さて，早速，用意された「demo_hello.html」を開いてみましょう！RStudio上で「demo_hello.html」をクリックすると選択肢が出てくるので，「View in Web Browser」を選びます。
+
+![](fig/jspsych1_fig22.png)
+
+<br>
+
+すると以下の様が画面が出てきます。既にHTMLも下位ディレクトリも設定できているので，全画面化のための教示がでてきます。「開始」を押してください。
+
+![](fig/jspsych1_fig23.png)
+
+<br>
+
+全画面表示されて困ったかもしれませんが，ブラウザの機能で適宜全画面表示は解除できます。何かキーボードをタイプするとCSVファイルがダウンロードされます。
+
+
+![](fig/jspsych1_fig24.png)
+
+<br>
+
+```psyinfr::set_cbat("hello","7.2.1")``` を使えば，既に(1)全画面化,(2)教示の呈示，(3)データ保存が含まれたテンプレートが用意されます。みなさんは，これからtask.jsを編集して，(2)の部分を拡張することで認知課題を作っていきます。
+
+
 ## 2. jsPsychで文字を画面に表示してみる。
 
-#### 2.1 jsPsychをR Markdownで使うための設定
+それでは，早速，task.jsを編集してみましょう！RStudioでtask.jsをクリックして，開いてください。
 
-まず，さきほどのindex.Rmdを見てください。２行目と３行目は課題名と自分の名前を入れてください（入れなくても動作はします）。それ以外は，14行目までは基本的に変更しないでください。１６行目から２４行目にかけては，jsPsychのプラグインを指定しています。今回は，jspsych-html-keyboard-response.js（HTML形式で刺激を呈示してキーボードから反応を取るもの）とjspsych-html-button-response.js（HTML形式で刺激を呈示してマウスから反応を取るもの）と
-jspsych-fullscreen.js（全画面表示するもの）の３つのプラグインを使います。これからつくる課題によっては，別のプラグインを使うことになります。プラグインを追加する場合は，１６行目から２４行目のブロックに，```tags$script(src='jspsych-6.3.1/plugins/プラグイン名.js')```を追加します。
 
-![](fig/jspsych1_fig17.png)
 
-### 2.2 JavaScriptで課題を作る設定
+
+＜本ページは更新途中です・・・＞
+
+
+![](fig/jspsych1_fig25.png)
+
+<br>
 
 jsPsychの本体のコードは，チャンクを{js}とします（このチャンク内でjsPsychを使ったjsコードを書きます）。こちらがjsPsychで課題を作成する際の本体になります。jsPsychRmdを使った場合は，以下の内容が事前に入っています。
 
 ```
-/* 全画面表示化 */
-var fullscreen = {
-  type: 'fullscreen',
-  message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
-  button_label: "全画面表示に切り替え",
-  fullscreen_mode: true
-};
-
 /* 課題に関するコードを以下に書く */
 var welcome = {
-  type: "html-keyboard-response",
-  stimulus: "こんにちは！"
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: "こんにちは！ この課題は何かキーボードのキーをタイプするとデータを保存して終わります。"
 };
 
-/* タイムラインの設定 */
-var timeline = [];
-//timeline.push(fullscreen);
-timeline.push(welcome);
-
-/* 課題開始 */
-jsPsych.init({
-  timeline: timeline,
-  on_finish: function() {
-    jsPsych.data.displayData();
-  }
-});
+/*タイムラインの設定*/
+var timeline = [fullscreen,welcome];
 ```
 
 まず```var 名前｛type: "プラグイン"｝```で，行動課題の各画面（課題の説明画面，刺激の呈示画面，反応の取得画面など）を作っていきます。今回は，fullscreen（画面を全画面にするかの教示），welcome（画面に「こんにちは！」を呈示する）を用意しています。そして，用意した画面をtimelineにどんどん入れていきます（timelineに入れた順番で画面が用意されます）。今回は，welcomeだけtimelineに入れています（fullscreenは//でコメントアウトされているのでtimelineに入りません）。最後に，jsPsych.initで，timelineに従って実験をするように指定しています。
 
-### 2.2 RmdからHTMLファイルを出力する
 
-Rmdファイルの書き込みが完成したら，以下の緑の丸で囲った「Knit」ボタンをクリックします。これをクリックすると，RmdファイルからHTMLファイル生成されます。HTMLファイルができると，それが別ウィンドウで開かれて，画面上に行動課題が呈示されるかと思います。
-
-<br>
 
 #### 演習課題1
 
