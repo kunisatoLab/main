@@ -1,8 +1,10 @@
 /* 課題に関するコードを以下に書く */
-var welcome = {
+const text = "ニイハオ";
+
+const welcome = {
   type: jsPsychHtmlKeyboardResponse,
-  stimulus: "こんにちは！"
+  stimulus: text
 };
 
 /*タイムラインの設定*/
-var timeline = [fullscreen,welcome];
+const timeline = [welcome];

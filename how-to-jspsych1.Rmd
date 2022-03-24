@@ -112,17 +112,11 @@ psyinfr::set_cbat()で第１引数に課題名を指定すると課題名のフ�
 
 それでは，早速，task.jsを編集してみましょう！RStudioでtask.jsをクリックして，開いてください。
 
-
-
-
-＜本ページは更新途中です・・・＞
-
-
 ![](fig/jspsych1_fig25.png)
 
 <br>
 
-jsPsychの本体のコードは，チャンクを{js}とします（このチャンク内でjsPsychを使ったjsコードを書きます）。こちらがjsPsychで課題を作成する際の本体になります。jsPsychRmdを使った場合は，以下の内容が事前に入っています。
+task.jsを開くと以下のようなコードが書き込んであります。(1)全画面化,(2)教示の呈示，(3)データ保存のうち(1)と(3)は別のところで書かれており，task.jsは(2)の部分を書いています。この(2)を増やしていくことで，認知課題を作っていきます。
 
 ```
 /* 課題に関するコードを以下に書く */
@@ -135,59 +129,42 @@ var welcome = {
 var timeline = [fullscreen,welcome];
 ```
 
-まず```var 名前｛type: "プラグイン"｝```で，行動課題の各画面（課題の説明画面，刺激の呈示画面，反応の取得画面など）を作っていきます。今回は，fullscreen（画面を全画面にするかの教示），welcome（画面に「こんにちは！」を呈示する）を用意しています。そして，用意した画面をtimelineにどんどん入れていきます（timelineに入れた順番で画面が用意されます）。今回は，welcomeだけtimelineに入れています（fullscreenは//でコメントアウトされているのでtimelineに入りません）。最後に，jsPsych.initで，timelineに従って実験をするように指定しています。
+```/* XXXX */``` /と*でコメントアウトができて，XXXは実行されません。何かメモを残す場合に利用ください。jsPsychでは，```var 名前 = ｛type: "プラグイン"｝```で，行動課題の各画面（課題の説明画面，刺激の呈示画面，反応の取得画面など）を作っていきます。```var welcome``` では，jsPsychのjsPsychHtmlKeyboardResponseプラグインを使用するため，typeでjsPsychHtmlKeyboardResponseを指定します。jsPsychHtmlKeyboardResponseは，名前の通り，HTMLファイル形式で定義した刺激を呈示して，キーボードの反応を記録するプラグインです。```stimulus: "こんにちは！ この課題は何かキーボードのキーをタイプするとデータを保存して終わります。"``` としており，「こんにちは！ この課題は何かキーボードのキーをタイプするとデータを保存して終わります。」を画面に呈示します。その他の設定はしていないので，キーボードから何か入力があれば（キーを指定していないのでなんでもいい），終了します。
 
-
+var welcomeみたいに認知課題の各場面が作れたら，どういう順番で出すのかを決めます。それは，```var timeline = [fullscreen,welcome];``` で指定をします。fullscreenはtask.jsとは別のファイルで指定しているので，task.jsになくても使えます。なお，fullscreenは，画面の全画面化なのですが，課題の作成中にテストする場合に全画面化すると少し面倒かもしれないので，```var timeline = [welcome];``` のようにfullscreenをとることで，画面の全画面化をやめることができます。
 
 #### 演習課題1
 
-- 「こんにちは！」の代わりに「こんばんは！」と画面に表示してみましょう。
+- 画面の全画面化をやめて，「こんにちは！ この課題は何かキーボードのキーをタイプするとデータを保存して終わります。」の代わりに「こんばんは！ この課題は何かキーボードのキーをタイプするとデータを保存して終わります。」と画面に表示してみましょう。
 
 ## 3. JavaScriptの基本
 ### 3.1 JavaScriptで変数と配列を使ってみる
 
-プログラミングをしていると，変数というのが出てきます。変数は簡単にいうと箱です。箱ですので，好きなものをいれることができます（ただ，箱によっては，入れられるものと入れられないものがあります）。JavaScriptでは，「これが変数だよ」っと宣言する場合には，varを使います。先程のコードだと，var timeline = []というのがありましたが，これは，timelineという変数に，空っぽの配列[]をいれるよという宣言です(配列については後で説明します)。
+プログラミングをしていると，変数というのが出てきます。変数は簡単にいうと箱です。箱ですので，好きなものをいれることができます（つまり入れるものを変更できます）。JavaScriptでは，「これが変数だよ」っと宣言する場合には，varを使います。なお，箱にいれてから（変数に代入してから）変更しないこともあります。つまり変数だけどjsファイル内で変わらないものの場合です。その場合は，varではなくてconstを使います。
 
-変数を上手く使うことで効率よくコードが書けるので，少し練習をしてみましょう。さきほどは，"こんにちは！"という文字を直接指定して画面に出してみましたが，今度は，textという変数に"ニイハオ"という文字をいれて，そのtextを画面に出すようにしてみましょう。以下のコードを書いて実行してください。
+
+変数を上手く使うことで効率よくコードが書けるので，少し練習をしてみましょう。さきほどは，"こんにちは！〜"という文字をwelcome内で直接指定して画面に出してみましたが，今度は，textという変数に"ニイハオ"という文字をいれて，そのtextを画面に出すようにしてみましょう。以下のコードを書いて実行してください。なお，javascriptでは，；（セミコロン）を文字の区切りに使います。;を用いて，どこからどこまでが１文であるのかを示します。しばらくは以下の練習問題をやりつつ，;の使い方になれていってください。
 
 ```
-/* 全画面表示化 */
-var fullscreen = {
-  type: 'fullscreen',
-  message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
-  button_label: "全画面表示に切り替え",
-  fullscreen_mode: true
-};
-
 /* 課題に関するコードを以下に書く */
-/* 呈示する文字を変数にする */
-var text = "ニイハオ"
-var welcome = {
-  type: "html-keyboard-response",
+const text = "ニイハオ";
+
+const welcome = {
+  type: jsPsychHtmlKeyboardResponse,
   stimulus: text
 };
 
-/* タイムラインの設定 */
-var timeline = [];
-//timeline.push(fullscreen);
-timeline.push(welcome);
-
-/* 課題開始 */
-jsPsych.init({
-  timeline: timeline,
-  on_finish: function() {
-    jsPsych.data.displayData();
-  }
-});
+/*タイムラインの設定*/
+const timeline = [welcome];
 ```
 
 変数に追加して覚えておくと良いのが配列です。配列は，簡単にいうと，複数の値を変数に格納したものです（箱の中に入っている物が複数ある状態です）。例えば，以下のように書くと，textの中には，"こんにちは"から始まって４つの挨拶が入っていると宣言することになります。
 
 ```
-var text = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"]
+const text = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"];
 ```
 
-このtextの中の特定の挨拶を指定したい場合，その配列のインデックスで指定します。難しい言い方をしましたが，配列の何番目か数字で指定するという意味です。その際，その数字は0番目から始まるのに注意します。つまり，上記のtextの場合，text[1]は"ニイハオ"であり，"こんにちは"はtext[0]です。普通だと1番目から数えると思うのに0からスタートするのは忘れないようにしておきましょう（なお，Rだと1からスタートしますし，PythonだとJavaScriptと同じく0からスタートします。ややこしいですね）。
+このtextの中の特定の挨拶を指定したい場合，その配列のインデックスで指定します。難しい言い方をしましたが，配列の何番目か数字で指定するという意味です。その際，その数字は0番目から始まるのに注意します。つまり，上記のtextの場合，text[1]は"ニイハオ"であり，"こんにちは"はtext[0]です。普通だと1番目から数えると思うのに0からスタートするので気をつけましょう（なお，Rだと1からスタートしますし，PythonだとJavaScriptと同じく0からスタートします。ややこしいですね）。
 
 #### 演習課題2
 
@@ -198,64 +175,40 @@ var text = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"]
 3.1で配列を覚えました。その配列の中身４つを順番に呈示したい時，以下のように,welcomeを配列の中身の数だけ書くとそれができます。なお，さきほどまでの設定だと，なにかキーボード入力がないと次の刺激に進まないので，stimulusの後ろに"trial_duration: 1000,"を追加しています。これは刺激を1000ms(1000ミリ秒つまり1秒)呈示するという意味です。
 
 ```
-/* 全画面表示化 */
-var fullscreen = {
-  type: 'fullscreen',
-  message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
-  button_label: "全画面表示に切り替え",
-  fullscreen_mode: true
+/* 課題に関するコードを以下に書く */
+const text = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"];
+
+const welcome1 = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: text[0],
+  trial_duration: 1000,
 };
 
-/* 呈示する文字を変数にする */
-var text = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"]
-
-/* trialで呈示する文字を設定 配列[0] */
-var welcome1 = {
-    type: "html-keyboard-response",
-    stimulus: text[0],
-    trial_duration: 1000
+const welcome2 = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: text[1],
+  trial_duration: 1000,
 };
 
-/* trialで呈示する文字を設定 配列[1]*/
-var welcome2 = {
-    type: "html-keyboard-response",
-    stimulus: text[1],
-    trial_duration: 1000
+const welcome3 = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: text[2],
+  trial_duration: 1000,
 };
 
-/* trialで呈示する文字を設定 配列[2]*/
-var welcome3 = {
-    type: "html-keyboard-response",
-    stimulus: text[2],
-    trial_duration: 1000
+const welcome4 = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: text[3],
+  trial_duration: 1000,
 };
 
-/* trialで呈示する文字を設定 配列[3]*/
-var welcome4 = {
-    type: "html-keyboard-response",
-    stimulus: text[3],
-    trial_duration: 1000
-};
-
-/* タイムラインの設定 */
-var timeline = [];
-//timeline.push(fullscreen);
-timeline.push(welcome1);
-timeline.push(welcome2);
-timeline.push(welcome3);
-timeline.push(welcome4);
-
-/* 課題開始 */
-jsPsych.init({
-  timeline: timeline,
-  on_finish: function() {
-    jsPsych.data.displayData();
-  }
-});
+/*タイムラインの設定*/
+const timeline = [welcome1,welcome2,welcome3,welcome4];
 ```
-これでもいいのですが，配列のインデックス以外welcomの設定に同じコードが４回も繰り返されており，なんという無駄が多いように感じます。単純に繰り替えているだけですので，こういう場合は，繰り返し作業のためのfor文というのを使います。
 
-for文は以下のように書いて，繰り返したい内容をfor(){　  }で囲みます。そいて，for()の()内で，いつから初めていつ繰り返しをやめるのかを設定します。var i = 0; i<4; i++とすると，0からはじまって3まで繰り返します(それぞれ繰り返すたびにその値がiに代入されます)。var i = 3; i<6; i++とすると，3からはじまって5まで繰り返します。
+これでもいいのですが，配列のインデックス以外welcomの設定に同じコードが４回も繰り返されており，なんか無駄が多いように感じます。単純に繰り返しているだけですので，こういう場合は，繰り返し作業のためのfor文というのを使います。
+
+for文は以下のように書いて，繰り返したい内容をfor(){　  }で囲みます。そして，for()の()内で，いつから初めていつ繰り返しをやめるのかを設定します。var i = 0; i<4; i++とすると，0からはじまって3まで繰り返します(それぞれ繰り返すたびにその値がiに代入されます)。var i = 3; i<6; i++とすると，3からはじまって5まで繰り返します。
 
 ```
 for (var i = 0; i<終了したい数+1; i++) {
@@ -266,17 +219,8 @@ for (var i = 0; i<終了したい数+1; i++) {
 for文が分かったところで，さきほどの配列の中身４つを呈示するのは，以下のように書くことができます(今回はtimelineへのpushをfor文内ですることにしたので，タイムラインの設定が最後ではなく前にきています。行動課題を作る場合は，タイムラインは後ろにある方が作りやすいかと思います)。for文で書くとすっきりしますね。さて，for文で書いたものを動かしてみましょう。
 
 ```
-/* 全画面表示化 */
-var fullscreen = {
-  type: 'fullscreen',
-  message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
-  button_label: "全画面表示に切り替え",
-  fullscreen_mode: true
-};
-
 /* タイムラインの設定 */
 var timeline = [];
-//timeline.push(fullscreen);
 
 /* 呈示する文字を変数にする */
 var text = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"]
@@ -289,14 +233,6 @@ for (var i = 0; i<4; i++) {
   };
   timeline.push(welcome);
 }
-
-/* 課題開始 */
-jsPsych.init({
-  timeline: timeline,
-  on_finish: function() {
-    jsPsych.data.displayData();
-  }
-});
 ```
 
 #### 演習課題3

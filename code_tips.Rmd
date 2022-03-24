@@ -124,6 +124,7 @@ title: "Code & Tips"
 - [強化学習事態でのベイズ推論モデル（準備中）](how-to-cognitive-modeling-rl5.html)　○
 
 <br />
+
 ### 逐次サンプリングモデル
 
 - [逐次サンプリングモデル：DDM(準備中)](how-to-cognitive-modeling-ssm1.html)　○
@@ -135,6 +136,7 @@ title: "Code & Tips"
 - [LBAモデルを用いた反応時間の解析:階層ベイズ編](https://ykunisato.github.io/hlbaStan/hlbaStan.html)
 
 <br />
+
 ### その他
 
 - [hBayesDMでベイジアン認知モデリング](how-to-hBayesDM.html)

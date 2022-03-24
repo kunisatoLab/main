@@ -485,10 +485,9 @@ in Web Browser」を選びます。</p>
 <div id="jspsychで文字を画面に表示してみる" class="section level2">
 <h2>2. jsPsychで文字を画面に表示してみる。</h2>
 <p>それでは，早速，task.jsを編集してみましょう！RStudioでtask.jsをクリックして，開いてください。</p>
-<p>＜本ページは更新途中です・・・＞</p>
 <p><img src="fig/jspsych1_fig25.png" /></p>
 <p><br></p>
-<p>jsPsychの本体のコードは，チャンクを{js}とします（このチャンク内でjsPsychを使ったjsコードを書きます）。こちらがjsPsychで課題を作成する際の本体になります。jsPsychRmdを使った場合は，以下の内容が事前に入っています。</p>
+<p>task.jsを開くと以下のようなコードが書き込んであります。(1)全画面化,(2)教示の呈示，(3)データ保存のうち(1)と(3)は別のところで書かれており，task.jsは(2)の部分を書いています。この(2)を増やしていくことで，認知課題を作っていきます。</p>
 <pre><code>/* 課題に関するコードを以下に書く */
 var welcome = {
   type: jsPsychHtmlKeyboardResponse,
@@ -497,11 +496,21 @@ var welcome = {
 
 /*タイムラインの設定*/
 var timeline = [fullscreen,welcome];</code></pre>
-<p>まず<code>var 名前｛type: "プラグイン"｝</code>で，行動課題の各画面（課題の説明画面，刺激の呈示画面，反応の取得画面など）を作っていきます。今回は，fullscreen（画面を全画面にするかの教示），welcome（画面に「こんにちは！」を呈示する）を用意しています。そして，用意した画面をtimelineにどんどん入れていきます（timelineに入れた順番で画面が用意されます）。今回は，welcomeだけtimelineに入れています（fullscreenは//でコメントアウトされているのでtimelineに入りません）。最後に，jsPsych.initで，timelineに従って実験をするように指定しています。</p>
+<p><code>/* XXXX */</code>
+/と*でコメントアウトができて，XXXは実行されません。何かメモを残す場合に利用ください。jsPsychでは，<code>var 名前 = ｛type: "プラグイン"｝</code>で，行動課題の各画面（課題の説明画面，刺激の呈示画面，反応の取得画面など）を作っていきます。<code>var welcome</code>
+では，jsPsychのjsPsychHtmlKeyboardResponseプラグインを使用するため，typeでjsPsychHtmlKeyboardResponseを指定します。jsPsychHtmlKeyboardResponseは，名前の通り，HTMLファイル形式で定義した刺激を呈示して，キーボードの反応を記録するプラグインです。<code>stimulus: "こんにちは！ この課題は何かキーボードのキーをタイプするとデータを保存して終わります。"</code>
+としており，「こんにちは！
+この課題は何かキーボードのキーをタイプするとデータを保存して終わります。」を画面に呈示します。その他の設定はしていないので，キーボードから何か入力があれば（キーを指定していないのでなんでもいい），終了します。</p>
+<p>var
+welcomeみたいに認知課題の各場面が作れたら，どういう順番で出すのかを決めます。それは，<code>var timeline = [fullscreen,welcome];</code>
+で指定をします。fullscreenはtask.jsとは別のファイルで指定しているので，task.jsになくても使えます。なお，fullscreenは，画面の全画面化なのですが，課題の作成中にテストする場合に全画面化すると少し面倒かもしれないので，<code>var timeline = [welcome];</code>
+のようにfullscreenをとることで，画面の全画面化をやめることができます。</p>
 <div id="演習課題1" class="section level4">
 <h4>演習課題1</h4>
 <ul>
-<li>「こんにちは！」の代わりに「こんばんは！」と画面に表示してみましょう。</li>
+<li>画面の全画面化をやめて，「こんにちは！
+この課題は何かキーボードのキーをタイプするとデータを保存して終わります。」の代わりに「こんばんは！
+この課題は何かキーボードのキーをタイプするとデータを保存して終わります。」と画面に表示してみましょう。</li>
 </ul>
 </div>
 </div>
