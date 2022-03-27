@@ -5,12 +5,12 @@ const instruction = {
   stimulus: "<p style='text-align:left'>この課題では, 以下のような色のついた単語を見ていただきます。</p>"+
     "<p style='color:red;font-size:60pt;'>青</p>"+
     "<p style='text-align:left'>単語の意味は無視して，それぞれの単語の「色」を以下のキーボードのキーを押して回答してください。</p>"+
-    "<p style='text-align:left'>左手の人差し指と中指でdとf，右手の人差し指と中指でjとkを押してください。</p>"+
-    "<p style='text-align:left'>・<span style='color:red'>赤色</span>の単語ならdを押す</p>"+
-    "<p style='text-align:left'>・<span style='color:blue'>青色</span>の単語ならfを押す</p>"+
-    "<p style='text-align:left'>・<span style='color:green'>緑色</span>の単語ならjを押す</p>"+
-    "<p style='text-align:left'>・<span style='color:yellow'>黄色</span>の単語ならkを押す</p>"+
-    "<p style='text-align:left'>上の例の場合だと，赤色で「青」と書いてありますので，dを押します</p>"+
+    "<p style='text-align:left'>左手の人差し指と中指でzとx，右手の人差し指と中指でnとmを押してください。</p>"+
+    "<p style='text-align:left'>・<span style='color:red'>赤色</span>の単語ならzを押す</p>"+
+    "<p style='text-align:left'>・<span style='color:blue'>青色</span>の単語ならxを押す</p>"+
+    "<p style='text-align:left'>・<span style='color:green'>緑色</span>の単語ならnを押す</p>"+
+    "<p style='text-align:left'>・<span style='color:yellow'>黄色</span>の単語ならmを押す</p>"+
+    "<p style='text-align:left'>上の例の場合だと，赤色で「青」と書いてありますので，zを押します</p>"+
     "<p style='text-align:left'>キーボードのキーをどれか押すと課題が始まります</p>",
   post_trial_gap: 1000
 };
@@ -18,48 +18,48 @@ const instruction = {
 /* 刺激 */
 const stimuli = [
   {stimulus: "<p style='color:red;font-size:60pt;'>赤</p>",
-  data: { no:'1', stim_type: 'congruent', correct_key: 'd'}},
+  data: { no:'1', stim_type: 'congruent', correct_key: 'z'}},
   {stimulus: "<p style='color:green;font-size:60pt;'>赤</p>",
-  data: { no:'2', stim_type: 'incongruent', correct_key: 'j'}},
+  data: { no:'2', stim_type: 'incongruent', correct_key: 'n'}},
   {stimulus: "<p style='color:yellow;font-size:60pt;'>赤</p>",
-  data: { no:'3', stim_type: 'incongruent', correct_key: 'k'}},
+  data: { no:'3', stim_type: 'incongruent', correct_key: 'm'}},
   {stimulus: "<p style='color:blue;font-size:60pt;'>赤</p>",
-  data: { no:'4', stim_type: 'incongruent', correct_key: 'f'}},
+  data: { no:'4', stim_type: 'incongruent', correct_key: 'x'}},
   {stimulus: "<p style='color:red;font-size:60pt;'>緑</p>",
-  data: { no:'5', stim_type: 'congruent', correct_key: 'd'}},
+  data: { no:'5', stim_type: 'congruent', correct_key: 'z'}},
   {stimulus: "<p style='color:green;font-size:60pt;'>緑</p>",
-  data: { no:'6', stim_type: 'incongruent', correct_key: 'j'}},
+  data: { no:'6', stim_type: 'incongruent', correct_key: 'n'}},
   {stimulus: "<p style='color:yellow;font-size:60pt;'>緑</p>",
-  data: { no:'7', stim_type: 'incongruent', correct_key: 'k'}},
+  data: { no:'7', stim_type: 'incongruent', correct_key: 'm'}},
   {stimulus: "<p style='color:blue;font-size:60pt;'>緑</p>",
-  data: { no:'8', stim_type: 'incongruent', correct_key: 'f'}},
+  data: { no:'8', stim_type: 'incongruent', correct_key: 'x'}},
   {stimulus: "<p style='color:red;font-size:60pt;'>黄</p>",
-  data: { no:'9', stim_type: 'congruent', correct_key: 'd'}},
+  data: { no:'9', stim_type: 'congruent', correct_key: 'z'}},
   {stimulus: "<p style='color:green;font-size:60pt;'>黄</p>",
-  data: { no:'10', stim_type: 'incongruent', correct_key: 'j'}},
+  data: { no:'10', stim_type: 'incongruent', correct_key: 'n'}},
   {stimulus: "<p style='color:yellow;font-size:60pt;'>黄</p>",
-  data: { no:'11', stim_type: 'incongruent', correct_key: 'k'}},
+  data: { no:'11', stim_type: 'incongruent', correct_key: 'm'}},
   {stimulus: "<p style='color:blue;font-size:60pt;'>黄</p>",
-  data: { no:'12', stim_type: 'incongruent', correct_key: 'f'}},
+  data: { no:'12', stim_type: 'incongruent', correct_key: 'x'}},
   {stimulus: "<p style='color:red;font-size:60pt;'>青</p>",
-  data: { no:'13', stim_type: 'congruent', correct_key: 'd'}},
+  data: { no:'13', stim_type: 'congruent', correct_key: 'z'}},
   {stimulus: "<p style='color:green;font-size:60pt;'>青</p>",
-  data: { no:'14', stim_type: 'incongruent', correct_key: 'j'}},
+  data: { no:'14', stim_type: 'incongruent', correct_key: 'n'}},
   {stimulus: "<p style='color:yellow;font-size:60pt;'>青</p>",
-  data: { no:'15', stim_type: 'incongruent', correct_key: 'k'}},
+  data: { no:'15', stim_type: 'incongruent', correct_key: 'm'}},
   {stimulus: "<p style='color:blue;font-size:60pt;'>青</p>",
-  data: { no:'16', stim_type: 'incongruent', correct_key: 'f'}}
+  data: { no:'16', stim_type: 'incongruent', correct_key: 'x'}}
 ];
 
 /* stroop刺激の呈示 */
 const stroop = {
   timeline:[{
     type: jsPsychHtmlKeyboardResponse,
-    choices: ["d","f","j","k"],
+    choices: ["z","x","n","m"],
     stimulus: jsPsych.timelineVariable('stimulus'),
     trial_duration: 2000,
     response_ends_trial: true,
-    prompt: '赤色ならd, 青色ならf, 緑色ならj, 黄色ならk',
+    prompt: '赤色ならz, 青色ならx, 緑色ならn, 黄色ならm',
     data: jsPsych.timelineVariable('data'),
     on_finish: function(data){
       var correct = 0;
