@@ -490,100 +490,87 @@ al.(2014)を参考にして，最大2000ms選択画面を呈示する（押し�
 <div id="教示と課題のメインブロックを最もシンプルな形で作る"
 class="section level2">
 <h2>3. 教示と課題のメインブロックを最もシンプルな形で作る</h2>
-<div id="教示ブロックを作成する" class="section level3">
-<h3>3.1 教示ブロックを作成する</h3>
-<p>上記を考慮しつつ，わかりやすさを考えて，以下のような教示をします。</p>
-<pre><code>画面に２つの図形がでてきますので，どちらかの図形を選択してください。
-あなたの選択に対して，ポジティブな反応（緑色の笑顔）かネガティブな反応（赤色の悲しい顔）が出ます。
-一方の図形はポジティブな反応が出やすく，もう一方はそうではありません。
-できるだけ，ポジティブな反応が得られるように，選択をしてください。
-
-なお，図形とそれに対する反応との関係は途中で変わることがあります。
-また，図形の出る位置（左右）は頻繁に変わります。
-
-キーボードのキーをどれか押して，課題を始めてください。</code></pre>
-<div id="演習課題1" class="section level4">
-<h4>演習課題1</h4>
-<p><strong>RStudioのConsoleで以下を実行して，逆転学習課題(RL)のフォルダとファイルをを用意します</strong></p>
+<p>まず，<strong>RStudioのConsoleで以下を実行して，逆転学習課題(RL)のフォルダとファイルを用意します</strong></p>
 <pre class="r"><code>psyinfr::set_cbat(&quot;RL&quot;,&quot;7.2.1&quot;)</code></pre>
 <p>＊国里ゼミ以外でResearch
 Compendiumを使ってない場合は，カレントディレクトリーにexerciseという名前のフォルダを作ってもらえば，そちらにフォルダを用意します。</p>
-<p>それから，ストループ課題を参考に，上記の教示を出してみましょう！</p>
+<div id="教示ブロックを作成する" class="section level3">
+<h3>3.1 教示ブロックを作成する</h3>
+<p>以下のような教示を提示することにします。</p>
+<pre><code>これから画面に２つの図形がでてきますので，どちらかの図形を選択してください。
+あなたの選択に対して，ポジティブな反応（緑色の笑顔）かネガティブな反応（赤色の悲しい顔）が返ってきます。
+一方の図形はポジティブな反応になりやすく，もう一方はそうではありません。
+できるだけ，ポジティブな反応が得られるように，選択をしてください。
+
+なお，図形と返ってくる反応との関係は途中で変わることがあります。
+また，図形の出る位置（左右）は頻繁に変わります。
+
+それでは，キーボードのキーをどれか押して，課題を始めてください。</code></pre>
+<div id="演習課題1" class="section level4">
+<h4>演習課題1</h4>
+<p><a href="https://kunisatolab.github.io/main/how-to-jspsych2.html" target="_blank">ストループ課題</a>を参考に，上記の教示を出してみましょう！なお，
+<code>"&lt;p&gt;&lt;br&gt;&lt;/p&gt;"</code>
+を入れれば，１行空けられます。</p>
 </div>
 </div>
 <div id="メインブロック２つの画像刺激を呈示する" class="section level3">
 <h3>3.2 メインブロック：２つの画像刺激を呈示する</h3>
-<p>さて，メインブロックを作りましょう。以下の”s1.jpeg”（黄色の縦線）と”s2.jpeg”(青の横線)を呈示する刺激に使いましょう。画像刺激は準備をしておきましたので，以下のコードを実行して，RLフォルダ内のstimuliにダウンロードしましょう。</p>
-<pre><code>temp &lt;- tempfile()
-download.file(&quot;https://github.com/kunisatoLab/main/raw/master/materials/stimuli.zip&quot;,temp)
-unzip(temp, exdir = paste0(getwd(),&quot;/exercises/RL/&quot;))
-unlink(temp)</code></pre>
-<p>＊国里ゼミ以外でResearch
-Compendiumを使ってない場合は，以下を実行してください。</p>
-<pre><code>temp &lt;- tempfile()
-download.file(&quot;https://github.com/kunisatoLab/main/raw/master/materials/stimuli.zip&quot;,temp)
-unzip(temp, exdir = paste0(getwd(),&quot;/RL/&quot;))
-unlink(temp)</code></pre>
+<p>さて，メインブロックを作りましょう。以下の”s1.jpeg”（黄色の縦線）と”s2.jpeg”(青の横線)を呈示する刺激に使いましょう。psyinfr::set_cbat()を実行した際に，今回使用する画像がstimuliフォルダ内に保存されるようになっています。“s1.jpeg”と”s2.jpeg”があるか確認ください。</p>
 <p><img src="fig/reversal_learning_fig2.jpeg" width="200">　
 <img src="fig/reversal_learning_fig3.jpeg" width="200"></p>
-<p>今回は，画像刺激を呈示して，マウスでのクリックをもとめるので，jspsych-html-button-responseプラグインを使います。以下のように，RMarkdownにもプラグインを追加しておきましょう。</p>
-<p><img src="fig/reversal_learning_fig4.png" width="700"></p>
-<p>jspsych-html-button-responseプラグインは，以下のように使います。通常は，Stimulusになんらかの刺激をいれて，choicesやbutton_htmlの部分でマウスで選択するボタンを定義します(trial_durationは最大の呈示時間で，デフォルトでマウスクリックで次の試行に進みます)。今回は，ボタン部分に上記の２つの画像刺激を出して，それをクリックさせるようにします。そこで，choicesの部分で[]内に２つ画像を呈示するためのコードを書いています。divとか出てきて謎と思うかもしれませんが，positionのところで画像をだす位置を決めていて(画面のtopつまり上から50%くらい，leftから20%くらいに呈示すると指定している)，img以降で画像のある場所と画像名を指定し，widthで大きさを指定しています。その次も同様に定義しています。</p>
-<pre><code>var choice = {
+<p>今回は，画像刺激を呈示して，マウスでのクリックをもとめるので，html-button-responseプラグインを使います。html-button-responseプラグインは，以下のように使います。通常は，stimulusになんらかの刺激をいれて，choicesやbutton_htmlの部分でマウスで選択するボタンを定義します(trial_durationは最大の呈示時間になります，これを設定しないとマウスクリックしないと次の試行に進みません)。今回は，ボタン部分に上記の２つの画像刺激を出して，それをクリックさせるようにしたいと思います。そこで，choicesの部分で[]内に２つ画像を呈示するためのコードを書いています。divとか出てきて謎と思うかもしれませんが，positionのところで画像をだす位置を決めていて(画面のtopつまり上から50%くらい，leftから20%くらいに呈示すると指定している)，img以降で画像のある場所と画像名を指定し，widthで大きさを指定しています。その次も同様に定義しています。</p>
+<pre><code>const choice = {
     stimulus: &#39;&#39;,
-    type: &#39;html-button-response&#39;,
-    choices: [&#39;&lt;div style=&quot;position: absolute; top: 50%; left: 20%&quot;&gt;&lt;img src=&quot;stimuli/s1.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;,
-    &#39;&lt;div style=&quot;position: absolute; top: 50%; right: 20%&quot;&gt;&lt;img src=&quot;stimuli/s2.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;],
+    type: jsPsychHtmlButtonResponse,
+    choices: [&#39;&lt;div style=&quot;position: absolute; top: 50%; left: 20%&quot;&gt;&lt;img src=&quot;RL/stimuli/s1.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;,
+    &#39;&lt;div style=&quot;position: absolute; top: 50%; right: 20%&quot;&gt;&lt;img src=&quot;RL/stimuli/s2.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;],
     button_html: &#39;%choice%&#39;,
     trial_duration: 2000
 };</code></pre>
-<p>上記が追加できたら，timelineにchoiceも追加しておきましょう。では，Knitして，画像が呈示されるか確かめましょう。</p>
-<pre><code>var timeline = [];
-timeline.push(instructions);
-timeline.push(choice);</code></pre>
+<p>上記が追加できたら，timelineにchoiceも追加しておきましょう。demo_RL.htmlをブラウザで開いて，教示と図形２つが呈示されるか確認しましょう。</p>
+<pre><code>/*タイムラインの設定*/
+const timeline = [instruction, choice];</code></pre>
 <div id="演習課題2" class="section level4">
 <h4>演習課題2</h4>
-<p>上記のコードを使って，(1)s1.jpegやs2.jpeg以外の画像を呈示してみる，(2)呈示した画像を左上や右下などの別の位置にも呈示してみましょう！</p>
+<p>上記のコードを使って，(1)s1.jpegやs2.jpeg以外の画像を呈示してみる（stimuliフォルダ内にいくつか画像があるので，それらを呈示してみましょう），(2)呈示した画像を左上や右下などの別の位置にも呈示してみましょう！</p>
 </div>
 </div>
 <div id="メインブロック画像刺激のリストを使って刺激呈示する"
 class="section level3">
 <h3>3.3 メインブロック：画像刺激のリストを使って刺激呈示する</h3>
-<p>さて，課題は80試行もあるので，ストループ課題と同じ用に，刺激をリストにした上で呈示することにします。ストループと同じ用に，stimuliに追加していきます。stimuli内のstimulusの[]内に２つ分の画像の呈示に関する指定をいてていきます。以下で３試行分の画像が準備できました。R
-Markdownに追加します。</p>
-<pre><code>var stimuli = [
+<p>さて，課題は80試行もあるので，ストループ課題と同じ用に，刺激をリストにした上で呈示することにします。ストループと同じ用に，stimuliに追加していきます。stimuli内のstimulusの[]内に２つ分の画像の呈示に関する指定をいれていきます。とえいあえず，以下に３試行分のリストを準備しました(2試行目で図形の左右が入れ替わるようにしました)。task.jsに追加してください。</p>
+<pre><code>const stimuli = [
  {
-    stimulus: [&#39;&lt;div style=&quot;position: absolute; top: 50%; left: 20%&quot;&gt;&lt;img src=&quot;stimuli/s1.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;,
-    &#39;&lt;div style=&quot;position: absolute; top: 50%; right: 20%&quot;&gt;&lt;img src=&quot;stimuli/s2.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;]
+    stimulus: [&#39;&lt;div style=&quot;position: absolute; top: 50%; left: 20%&quot;&gt;&lt;img src=&quot;RL/stimuli/s1.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;,
+    &#39;&lt;div style=&quot;position: absolute; top: 50%; right: 20%&quot;&gt;&lt;img src=&quot;RL/stimuli/s2.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;]
   },{
-    stimulus: [&#39;&lt;div style=&quot;position: absolute; top: 50%; right: 20%&quot;&gt;&lt;img src=&quot;stimuli/s1.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;,
-    &#39;&lt;div style=&quot;position: absolute; top: 50%; left: 20%&quot;&gt;&lt;img src=&quot;stimuli/s2.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;]
+    stimulus: [&#39;&lt;div style=&quot;position: absolute; top: 50%; right: 20%&quot;&gt;&lt;img src=&quot;RL/stimuli/s1.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;,
+    &#39;&lt;div style=&quot;position: absolute; top: 50%; left: 20%&quot;&gt;&lt;img src=&quot;RL/stimuli/s2.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;]
   },{
-    stimulus: [&#39;&lt;div style=&quot;position: absolute; top: 50%; left: 20%&quot;&gt;&lt;img src=&quot;stimuli/s1.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;,
-    &#39;&lt;div style=&quot;position: absolute; top: 50%; right: 20%&quot;&gt;&lt;img src=&quot;stimuli/s2.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;]
+    stimulus: [&#39;&lt;div style=&quot;position: absolute; top: 50%; left: 20%&quot;&gt;&lt;img src=&quot;RL/stimuli/s1.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;,
+    &#39;&lt;div style=&quot;position: absolute; top: 50%; right: 20%&quot;&gt;&lt;img src=&quot;RL/stimuli/s2.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;]
   }
 ]</code></pre>
-<p>上記で準備したリストをchoice内で使います。choice内にtimelineを追加して，最後にtimeline_variablesに上記のstimuliを指定しています。そして，さきほど直接，画像の指定情報をいれていたchoicesには，jsPsych.timelineVariable(‘stimulus’)を追加します。これで，stimuliリスト内を上から順番に実行していって，stimulusの情報がchoiceに入って画面に呈示されます。</p>
-<pre><code>var choice = {
-    timeline:[{
-      stimulus: &#39;&#39;,
-      type: &#39;html-button-response&#39;,
-      choices: jsPsych.timelineVariable(&#39;stimulus&#39;),
-      button_html: &#39;%choice%&#39;,
-      trial_duration: 2000
-    }],
-    timeline_variables: stimuli
+<p>上記で準備したリストをchoice内で使います。choice内にtimelineを追加して，timeline_variablesに上記のstimuliを指定しています。そして，さきほど直接，画像の指定情報をいれていたchoicesには，jsPsych.timelineVariable(‘stimulus’)を追加します。これで，stimuliリスト内を上から順番に実行していって，stimulusの情報がchoiceに入って画面に呈示されます。</p>
+<pre><code>const choice = {
+  timeline:[{
+    stimulus: &#39;&#39;,
+    type: jsPsychHtmlButtonResponse,
+    choices: jsPsych.timelineVariable(&#39;stimulus&#39;),
+    button_html: &#39;%choice%&#39;,
+    trial_duration: 2000
+  }],
+  timeline_variables: stimuli
 };</code></pre>
-<p>ここれ一旦，knitして，画像が３試行呈示されるか確認をしましょう。</p>
+<p>これをtask.jsに追加して，動作確認してみましょう。図形の位置が変わりつつ３回選択画面が出てきたらうまくいっています。</p>
 </div>
 <div id="メインブロック画像刺激のリストを使って刺激呈示する-1"
 class="section level3">
 <h3>3.4 メインブロック：画像刺激のリストを使って刺激呈示する</h3>
-<p>さて，ここからが少し大変になってきます。先程のstimuliのリストを長くしていって，80試行分準備すればよいのですが，かなり長いですし，おそらくミスも生じるかと思います。また，刺激を左右にランダムに出したり，報酬の確率を80%などにするのは手作業では難しいです。そこで，それらの作業をRを使って実行し(こういう操作をする上ではRは便利です)，Rで作ったリストをjsPsych側に読み込ませて，刺激呈示することにしましょう。</p>
-<p>早速，Rで作業ができるように，RMarkdownにRチャンクを追加します。その際に，<strong>「r,
-results=“asis”」</strong>を必ず入れるようにしましょう（通常はrだけが入っています）。</p>
-<p><img src="fig/reversal_learning_fig5.png" width="750"></p>
-<p>それでは，さっそくRで刺激リストを作っていきましょう。</p>
+<p>先程のstimuliのリストを長くしていって，80試行分準備すればよいのですが，かなり長いですし，おそらくミスも生じるかと思います。また，刺激を左右にランダムに出したり，報酬の確率を80%などにするのは手作業では難しいです。そこで，それらの作業をRを使って実行し(こういう操作をする上でRは便利です)，Rで作ったリストをtask.jsで使って，刺激呈示することにしましょう。</p>
+<p>それでは，さっそくRで刺激リストを作っていきましょう。RStudioで「File」→「New
+file」→「R script」を選択して，新たにRのファイルを開いてください。</p>
+<p><img src="fig/jspsych3_fig1.png" /></p>
 <div id="画像を左右のどちらに出すのかに関するリストの作成"
 class="section level4">
 <h4>画像を左右のどちらに出すのかに関するリストの作成</h4>

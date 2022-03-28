@@ -12,5 +12,14 @@ const instruction = {
   "<p style='text-align:left'>それでは，キーボードのキーをどれか押して，課題を始めてください。</p>"
 };
 
+const choice = {
+    stimulus: '',
+    type: jsPsychHtmlButtonResponse,
+    choices: ['<div style="position: absolute; top: 65%; left: 20%"><img src="RL/stimuli/s1s.jpeg" width="200px"/></div>',
+    '<div style="position: absolute; top: 30%; right: 20%"><img src="RL/stimuli/reward.jpeg" width="200px"/></div>'],
+    button_html: '%choice%',
+    trial_duration: 2000
+};
+
 /*タイムラインの設定*/
-const timeline = [instruction];
+const timeline = [instruction, choice];
