@@ -333,18 +333,7 @@ for (i in 1:nrow(RL_stim)) {
 
 #### 演習課題3
 
-試行数を40試行にしてみましょう（この場合，20試行で逆転させましょう）！
-
-
-
-
-
-
-＜更新中です，以降は前の内容です＞
-
-
-
-
+総試行数を半分の40試行にしてみましょう（この場合，20試行で逆転させましょう）！
 
 
 ## 4. 課題のメインブロックに機能を追加をする
@@ -354,17 +343,22 @@ for (i in 1:nrow(RL_stim)) {
 
 ### 4.1 選択肢が分かるように呈示する
 
-ここまで白背景で課題を作ってきたのですが，今回は背景色を黒にしてみましょう。HTMLではbodyってところで背景色を設定できるのですが，R Markdownでやる場合は，htmltoolsを使って，tags$bodyで指定をします。#000000は黒色です。文字は，text="#ffffff"で白色を指定します。
+ここまで白背景で課題を作ってきたのですが，今回は背景色を黒にしてみましょう。背景色の変更は，javascriptではなくてHTMLで行います。まずは，demo_RL.htmlをクリックして，「Open in Editor」を選択して，HTMLファイルを開いてみましょう。
 
+![](fig/jspsych3_fig3.png)
+
+開くと，以下のようになります。bodyってところで背景色を設定できます。
+![](fig/jspsych3_fig4.png)
+
+以下のように，`<body>`のところを変更して，背景色(bgcolor)を黒(`#000000`)は黒色，文字(text)を白(`#ffffff`)にします。
+
+```{r eval=FALSE, include=TRUE}
+ <body bgcolor="#000000", text="#ffffff">
 ```
-library(htmltools)
-tagList(
-tags$body(bgcolor="#000000", text="#ffffff"),
-tags$script(src='jspsych-6.3.1/jspsych.js'),
-tags$script(src='jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js'),
-tags$script(src='jspsych-6.3.1/plugins/jspsych-html-button-response.js')
-)
-```
+
+
+![](fig/jspsych3_fig5.png)
+
 
 さて，参加者が選択した方の図形が分かるように，以下のように選択した図形はオレンジの枠で囲まれるようにします(それぞれ，ファイル名は，s1s.jpegとs2s.jpegです)。
 
@@ -385,36 +379,47 @@ tags$script(src='jspsych-6.3.1/plugins/jspsych-html-button-response.js')
 
 - else，つまり上記以外の場合は，last_selectがnull，つまり反応が無い場合です，そこで，「時間内に選択を行ってください」という教示を呈示します。
 
+
+
+
+
+
+
+
+
+
+<更新中　　枠の呈示においてエラーがでている・・・>
+
+
 ```
-var choice = {
-    timeline:[{
-      stimulus: '',
-      type: 'html-button-response',
-      choices: jsPsych.timelineVariable('stimulus'),
-      button_html: '%choice%',
-      trial_duration: 2000,
-      data: jsPsych.timelineVariable('data')
-    },{
-      type: 'html-keyboard-response',
-      stimulus: function(){
-        var last_select = jsPsych.data.get().last(1).values()[0].response;
-        var last_left_right_s1 = jsPsych.data.get().last(1).values()[0].left_right_s1;
-        if (last_select==0 && last_left_right_s1 == 1){
-           return "<p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p>"
-        } else if (last_select==0 && last_left_right_s1 == 2){
-           return "<p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p>"
-        } else if (last_select==1 && last_left_right_s1 == 1){
-           return "<p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p>"
-        } else if (last_select==1 && last_left_right_s1 == 2){
-           return "<p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p>"
-        } else {
-           return '<p style="font-size: 48px">時間内に選択を行ってください</p>'
-        }
-      },
-      trial_duration: 500,
-      response_ends_trial: false,
-    }],
-    timeline_variables: stimuli
+const choice = {
+  timeline:[{
+    stimulus: '',
+    type: jsPsychHtmlButtonResponse,
+    choices: jsPsych.timelineVariable('stimulus'),
+    button_html: '%choice%',
+    data: jsPsych.timelineVariable('data')
+  　},{
+    type: jsPsychHtmlButtonResponse,
+    stimulus: function(){
+      var last_select = jsPsych.data.get().last(1).values()[0].response;
+      var last_left_right_s1 = jsPsych.data.get().last(1).values()[0].left_right_s1;
+      if (last_select==0 && last_left_right_s1 == 1){
+        return "<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p>"
+      } else if (last_select==0 && last_left_right_s1 == 2){
+        return "<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p>"
+      } else if (last_select==1 && last_left_right_s1 == 1){
+        return "<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p>"
+      } else if (last_select==1 && last_left_right_s1 == 2){
+        return "<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p>"
+      } else {
+        return '<p style="font-size: 48px">時間内に選択を行ってください</p>'
+      }
+    },
+    trial_duration: 500,
+    response_ends_trial: false,
+  }],
+  timeline_variables: stimuli
 };
 ```
 
