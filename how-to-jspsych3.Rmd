@@ -184,23 +184,9 @@ const choice = {
 
 ![](fig/jspsych3_fig1.png)
 
-
-
-
-
-<更新中：ここから古いバージョンです>
-
-
-
-
-
-
-
-
-
 #### 画像を左右のどちらに出すのかに関するリストの作成
 
-s1刺激を左右のどちらに出すのかのリスト(left_right_s1)とs2刺激を左右のどちらに出すのかのリスト（left_right_s1）を作ります。やり方はシンプルで，1=left, 2= rightとした上で，1と2を５個ずつ用意した10試行分を1ブロックにして，シャッフルするのを８回行って，最終的に80試行分の左右の呈示情報リストを作成します。1と2を40個ずつ用意して，一気に80試行をシャッフルすることも考えたかもしれませんが，そうすると，すごい偏ることがあります（20試行s1が右ということも生じ得ます）。そうすると，そこに意図が発生してしまって思わぬ結果になるかもしれません。そこで，今回は疑似ランダム化として，80試行を10試行で１ブロックにして，ブロックごとにシャッフルすることにしました。以下のコードを順番に読んで，for文で8回繰り返し，sample()でシャッフルし，c()で２つのリストをつなげているのを理解ください。最後に，1や２みたいな数字ではなく，"left","right"という情報もあとで使うので，ifelse文でleft_right_s1_text, left_right_s2_textというものも作成しています。**まずは，R Markdownファイルにではなく，Consoleにコピペして，動作確認をしましょう。**
+s1刺激を左右のどちらに出すのかのリスト(left_right_s1)とs2刺激を左右のどちらに出すのかのリスト（left_right_s2）を作ります。やり方はシンプルで，1=left, 2= rightとした上で，1と2を５個ずつ用意した10試行分を1ブロックにして，シャッフルするのを８回行って，最終的に80試行分の左右の刺激呈示リストを作成します。1と2を40個ずつ用意して，一気に80試行をシャッフルすることも考えたかもしれませんが，そうすると，すごい偏ることがあります（20試行s1が右ということも生じ得ます）。そうすると，そこになんらかの実験者の意図が発生しているように見えてしまうかもしれません。そこで，今回は疑似ランダム化として，80試行を10試行で１ブロックにして，ブロックごとにシャッフルすることにしました。以下のコードを順番に読んで，for文で8回繰り返し，sample()でシャッフルし，c()で２つのリストをつなげているのを理解ください。最後に，1や２みたいな数字ではなく，"left","right"という情報もあとで使うので，ifelse文でleft_right_s1_text, left_right_s2_textというものも作成しています。**以下をのコードをさきほど作ったstimuli.Rにコピペして，実行してみまましょう。**
 
 ```{r}
 #### 呈示される２つの刺激(s1とs2)が左右のどっちに出るかを決めるリストを作る(２つの刺激がどっちにでるかはランダム)
@@ -223,7 +209,7 @@ left_right_s1_text <- ifelse(left_right_s1==1, "left", "right")
 left_right_s2_text <- ifelse(left_right_s2==1, "left", "right")
 ```
 
-上記をConseleで実行できたら，以下のコードも実行して，left_right_s1とleft_right_s2が上手く設定できているか確認をしてみましょう。なお，以下のplot()は動作確認用ですので，R Markdownにはコピペしないでください。大きな偏りなくランダムにleft(1)やright(2)になっているので，良さそうですね。**問題なさそうなら，R Markdownの「r, results="asis"」チャンクに，上記のRコードコピペして追加ください(確認用のplotはコピペしない)。**
+上記を実行できたら，以下のコードも実行して，left_right_s1とleft_right_s2が上手く設定できているかプロットして確認をしてみましょう。大きな偏りなくランダムにleft(1)やright(2)になっているので，良さそうですね。
 
 ```{r}
 plot(left_right_s1)
@@ -232,7 +218,7 @@ plot(left_right_s2)
 
 #### 刺激を選択した時のフィードバックのリストの作成
 
-次に，刺激を選択した時のフィードバックのリストを作ります。s1とs2でそれぞれ，reward_s1とreward_s2を作ります。やり方は，左右の呈示と同じで，10試行で１ブロックにしてシャッフルをしています。なお，8:2=報酬:罰（つまり4:1=報酬:罰）だったので，1ブロックの刺激は報酬8試行，罰2試行で作成して，シャッフルします(2:8=報酬:罰の時は逆)。8:2で作ってもいいのですが，repのc()内に打ち込む数が増えるとミスがふえますので，4:1で2回繰り返すことで，報酬8試行，罰2試行にしています。ここでは，報酬は1，罰は0としています（なんでもいいのですが，この課題でデータをとって，解析をする際に少しだけ便利です）。先ほどと違うのは，最初の4ブロックと後半の4ブロックでは，reward_s1とreward_s2に追加されるリストが逆転することです（最初に8:2=報酬:罰だったら，次は2:8=報酬:罰になる）。
+次に，刺激を選択した時のフィードバックのリストを作ります。s1とs2に対して，それぞれreward_s1とreward_s2を作ります。やり方は，左右の呈示と同じで，10試行で１ブロックにしてシャッフルをしています。なお，8:2=報酬:罰（つまり4:1=報酬:罰）だったので，1ブロックの刺激は報酬8試行，罰2試行で作成して，シャッフルします(2:8=報酬:罰の時は逆)。8:2で作ってもいいのですが，repのc()内に打ち込む数が増えるとミスがふえますので，4:1で2回繰り返すことで，報酬8試行，罰2試行にしています。ここでは，報酬は1，罰は0としています（1や0でなくてもいいのですが，この方が解析をする際に少しだけ便利です）。先ほどと違うのは，最初の4ブロックと後半の4ブロックでは，reward_s1とreward_s2に追加されるリストが逆転することです（最初に8:2=報酬:罰だったら，次は2:8=報酬:罰になる）。**以下をのコードをstimuli.Rにコピペして，追加・実行してみまましょう。**
 
 ```{r}
 #### s1とs2を選んだ時のフィードバック(reward=1, punishment=0)のリストを作る
@@ -260,7 +246,7 @@ for (i in 1:repeat_shuffle) {
 }
 ```
 
-**上記をConseleで実行してから，以下のplot用のコードも実行して，reward_s1とreward_s2が上手く設定できているか確認をしてみましょう。**なお，以下のplot()は動作確認用ですので，R Markdownにはコピペしないでください。真ん中くらいで1と0の出てくる頻度が変わっていますね。問題なさそうなら，R Markdownの「r, results="asis"」チャンクに，確認用plot以外をコピペして追加ください。
+以下のplot用のコードも実行して，reward_s1とreward_s2が上手く設定できているか確認をしてみましょう。reward_s1は前半40試行で１が多くて，reward_s2は後半40試行で１が多いのがわかりますね。
 
 ```{r}
 plot(reward_s1)
@@ -269,99 +255,96 @@ plot(reward_s2)
 
 #### 刺激リストをデータフレーム化
 
-さて，上記の情報をもとにして，刺激リストをRのデータフレーム形式で作成してみましょう。最初にHTML用の刺激の設定情報をいくつか設定しておきます（画像をどこにだすかとか，どのくらいの大きさで出すかといった情報です）。その後，それらの設定と左右の呈示リストをあわせて，画像を呈示するための刺激リストを作成します。HTMLファイル内の記述のため「<p...」みたいな記号とtop_bottom_s1みたいな変数を組み合わせて，paste関数を使って，3.3で作ったような刺激リストを作成します。
+さて，上記の情報をもとにして，刺激リストをRのデータフレーム形式で作成してみましょう。最初にHTML用の刺激の設定情報をいくつか設定しておきます（画像をどこにだすかとか，どのくらいの大きさで出すかといった情報です）。その後，それらの設定と左右の呈示リストをあわせて，画像を呈示するための刺激リストを作成します。HTMLファイル内の記述のため「<p...」みたいな記号とtop_bottom_s1みたいな変数を組み合わせて，paste関数を使って，3.3で作ったような刺激リストを作成します。**以下をのコードをstimuli.Rにコピペして，追加・実行してみまましょう。**
 
-```
+
+```{r eval=FALSE, include=TRUE}
 #### 左右以外の上下の位置(topから50%の位置に刺激を呈示する)や使う画像のパスの情報（今回は全施行で以下は変わらない）
 # s1の設定
 top_bottom_s1 = "top"
 top_bottom_position_s1 = 40
-image_path_s1 = "stimuli/s1.jpeg"
+image_path_s1 = "RL/stimuli/s1.jpeg"
 image_width_s1 = 200
 left_right_position_s1 <- 20
 # s2の設定
 top_bottom_s2 = "top"
 top_bottom_position_s2 = 40
-image_path_s2 = "stimuli/s2.jpeg"
+image_path_s2 = "RL/stimuli/s2.jpeg"
 image_width_s2 = 200
 left_right_position_s2 <- 20
 #### 刺激リストの作成(HTML用に調整)
 stimulus <- paste("[\"<p style='position: absolute; ",
-                       top_bottom_s1,": ",
-                       top_bottom_position_s1,"%;",
-                       left_right_s1_text,": ",
-                       left_right_position_s1,"%'><img src='",
-                       image_path_s1,"' width='",
-                       image_width_s1,"px'/></p>\",",
-                       "\"<p style='position: absolute; ",
-                       top_bottom_s2,": ",
-                       top_bottom_position_s2,"%;",
-                       left_right_s2_text,": ",
-                       left_right_position_s2,"%'><img src='",
-                       image_path_s2,"' width='",
-                       image_width_s2,"px'/></p>\"]",sep="")
+                  top_bottom_s1,": ",
+                  top_bottom_position_s1,"%;",
+                  left_right_s1_text,": ",
+                  left_right_position_s1,"%'><img src='",
+                  image_path_s1,"' width='",
+                  image_width_s1,"px'/></p>\",",
+                  "\"<p style='position: absolute; ",
+                  top_bottom_s2,": ",
+                  top_bottom_position_s2,"%;",
+                  left_right_s2_text,": ",
+                  left_right_position_s2,"%'><img src='",
+                  image_path_s2,"' width='",
+                  image_width_s2,"px'/></p>\"]",sep="")
 ```
 
+上記で作ったstimulusのリストとその他のリストを結合してデータフレームを作ります。**以下をのコードをstimuli.Rにコピペして，追加・実行してみまましょう。**
 
-上記で作ったstimulusのリストとその他のリストを結合してデータフレームを作ります。一応，これをcsvファイルで保存しておいて，後で「どういうリストだったけ？」と思った時に簡単に確認できるようにしておきます。
-
-```
+```{r eval=FALSE, include=TRUE}
 #### 上記で作ったものをデータフレーム化しておく
 RL_stim <- data.frame(stimulus,
                       left_right_s1,
                       left_right_s2,
                       reward_s1,
                       reward_s2)
-# どういう刺激リストを作成したのかの情報も残しておく
-write.csv(RL_stim,"RL_stim.csv")
 ```
 
 #### Rで作った刺激リストをJson形式で出力
 
-さて，刺激リストができたので，それらをJson形式で出力します（ストループの時に作ったやたら{}を使う形式のことです）。scriptで始まってscriptで終わるわけですが，その間に，stimuli内に1試行ずつstimulusとdataを80試行追加しています。
+さて，刺激リストができたので，それらをJson形式で出力します（ストループの時に作ったやたら{}を使う形式のことです）。scriptで始まってscriptで終わるわけですが，その間に，stimuli内に1試行ずつstimulusとdataを80試行追加しています。**以下をのコードをstimuli.Rにコピペして，追加・実行してみまましょう。**
 
-```
+```{r eval=FALSE, include=TRUE}
 #### 上記で作ったデータフレームをJson形式で出力する
+stimuli_file <- "exercise/RL/RL/stimuli/stimuli.txt"
+file.create(stimuli_file)
+
 for (i in 1:nrow(RL_stim)) {
-  if(i==1){cat("<script>", "var stimuli = [")}
-  cat("{stimulus:",as.character(RL_stim$stimulus[i]),",
+  if(i==1){write("const stimuli = [",stimuli_file,append=TRUE)}
+  write(paste0("{stimulus:",as.character(RL_stim$stimulus[i]),",
       data:{left_right_s1:",RL_stim$left_right_s1[i],
       ", left_right_s2:",RL_stim$left_right_s2[i],
       ", reward_s1:",RL_stim$reward_s1[i],
-      ", reward_s2:",RL_stim$reward_s2[i],"}}")
+      ", reward_s2:",RL_stim$reward_s2[i],"}}"),stimuli_file,append=TRUE)
   if(i==nrow(RL_stim)){
-    cat("]; </script>")
+    write("]",stimuli_file,append=TRUE)
   }else{
-    cat(",")
+    write(",",stimuli_file,append=TRUE)
   }
 }
 ```
 
-上記のコードを以下のような感じのJson形式の出力が出てきます。これができたら成功です。R上で刺激リストの処理ができて，jsPsychで読み込める形式で出力できました。
+上記のコードを実行すると，exercise＞RL＞RL＞stimuliフォルダ内にstimuli.txtができて，以下のような感じのJson形式の出力が書き込まれています。こちらの内容をtask.jsコピペして，const stimuli =・・・を上書きします。
 
-```
-<script> var stimuli = [
-  {
-  stimulus: ["<p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p>",
-  "<p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p>"] ,
-  data:{left_right_s1: 1 , left_right_s2: 2 , reward_s1: 1 , reward_s2: 0 }
-  },{
-  stimulus: ["<p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p>",
-  "<p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p>"] ,
-  data:{left_right_s1: 2 , left_right_s2: 1 , reward_s1: 1 , reward_s2: 0 }
-  },
-... 
-```
 
-さて，ここまできたら，jsチャンク内を以下のようにします（3.3で設定したstimuliを削除して，```data: jsPsych.timelineVariable('data')```を追加するだけです）。刺激リストの作成でかなり労力を使いましたが，jsチャンク内はスッキリしました。これでメインブロックの(1)刺激リストを用意して，(2)画像を呈示して，(3)マウスで反応をとるができました。
+![](fig/jspsych3_fig2.png)
+これでメインブロックの(1)刺激リストを用意して，(2)画像を呈示して，(3)マウスで反応をとるができました。
 
-<img src="fig/reversal_learning_fig6.png" width="750">
-
-※ Rに慣れてないと，この内容はキツイかなと思いますが，後で段々と理解できると思います。
 
 #### 演習課題3
 
 試行数を40試行にしてみましょう（この場合，20試行で逆転させましょう）！
+
+
+
+
+
+
+＜更新中です，以降は前の内容です＞
+
+
+
+
 
 
 ## 4. 課題のメインブロックに機能を追加をする

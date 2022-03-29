@@ -13,7 +13,7 @@
 
 <title>jsPsychを用いた認知課題の作成3：確率的逆転学習課題</title>
 
-<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -63,7 +63,6 @@ if (window.hljs) {
 
 
 
-
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -88,9 +87,6 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
-}
-details > summary > p:only-child {
-  display: inline;
 }
 pre code {
   padding: 0;
@@ -316,7 +312,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -335,7 +331,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -400,16 +396,9 @@ div.tocify {
 </ol>
 <div id="課題の情報を整理する" class="section level2">
 <h2>1. 課題の情報を整理する</h2>
-<p>確率的逆転学習課題もいろいろな種類がありますが，今回は，den Ouden et
-al.(2013)で使用されている課題からスタートすることにします。den
-Ouden先生は，計算論的精神医学で有名な先生で，わかりやすい<a href="https://hannekedenouden.ruhosting.nl/RLtutorial/Instructions.html" target="_blank">強化学習モデルを使ったモデルフィッティングの資料</a>を公開されています。さて，この研究は，セロトニンとドーパミンの遺伝子多型の違いが逆転学習課題成績にどのような違いを生むのかを検討した研究です。遺伝子多型ってのは，ざっくりいうとDNA配列の個人差です。人によってセロトニン遺伝子の配列が微妙に違っていて，これが行動や認知にどういう影響を及ぼすのか研究されてきています。オープンアクセスなので，以下のリンクから本文を読むことができます。</p>
-<p><a href="https://www.cell.com/neuron/fulltext/S0896-6273(13)00789-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0896627313007897%3Fshowall%3Dtrue" target="_blank">den
-Ouden, H. E. M., Daw, N. D., Fernandez, G., Elshout, J. A., Rijpkema,
-M., Hoogman, M., Franke, B., &amp; Cools, R. (2013). Dissociable effects
-of dopamine and serotonin on reversal learning. Neuron, 80(4),
-1090–1100.</a></p>
-<p>本文のExperimental Proceduresの Probabilistic Reversal Learning
-Taskに課題の概要が書いてあるので，簡単に整理します。</p>
+<p>確率的逆転学習課題もいろいろな種類がありますが，今回は，den Ouden et al.(2013)で使用されている課題からスタートすることにします。den Ouden先生は，計算論的精神医学で有名な先生で，わかりやすい<a href="https://hannekedenouden.ruhosting.nl/RLtutorial/Instructions.html" target="_blank">強化学習モデルを使ったモデルフィッティングの資料</a>を公開されています。さて，この研究は，セロトニンとドーパミンの遺伝子多型の違いが逆転学習課題成績にどのような違いを生むのかを検討した研究です。遺伝子多型ってのは，ざっくりいうとDNA配列の個人差です。人によってセロトニン遺伝子の配列が微妙に違っていて，これが行動や認知にどういう影響を及ぼすのか研究されてきています。オープンアクセスなので，以下のリンクから本文を読むことができます。</p>
+<p><a href="https://www.cell.com/neuron/fulltext/S0896-6273(13)00789-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0896627313007897%3Fshowall%3Dtrue" target="_blank">den Ouden, H. E. M., Daw, N. D., Fernandez, G., Elshout, J. A., Rijpkema, M., Hoogman, M., Franke, B., &amp; Cools, R. (2013). Dissociable effects of dopamine and serotonin on reversal learning. Neuron, 80(4), 1090–1100.</a></p>
+<p>本文のExperimental Proceduresの Probabilistic Reversal Learning Taskに課題の概要が書いてあるので，簡単に整理します。</p>
 <ul>
 <li><p>刺激を選択すると，確率的にポジティブもしくはネガティブなフィードバックを受けます（ポジティブは緑の嬉しい顔，ネガティブは赤の悲しい顔。以下の図を参照ください）。ここでは，ポジティブなフィードバックを報酬，ネガティブなフィードバックを罰と呼びます。</p></li>
 <li><p>各施行の流れは，(1)４箇所の場所（上下左右）の２箇所に２つの刺激が呈示される，(2)参加者はマウスで報酬が得られる刺激をクリックするように求められる，(3)正答の刺激（第１試行で選んだ刺激が正答刺激）を選んだ場合は，70:30=報酬:罰の比でフィードバックがされます。誤答の刺激を選んだ場合は，30:70=報酬:罰の比でフィードバックがされます。30%の試行は，正答にたどり着くのを邪魔する働きをします。</p></li>
@@ -418,65 +407,22 @@ Taskに課題の概要が書いてあるので，簡単に整理します。</p>
 <li><p>参加者には，変化する正答刺激を特定するように教示しますが，どのくらいの頻度で変化するのかについては伝えません。</p></li>
 </ul>
 <p><a href="https://marlin-prod.literatumonline.com/cms/attachment/98a09c50-fc3e-478d-bf35-7c28b9ed6ad8/gr1.jpg"><img src="https://marlin-prod.literatumonline.com/cms/attachment/98a09c50-fc3e-478d-bf35-7c28b9ed6ad8/gr1.jpg" width="500"></a></p>
-<p>上記の情報だけで課題が作成できそうですが，刺激の呈示時間などがわかりません。刺激の選択画面は参加者の反応があるまで呈示しつづけるかもしれませんが，フィードバック刺激は何秒呈示するかはわかりません。こういう時は，同じ課題を使っている研究を参考にすると良いです。den
-Ouden et
-al.(2013)では，課題の説明において，共著者のCools先生の論文を引用しています。Cools先生の論文を探すのが良さそうです。これは論文検索をしてもいいですが，幸いなことに，
-<a href="http://www.roshancools.com/reversal-learning" target="_blank">「Cools先生のHPで逆転学習課題の論文リスト」</a>がまとめられています。それを見ると，以下が一番古い論文なようです。オープンアクセスの論文です。</p>
-<p><a href="https://www.ncbi.nlm.nih.gov/pubmed/11709484" target="_blank">Cools,
-R., Barker, R. A., Sahakian, B. J., &amp; Robbins, T. W. (2001).
-Enhanced or impaired cognitive function in Parkinson’s disease as a
-function of dopaminergic medication and task demands. Cerebral Cortex ,
-11(12), 1136–1143.</a></p>
-<p>この論文を確認しても，刺激の呈示時間はわかりませんでした。ただ，Cools
-et
-al.(2001)が引用している論文を遡ると，確率的逆転学習課題は，以下のLawrence
-et al.(1999)が一番大元の課題になり（刺激呈示の構造はCools et
-al.(2001)と一緒です），逆転の切り替えは，Swainson　et
-al.(2000)を参考にしていることがわかります。課題を作る際に役に立つ情報ではないですが，少しウンチクが増えましたね。おめでとう。ちなみに，den
-Ouden et
-al.(2013)では，70:30=報酬:罰の比でしたが，Coolsの最初の方の論文では，80:20=報酬:罰の比でフィードバックをしています。</p>
-<p><a href="https://www.ncbi.nlm.nih.gov/pubmed/10606011" target="_blank">Lawrence,
-A. D., Sahakian, B. J., Rogers, R. D., Hodge, J. R., &amp; Robbins, T.
-W. (1999). Discrimination, reversal, and shift learning in Huntington’s
-disease: mechanisms of impaired response selection. Neuropsychologia,
-37(12), 1359–1374.</a></p>
-<p><a href="https://www.ncbi.nlm.nih.gov/pubmed/10689037" target="_blank">Swainson,
-R., Rogers, R. D., Sahakian, B. J., Summers, B. A., Polkey, C. E., &amp;
-Robbins, T. W. (2000). Probabilistic learning and reversal deficits in
-patients with Parkinson’s disease or frontal or temporal lobe lesions:
-possible adverse effects of dopaminergic medication. Neuropsychologia,
-38, 596–612.</a></p>
-<p>もう少し調べていくと，以下のCools et
-al.(2002)のfMRIでの確率的逆転学習課題がその後の研究でよく使われていることがわかります。この課題では，刺激が左右に２つ呈示され（上下左右の４箇所ではない），刺激の選択画面は2000ms呈示されて（2000msを超えると「too
-late」というメッセージが出る），フィードバックは２つの刺激の間に500ms呈示されます（どちらを選択したかは刺激の上の三角形で示す）。上下左右４箇所に呈示するメリットもあるとは思いますが，今回は左右の2箇所に提示するのがシンプルでいいかなと思います（特に，den
-Ouden et al.,(2013)の追試がやりたいわけではありませんので）。</p>
-<p><a href="https://www.ncbi.nlm.nih.gov/pubmed/12040063" target="_blank">Cools,
-R., Clark, L., Owen, A. M., &amp; Robbins, T. W. (2002). Defining the
-neural mechanisms of probabilistic reversal learning using event-related
-functional magnetic resonance imaging. The Journal of Neuroscience,
-22(11), 4563–4567.</a></p>
+<p>上記の情報だけで課題が作成できそうですが，刺激の呈示時間などがわかりません。刺激の選択画面は参加者の反応があるまで呈示しつづけるかもしれませんが，フィードバック刺激は何秒呈示するかはわかりません。こういう時は，同じ課題を使っている研究を参考にすると良いです。den Ouden et al.(2013)では，課題の説明において，共著者のCools先生の論文を引用しています。Cools先生の論文を探すのが良さそうです。これは論文検索をしてもいいですが，幸いなことに， <a href="http://www.roshancools.com/reversal-learning" target="_blank">「Cools先生のHPで逆転学習課題の論文リスト」</a>がまとめられています。それを見ると，以下が一番古い論文なようです。オープンアクセスの論文です。</p>
+<p><a href="https://www.ncbi.nlm.nih.gov/pubmed/11709484" target="_blank">Cools, R., Barker, R. A., Sahakian, B. J., &amp; Robbins, T. W. (2001). Enhanced or impaired cognitive function in Parkinson’s disease as a function of dopaminergic medication and task demands. Cerebral Cortex , 11(12), 1136–1143.</a></p>
+<p>この論文を確認しても，刺激の呈示時間はわかりませんでした。ただ，Cools et al.(2001)が引用している論文を遡ると，確率的逆転学習課題は，以下のLawrence et al.(1999)が一番大元の課題になり（刺激呈示の構造はCools et al.(2001)と一緒です），逆転の切り替えは，Swainson　et al.(2000)を参考にしていることがわかります。課題を作る際に役に立つ情報ではないですが，少しウンチクが増えましたね。おめでとう。ちなみに，den Ouden et al.(2013)では，70:30=報酬:罰の比でしたが，Coolsの最初の方の論文では，80:20=報酬:罰の比でフィードバックをしています。</p>
+<p><a href="https://www.ncbi.nlm.nih.gov/pubmed/10606011" target="_blank">Lawrence, A. D., Sahakian, B. J., Rogers, R. D., Hodge, J. R., &amp; Robbins, T. W. (1999). Discrimination, reversal, and shift learning in Huntington’s disease: mechanisms of impaired response selection. Neuropsychologia, 37(12), 1359–1374.</a></p>
+<p><a href="https://www.ncbi.nlm.nih.gov/pubmed/10689037" target="_blank">Swainson, R., Rogers, R. D., Sahakian, B. J., Summers, B. A., Polkey, C. E., &amp; Robbins, T. W. (2000). Probabilistic learning and reversal deficits in patients with Parkinson’s disease or frontal or temporal lobe lesions: possible adverse effects of dopaminergic medication. Neuropsychologia, 38, 596–612.</a></p>
+<p>もう少し調べていくと，以下のCools et al.(2002)のfMRIでの確率的逆転学習課題がその後の研究でよく使われていることがわかります。この課題では，刺激が左右に２つ呈示され（上下左右の４箇所ではない），刺激の選択画面は2000ms呈示されて（2000msを超えると「too late」というメッセージが出る），フィードバックは２つの刺激の間に500ms呈示されます（どちらを選択したかは刺激の上の三角形で示す）。上下左右４箇所に呈示するメリットもあるとは思いますが，今回は左右の2箇所に提示するのがシンプルでいいかなと思います（特に，den Ouden et al.,(2013)の追試がやりたいわけではありませんので）。</p>
+<p><a href="https://www.ncbi.nlm.nih.gov/pubmed/12040063" target="_blank">Cools, R., Clark, L., Owen, A. M., &amp; Robbins, T. W. (2002). Defining the neural mechanisms of probabilistic reversal learning using event-related functional magnetic resonance imaging. The Journal of Neuroscience, 22(11), 4563–4567.</a></p>
 <p><a href="https://pubmed.ncbi.nlm.nih.gov/12040063-defining-the-neural-mechanisms-of-probabilistic-reversal-learning-using-event-related-functional-magnetic-resonance-imaging/#&gid=article-figures&pid=fig-1-uid-0"><img src="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6758810/bin/ns1126435001.jpg" width="400"></a></p>
-<p>Cools et al.(2002)は，様々な研究で使用されています。以下のWaegeman et
-al.(2014)では，刺激はAとBという文字にして，最大2000ms選択画面を呈示し（押したら次に進む），選択した文字の下に下線を引いて500ms呈示（参加者がどちらを選択したか示している），フィードバックを500ms呈示し，500ms-1500ms固視点(+)を呈示しています。なお，2000ms以内に反応できなかったら，“too
-late”と1000ms呈示されます。</p>
-<p><a href="https://psycnet.apa.org/record/2014-52742-001" target="_blank">Waegeman,
-A., Declerck, C. H., Boone, C., Seurinck, R., &amp; Parizel, P. M.
-(2014). Individual differences in behavioral flexibility in a
-probabilistic reversal learning task: An fMRI study. Journal of
-Neuroscience, Psychology, and Economics, 7(4), 203–218.</a></p>
-<p>当初は，den Ouden　et al.(2013)を作る予定でしたが，Cools et
-al. (2002)を参考に刺激呈示をシンプルにしたり，一般的に使用される20:80のフィードバックにしたり，Cools
-et al.(2002)とWaegeman et
-al.(2014)に従って刺激呈示時間を決めることにします。まとめると以下になります。</p>
+<p>Cools et al.(2002)は，様々な研究で使用されています。以下のWaegeman et al.(2014)では，刺激はAとBという文字にして，最大2000ms選択画面を呈示し（押したら次に進む），選択した文字の下に下線を引いて500ms呈示（参加者がどちらを選択したか示している），フィードバックを500ms呈示し，500ms-1500ms固視点(+)を呈示しています。なお，2000ms以内に反応できなかったら，“too late”と1000ms呈示されます。</p>
+<p><a href="https://psycnet.apa.org/record/2014-52742-001" target="_blank">Waegeman, A., Declerck, C. H., Boone, C., Seurinck, R., &amp; Parizel, P. M. (2014). Individual differences in behavioral flexibility in a probabilistic reversal learning task: An fMRI study. Journal of Neuroscience, Psychology, and Economics, 7(4), 203–218.</a></p>
+<p>当初は，den Ouden　et al.(2013)を作る予定でしたが，Cools et al. (2002)を参考に刺激呈示をシンプルにしたり，一般的に使用される20:80のフィードバックにしたり，Cools et al.(2002)とWaegeman et al.(2014)に従って刺激呈示時間を決めることにします。まとめると以下になります。</p>
 <ul>
-<li><p>Cools et
-al.(2001)をベースに逆転学習課題を作成する：合計80試行（前半40試行，後半逆転して40試行），フィードバックは顔（ポジティブが緑の嬉しい顔，ネガティブが赤の悲しい顔)，報酬:罰比は，80:20。</p></li>
-<li><p>Cools et
-al.(2002)を参考にして，選択刺激の呈示位置は左右，刺激の選択画面は2000ms呈示されて（2000msを超えると遅いことを伝える「2秒以内に選択してください」），フィードバックは２つの刺激の間に500ms呈示する。</p></li>
-<li><p>den Ouden et
-al.(2013)を参考にして，選択はマウスでクリックする（キーボードでも可能ですが，jsPsychの練習のため），80試行は疑似ランダム化された事前に決めた順番で提示する，参加者には変化する正答刺激を特定するように教示する(しますが，)どのくらいの頻度で変化するのかについては伝えない）。</p></li>
-<li><p>Waegeman et
-al.(2014)を参考にして，最大2000ms選択画面を呈示する（押したら次に進む），選択した刺激を枠で囲って500ms呈示（どちらを選択したか分かるようにする），フィードバックを500ms呈示し，500ms-1500ms固視点(+)を呈示する。</p></li>
+<li><p>Cools et al.(2001)をベースに逆転学習課題を作成する：合計80試行（前半40試行，後半逆転して40試行），フィードバックは顔（ポジティブが緑の嬉しい顔，ネガティブが赤の悲しい顔)，報酬:罰比は，80:20。</p></li>
+<li><p>Cools et al.(2002)を参考にして，選択刺激の呈示位置は左右，刺激の選択画面は2000ms呈示されて（2000msを超えると遅いことを伝える「2秒以内に選択してください」），フィードバックは２つの刺激の間に500ms呈示する。</p></li>
+<li><p>den Ouden et al.(2013)を参考にして，選択はマウスでクリックする（キーボードでも可能ですが，jsPsychの練習のため），80試行は疑似ランダム化された事前に決めた順番で提示する，参加者には変化する正答刺激を特定するように教示する(しますが，)どのくらいの頻度で変化するのかについては伝えない）。</p></li>
+<li><p>Waegeman et al.(2014)を参考にして，最大2000ms選択画面を呈示する（押したら次に進む），選択した刺激を枠で囲って500ms呈示（どちらを選択したか分かるようにする），フィードバックを500ms呈示し，500ms-1500ms固視点(+)を呈示する。</p></li>
 </ul>
 <p>今回は課題を作ることが目的なので，よりシンプルかつ詳細情報のある論文を参考にしていますが，実際に研究する場合は，テーマや対象を考慮しつつ参考にする論文を選んでいくことになります。</p>
 </div>
@@ -487,13 +433,11 @@ al.(2014)を参考にして，最大2000ms選択画面を呈示する（押し�
 <p>今回も開始メッセージ，フルスクリーン化，課題の教示，課題，終了メッセージの順で，大きく５つのブロックに分けられます。そして，課題の部分は，((1)選択肢呈示＆反応取得，(2)選択した刺激が分かるように呈示，(3)フィードバック，(4)固視点，(5)もし2000ms以内に反応しなかった時に反応が遅いことを指摘するメッセージの５つの下位ブロックからなります。一気に全てを作るのは難しいですが，１つずつブロックを作って，それをLEGOブロックのように組み合わせて課題を完成させましょう。なお，課題ブロックは，80試行あり，各施行のフィードバックは正答試行に対して，8:2=報酬:罰でなされます。これらの設計もプログラミングに反映させる必要があります。</p>
 <p>また，細かいことですが，疑似ランダム化に関しては，10試行を１つの単位にして，それを8回繰り返すことにしましょう。</p>
 </div>
-<div id="教示と課題のメインブロックを最もシンプルな形で作る"
-class="section level2">
+<div id="教示と課題のメインブロックを最もシンプルな形で作る" class="section level2">
 <h2>3. 教示と課題のメインブロックを最もシンプルな形で作る</h2>
 <p>まず，<strong>RStudioのConsoleで以下を実行して，逆転学習課題(RL)のフォルダとファイルを用意します</strong></p>
 <pre class="r"><code>psyinfr::set_cbat(&quot;RL&quot;,&quot;7.2.1&quot;)</code></pre>
-<p>＊国里ゼミ以外でResearch
-Compendiumを使ってない場合は，カレントディレクトリーにexerciseという名前のフォルダを作ってもらえば，そちらにフォルダを用意します。</p>
+<p>＊国里ゼミ以外でResearch Compendiumを使ってない場合は，カレントディレクトリーにexerciseという名前のフォルダを作ってもらえば，そちらにフォルダを用意します。</p>
 <div id="教示ブロックを作成する" class="section level3">
 <h3>3.1 教示ブロックを作成する</h3>
 <p>以下のような教示を提示することにします。</p>
@@ -508,16 +452,13 @@ Compendiumを使ってない場合は，カレントディレクトリーにexer
 それでは，キーボードのキーをどれか押して，課題を始めてください。</code></pre>
 <div id="演習課題1" class="section level4">
 <h4>演習課題1</h4>
-<p><a href="https://kunisatolab.github.io/main/how-to-jspsych2.html" target="_blank">ストループ課題</a>を参考に，上記の教示を出してみましょう！なお，
-<code>"&lt;p&gt;&lt;br&gt;&lt;/p&gt;"</code>
-を入れれば，１行空けられます。</p>
+<p><a href="https://kunisatolab.github.io/main/how-to-jspsych2.html" target="_blank">ストループ課題</a>を参考に，上記の教示を出してみましょう！なお， <code>"&lt;p&gt;&lt;br&gt;&lt;/p&gt;"</code> を入れれば，１行空けられます。</p>
 </div>
 </div>
 <div id="メインブロック２つの画像刺激を呈示する" class="section level3">
 <h3>3.2 メインブロック：２つの画像刺激を呈示する</h3>
 <p>さて，メインブロックを作りましょう。以下の”s1.jpeg”（黄色の縦線）と”s2.jpeg”(青の横線)を呈示する刺激に使いましょう。psyinfr::set_cbat()を実行した際に，今回使用する画像がstimuliフォルダ内に保存されるようになっています。“s1.jpeg”と”s2.jpeg”があるか確認ください。</p>
-<p><img src="fig/reversal_learning_fig2.jpeg" width="200">　
-<img src="fig/reversal_learning_fig3.jpeg" width="200"></p>
+<p><img src="fig/reversal_learning_fig2.jpeg" width="200">　 <img src="fig/reversal_learning_fig3.jpeg" width="200"></p>
 <p>今回は，画像刺激を呈示して，マウスでのクリックをもとめるので，html-button-responseプラグインを使います。html-button-responseプラグインは，以下のように使います。通常は，stimulusになんらかの刺激をいれて，choicesやbutton_htmlの部分でマウスで選択するボタンを定義します(trial_durationは最大の呈示時間になります，これを設定しないとマウスクリックしないと次の試行に進みません)。今回は，ボタン部分に上記の２つの画像刺激を出して，それをクリックさせるようにしたいと思います。そこで，choicesの部分で[]内に２つ画像を呈示するためのコードを書いています。divとか出てきて謎と思うかもしれませんが，positionのところで画像をだす位置を決めていて(画面のtopつまり上から50%くらい，leftから20%くらいに呈示すると指定している)，img以降で画像のある場所と画像名を指定し，widthで大きさを指定しています。その次も同様に定義しています。</p>
 <pre><code>const choice = {
     stimulus: &#39;&#39;,
@@ -535,8 +476,7 @@ const timeline = [instruction, choice];</code></pre>
 <p>上記のコードを使って，(1)s1.jpegやs2.jpeg以外の画像を呈示してみる（stimuliフォルダ内にいくつか画像があるので，それらを呈示してみましょう），(2)呈示した画像を左上や右下などの別の位置にも呈示してみましょう！</p>
 </div>
 </div>
-<div id="メインブロック画像刺激のリストを使って刺激呈示する"
-class="section level3">
+<div id="メインブロック画像刺激のリストを使って刺激呈示する" class="section level3">
 <h3>3.3 メインブロック：画像刺激のリストを使って刺激呈示する</h3>
 <p>さて，課題は80試行もあるので，ストループ課題と同じ用に，刺激をリストにした上で呈示することにします。ストループと同じ用に，stimuliに追加していきます。stimuli内のstimulusの[]内に２つ分の画像の呈示に関する指定をいれていきます。とえいあえず，以下に３試行分のリストを準備しました(2試行目で図形の左右が入れ替わるようにしました)。task.jsに追加してください。</p>
 <pre><code>const stimuli = [
@@ -564,21 +504,14 @@ class="section level3">
 };</code></pre>
 <p>これをtask.jsに追加して，動作確認してみましょう。図形の位置が変わりつつ３回選択画面が出てきたらうまくいっています。</p>
 </div>
-<div id="メインブロック画像刺激のリストを使って刺激呈示する-1"
-class="section level3">
+<div id="メインブロック画像刺激のリストを使って刺激呈示する-1" class="section level3">
 <h3>3.4 メインブロック：画像刺激のリストを使って刺激呈示する</h3>
 <p>先程のstimuliのリストを長くしていって，80試行分準備すればよいのですが，かなり長いですし，おそらくミスも生じるかと思います。また，刺激を左右にランダムに出したり，報酬の確率を80%などにするのは手作業では難しいです。そこで，それらの作業をRを使って実行し(こういう操作をする上でRは便利です)，Rで作ったリストをtask.jsで使って，刺激呈示することにしましょう。</p>
-<p>それでは，さっそくRで刺激リストを作っていきましょう。RStudioで「File」→「New
-file」→「R script」を選択して，新たにRのファイルを開いてください。</p>
+<p>それでは，さっそくRで刺激リストを作っていきましょう。RStudioで「File」→「New file」→「R script」を選択して，新たにRのファイルを開いてください（名前は，stimuli.Rとかでいいと思います）。</p>
 <p><img src="fig/jspsych3_fig1.png" /></p>
-<div id="画像を左右のどちらに出すのかに関するリストの作成"
-class="section level4">
+<div id="画像を左右のどちらに出すのかに関するリストの作成" class="section level4">
 <h4>画像を左右のどちらに出すのかに関するリストの作成</h4>
-<p>s1刺激を左右のどちらに出すのかのリスト(left_right_s1)とs2刺激を左右のどちらに出すのかのリスト（left_right_s1）を作ります。やり方はシンプルで，1=left,
-2=
-rightとした上で，1と2を５個ずつ用意した10試行分を1ブロックにして，シャッフルするのを８回行って，最終的に80試行分の左右の呈示情報リストを作成します。1と2を40個ずつ用意して，一気に80試行をシャッフルすることも考えたかもしれませんが，そうすると，すごい偏ることがあります（20試行s1が右ということも生じ得ます）。そうすると，そこに意図が発生してしまって思わぬ結果になるかもしれません。そこで，今回は疑似ランダム化として，80試行を10試行で１ブロックにして，ブロックごとにシャッフルすることにしました。以下のコードを順番に読んで，for文で8回繰り返し，sample()でシャッフルし，c()で２つのリストをつなげているのを理解ください。最後に，1や２みたいな数字ではなく，“left”,“right”という情報もあとで使うので，ifelse文でleft_right_s1_text,
-left_right_s2_textというものも作成しています。<strong>まずは，R
-Markdownファイルにではなく，Consoleにコピペして，動作確認をしましょう。</strong></p>
+<p>s1刺激を左右のどちらに出すのかのリスト(left_right_s1)とs2刺激を左右のどちらに出すのかのリスト（left_right_s2）を作ります。やり方はシンプルで，1=left, 2= rightとした上で，1と2を５個ずつ用意した10試行分を1ブロックにして，シャッフルするのを８回行って，最終的に80試行分の左右の刺激呈示リストを作成します。1と2を40個ずつ用意して，一気に80試行をシャッフルすることも考えたかもしれませんが，そうすると，すごい偏ることがあります（20試行s1が右ということも生じ得ます）。そうすると，そこになんらかの実験者の意図が発生しているように見えてしまうかもしれません。そこで，今回は疑似ランダム化として，80試行を10試行で１ブロックにして，ブロックごとにシャッフルすることにしました。以下のコードを順番に読んで，for文で8回繰り返し，sample()でシャッフルし，c()で２つのリストをつなげているのを理解ください。最後に，1や２みたいな数字ではなく，“left”,“right”という情報もあとで使うので，ifelse文でleft_right_s1_text, left_right_s2_textというものも作成しています。<strong>以下をのコードをさきほど作ったstimuli.Rにコピペして，実行してみまましょう。</strong></p>
 <pre class="r"><code>#### 呈示される２つの刺激(s1とs2)が左右のどっちに出るかを決めるリストを作る(２つの刺激がどっちにでるかはランダム)
 # 空のオブジェクトを準備
 left_right_s1 &lt;- NULL
@@ -597,19 +530,15 @@ left_right_s2 &lt;- 3-left_right_s1
 # ifelseを使ってleft_right_s1(2)==1の時（1なのでつまりleft），&quot;left&quot;をそれ以外は&quot;right&quot;を入れたものを作成する
 left_right_s1_text &lt;- ifelse(left_right_s1==1, &quot;left&quot;, &quot;right&quot;)
 left_right_s2_text &lt;- ifelse(left_right_s2==1, &quot;left&quot;, &quot;right&quot;)</code></pre>
-<p>上記をConseleで実行できたら，以下のコードも実行して，left_right_s1とleft_right_s2が上手く設定できているか確認をしてみましょう。なお，以下のplot()は動作確認用ですので，R
-Markdownにはコピペしないでください。大きな偏りなくランダムにleft(1)やright(2)になっているので，良さそうですね。<strong>問題なさそうなら，R
-Markdownの「r,
-results=“asis”」チャンクに，上記のRコードコピペして追加ください(確認用のplotはコピペしない)。</strong></p>
+<p>上記を実行できたら，以下のコードも実行して，left_right_s1とleft_right_s2が上手く設定できているかプロットして確認をしてみましょう。大きな偏りなくランダムにleft(1)やright(2)になっているので，良さそうですね。</p>
 <pre class="r"><code>plot(left_right_s1)</code></pre>
 <p><img src="how-to-jspsych3_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <pre class="r"><code>plot(left_right_s2)</code></pre>
 <p><img src="how-to-jspsych3_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
 </div>
-<div id="刺激を選択した時のフィードバックのリストの作成"
-class="section level4">
+<div id="刺激を選択した時のフィードバックのリストの作成" class="section level4">
 <h4>刺激を選択した時のフィードバックのリストの作成</h4>
-<p>次に，刺激を選択した時のフィードバックのリストを作ります。s1とs2でそれぞれ，reward_s1とreward_s2を作ります。やり方は，左右の呈示と同じで，10試行で１ブロックにしてシャッフルをしています。なお，8:2=報酬:罰（つまり4:1=報酬:罰）だったので，1ブロックの刺激は報酬8試行，罰2試行で作成して，シャッフルします(2:8=報酬:罰の時は逆)。8:2で作ってもいいのですが，repのc()内に打ち込む数が増えるとミスがふえますので，4:1で2回繰り返すことで，報酬8試行，罰2試行にしています。ここでは，報酬は1，罰は0としています（なんでもいいのですが，この課題でデータをとって，解析をする際に少しだけ便利です）。先ほどと違うのは，最初の4ブロックと後半の4ブロックでは，reward_s1とreward_s2に追加されるリストが逆転することです（最初に8:2=報酬:罰だったら，次は2:8=報酬:罰になる）。</p>
+<p>次に，刺激を選択した時のフィードバックのリストを作ります。s1とs2に対して，それぞれreward_s1とreward_s2を作ります。やり方は，左右の呈示と同じで，10試行で１ブロックにしてシャッフルをしています。なお，8:2=報酬:罰（つまり4:1=報酬:罰）だったので，1ブロックの刺激は報酬8試行，罰2試行で作成して，シャッフルします(2:8=報酬:罰の時は逆)。8:2で作ってもいいのですが，repのc()内に打ち込む数が増えるとミスがふえますので，4:1で2回繰り返すことで，報酬8試行，罰2試行にしています。ここでは，報酬は1，罰は0としています（1や0でなくてもいいのですが，この方が解析をする際に少しだけ便利です）。先ほどと違うのは，最初の4ブロックと後半の4ブロックでは，reward_s1とreward_s2に追加されるリストが逆転することです（最初に8:2=報酬:罰だったら，次は2:8=報酬:罰になる）。<strong>以下をのコードをstimuli.Rにコピペして，追加・実行してみまましょう。</strong></p>
 <pre class="r"><code>#### s1とs2を選んだ時のフィードバック(reward=1, punishment=0)のリストを作る
 # 空のオブジェクトを準備
 reward_s1 &lt;- NULL
@@ -633,10 +562,7 @@ for (i in 1:repeat_shuffle) {
     reward_s2 &lt;- c(reward_s2,reward82_shuffle)
   }
 }</code></pre>
-<p><strong>上記をConseleで実行してから，以下のplot用のコードも実行して，reward_s1とreward_s2が上手く設定できているか確認をしてみましょう。</strong>なお，以下のplot()は動作確認用ですので，R
-Markdownにはコピペしないでください。真ん中くらいで1と0の出てくる頻度が変わっていますね。問題なさそうなら，R
-Markdownの「r,
-results=“asis”」チャンクに，確認用plot以外をコピペして追加ください。</p>
+<p>以下のplot用のコードも実行して，reward_s1とreward_s2が上手く設定できているか確認をしてみましょう。reward_s1は前半40試行で１が多くて，reward_s2は後半40試行で１が多いのがわかりますね。</p>
 <pre class="r"><code>plot(reward_s1)</code></pre>
 <p><img src="how-to-jspsych3_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <pre class="r"><code>plot(reward_s2)</code></pre>
@@ -644,82 +570,70 @@ results=“asis”」チャンクに，確認用plot以外をコピペして追�
 </div>
 <div id="刺激リストをデータフレーム化" class="section level4">
 <h4>刺激リストをデータフレーム化</h4>
-<p>さて，上記の情報をもとにして，刺激リストをRのデータフレーム形式で作成してみましょう。最初にHTML用の刺激の設定情報をいくつか設定しておきます（画像をどこにだすかとか，どのくらいの大きさで出すかといった情報です）。その後，それらの設定と左右の呈示リストをあわせて，画像を呈示するための刺激リストを作成します。HTMLファイル内の記述のため「&lt;p…」みたいな記号とtop_bottom_s1みたいな変数を組み合わせて，paste関数を使って，3.3で作ったような刺激リストを作成します。</p>
-<pre><code>#### 左右以外の上下の位置(topから50%の位置に刺激を呈示する)や使う画像のパスの情報（今回は全施行で以下は変わらない）
+<p>さて，上記の情報をもとにして，刺激リストをRのデータフレーム形式で作成してみましょう。最初にHTML用の刺激の設定情報をいくつか設定しておきます（画像をどこにだすかとか，どのくらいの大きさで出すかといった情報です）。その後，それらの設定と左右の呈示リストをあわせて，画像を呈示するための刺激リストを作成します。HTMLファイル内の記述のため「&lt;p…」みたいな記号とtop_bottom_s1みたいな変数を組み合わせて，paste関数を使って，3.3で作ったような刺激リストを作成します。<strong>以下をのコードをstimuli.Rにコピペして，追加・実行してみまましょう。</strong></p>
+<pre class="r"><code>#### 左右以外の上下の位置(topから50%の位置に刺激を呈示する)や使う画像のパスの情報（今回は全施行で以下は変わらない）
 # s1の設定
 top_bottom_s1 = &quot;top&quot;
 top_bottom_position_s1 = 40
-image_path_s1 = &quot;stimuli/s1.jpeg&quot;
+image_path_s1 = &quot;RL/stimuli/s1.jpeg&quot;
 image_width_s1 = 200
 left_right_position_s1 &lt;- 20
 # s2の設定
 top_bottom_s2 = &quot;top&quot;
 top_bottom_position_s2 = 40
-image_path_s2 = &quot;stimuli/s2.jpeg&quot;
+image_path_s2 = &quot;RL/stimuli/s2.jpeg&quot;
 image_width_s2 = 200
 left_right_position_s2 &lt;- 20
 #### 刺激リストの作成(HTML用に調整)
 stimulus &lt;- paste(&quot;[\&quot;&lt;p style=&#39;position: absolute; &quot;,
-                       top_bottom_s1,&quot;: &quot;,
-                       top_bottom_position_s1,&quot;%;&quot;,
-                       left_right_s1_text,&quot;: &quot;,
-                       left_right_position_s1,&quot;%&#39;&gt;&lt;img src=&#39;&quot;,
-                       image_path_s1,&quot;&#39; width=&#39;&quot;,
-                       image_width_s1,&quot;px&#39;/&gt;&lt;/p&gt;\&quot;,&quot;,
-                       &quot;\&quot;&lt;p style=&#39;position: absolute; &quot;,
-                       top_bottom_s2,&quot;: &quot;,
-                       top_bottom_position_s2,&quot;%;&quot;,
-                       left_right_s2_text,&quot;: &quot;,
-                       left_right_position_s2,&quot;%&#39;&gt;&lt;img src=&#39;&quot;,
-                       image_path_s2,&quot;&#39; width=&#39;&quot;,
-                       image_width_s2,&quot;px&#39;/&gt;&lt;/p&gt;\&quot;]&quot;,sep=&quot;&quot;)</code></pre>
-<p>上記で作ったstimulusのリストとその他のリストを結合してデータフレームを作ります。一応，これをcsvファイルで保存しておいて，後で「どういうリストだったけ？」と思った時に簡単に確認できるようにしておきます。</p>
-<pre><code>#### 上記で作ったものをデータフレーム化しておく
+                  top_bottom_s1,&quot;: &quot;,
+                  top_bottom_position_s1,&quot;%;&quot;,
+                  left_right_s1_text,&quot;: &quot;,
+                  left_right_position_s1,&quot;%&#39;&gt;&lt;img src=&#39;&quot;,
+                  image_path_s1,&quot;&#39; width=&#39;&quot;,
+                  image_width_s1,&quot;px&#39;/&gt;&lt;/p&gt;\&quot;,&quot;,
+                  &quot;\&quot;&lt;p style=&#39;position: absolute; &quot;,
+                  top_bottom_s2,&quot;: &quot;,
+                  top_bottom_position_s2,&quot;%;&quot;,
+                  left_right_s2_text,&quot;: &quot;,
+                  left_right_position_s2,&quot;%&#39;&gt;&lt;img src=&#39;&quot;,
+                  image_path_s2,&quot;&#39; width=&#39;&quot;,
+                  image_width_s2,&quot;px&#39;/&gt;&lt;/p&gt;\&quot;]&quot;,sep=&quot;&quot;)</code></pre>
+<p>上記で作ったstimulusのリストとその他のリストを結合してデータフレームを作ります。<strong>以下をのコードをstimuli.Rにコピペして，追加・実行してみまましょう。</strong></p>
+<pre class="r"><code>#### 上記で作ったものをデータフレーム化しておく
 RL_stim &lt;- data.frame(stimulus,
                       left_right_s1,
                       left_right_s2,
                       reward_s1,
-                      reward_s2)
-# どういう刺激リストを作成したのかの情報も残しておく
-write.csv(RL_stim,&quot;RL_stim.csv&quot;)</code></pre>
+                      reward_s2)</code></pre>
 </div>
 <div id="rで作った刺激リストをjson形式で出力" class="section level4">
 <h4>Rで作った刺激リストをJson形式で出力</h4>
-<p>さて，刺激リストができたので，それらをJson形式で出力します（ストループの時に作ったやたら{}を使う形式のことです）。scriptで始まってscriptで終わるわけですが，その間に，stimuli内に1試行ずつstimulusとdataを80試行追加しています。</p>
-<pre><code>#### 上記で作ったデータフレームをJson形式で出力する
+<p>さて，刺激リストができたので，それらをJson形式で出力します（ストループの時に作ったやたら{}を使う形式のことです）。scriptで始まってscriptで終わるわけですが，その間に，stimuli内に1試行ずつstimulusとdataを80試行追加しています。<strong>以下をのコードをstimuli.Rにコピペして，追加・実行してみまましょう。</strong></p>
+<pre class="r"><code>#### 上記で作ったデータフレームをJson形式で出力する
+stimuli_file &lt;- &quot;exercise/RL/RL/stimuli/stimuli.txt&quot;
+file.create(stimuli_file)
+
 for (i in 1:nrow(RL_stim)) {
-  if(i==1){cat(&quot;&lt;script&gt;&quot;, &quot;var stimuli = [&quot;)}
-  cat(&quot;{stimulus:&quot;,as.character(RL_stim$stimulus[i]),&quot;,
+  if(i==1){write(&quot;const stimuli = [&quot;,stimuli_file,append=TRUE)}
+  write(paste0(&quot;{stimulus:&quot;,as.character(RL_stim$stimulus[i]),&quot;,
       data:{left_right_s1:&quot;,RL_stim$left_right_s1[i],
       &quot;, left_right_s2:&quot;,RL_stim$left_right_s2[i],
       &quot;, reward_s1:&quot;,RL_stim$reward_s1[i],
-      &quot;, reward_s2:&quot;,RL_stim$reward_s2[i],&quot;}}&quot;)
+      &quot;, reward_s2:&quot;,RL_stim$reward_s2[i],&quot;}}&quot;),stimuli_file,append=TRUE)
   if(i==nrow(RL_stim)){
-    cat(&quot;]; &lt;/script&gt;&quot;)
+    write(&quot;]&quot;,stimuli_file,append=TRUE)
   }else{
-    cat(&quot;,&quot;)
+    write(&quot;,&quot;,stimuli_file,append=TRUE)
   }
 }</code></pre>
-<p>上記のコードを以下のような感じのJson形式の出力が出てきます。これができたら成功です。R上で刺激リストの処理ができて，jsPsychで読み込める形式で出力できました。</p>
-<pre><code>&lt;script&gt; var stimuli = [
-  {
-  stimulus: [&quot;&lt;p style=&#39;position: absolute; top: 40%;left: 20%&#39;&gt;&lt;img src=&#39;stimuli/s1.jpeg&#39; width=&#39;200px&#39;/&gt;&lt;/p&gt;&quot;,
-  &quot;&lt;p style=&#39;position: absolute; top: 40%;right: 20%&#39;&gt;&lt;img src=&#39;stimuli/s2.jpeg&#39; width=&#39;200px&#39;/&gt;&lt;/p&gt;&quot;] ,
-  data:{left_right_s1: 1 , left_right_s2: 2 , reward_s1: 1 , reward_s2: 0 }
-  },{
-  stimulus: [&quot;&lt;p style=&#39;position: absolute; top: 40%;right: 20%&#39;&gt;&lt;img src=&#39;stimuli/s1.jpeg&#39; width=&#39;200px&#39;/&gt;&lt;/p&gt;&quot;,
-  &quot;&lt;p style=&#39;position: absolute; top: 40%;left: 20%&#39;&gt;&lt;img src=&#39;stimuli/s2.jpeg&#39; width=&#39;200px&#39;/&gt;&lt;/p&gt;&quot;] ,
-  data:{left_right_s1: 2 , left_right_s2: 1 , reward_s1: 1 , reward_s2: 0 }
-  },
-... </code></pre>
-<p>さて，ここまできたら，jsチャンク内を以下のようにします（3.3で設定したstimuliを削除して，<code>data: jsPsych.timelineVariable('data')</code>を追加するだけです）。刺激リストの作成でかなり労力を使いましたが，jsチャンク内はスッキリしました。これでメインブロックの(1)刺激リストを用意して，(2)画像を呈示して，(3)マウスで反応をとるができました。</p>
-<p><img src="fig/reversal_learning_fig6.png" width="750"></p>
-<p>※
-Rに慣れてないと，この内容はキツイかなと思いますが，後で段々と理解できると思います。</p>
+<p>上記のコードを実行すると，exercise＞RL＞RL＞stimuliフォルダ内にstimuli.txtができて，以下のような感じのJson形式の出力が書き込まれています。こちらの内容をtask.jsコピペして，const stimuli =・・・を上書きします。</p>
+<p><img src="fig/jspsych3_fig2.png" /> これでメインブロックの(1)刺激リストを用意して，(2)画像を呈示して，(3)マウスで反応をとるができました。</p>
 </div>
 <div id="演習課題3" class="section level4">
 <h4>演習課題3</h4>
 <p>試行数を40試行にしてみましょう（この場合，20試行で逆転させましょう）！</p>
+<p>＜更新中です，以降は前の内容です＞</p>
 </div>
 </div>
 </div>
@@ -728,8 +642,7 @@ Rに慣れてないと，この内容はキツイかなと思いますが，後�
 <p>刺激リストを作成して，画像を画面に２つ呈示して，マウスクリックで反応を取得するまでできました。メインブロックの残りは，(1)選択した刺激を枠で囲って500ms呈示する，(2)選択の結果（報酬か罰）を500msフィードバックする，(3)固視点(+)を500msから1500ms呈示するです。</p>
 <div id="選択肢が分かるように呈示する" class="section level3">
 <h3>4.1 選択肢が分かるように呈示する</h3>
-<p>ここまで白背景で課題を作ってきたのですが，今回は背景色を黒にしてみましょう。HTMLではbodyってところで背景色を設定できるのですが，R
-Markdownでやる場合は，htmltoolsを使って，tags$bodyで指定をします。#000000は黒色です。文字は，text=“#ffffff”で白色を指定します。</p>
+<p>ここまで白背景で課題を作ってきたのですが，今回は背景色を黒にしてみましょう。HTMLではbodyってところで背景色を設定できるのですが，R Markdownでやる場合は，htmltoolsを使って，tags$bodyで指定をします。#000000は黒色です。文字は，text=“#ffffff”で白色を指定します。</p>
 <pre><code>library(htmltools)
 tagList(
 tags$body(bgcolor=&quot;#000000&quot;, text=&quot;#ffffff&quot;),
@@ -738,26 +651,14 @@ tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js&#39
 tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-html-button-response.js&#39;)
 )</code></pre>
 <p>さて，参加者が選択した方の図形が分かるように，以下のように選択した図形はオレンジの枠で囲まれるようにします(それぞれ，ファイル名は，s1s.jpegとs2s.jpegです)。</p>
-<p><img src="fig/reversal_learning_fig7.jpeg" width="200">　
-<img src="fig/reversal_learning_fig8.jpeg" width="200"></p>
+<p><img src="fig/reversal_learning_fig7.jpeg" width="200">　 <img src="fig/reversal_learning_fig8.jpeg" width="200"></p>
 <p>それでは，選択した画像の方にオレンジの枠で囲った画像(s1s.jpegかs2s.jpeg)が呈示されるようにしていきましょう。</p>
-<p>まず，3.4で作ったchoiceブロックを以下のように変更してみます。なんだか長くなっていますが，最初は3.4と同じで，それに続けて，選択した画像を画面に呈示する試行を追加しています(“{type:
-‘html-keyboard-response’”以降の内容です)。選択した画像を呈示する試行では，stimulus:に参加者の選択時応じた画像刺激をセットし，trial_duration:
-500 (試行は500ms),response_ends_trial:
-false(選択によって画像呈示が終わらないようにしています)とします。stimulus:が重要ですが，ここでは，jsPsych.data.get().last(1).values()[0]を使って１つ前の試行（つまり選択試行です）から.responseで選択結果，.left_right_s1でs1が左と右のどちらかに呈示されたかを取得します(それぞれ，last_selectとlast_left_right_s1に入る)。ちなみに，jsPsych.data.get().last(1).values()[0]のlast内の数字でいくつ前の施行かを指定します（数字によって2試行前のデータをもってくることもできます）。そして以下の5パターンで処理をします。</p>
+<p>まず，3.4で作ったchoiceブロックを以下のように変更してみます。なんだか長くなっていますが，最初は3.4と同じで，それに続けて，選択した画像を画面に呈示する試行を追加しています(“{type: ‘html-keyboard-response’”以降の内容です)。選択した画像を呈示する試行では，stimulus:に参加者の選択時応じた画像刺激をセットし，trial_duration: 500 (試行は500ms),response_ends_trial: false(選択によって画像呈示が終わらないようにしています)とします。stimulus:が重要ですが，ここでは，jsPsych.data.get().last(1).values()[0]を使って１つ前の試行（つまり選択試行です）から.responseで選択結果，.left_right_s1でs1が左と右のどちらかに呈示されたかを取得します(それぞれ，last_selectとlast_left_right_s1に入る)。ちなみに，jsPsych.data.get().last(1).values()[0]のlast内の数字でいくつ前の施行かを指定します（数字によって2試行前のデータをもってくることもできます）。そして以下の5パターンで処理をします。</p>
 <ul>
-<li><p>last_select==0 &amp;&amp; last_left_right_s1 ==
-1の場合，ボタン押しのlast_selectが0なのでs1を選択し（java
-scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを左に呈示します。</p></li>
-<li><p>last_select==0 &amp;&amp; last_left_right_s1 ==
-2の場合，ボタン押しのlast_selectが0なのでs1を選択し（java
-scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が2なので，s1は右に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを右に呈示します。</p></li>
-<li><p>last_select==1 &amp;&amp; last_left_right_s1 ==
-1の場合，ボタン押しのlast_selectが1なのでs2を選択し（java
-scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出て，s2は右に出ていました。そのため，オレンジの選択枠のあるs2s.jpegを右に呈示します。</p></li>
-<li><p>last_select==2 &amp;&amp; last_left_right_s1 ==
-2の場合，ボタン押しのlast_selectが1なのでs2を選択し（java
-scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が2なので，s1は右に出て，s2は左に出ていました。そのため，オレンジの選択枠のあるs2s.jpegを左に呈示します。</p></li>
+<li><p>last_select==0 &amp;&amp; last_left_right_s1 == 1の場合，ボタン押しのlast_selectが0なのでs1を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを左に呈示します。</p></li>
+<li><p>last_select==0 &amp;&amp; last_left_right_s1 == 2の場合，ボタン押しのlast_selectが0なのでs1を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が2なので，s1は右に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを右に呈示します。</p></li>
+<li><p>last_select==1 &amp;&amp; last_left_right_s1 == 1の場合，ボタン押しのlast_selectが1なのでs2を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出て，s2は右に出ていました。そのため，オレンジの選択枠のあるs2s.jpegを右に呈示します。</p></li>
+<li><p>last_select==2 &amp;&amp; last_left_right_s1 == 2の場合，ボタン押しのlast_selectが1なのでs2を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が2なので，s1は右に出て，s2は左に出ていました。そのため，オレンジの選択枠のあるs2s.jpegを左に呈示します。</p></li>
 <li><p>else，つまり上記以外の場合は，last_selectがnull，つまり反応が無い場合です，そこで，「時間内に選択を行ってください」という教示を呈示します。</p></li>
 </ul>
 <pre><code>var choice = {
@@ -795,36 +696,17 @@ scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_l
 <div id="フィードバックする" class="section level3">
 <h3>4.2 フィードバックする</h3>
 <p>次に，参加者の反応に対する正誤に応じて，以下のフィードバック画像を呈示します(それぞれ，ファイル名は，reward.jpegとpunishment.jpegです)。</p>
-<p><img src="fig/reversal_learning_fig9.jpeg" width="200">　
-<img src="fig/reversal_learning_fig10.jpeg" width="200"></p>
-<p>4.1で行ったchoiceへの追加に対して，さらにフィードバックを追加します。jsPsych.data.get().last(2).values()[0]を使って，２つ前の試行からデータをとってきます（つまり，選択の確認試行の１つ前の選択試行のデータをとってきます）。とってきたデータを使って，last_selectに参加者の選択,
-last_left_right_s1にs1が左右のどちから, last_reward_s1にs1の正誤,
-last_reward_s2にs2の正誤をいれます。この４つを用いて，以下の9パターンで処理をします（もっとスマートにプログラミングできそうですが，わかりやすさとの兼ね合いで地道に９パターンでフィードバックします）。</p>
+<p><img src="fig/reversal_learning_fig9.jpeg" width="200">　 <img src="fig/reversal_learning_fig10.jpeg" width="200"></p>
+<p>4.1で行ったchoiceへの追加に対して，さらにフィードバックを追加します。jsPsych.data.get().last(2).values()[0]を使って，２つ前の試行からデータをとってきます（つまり，選択の確認試行の１つ前の選択試行のデータをとってきます）。とってきたデータを使って，last_selectに参加者の選択, last_left_right_s1にs1が左右のどちから, last_reward_s1にs1の正誤, last_reward_s2にs2の正誤をいれます。この４つを用いて，以下の9パターンで処理をします（もっとスマートにプログラミングできそうですが，わかりやすさとの兼ね合いで地道に９パターンでフィードバックします）。</p>
 <ul>
-<li><p>last_select==0 &amp;&amp; last_left_right_s1 == 1 &amp;&amp;
-last_reward_s1==1の場合，ボタン押しのlast_selectが0なのでs1を選択し（java
-scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを左に呈示します。そして，last_reward_s1==1なので，真ん中にreward.jpegを呈示します。</p></li>
-<li><p>last_select==0 &amp;&amp; last_left_right_s1 == 1 &amp;&amp;
-last_reward_s1==0の場合，ボタン押しのlast_selectが0なのでs1を選択し（java
-scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを左に呈示します。そして，last_reward_s1==0なので，真ん中にpunishment.jpegを呈示します。</p></li>
-<li><p>last_select==0 &amp;&amp; last_left_right_s1 == 2 &amp;&amp;
-last_reward_s1==1の場合，ボタン押しのlast_selectが0なのでs1を選択し（java
-scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が2なので，s1は右に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを右に呈示します。そして，last_reward_s1==1なので，真ん中にreward.jpegを呈示します。</p></li>
-<li><p>last_select==0 &amp;&amp; last_left_right_s1 == 2 &amp;&amp;
-last_reward_s1==0の場合，ボタン押しのlast_selectが0なのでs1を選択し（java
-scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が2なので，s1は右に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを右に呈示します。そして，last_reward_s1==0なので，真ん中にpunishment.jpegを呈示します。</p></li>
-<li><p>last_select==1 &amp;&amp; last_left_right_s1 == 1 &amp;&amp;
-last_reward_s2==1の場合，ボタン押しのlast_selectが1なのでs2を選択し（java
-scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出て，s2は右に出ていました。そのため，オレンジの選択枠のあるs2s.jpegを右に呈示します。そして，last_reward_s2==1なので，真ん中にreward.jpegを呈示します。</p></li>
-<li><p>last_select==1 &amp;&amp; last_left_right_s1 == 1 &amp;&amp;
-last_reward_s2==0の場合，ボタン押しのlast_selectが1なのでs2を選択し（java
-scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出て，s2は右に出ていました。そのため，オレンジの選択枠のあるs2s.jpegを右に呈示します。そして，last_reward_s2==0なので，真ん中にpunishment.jpegを呈示します。</p></li>
-<li><p>last_select==1 &amp;&amp; last_left_right_s1 == 2 &amp;&amp;
-last_reward_s2==1の場合，ボタン押しのlast_selectが1なのでs2を選択し（java
-scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が2なので，s1は右に出て，s2は左に出ていました。そのため，オレンジの選択枠のあるs2s.jpegを左に呈示します。そして，last_reward_s2==1なので，真ん中にreward.jpegを呈示します。</p></li>
-<li><p>last_select==1 &amp;&amp; last_left_right_s1 == 2 &amp;&amp;
-last_reward_s2==0の場合，ボタン押しのlast_selectが1なのでs2を選択し（java
-scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が2なので，s1は右に出て，s2は左に出ていました。そのため，オレンジの選択枠のあるs2s.jpegを左に呈示します。そして，last_reward_s2==0なので，真ん中にpunishment.jpegを呈示します。</p></li>
+<li><p>last_select==0 &amp;&amp; last_left_right_s1 == 1 &amp;&amp; last_reward_s1==1の場合，ボタン押しのlast_selectが0なのでs1を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを左に呈示します。そして，last_reward_s1==1なので，真ん中にreward.jpegを呈示します。</p></li>
+<li><p>last_select==0 &amp;&amp; last_left_right_s1 == 1 &amp;&amp; last_reward_s1==0の場合，ボタン押しのlast_selectが0なのでs1を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを左に呈示します。そして，last_reward_s1==0なので，真ん中にpunishment.jpegを呈示します。</p></li>
+<li><p>last_select==0 &amp;&amp; last_left_right_s1 == 2 &amp;&amp; last_reward_s1==1の場合，ボタン押しのlast_selectが0なのでs1を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が2なので，s1は右に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを右に呈示します。そして，last_reward_s1==1なので，真ん中にreward.jpegを呈示します。</p></li>
+<li><p>last_select==0 &amp;&amp; last_left_right_s1 == 2 &amp;&amp; last_reward_s1==0の場合，ボタン押しのlast_selectが0なのでs1を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が2なので，s1は右に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを右に呈示します。そして，last_reward_s1==0なので，真ん中にpunishment.jpegを呈示します。</p></li>
+<li><p>last_select==1 &amp;&amp; last_left_right_s1 == 1 &amp;&amp; last_reward_s2==1の場合，ボタン押しのlast_selectが1なのでs2を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出て，s2は右に出ていました。そのため，オレンジの選択枠のあるs2s.jpegを右に呈示します。そして，last_reward_s2==1なので，真ん中にreward.jpegを呈示します。</p></li>
+<li><p>last_select==1 &amp;&amp; last_left_right_s1 == 1 &amp;&amp; last_reward_s2==0の場合，ボタン押しのlast_selectが1なのでs2を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出て，s2は右に出ていました。そのため，オレンジの選択枠のあるs2s.jpegを右に呈示します。そして，last_reward_s2==0なので，真ん中にpunishment.jpegを呈示します。</p></li>
+<li><p>last_select==1 &amp;&amp; last_left_right_s1 == 2 &amp;&amp; last_reward_s2==1の場合，ボタン押しのlast_selectが1なのでs2を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が2なので，s1は右に出て，s2は左に出ていました。そのため，オレンジの選択枠のあるs2s.jpegを左に呈示します。そして，last_reward_s2==1なので，真ん中にreward.jpegを呈示します。</p></li>
+<li><p>last_select==1 &amp;&amp; last_left_right_s1 == 2 &amp;&amp; last_reward_s2==0の場合，ボタン押しのlast_selectが1なのでs2を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が2なので，s1は右に出て，s2は左に出ていました。そのため，オレンジの選択枠のあるs2s.jpegを左に呈示します。そして，last_reward_s2==0なので，真ん中にpunishment.jpegを呈示します。</p></li>
 <li><p>else，つまり上記以外の場合は，last_selectがnull，つまり反応が無い場合です，そこで，「時間内に選択を行ってください」という教示を呈示します。</p></li>
 </ul>
 <p>上記の9パターンのフィードバックをするために，4.1の内容に，以下を追加します（4.1で選択の確認試行の追加と同じようにしてみてください）。</p>
@@ -876,12 +758,10 @@ scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_l
 <p>4.3まで刺激はtop:40%に呈示してきましたが，top:35%に呈示してみましょう（何かがずれたら適切に調整をしてください）！</p>
 </div>
 </div>
-<div id="メインブロック以外のブロックを追加していく"
-class="section level2">
+<div id="メインブロック以外のブロックを追加していく" class="section level2">
 <h2>5. メインブロック以外のブロックを追加していく</h2>
 <p>メインブロックは完成したので，課題が始まった時に表示されるウェルカムメッセージとフルスクリーンで実施するための教示などのブロックを追加して，最後に終了メッセージを追加します。これはストループ課題の時と一緒です。</p>
-<div id="ウェウカムメッセージとフルスクリーン化の追加"
-class="section level3">
+<div id="ウェウカムメッセージとフルスクリーン化の追加" class="section level3">
 <h3>5.1 ウェウカムメッセージとフルスクリーン化の追加</h3>
 <p>最初にウェウカムメッセージとして以下のwelcomブロックを追加します。</p>
 <pre><code>var welcome = {
