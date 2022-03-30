@@ -42,9 +42,7 @@ title: "Code & Tips"
 
 - [jsPsychを用いた認知課題の作成4: 音声や動画の呈示と同意画面について](how-to-jspsych4.html)　☆
 
-- [jsPsychを用いた質問紙の作成](how-to-jspsych5.html)　☆
-
-- [SurveyJSを用いた質問紙の作成](how-to-surveyjs.html)　☆
+- [jsPsychを用いた質問票の作成](how-to-jspsych5.html)　☆
 
 <br />
 

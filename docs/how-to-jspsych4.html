@@ -13,8 +13,8 @@
 
 <title>jsPsychを用いた認知課題の作成4: 音声や動画の呈示と同意画面について</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -299,12 +303,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -381,7 +385,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">jsPsychを用いた認知課題の作成4: 音声や動画の呈示と同意画面について</h1>
+<h1 class="title toc-ignore">jsPsychを用いた認知課題の作成4:
+音声や動画の呈示と同意画面について</h1>
 
 </div>
 
@@ -390,28 +395,39 @@ div.tocify {
 <p><br></p>
 <div id="音声を呈示してみよう" class="section level2">
 <h2>音声を呈示してみよう！</h2>
-<p><strong>以下をRstudioのConsoleで実行して，フォルダとファイルを準備します。</strong></p>
-<pre><code>jsPsychRmd::set_jsPsych(folder = &quot;sound&quot;, rc = TRUE)</code></pre>
+<p>以下をRstudioのConsoleで実行して，フォルダとファイルを準備します。</p>
+<pre class="r"><code>psyinfr::set_cbat(&quot;sound&quot;,&quot;7.2.1&quot;)</code></pre>
+<p>＊国里ゼミ以外でResearch
+Compendiumを使ってない場合は，カレントディレクトリーにexerciseという名前のフォルダを作ってもらえば，そちらにフォルダを用意します。</p>
 <p>jsPsychでは，以下のプラグインを使うと音声を呈示することができます。</p>
 <ul>
-<li>jspsych-audio-button-response</li>
-<li>jspsych-audio-keyboard-response</li>
-<li>jspsych-audio-slider-response</li>
+<li>audio-button-response</li>
+<li>audio-keyboard-response</li>
+<li>audio-slider-response</li>
 </ul>
 <p><br></p>
-<p>今回は，キーボードで反応をとることにして，jspsych-audio-keyboard-responseを使います。なので，最初のタグの設定は，以下のようになります(jspsych-html-keyboard-responseは教示用)。</p>
-<pre><code>library(htmltools)
-tagList(
-tags$script(src=&#39;jspsych-6.3.1/jspsych.js&#39;),
-tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js&#39;),
-tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-audio-keyboard-response.js&#39;)
-)</code></pre>
+<p>今回は，キーボードで反応をとることにして，audio-keyboard-responseを使います。demo_sound.htmlファイルをクリックして，「Open
+in Editor」を選択して，HTMLファイルを開いてみましょう。</p>
+<p><img src="fig/jspsych4_2.png" /> <br></p>
+<p>以下のように，plugin-audio-keyboard-response.jsをHTMLファイルに追加します。</p>
+<p><img src="fig/jspsych4_3.png" /></p>
 <p><br></p>
-<p>さて，呈示する音声ですが，無料で使える便利な素材ライブラリの <a href="https://www.nhk.or.jp/archives/creative/material/category-list.html?i=110" target="_blank">NHK CREATIVE LIBRARYに百人一首の音声データ</a>があるので，カルタをやることにします。とりあえず，以下の「秋の田の・・・」の音声をダウンロードしておきます。ダウンロードは，必要な音声データをクリック，リンク先の利用規約に同意した上で，出てきたファイルのURLをdownload.file()関数内にいれることでできます。</p>
+<p>さて，呈示する音声ですが，無料で使える便利な素材ライブラリの
+<a href="https://www.nhk.or.jp/archives/creative/material/category-list.html?i=110" target="_blank">NHK
+CREATIVE
+LIBRARYに百人一首の音声データ</a>があるので，カルタをやることにします。とりあえず，以下の「秋の田の・・・」の音声をダウンロードしておきます。ダウンロードは，必要な音声データをクリック，リンク先の利用規約に同意した上で，パソコンにダウンロードします。</p>
 <ul>
-<li>秋の田のかりほの庵の苫をあらみ　わが衣手は露にぬれつつ</li>
+<li><a
+href="https://www2.nhk.or.jp/archives/creative/material/view.cgi?m=D0002110101_00000">秋の田のかりほの庵の苫をあらみ　わが衣手は露にぬれつつ</a></li>
 </ul>
-<pre><code>download.file(&quot;http://www9.nhk.or.jp/das/audio/D0002110/D0002110101_00000_A_001.m4a&quot;,&quot;stimuli/a1.m4a&quot;) </code></pre>
+<p>ダウンロードができたら，RStudioで「Upload」をクリックして，音声ファイルをアップロードします。以下のような画面が開くので，Target
+directoryにsound &gt; sound &gt;
+stimuliフォルダを選んで，パソコン内のダウンロードした音声ファイルをChoose
+Fileで選んでOkをクリックします。</p>
+<p><img src="fig/jspsych4_4.png" /></p>
+<p><br></p>
+<p>ファイルがアップロードされると思いますが，ファイル名が長いので，「Rename」をクリックして，ファイル名を「a1.m4a」に変更します。</p>
+<p><img src="fig/jspsych4_5.png" /></p>
 <p><br></p>
 <p>上記でダウンロードした音声が鳴ったら，正しい歌を選んでもらうのですが，「秋の田の・・・」以外に以下の３つも呈示して，４択にしてみましょう。</p>
 <ul>
@@ -420,39 +436,30 @@ tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-audio-keyboard-response.js&#3
 <li>田子の浦にうち出でてみれば白妙の　富士の高嶺に雪は降りつつ</li>
 </ul>
 <p><br></p>
-<p>教示は，あまりこだわらずに以下のようにしてみましょう。</p>
-<pre><code>var instructions = {
-  type: &quot;html-keyboard-response&quot;,
+<p>教示は，適当に以下のようにしてみましょう。</p>
+<pre><code>const instruction = {
+  type: jsPsychHtmlKeyboardResponse,
   stimulus: &quot;&lt;p style=&#39;text-align:left&#39;&gt;これから百人一首の音声が流れます。&lt;/p&gt;&quot;+
     &quot;&lt;p style=&#39;text-align&#39;&gt;流れているものを１から４のキーを押して選んでください。&lt;/p&gt;&quot;+
     &quot;&lt;p style=&#39;text-align:left&#39;&gt;スペースを押して始めてください。&lt;/p&gt;&quot;,
   post_trial_gap: 1000
 };</code></pre>
 <p><br></p>
-<p>音声を呈示してキーボードで反応取得する場合は，audio-keyboard-responseプラグインを使います。stimulus:で音声刺激を指定します。今回は，“audio”フォルダを作って，そこに音声ファイルにa1という名前をつけて保存しています（拡張子はm4aです）。４つの歌を呈示して反応を取るので，choiceでは４つキーを設定します（適当に1,2,3,4としました）。最後にpromptに教示と選択肢の歌を書いて呈示します（みやすさを考えて左揃えにしました）。</p>
-<pre><code>var hundred_poems1  = {
-    type: &#39;audio-keyboard-response&#39;,
-    stimulus: &#39;stimuli/a1.m4a&#39;,
+<p>音声を呈示してキーボードで反応取得する場合は，audio-keyboard-responseプラグインを使います。stimulus:で音声刺激を指定します。sound/stimuliフォルダ内のa1.m4aを指定します。４つの歌を呈示して反応を取るので，choiceでは４つキーを設定します（適当に1,2,3,4としました）。最後にpromptに教示と選択肢の歌を書いて呈示します（見やすさを考えて左揃えにしました）。</p>
+<pre><code>const hundred_poems1  = {
+    type: jsPsychAudioKeyboardResponse,
+    stimulus: &#39;sound/stimuli/a1.m4a&#39;,
     choices: [&#39;1&#39;, &#39;2&#39;,&#39;3&#39;,&#39;4&#39;],
     prompt: &quot;&lt;p style=&#39;text-align:left&#39;&gt;これから流れる百人一首は以下のどれでしょうか？１から４のキーで選んでください&lt;/p&gt;&quot;+
     &quot;&lt;p style=&#39;text-align:left&#39;&gt;1 あしびきの山鳥の尾のしだり尾の　ながながし夜をひとりかも寝む&lt;/p&gt;&quot;+
     &quot;&lt;p style=&#39;text-align:left&#39;&gt;2 春過ぎて夏来にけらし白妙の　衣干すてふ天の香具山&lt;/p&gt;&quot;+
     &quot;&lt;p style=&#39;text-align:left&#39;&gt;3 秋の田のかりほの庵の苫をあらみ　わが衣手は露にぬれつつ&lt;/p&gt;&quot;+
     &quot;&lt;p style=&#39;text-align:left&#39;&gt;4 田子の浦にうち出でてみれば白妙の　富士の高嶺に雪は降りつつ&lt;/p&gt;&quot;
-};
-</code></pre>
+};</code></pre>
 <p><br></p>
-<p>教示ブロックと音声呈示ブロックができたので，timelineにpushして，開始してみましょう！</p>
-<pre><code>var timeline = [];
-timeline.push(instructions);
-timeline.push(hundred_poems1);
-
-jsPsych.init({
-    timeline: timeline,
-    on_finish: function() {
-     jsPsych.data.displayData();
-    }
-});</code></pre>
+<p>教示ブロックと音声呈示ブロックができたので，timelineを設定します。</p>
+<pre><code>const timeline = [instruction, hundred_poems1];</code></pre>
+<p>demo_sound.htmlをブラウザで開いて動作確認しましょう。</p>
 <p><br></p>
 <div id="演習課題1" class="section level3">
 <h3>演習課題1</h3>
@@ -468,8 +475,8 @@ jsPsych.init({
 </div>
 <div id="動画を呈示してみよう" class="section level2">
 <h2>動画を呈示してみよう！</h2>
-<p><strong>以下をRstudioのConsoleで実行して，フォルダとファイルを準備します。</strong></p>
-<pre><code>jsPsychRmd::set_jsPsych(folder = &quot;movie&quot;, rc = TRUE)</code></pre>
+<p>以下をRstudioのConsoleで実行して，フォルダとファイルを準備します。</p>
+<pre class="r"><code>psyinfr::set_cbat(&quot;movie&quot;,&quot;7.2.1&quot;)</code></pre>
 <p>jsPsychでは，以下のプラグインを使うと動画を呈示することができます。</p>
 <ul>
 <li>jspsych-video-button-response</li>
@@ -477,61 +484,57 @@ jsPsych.init({
 <li>jspsych-video-slider-response</li>
 </ul>
 <p><br></p>
-<p>今回は，マウスを使ってスライダーを動かして，動画の好き嫌いを評定させることにしてみましょう。その場合は，jspsych-video-slider-responseを使います。なので，最初のタグの設定は，以下のようになります(jspsych-html-keyboard-responseは教示用)。</p>
-<pre><code>library(htmltools)
-tagList(
-tags$script(src=&#39;jspsych-6.3.1/jspsych.js&#39;),
-tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js&#39;),
-tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-video-slider-response.js&#39;)
-)</code></pre>
-<p><br></p>
-<p>音声と同様に<a href="https://www.nhk.or.jp/archives/creative/material/" target="_blank">NHK CREATIVE LIBRARY</a>を使いましょう。正直なんでもいいのですが，あまり長くない動画を適当に選んで，ダウンロードして，“stimuli”フォルダにv1という名前をつけて保存してください（拡張子はmp4を想定していますが，ダウンロードしたファイルがそうじゃない場合は，以降のコードも修正ください）。</p>
+<p>今回は，マウスを使ってスライダーを動かして，動画の好き嫌いを評定させることにしてみましょう。その場合は，jspsych-video-slider-responseを使います。demo_movie.htmlファイルをクリックして，「Open
+in Editor」を選択して，HTMLファイルを開いてみましょう。</p>
+<p><img src="fig/jspsych4_6.png" /> <br></p>
+<p>以下のように，plugin-video-slider-response.jsを追加します。</p>
+<p><img src="fig/jspsych4_7.png" /> <br></p>
+<p>音声と同様に<a href="https://www.nhk.or.jp/archives/creative/material/" target="_blank">NHK
+CREATIVE
+LIBRARY</a>を使いましょう。正直なんでもいいのですが，あまり長くない動画を適当に選んで，パソコンにダウンロードしてください。</p>
+<p>movie &gt; movie &gt; stimuli
+フォルダにダウンロードした動画をアップロードします。</p>
+<p><img src="fig/jspsych4_8.png" /> <br></p>
+<p>stimuliフォルダ内の動画ファイルをv1.mp4に変更してください。</p>
+<p><img src="fig/jspsych4_9.png" /> <br></p>
 <p>まず，以下のような教示をします。</p>
-<pre><code>var instructions = {
-  type: &quot;html-keyboard-response&quot;,
+<pre><code>const instruction = {
+  type: jsPsychHtmlKeyboardResponse,
   stimulus: &quot;&lt;p style=&#39;text-align:left&#39;&gt;これから動画が流れます。&lt;/p&gt;&quot;+
     &quot;&lt;p style=&#39;text-align&#39;&gt;流れている動画どのくらい好きか嫌いかマウスを使ってスライダーを動かして評価してください。&lt;/p&gt;&quot;+
     &quot;&lt;p style=&#39;text-align:left&#39;&gt;スペースを押して始めてください。&lt;/p&gt;&quot;,
   post_trial_gap: 1000
 };</code></pre>
 <p><br></p>
-<p>次に，video-slider-responseプラグインを使って，動画を呈示します。stimulus:で動画ファイルを指定します。そのままだと大きい場合が多いので，width:で大きさを調整します。labels: でスライダーのラベルをつけられます。今回は嫌い-どちらでもない-好きの３つのラベルをつけます。prompt:で教示を指定します。デフォルトでは，下に「Continue」ボタンがでてきますが，これは，「button_label: “次へ”」とすることで，「次へ」ボタンに変更します。</p>
-<pre><code>var movie1 = {
-    type: &#39;video-slider-response&#39;,
-    stimulus: [&#39;stimuli/v1.mp4&#39;],
+<p>次に，video-slider-responseプラグインを使って，動画を呈示します。stimulus:で動画ファイルを指定します。そのままだと大きい場合が多いので，width:で大きさを調整します。labels:
+でスライダーのラベルをつけられます。今回は嫌い-どちらでもない-好きの３つのラベルをつけます。prompt:で教示を指定します。デフォルトでは，下に「Continue」ボタンがでてきますが，これは，「button_label:
+“次へ”」とすることで，「次へ」ボタンに変更します。</p>
+<pre><code>const movie1 = {
+    type: jsPsychVideoSliderResponse,
+    stimulus: [&#39;movie/stimuli/v1.mp4&#39;],
     width: 600,
     labels: [&quot;嫌い&quot;, &quot;どちらでもない&quot;, &quot;好き&quot;],
     prompt: &quot;&lt;p&gt;この動画がどのくらい好きか嫌いか，マウスでスライダーを動かして，評定してください&lt;/p&gt;&quot;,
     button_label: &quot;次へ&quot;
 }</code></pre>
 <p><br></p>
-<p>教示ブロックと音声呈示ブロックができたので，timelineにpushして，開始してみましょう！</p>
-<pre><code>var timeline = [];
-timeline.push(instructions);
-timeline.push(movie1);
-
-jsPsych.init({
-    timeline: timeline,
-    on_finish: function() {
-     jsPsych.data.displayData();
-    }
-});</code></pre>
+<p>教示ブロックと音声呈示ブロックができたので，timelineを設定します。</p>
+<pre><code>var timeline = [instruction, movie1];</code></pre>
+<p>demo_movie.htmlをブラウザで開いて動作確認しましょう。</p>
 <p><br></p>
 <div id="演習課題2" class="section level3">
 <h3>演習課題2</h3>
-<p>上記の評定ラベルを，“1嫌い”から“10好き”までの10段階に変更しましょう（途中の2,3,4…もラベルをつけてください）。その上で，別の動画も追加して，２つの動画を評定するようにしてみましょう！</p>
+<p>上記の評定ラベルを，“1嫌い”から”10好き”までの10段階に変更しましょう（途中の2,3,4…もラベルをつけてください）。その上で，別の動画も追加して，２つの動画を評定するようにしてみましょう！</p>
 <p><br></p>
 </div>
 </div>
 <div id="研究参加の同意を取ろう" class="section level2">
 <h2>研究参加の同意を取ろう！</h2>
-<p>研究をする場合は，研究内容，参加者の権利，個人情報保護を含むデータの扱われ方などについて説明をした上で，研究参加の同意をとります。jsPsychでの研究参加の同意のとり方については，<a href="https://www.notion.so/4c4e7288bf984eb19ed1db168f325b05" target="_blank">山形大学人文社会科学部・小林正法先生のHP</a>にわかりやすい説明とコードがありますので，それを参考にさせていただいて，以下のように研究参加同意(informed consent)をとります。小林先生に倣って，survey-multi-selectプラグインを使って同意をとってみます。</p>
-<p>まず，タグに，survey-multi-selectプラグインを追加します。</p>
-<pre><code>tags$script(src=&#39;jspsych-6.3.1/plugins/jspsych-survey-multi-select.js&#39;)</code></pre>
+<p>研究をする場合は，研究内容，参加者の権利，個人情報保護を含むデータの扱われ方などについて説明をした上で，研究参加の同意をとります。では，survey-multi-selectプラグインを使って同意をとってみます。</p>
 <p><br></p>
 <p>以下のように同意ブロック(ic)を作ります。実際の研究では，…の部分やABCなどをおいている部分に加筆・修正をして使います。</p>
-<pre><code>var ic = {
-    type: &#39;survey-multi-select&#39;,
+<pre><code>const ic = {
+    type: jsPsychSurveyMultiSelect,
     questions: [{
         prompt: &#39;&lt;span style = &quot;font-size: 14pt&quot;&gt;&lt;b&gt;以上の内容をよく読んで，理解した上で実験参加に同意いただける方はチェックをお願いします。同意されない方は，ウィンドウを閉じてください。&lt;/b&gt;&lt;/span&gt;&#39;,
         options: [&#39;&lt;span style = &quot;font-size: 14pt&quot;&gt;説明事項をよく読み，理解した上で，研究参加に同意します。&lt;/span&gt;&#39;],
@@ -564,23 +567,18 @@ jsPsych.init({
     button_label: &#39;次へ&#39;
 };</code></pre>
 <p><br></p>
-<p>そして，以下のようにすれば，同意の取得，全画面化，教示という流れが作れます。これでは，あとは試行錯誤すれば，いろいろな心理学の行動課題をjsPsychで作れるようになります。</p>
-<pre><code>var timeline = [];
-timeline.push(ic);
-timeline.push({
-  type: &#39;fullscreen&#39;,
-  fullscreen_mode: true
-});
-timeline.push(instructions);</code></pre>
+<p>そして，以下のようにすれば，同意の取得，教示，動画の呈示という流れが作れます。</p>
+<pre><code>var timeline = [ic, instruction, movie1];</code></pre>
+<p>これで，あとは試行錯誤すれば，いろいろな心理学の行動課題をjsPsychで作れるようになります。</p>
 <p><br></p>
 </div>
 <div id="演習課題3" class="section level2">
 <h2>演習課題3</h2>
-<p>演習課題2の教示の前に，(1)上記の参加同意と(2)全画面表示を追加してみましょう！</p>
+<p>ICを自分の研究テーマ（仮），所属，名前に変更してみよう！</p>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2021 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -620,6 +618,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
