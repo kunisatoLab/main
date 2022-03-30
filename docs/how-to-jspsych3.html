@@ -497,7 +497,7 @@ Compendiumを使ってない場合は，カレントディレクトリーにexer
 <div id="教示ブロックを作成する" class="section level3">
 <h3>3.1 教示ブロックを作成する</h3>
 <p>以下のような教示を提示することにします。</p>
-<pre><code>これから画面に２つの図形がでてきますので，どちらかの図形を選択してください。
+<pre class="js"><code>これから画面に２つの図形がでてきますので，どちらかの図形を選択してください。
 あなたの選択に対して，ポジティブな反応（緑色の笑顔）かネガティブな反応（赤色の悲しい顔）が返ってきます。
 一方の図形はポジティブな反応になりやすく，もう一方はそうではありません。
 できるだけ，ポジティブな反応が得られるように，選択をしてください。
@@ -506,6 +506,17 @@ Compendiumを使ってない場合は，カレントディレクトリーにexer
 また，図形の出る位置（左右）は頻繁に変わります。
 
 それでは，キーボードのキーをどれか押して，課題を始めてください。</code></pre>
+<script type="text/javascript">
+これから画面に２つの図形がでてきますので，どちらかの図形を選択してください。
+あなたの選択に対して，ポジティブな反応（緑色の笑顔）かネガティブな反応（赤色の悲しい顔）が返ってきます。
+一方の図形はポジティブな反応になりやすく，もう一方はそうではありません。
+できるだけ，ポジティブな反応が得られるように，選択をしてください。
+
+なお，図形と返ってくる反応との関係は途中で変わることがあります。
+また，図形の出る位置（左右）は頻繁に変わります。
+
+それでは，キーボードのキーをどれか押して，課題を始めてください。
+</script>
 <div id="演習課題1" class="section level4">
 <h4>演習課題1</h4>
 <p><a href="https://kunisatolab.github.io/main/how-to-jspsych2.html" target="_blank">ストループ課題</a>を参考に，上記の教示を出してみましょう！なお，
@@ -519,7 +530,7 @@ Compendiumを使ってない場合は，カレントディレクトリーにexer
 <p><img src="fig/reversal_learning_fig2.jpeg" width="200">　
 <img src="fig/reversal_learning_fig3.jpeg" width="200"></p>
 <p>今回は，画像刺激を呈示して，マウスでのクリックをもとめるので，html-button-responseプラグインを使います。html-button-responseプラグインは，以下のように使います。通常は，stimulusになんらかの刺激をいれて，choicesやbutton_htmlの部分でマウスで選択するボタンを定義します(trial_durationは最大の呈示時間になります，これを設定しないとマウスクリックしないと次の試行に進みません)。今回は，ボタン部分に上記の２つの画像刺激を出して，それをクリックさせるようにしたいと思います。そこで，choicesの部分で[]内に２つ画像を呈示するためのコードを書いています。divとか出てきて謎と思うかもしれませんが，positionのところで画像をだす位置を決めていて(画面のtopつまり上から50%くらい，leftから20%くらいに呈示すると指定している)，img以降で画像のある場所と画像名を指定し，widthで大きさを指定しています。その次も同様に定義しています。</p>
-<pre><code>const choice = {
+<pre class="js"><code>const choice = {
     stimulus: &#39;&#39;,
     type: jsPsychHtmlButtonResponse,
     choices: [&#39;&lt;div style=&quot;position: absolute; top: 50%; left: 20%&quot;&gt;&lt;img src=&quot;RL/stimuli/s1.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;,
@@ -527,9 +538,23 @@ Compendiumを使ってない場合は，カレントディレクトリーにexer
     button_html: &#39;%choice%&#39;,
     trial_duration: 2000
 };</code></pre>
+<script type="text/javascript">
+const choice = {
+    stimulus: '',
+    type: jsPsychHtmlButtonResponse,
+    choices: ['<div style="position: absolute; top: 50%; left: 20%"><img src="RL/stimuli/s1.jpeg" width="200px"/></div>',
+    '<div style="position: absolute; top: 50%; right: 20%"><img src="RL/stimuli/s2.jpeg" width="200px"/></div>'],
+    button_html: '%choice%',
+    trial_duration: 2000
+};
+</script>
 <p>上記が追加できたら，timelineにchoiceも追加しておきましょう。demo_RL.htmlをブラウザで開いて，教示と図形２つが呈示されるか確認しましょう。</p>
-<pre><code>/*タイムラインの設定*/
+<pre class="js"><code>/*タイムラインの設定*/
 const timeline = [instruction, choice];</code></pre>
+<script type="text/javascript">
+/*タイムラインの設定*/
+const timeline = [instruction, choice];
+</script>
 <div id="演習課題2" class="section level4">
 <h4>演習課題2</h4>
 <p>上記のコードを使って，(1)s1.jpegやs2.jpeg以外の画像を呈示してみる（stimuliフォルダ内にいくつか画像があるので，それらを呈示してみましょう），(2)呈示した画像を左上や右下などの別の位置にも呈示してみましょう！</p>
@@ -539,7 +564,7 @@ const timeline = [instruction, choice];</code></pre>
 class="section level3">
 <h3>3.3 メインブロック：画像刺激のリストを使って刺激呈示する</h3>
 <p>さて，課題は80試行もあるので，ストループ課題と同じ用に，刺激をリストにした上で呈示することにします。ストループと同じ用に，stimuliに追加していきます。stimuli内のstimulusの[]内に２つ分の画像の呈示に関する指定をいれていきます。とえいあえず，以下に３試行分のリストを準備しました(2試行目で図形の左右が入れ替わるようにしました)。task.jsに追加してください。</p>
-<pre><code>const stimuli = [
+<pre class="js"><code>const stimuli = [
  {
     stimulus: [&#39;&lt;div style=&quot;position: absolute; top: 50%; left: 20%&quot;&gt;&lt;img src=&quot;RL/stimuli/s1.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;,
     &#39;&lt;div style=&quot;position: absolute; top: 50%; right: 20%&quot;&gt;&lt;img src=&quot;RL/stimuli/s2.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;]
@@ -551,8 +576,22 @@ class="section level3">
     &#39;&lt;div style=&quot;position: absolute; top: 50%; right: 20%&quot;&gt;&lt;img src=&quot;RL/stimuli/s2.jpeg&quot; width=&quot;200px&quot;/&gt;&lt;/div&gt;&#39;]
   }
 ]</code></pre>
+<script type="text/javascript">
+const stimuli = [
+ {
+    stimulus: ['<div style="position: absolute; top: 50%; left: 20%"><img src="RL/stimuli/s1.jpeg" width="200px"/></div>',
+    '<div style="position: absolute; top: 50%; right: 20%"><img src="RL/stimuli/s2.jpeg" width="200px"/></div>']
+  },{
+    stimulus: ['<div style="position: absolute; top: 50%; right: 20%"><img src="RL/stimuli/s1.jpeg" width="200px"/></div>',
+    '<div style="position: absolute; top: 50%; left: 20%"><img src="RL/stimuli/s2.jpeg" width="200px"/></div>']
+  },{
+    stimulus: ['<div style="position: absolute; top: 50%; left: 20%"><img src="RL/stimuli/s1.jpeg" width="200px"/></div>',
+    '<div style="position: absolute; top: 50%; right: 20%"><img src="RL/stimuli/s2.jpeg" width="200px"/></div>']
+  }
+]
+</script>
 <p>上記で準備したリストをchoice内で使います。choice内にtimelineを追加して，timeline_variablesに上記のstimuliを指定しています。そして，さきほど直接，画像の指定情報をいれていたchoicesには，jsPsych.timelineVariable(‘stimulus’)を追加します。これで，stimuliリスト内を上から順番に実行していって，stimulusの情報がchoiceに入って画面に呈示されます。</p>
-<pre><code>const choice = {
+<pre class="js"><code>const choice = {
   timeline:[{
     stimulus: &#39;&#39;,
     type: jsPsychHtmlButtonResponse,
@@ -562,6 +601,18 @@ class="section level3">
   }],
   timeline_variables: stimuli
 };</code></pre>
+<script type="text/javascript">
+const choice = {
+  timeline:[{
+    stimulus: '',
+    type: jsPsychHtmlButtonResponse,
+    choices: jsPsych.timelineVariable('stimulus'),
+    button_html: '%choice%',
+    trial_duration: 2000
+  }],
+  timeline_variables: stimuli
+};
+</script>
 <p>これをtask.jsに追加して，動作確認してみましょう。図形の位置が変わりつつ３回選択画面が出てきたらうまくいっています。</p>
 </div>
 <div id="メインブロック画像刺激のリストを使って刺激呈示する-1"
@@ -599,9 +650,9 @@ left_right_s1_text &lt;- ifelse(left_right_s1==1, &quot;left&quot;, &quot;right&
 left_right_s2_text &lt;- ifelse(left_right_s2==1, &quot;left&quot;, &quot;right&quot;)</code></pre>
 <p>上記を実行できたら，以下のコードも実行して，left_right_s1とleft_right_s2が上手く設定できているかプロットして確認をしてみましょう。大きな偏りなくランダムにleft(1)やright(2)になっているので，良さそうですね。</p>
 <pre class="r"><code>plot(left_right_s1)</code></pre>
-<p><img src="how-to-jspsych3_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="how-to-jspsych3_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <pre class="r"><code>plot(left_right_s2)</code></pre>
-<p><img src="how-to-jspsych3_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<p><img src="how-to-jspsych3_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 </div>
 <div id="刺激を選択した時のフィードバックのリストの作成"
 class="section level4">
@@ -632,9 +683,9 @@ for (i in 1:repeat_shuffle) {
 }</code></pre>
 <p>以下のplot用のコードも実行して，reward_s1とreward_s2が上手く設定できているか確認をしてみましょう。reward_s1は前半40試行で１が多くて，reward_s2は後半40試行で１が多いのがわかりますね。</p>
 <pre class="r"><code>plot(reward_s1)</code></pre>
-<p><img src="how-to-jspsych3_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="how-to-jspsych3_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code>plot(reward_s2)</code></pre>
-<p><img src="how-to-jspsych3_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<p><img src="how-to-jspsych3_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
 </div>
 <div id="刺激リストをデータフレーム化" class="section level4">
 <h4>刺激リストをデータフレーム化</h4>
@@ -742,7 +793,7 @@ scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_l
 scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が2なので，s1は右に出て，s2は左に出ていました。そのため，オレンジの選択枠のあるs2s.jpegを左に呈示します。</p></li>
 <li><p>else，つまり上記以外の場合は，last_selectがnull，つまり反応が無い場合です，そこで，「時間内に選択を行ってください」という教示を呈示します。</p></li>
 </ul>
-<pre><code>const choice = {
+<pre class="js"><code>const choice = {
   timeline:[{
     stimulus: &#39;&#39;,
     type: jsPsychHtmlButtonResponse,
@@ -774,6 +825,40 @@ scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_l
   }],
   timeline_variables: stimuli
 };</code></pre>
+<script type="text/javascript">
+const choice = {
+  timeline:[{
+    stimulus: '',
+    type: jsPsychHtmlButtonResponse,
+    choices: jsPsych.timelineVariable('stimulus'),
+    button_html: '%choice%',
+    trial_duration: 2000,
+    data: jsPsych.timelineVariable('data')
+  　},{
+    type: jsPsychHtmlButtonResponse,
+    stimulus: '',
+    choices:  function(){
+      var last_select = jsPsych.data.get().last(1).values()[0].response;
+      var last_left_right_s1 = jsPsych.data.get().last(1).values()[0].left_right_s1;
+      if (last_select==0 && last_left_right_s1 == 1){
+        return ["<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p>"]
+      } else if (last_select==0 && last_left_right_s1 == 2){
+        return ["<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p>"]
+      } else if (last_select==1 && last_left_right_s1 == 1){
+        return ["<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p>"]
+      } else if (last_select==1 && last_left_right_s1 == 2){
+        return ["<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p>"]
+      } else {
+        return ['<p style="font-size: 48px">時間内に選択を行ってください</p>']
+      }
+    },
+    button_html: '%choice%',
+    trial_duration: 500,
+    response_ends_trial: false,
+  }],
+  timeline_variables: stimuli
+};
+</script>
 <p>さて，上記のようにchoiceを変更してみて，実際に選択した画像の方がオレンジで囲われるようになったら成功です。</p>
 </div>
 <div id="フィードバックする" class="section level3">
@@ -812,7 +897,7 @@ scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_l
 <li><p>else，つまり上記以外の場合は，last_selectがnull，つまり反応が無い場合です，そこで，「時間内に選択を行ってください」という教示を呈示します。</p></li>
 </ul>
 <p>上記の9パターンのフィードバックをするために，4.1の内容に，以下を追加します（4.1での選択の確認試行の追加と同じようにしてみてください）。</p>
-<pre><code>{
+<pre class="js"><code>{
       type: jsPsychHtmlButtonResponse,
       stimulus: &#39;&#39;,
       choices: function(){
@@ -844,11 +929,45 @@ scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_l
       trial_duration: 1000,
       response_ends_trial: false
 }</code></pre>
+<script type="text/javascript">
+{
+      type: jsPsychHtmlButtonResponse,
+      stimulus: '',
+      choices: function(){
+        var last_select = jsPsych.data.get().last(2).values()[0].response;
+        var last_left_right_s1 = jsPsych.data.get().last(2).values()[0].left_right_s1;
+        var last_reward_s1 = jsPsych.data.get().last(2).values()[0].reward_s1;
+        var last_reward_s2 = jsPsych.data.get().last(2).values()[0].reward_s2;
+        if (last_select==0 && last_left_right_s1 == 1 && last_reward_s1==1){
+           return ["<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/reward.jpeg' width='200px'/></p>"]
+        } else if (last_select==0 && last_left_right_s1 == 1 && last_reward_s1==0){
+           return ["<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/punishment.jpeg' width='200px'/></p>"]
+        }else if (last_select==0 && last_left_right_s1 == 2 && last_reward_s1==1){
+           return ["<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/reward.jpeg' width='200px'/></p>"]
+        } else if (last_select==0 && last_left_right_s1 == 2 && last_reward_s1==0){
+           return ["<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/punishment.jpeg' width='200px'/></p>"]
+        } else if (last_select==1 && last_left_right_s1 == 1 && last_reward_s2==1){
+           return ["<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/reward.jpeg' width='200px'/></p>"]
+        } else if (last_select==1 && last_left_right_s1 == 1 && last_reward_s2==0){
+           return ["<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/punishment.jpeg' width='200px'/></p>"]
+        }else if (last_select==1 && last_left_right_s1 == 2 && last_reward_s2==1){
+           return ["<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/reward.jpeg' width='200px'/></p>"]
+        } else if (last_select==1 && last_left_right_s1 == 2 && last_reward_s2==0){
+           return ["<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/punishment.jpeg' width='200px'/></p>"]
+        } else {
+           return ['<p style="font-size: 48px">時間内に選択を行ってください</p>']
+        }
+      },
+      button_html: '%choice%',
+      trial_duration: 1000,
+      response_ends_trial: false
+}
+</script>
 </div>
 <div id="固視点の追加" class="section level3">
 <h3>4.3 固視点の追加</h3>
 <p>フィードバックまで上手く呈示できたら，最後に固視点を追加してみましょう。フィードバックに続けて，以下を追加すると，固視点(+)が500~1500ms呈示されます。</p>
-<pre><code>{
+<pre class="js"><code>{
     　type: jsPsychHtmlButtonResponse,
     　stimulus: &#39;&#39;,
       choices: [&#39;&lt;p style=&quot;font-size: 48px&quot;&gt;+&lt;/p&gt;&#39;],
@@ -858,6 +977,18 @@ scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_l
       },
       response_ends_trial: false,
 }</code></pre>
+<script type="text/javascript">
+{
+    　type: jsPsychHtmlButtonResponse,
+    　stimulus: '',
+      choices: ['<p style="font-size: 48px">+</p>'],
+      button_html: '%choice%',
+      trial_duration: function() {
+        return Math.floor(Math.random() * 1000) + 500;
+      },
+      response_ends_trial: false,
+}
+</script>
 </div>
 <div id="演習課題4" class="section level3">
 <h3>演習課題4</h3>
@@ -873,35 +1004,58 @@ class="section level3">
 <h3>5.1
 ウェウカムメッセージ，フルスクリーン化，終了メッセージの追加</h3>
 <p>最初にウェウカムメッセージとして以下のwelcomブロックを追加します。</p>
-<pre><code>var welcome = {
+<pre class="js"><code>var welcome = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: &quot;&lt;p&gt;&lt;span style=&#39;font-size:20pt;&#39;&gt;実験にお越しいただき，ありがとうございます!!!&lt;/span&gt;&lt;/p&gt;&quot;+
   &quot;&lt;p&gt;キーボードのキーをどれか押して，開始してください&lt;/p&gt;&quot;
 };</code></pre>
+<script type="text/javascript">
+var welcome = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: "<p><span style='font-size:20pt;'>実験にお越しいただき，ありがとうございます!!!</span></p>"+
+  "<p>キーボードのキーをどれか押して，開始してください</p>"
+};
+</script>
 <p>最後に「キーボードのキーをどれか押すと画面に結果の記録が表示されます。ブラウザを閉じて終了してください。ご参加ありがとうございました。」というメッセージが画面に出てくるようにします。ストループ課題と同じくdebriefで画面を用意して，debriefをpushしておきます。</p>
-<pre><code>const debrief = {
+<pre class="js"><code>const debrief = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: &quot;&lt;p&gt;キーボードのキーをどれか押すと結果がCSV形式でダウンロードされます。ブラウザを閉じて終了してください。ご参加ありがとうございました。&lt;/p&gt;&quot;
 };</code></pre>
+<script type="text/javascript">
+const debrief = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: "<p>キーボードのキーをどれか押すと結果がCSV形式でダウンロードされます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>"
+};
+</script>
 <p>welcome,
 fullscreen(これはダウンロードしたjsファイル内で既に設定されています)，debriefをtimelineに追加して，逆転学習課題は完成です。</p>
-<pre><code>/*タイムラインの設定*/
+<pre class="js"><code>/*タイムラインの設定*/
 const timeline = [welcome, fullscreen, instruction, choice, debrief];</code></pre>
+<script type="text/javascript">
+/*タイムラインの設定*/
+const timeline = [welcome, fullscreen, instruction, choice, debrief];
+</script>
 </div>
 <div id="演習課題5" class="section level3">
 <h3>演習課題5</h3>
 <p>ストループ課題と同様に，debriefブロックで，「あなたの正答率は，80%でした。」というように，参加者の正答率を計算して，呈示しましょう！いきなりだと大変かなと思うので，以下を参考にしてください。</p>
-<pre><code>const s1_reward = jsPsych.data.get().filter({trial_type: &quot;html-button-response&quot;, response: 0}).select(&#39;reward_s1&#39;).sum();
+<pre class="js"><code>const s1_reward = jsPsych.data.get().filter({trial_type: &quot;html-button-response&quot;, response: 0}).select(&#39;reward_s1&#39;).sum();
 const s2_reward = jsPsych.data.get().filter({trial_type: &quot;html-button-response&quot;, response: 1}).select(&#39;reward_s2&#39;).sum();
 const correct_rate = ((s1_reward + s2_reward)/80)*100;
 return &quot;&lt;p&gt;あなたの正答率は，&lt;strong&gt;&quot;+correct_rate+&quot;%&lt;/strong&gt;でした。&lt;/p&gt; &quot; + &quot;&lt;p&gt;キーボードのキーをどれか押すと結果がCSV形式でダウンロードされます。ブラウザを閉じて終了してください。ご参加ありがとうございました。&lt;/p&gt;&quot;;</code></pre>
+<script type="text/javascript">
+const s1_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 0}).select('reward_s1').sum();
+const s2_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 1}).select('reward_s2').sum();
+const correct_rate = ((s1_reward + s2_reward)/80)*100;
+return "<p>あなたの正答率は，<strong>"+correct_rate+"%</strong>でした。</p> " + "<p>キーボードのキーをどれか押すと結果がCSV形式でダウンロードされます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>";
+</script>
 </div>
 <div id="演習課題6" class="section level3">
 <h3>演習課題6</h3>
 <p>オンライン実験の場合，参加したかどうかを確認するために，最後に確認コードを出すことがあります。その際に，jsPsych.randomization.randomIDを使うと便利です。以下を参考にして，デブリーフィングで参加者にIDを呈示してみましょう。なお，IDを参加者に呈示するだけでなく，<a
 href="data:%7Bparticipant_id:sub_id%7DでIDも保存されるようにしましょう"
 class="uri">data:{participant_id:sub_id}でIDも保存されるようにしましょう</a>。</p>
-<pre><code>var sub_id = jsPsych.randomization.randomID(6)
+<pre class="js"><code>var sub_id = jsPsych.randomization.randomID(6)
 
 const debrief = {
   type: jsPsychHtmlKeyboardResponse,
@@ -915,6 +1069,22 @@ const debrief = {
   },
   data:{participant_id:sub_id}
 };</code></pre>
+<script type="text/javascript">
+var sub_id = jsPsych.randomization.randomID(6)
+
+const debrief = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: function() {
+    const s1_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 0}).select('reward_s1').sum();
+    const s2_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 1}).select('reward_s2').sum();
+    const correct_rate = ((s1_reward + s2_reward)/80)*100;
+    return "<p>あなたのIDは，<strong>"+sub_id+"</strong>です。紙にメモするか，コピーをして保存をしてください。</p> " +
+    "<p>あなたの正答率は，<strong>"+correct_rate+"%</strong>でした。</p> " +
+    "<p>キーボードのキーをどれか押すと結果がCSV形式でダウンロードされます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>";
+  },
+  data:{participant_id:sub_id}
+};
+</script>
 </div>
 </div>
 

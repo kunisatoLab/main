@@ -66,7 +66,7 @@ jsPsychでは，以下のプラグインを使うと音声を呈示すること�
 
 教示は，適当に以下のようにしてみましょう。
 
-```
+```{js}
 const instruction = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: "<p style='text-align:left'>これから百人一首の音声が流れます。</p>"+
@@ -80,7 +80,7 @@ const instruction = {
 
 音声を呈示してキーボードで反応取得する場合は，audio-keyboard-responseプラグインを使います。stimulus:で音声刺激を指定します。sound/stimuliフォルダ内のa1.m4aを指定します。４つの歌を呈示して反応を取るので，choiceでは４つキーを設定します（適当に1,2,3,4としました）。最後にpromptに教示と選択肢の歌を書いて呈示します（見やすさを考えて左揃えにしました）。
 
-```
+```{js}
 const hundred_poems1  = {
     type: jsPsychAudioKeyboardResponse,
     stimulus: 'sound/stimuli/a1.m4a',
@@ -97,7 +97,7 @@ const hundred_poems1  = {
 
 教示ブロックと音声呈示ブロックができたので，timelineを設定します。
 
-```
+```{js}
 const timeline = [instruction, hundred_poems1];
 ```
 
@@ -157,7 +157,8 @@ stimuliフォルダ内の動画ファイルをv1.mp4に変更してください�
 
 
 まず，以下のような教示をします。
-```
+
+```{js}
 const instruction = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: "<p style='text-align:left'>これから動画が流れます。</p>"+
@@ -171,7 +172,7 @@ const instruction = {
 
 次に，video-slider-responseプラグインを使って，動画を呈示します。stimulus:で動画ファイルを指定します。そのままだと大きい場合が多いので，width:で大きさを調整します。labels: でスライダーのラベルをつけられます。今回は嫌い-どちらでもない-好きの３つのラベルをつけます。prompt:で教示を指定します。デフォルトでは，下に「Continue」ボタンがでてきますが，これは，「button_label: "次へ"」とすることで，「次へ」ボタンに変更します。
 
-```
+```{js}
 const movie1 = {
     type: jsPsychVideoSliderResponse,
     stimulus: ['movie/stimuli/v1.mp4'],
@@ -186,7 +187,7 @@ const movie1 = {
 
 教示ブロックと音声呈示ブロックができたので，timelineを設定します。
 
-```
+```{js}
 var timeline = [instruction, movie1];
 ```
 
@@ -209,7 +210,7 @@ demo_movie.htmlをブラウザで開いて動作確認しましょう。
 
 以下のように同意ブロック(ic)を作ります。実際の研究では，...の部分やABCなどをおいている部分に加筆・修正をして使います。
 
-```
+```{js}
 const ic = {
     type: jsPsychSurveyMultiSelect,
     questions: [{
@@ -249,7 +250,7 @@ const ic = {
 
 そして，以下のようにすれば，同意の取得，教示，動画の呈示という流れが作れます。
 
-```
+```{js}
 var timeline = [ic, instruction, movie1];
 ```
 

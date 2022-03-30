@@ -2,106 +2,76 @@
 title: "jsPsychを用いた質問紙の作成"
 ---
 
-## 「紙の質問紙で調査→Excelに手入力→Excelで前処理」はもう時代遅れかも？
+## 「紙の質問紙で調査」はもう時代遅れかも？
 
-これまで心理学の調査研究では，"紙の質問紙で調査→Excelで手入力→Excelで前処理"というフローが使われていたのですが，この方法にはいくつかヒューマンエラーが入り込む可能性があります。
+これまで心理学の調査研究では，"紙の質問紙で調査→Excelで手入力→Excelで前処理"というフローが使われていました。しかし，新型コロナウィルス感染症の影響でオンライン調査が増えていること，"紙の質問紙で調査→Excelで手入力→Excelで前処理"というフローにはヒューマンエラーの入り込む余地が大きいことから推奨できません。
 
-- Excelに手入力：人間が行う限り100%入力ミスがあると思ったほうがいいです。入力ミスをへらすために，複数の人に入力をしてもらって，チェックする方法もありますが，ちょっと無駄に大変です。
-
-- Excelで前処理: 手入力はミスしているかもという自覚があるかもしれないですが，こっちは自覚なく大きなミスをする可能性があります。Excelで前処理をしていて生じるであろうミスはたくさんありますので挙げませんが，自分の手を動かして行った操作には必ずミスが入ると思ってください。
-
-上記の２つのヒューマンエラーが確実に無いようにしないと，みなさんが頑張って行った研究は無駄になりますし，信頼によって支えられている科学の土台を崩すことになります。
-
-<br>
-
-本研究室では，上記を避けるために，以下のフローを使います。
-
-- (調査だけの場合)Google Formやqualtricsなどのオンラインツールを使ってデータ収集→生データ保管&匿名化処理→匿名化済みデータをRで前処理
-- (行動課題を行う場合)jsPsychをsurveryツールを使ってデータ収集→生データ保管&匿名化処理→匿名化済みデータをRで前処理
-
-紙でのデータ収集は止めて，Google Formやサーバー上においたjsPsychを使ってデータ収取をします。これによって，入力ミスというのはなくなります（プログラミングミスはあり得ますが，間違いに気づけます）。そして，インターネット経由でデータを収集する場合は，できるだけ厳格なデータ管理が必要になります。そのため，サーバーなどの設定，生データの保管，データから個人情報や個人が特定できる情報を削除する匿名化処理は，国里が行います。匿名化されたデータをRで前処理して，統計解析などを行ってください。
+そこで，本研究室では，紙でのデータ収集は止めて，jsPsychを使ったデータ収集を推奨します。「jsPsychで作った調査票をJATOSにおいてデータ収集→生データ保管&匿名化処理→匿名化済みデータをRで前処理」という流れになります。
 
 <br>
 
 ## jsPsychで質問紙を実施してみよう！
 
-Google Formでの調査票の作成方法は，すでに多くの情報がインターネットにありますし，そもそも簡単に作れます。以下では，jsPsychで作った行動課題と一緒に質問紙をとる方法について学んでいきましょう。以下では簡単な解説をしていきますが，山形大学人文社会科学部の小林正法先生のHPでは，<a href="https://www.notion.so/5448a1f2bd59485bb4b1a70d581faa94" target="_blank">多肢選択</a>と<a href="https://www.notion.so/Likert-64aa8ae3ecad49bba8e3936438282476" target="_blank">Likert</a>について，使い方とカスタマイズについても説明があるので，是非とも参照ください。
+jsPsychで質問票を作る方法について学んでいきましょう。**まず，以下をRstudioのConsoleで実行して，フォルダとファイルを準備します。**
 
-
-**まず，以下をRstudioのConsoleで実行して，フォルダとファイルを準備します。**
-
-```
-jsPsychRmd::set_jsPsych(folder = "survey", rc = TRUE)
+```{r eval=FALSE, include=TRUE}
+psyinfr::set_cbat("survey","7.2.1")
 ```
 
-jsPsychでは，以下の５つのプラグインが用意されています。それぞれ簡単に説明します。
+jsPsychでは，以下の５つのプラグインが用意されています。以下，それぞれ簡単に説明します。
 
-- jspsych-survey-html-form
-- jspsych-survey-likert
-- jspsych-survey-multi-choice
-- jspsych-survey-multi-select
-- jspsych-survey-text
+- survey-html-form
+- survey-likert
+- survey-multi-choice
+- survey-multi-select
+- survey-text
 
 <br>
 
 そこで，最初のタグの設定は，５つのプラグインを読み込んで，以下のようになります。
 
-```
-library(htmltools)
-tagList(
-tags$script(src='jspsych-6.3.1/jspsych.js'),
-tags$script(src='jspsych-6.3.1/plugins/jspsych-survey-html-form.js'),
-tags$script(src='jspsych-6.3.1/plugins/jspsych-survey-likert.js'),
-tags$script(src='jspsych-6.3.1/plugins/jspsych-survey-multi-choice.js'),
-tags$script(src='jspsych-6.3.1/plugins/jspsych-survey-multi-select.js'),
-tags$script(src='jspsych-6.3.1/plugins/jspsych-survey-text.js')
-)
-```
 <br>
 
 
 
-## 1. jspsych-survey-html-form
+## 1. survey-html-form
 
-フォームを作成するプラグインです。jspsych-survey-html-formをタグに追加した上で，以下のように，preamble:に質問文，html:でフォームの設定をします(```<input name="food_like" type="text" />```のところがフォームのところです。nameが入力のラベルで，typeで入力する種類を指定します)。最後に，デフォルトでは”Continue”というボタンが出てくるので，button_label:を'次へ'にします。
+フォームを作成するプラグインです。type:にjsPsychSurveyHtmlForm，preamble:に質問文，html:でフォームの設定をします(```<input name="food_like" type="text" />```のところが入力フォームの部分です。nameが入力のラベルで，typeで入力する種類を指定します。idもつかうので適当に指定します)。デフォルトでは”Continue”というボタンが出てくるので，button_label:を'次へ'にします。そして，autofocusでhtml内で指定したidを指定すると，調査票が始まった時に，自動的にそのidの入力欄にフォーカスされます（つまり入力欄にカーソルがあたる）。autofocusを最初の入力欄に指定しておくと，ユーザーはマウスでカーソルを合わせなくても入力を始められるので回答しやすくなると思います。以下を，task.jsにコピペして（上書きしてください），動作確認してみましょう。
 
-```
-var form = {
-  type: 'survey-html-form',
+```{js}
+const form = {
+  type: jsPsychSurveyHtmlForm,
   preamble: '<p> 以下の質問に回答してください。</p>',
-  html: '<p> 好きな食べ物: <input name="food_like" type="text" /></p>'+
-  　　　'<p> 嫌いな食べ物: <input name="food_dislike" type="text" /></p>'+
-        '<p> 好きなYoutuber: <input name="youtuber" type="text" /></p>',
-  button_label: '次へ'
+  html: '<p> 好きな食べ物: <input name="food_like" id="food_like" type="text" /></p>'+
+  　　　'<p> 嫌いな食べ物: <input name="food_dislike" id="food_dislike" type="text" /></p>'+
+        '<p> 好きなYoutuber: <input name="youtuber" id="youtuber" type="text" /></p>',
+  button_label: '次へ',
+  autofocus: 'food_like'
 };
+
+const timeline = [form];
 ```
 
-上記で設定したformをtimelineにpushして，呈示してみましょう。なお，以下のtimelineへのpushとjsPsych.initは，以降では省略いたします。
+survey-html-formでは，以下のような入力画面を作ることができます。
 
-```
-var timeline = [];
-timeline.push(form);
 
-jsPsych.init({
-    timeline: timeline,
-    on_finish: function() {
-     jsPsych.data.displayData();
-    }
-});
-```
+![](fig/jspsych5_1.png)
+
 
 ### 演習課題1
 
-jsPsychRmd::set_jsPsych()を使って，フォルダとファイルを準備してから，「大学の近くでおすすめの料理屋」，「家の近くでおすすめの料理屋」を聞くフォームを作ってみましょう！
+「大学の近くでおすすめの料理屋」，「家の近くでおすすめの料理屋」を尋ねるフォームを作ってみましょう！
 
 <br>
 
-## 2. jspsych-survey-likert
+## 2. survey-likert
 
-Likert式の質問紙を行うためのプラグインです。まず,scaleに選択肢を用意します（なお，名前はscaleじゃなくても良くて，好きな名前で良いです）。今回は，７件法の選択肢を用意します。そして，survey-likertプラグインを用いて，questions:の設定をしていきます。prompt:に質問項目，name:にその質問項目のラベル，labels:にさきほど用意した選択肢のscaleを用意します。最後に，デフォルトでは”Continue”というボタンが出てくるので，button_label:を'次へ'にします。
+Likert式の質問紙を行うためのプラグインです。まず,scaleに選択肢を用意します（なお，名前はscaleじゃなくても良くて，好きな名前で良いです）。今回は，７件法の選択肢を用意します。type:にjsPsychSurveyLikertを指定し,questionsで質問項目の設定をしていきます。questions内の各項目については，prompt:に質問項目，name:にその質問項目のラベル，labels:にさきほど用意した選択肢のscaleを用意します。なお，"私は心理学が好きだ"という質問は，required: trueにしています。これは，必ず回答しないといけない項目を指定する場合に使います。デフォルトでは”Continue”というボタンが出てくるので，button_label:を'次へ'にします。以下を，task.jsにコピペして，動作確認してみましょう。
+
+
 
 ```{js}
-var scale = [
+const scale = [
   "非常にあてはまる", 
   "かなりあてはまる", 
   "ややあてはまる", 
@@ -111,32 +81,39 @@ var scale = [
   "全くあてはまらない"
 ];
 
-var likert = {
-  type: 'survey-likert',
+const likert = {
+  type: jsPsychSurveyLikert,
+  preamble: '<p> 以下の文章をよく読んで，あなたにあてはまる選択肢をクリックしてください。</p>',
   questions: [
     {prompt: "私は研究室が好きだ", name: 'lab', labels: scale},
     {prompt: "私はプログラミングが好きだ", name: 'programming', labels: scale},
-    {prompt: "私は心理学が好きだ", name: 'psych', labels: scale},
+    {prompt: "私は心理学が好きだ", name: 'psych', labels: scale, required: true},
     {prompt: "私は専修大学が好きだ", name: 'Senshu', labels: scale}
   ],
-  button_label: '次へ',
+  button_label: '次へ'
 };
+
+const timeline = [likert];
 ```
 
-timeline.push(likert)を追加して，knitして，確認してください。
+survey-likertでは，以下のように調査票を作ることができます。required: trueにしている"私は心理学が好きだ"に回答をしないと，左下のようなアラートが出ます。
+
+![](fig/jspsych5_2.png)
+
+
 
 ### 演習課題2
 
-心理学で使われる尺度を１つ選んでsurvey-likertで質問票を作ってみよう！その際に，https://www.jspsych.org/plugins/jspsych-survey-likert/ を参考に，randomize_question_orderをtureにして実施してみよう！
+心理学で使われる尺度を１つ選んでsurvey-likertで質問票を作ってみよう！そして，「button_label: '次へ'」の下に「randomize_question_order: true」を追加して，質問項目の呈示順序をランダムにしてみよう！
 
 <br>
 
-## 3. jspsych-survey-multi-choice
+## 3. survey-multi-choice
 
-ラジオボタン式の選択を行うためのプラグインです。まず,optionsに選択肢を用意します（なお，名前はoptionsじゃなくても良くて，好きな名前で良いです）。今回は，７件法の選択肢を用意します。そして，survey-multi-choiceプラグインを用い，question:の設定をしていきます。prompt:に質問項目，name:にその質問項目のラベル，options:にさきほど用意した選択肢のoptionsを用意します。required:はtrueにすると必須項目になり，回答しないと次のページに進めなくなります。falseにすると必須項目ではなくなります。また，選択肢のoptionsは基本的には垂直方向に並びますが，horizontal: trueにすると水平方向に並びます。　最後に，デフォルトでは”Continue”というボタンが出てくるので，button_label:を'次へ'にします。
+ラジオボタン式の選択を行うためのプラグインです。まず,optionsに選択肢を用意します（なお，名前はoptionsじゃなくても良くて，好きな名前で良いです）。今回は，７件法の選択肢を用意します。type:にjsPsychSurveyMultiChoiceを指定して，question:の設定をしていきます。prompt:に質問項目，name:にその質問項目のラベル，options:にさきほど用意した選択肢のoptionsを用意します。required:はtrueにすると必須項目になり，回答しないと次のページに進めなくなります。falseにすると必須項目ではなくなります。また，選択肢のoptionsは基本的には垂直方向に並びますが，horizontal: trueにすると水平方向に並びます。今回は，垂直方向と水平方向の両方を試してみましょう。　最後に，デフォルトでは”Continue”というボタンが出てくるので，button_label:を'次へ'にします。以下を，task.jsにコピペして，動作確認してみましょう。
 
-```
-var options = [ "非常にあてはまる", 
+```{js}
+const options = [ "非常にあてはまる", 
   "かなりあてはまる", 
   "ややあてはまる", 
   "どちらともいえない",
@@ -144,8 +121,8 @@ var options = [ "非常にあてはまる",
   "ほとんどあてはまらない",
   "全くあてはまらない"];
 
-var multi_choice = {
-  type: 'survey-multi-choice',
+const multi_choice = {
+  type:  jsPsychSurveyMultiChoice,
   questions: [
     {prompt: "私は研究室が好きだ", name: 'lab', options: options, required:true}, 
     {prompt: "私はプログラミングが好きだ", name: 'program', options: options, required: false}
@@ -153,31 +130,39 @@ var multi_choice = {
   button_label: '次へ'
 };
 
-var multi_choice_h = {
-  type: 'survey-multi-choice',
+const multi_choice_h = {
+  type: jsPsychSurveyMultiChoice,
   questions: [
     {prompt: "私は心理学が好きだ", name: 'psych', options: options, required: true, horizontal: true}, 
     {prompt: "私は専修大学が好きだ", name: 'senshu', options: options, required: false, horizontal: true}
   ],
   button_label: '次へ'
 };
+
+const timeline = [multi_choice, multi_choice_h];
 ```
 
-timeline.push(multi_choice)とtimeline.push(multi_choice_h)を追加して，knitして，確認してください。
+survey-multi-choiceでは，以下のように調査票を作ることができます。
+![](fig/jspsych5_3.png)
+
+水平方向にすると以下のような感じになります。Likert式なら，survey-likertをつかうのが良さそうですね。
+
+![](fig/jspsych5_4.png)
+
 
 ### 演習課題3
 
-演習課題2で選んだ心理尺度について，survey-multi-choiceを使って，質問票を作ってみよう！
+演習課題2で選んだ心理尺度について，survey-multi-choiceを使って，質問票を作ってみよう！また，「randomize_question_order: true」も追加してみよう！
 
 <br>
 
-## 4. jspsych-survey-multi-select
+## 4. survey-multi-select
 
-複数回答可能な調査を行うためのプラグインです。survey-multi-selectプラグインを用い，question:の設定をしていきます。prompt:に質問項目，options: に選択肢，horizontal: trueで水平方向に並べて，required: trueで必須項目にして，name:にその質問項目のラベルを用意します。　最後に，デフォルトでは”Continue”というボタンが出てくるので，button_label:を'次へ'にして，randomize_question_order: trueで質問の呈示順序をランダムにします。これまで説明をしたプラグインでも，randomize_question_orderを使うと項目の呈示順序をランダムにすることができます。
+複数回答可能な調査を行うためのプラグインです。type:にjsPsychSurveyMultiSelectを指定し，question:の設定をしていきます。prompt:に質問項目，options: に選択肢，horizontal: trueで水平方向に並べて，required: trueで必須項目にして，name:にその質問項目のラベルを用意します。　デフォルトでは”Continue”というボタンが出てくるので，button_label:を'次へ'にして，randomize_question_order: trueで質問の呈示順序をランダムにします。これまで説明をしたプラグインでも，randomize_question_orderを使うと項目の呈示順序をランダムにすることができます。以下を，task.jsにコピペして，動作確認してみましょう。
 
-```
-var multi_select = {
-    type: 'survey-multi-select',
+```{js}
+const multi_select = {
+    type: jsPsychSurveyMultiSelect,
     questions: [
       {
         prompt: "好きな心理学を選んでください（複数回答可）", 
@@ -197,36 +182,46 @@ var multi_select = {
     button_label: '次へ',
     randomize_question_order: true
 };
+
+const timeline = [multi_select];
 ```
 
-timeline.push(multi_select)を追加して，knitして，確認してください。
+survey-multi-selectでは，以下のように複数回答可能な調査票を作ることができます。
+
+![](fig/jspsych5_5.png)
+
 
 ### 演習課題4
 
-大学の心理学の各研究室名を選択肢にいれて，希望研究室（複数回答可）を聞く質問を作ってみよう！
+大学の心理学の各研究室名を選択肢にいれて，志望研究室（複数回答可）を尋ねる質問票を作ってみよう！
 
 <br>
 
-## 5. jspsych-survey-text
+## 5. survey-text
 
-キーボードを使って，回答を書き込んでもらうためのプラグインです。prompt:に質問，name:に質問項目のラベルを指定します。placeholder:を設定すると欄内に記載内容の指示も入れられます。rows:と columns:を設定すると，記入欄の大きさを調整できます。
+キーボードを使って，回答を書き込んでもらうためのプラグインです。prompt:に質問，name:に質問項目のラベルを指定します。placeholder:を設定すると欄内に記載内容の指示も入れられます。rows:と columns:を設定すると，記入欄の大きさを調整できます。以下を，task.jsにコピペして，動作確認してみましょう。
 
-```
-var survey_text = {
-  type: 'survey-text',
+```{js}
+const survey_text = {
+  type: jsPsychSurveyText,
   questions: [
     {prompt: "氏名をご記入ください", name: 'name',placeholder: "姓 名"},
     {prompt: "jsPsychを学んだ感想を書いてください", rows: 10, columns: 80}, 
   ],
   button_label: '次へ',
 };
+
+const timeline = [survey_text];
 ```
 
-timeline.push(survey_text)を追加して，knitして，確認してください。
+survey-textでは，以下のように調査票を作ることができます。
+
+![](fig/jspsych5_6.png)
+
 
 ### 演習課題5
 
-心理学を学ぼうとおもったきっかけ自由記述で回答してもらうような質問を作ってみよう！
+心理学を学ぼうとおもったきっかけを自由記述で回答してもらうような質問票を作ってみよう！
 
 
 <br>
@@ -236,7 +231,13 @@ timeline.push(survey_text)を追加して，knitして，確認してくださ�
 以下のような質問票を作成ください。
 
 - 1ページ目:ラジオボタン形式で，性別と利き手を尋ねる。
-- 2ページ目:フォーム形式，大学名，学部名，学科名を尋ねる。
+- 2ページ目:フォーム形式で，大学名，学部名，学科名を尋ねる。
 - 3ページ目:心理尺度（演習課題２）を１つ選んでLikert形式で尋ねる。
 - 4ページ目:月曜日から金曜日で大学に来ている日を尋ねる（複数回答可にする）。
 - 5ページ目:調査に回答した感想を自由記述形式で尋ねる。
+
+### 補足情報（国里のためのメモ）
+
+jsPsychには，<a href="https://www.jspsych.org/7.2/plugins/survey/" target="_blank">survey</a>というプラグインがあって，SurveryJSというjsPsychとは異なる調査用のライブラリが使えます。SurveryJSの表現力は豊かなので，期待のできるプラグインですが，現在開発中なので，ここでは解説をしません。
+
+survey-likertでも良いのですが，若干紙の質問紙からすると乖離があるかもしれません。そのため，本研究室でプラグインを作成しています。その解説は今後追加する予定です。

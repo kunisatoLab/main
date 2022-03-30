@@ -94,7 +94,7 @@ psyinfr::set_cbat("RL","7.2.1")
 
 以下のような教示を提示することにします。
 
-```
+```{js}
 これから画面に２つの図形がでてきますので，どちらかの図形を選択してください。
 あなたの選択に対して，ポジティブな反応（緑色の笑顔）かネガティブな反応（赤色の悲しい顔）が返ってきます。
 一方の図形はポジティブな反応になりやすく，もう一方はそうではありません。
@@ -117,7 +117,7 @@ psyinfr::set_cbat("RL","7.2.1")
 
 今回は，画像刺激を呈示して，マウスでのクリックをもとめるので，html-button-responseプラグインを使います。html-button-responseプラグインは，以下のように使います。通常は，stimulusになんらかの刺激をいれて，choicesやbutton_htmlの部分でマウスで選択するボタンを定義します(trial_durationは最大の呈示時間になります，これを設定しないとマウスクリックしないと次の試行に進みません)。今回は，ボタン部分に上記の２つの画像刺激を出して，それをクリックさせるようにしたいと思います。そこで，choicesの部分で[]内に２つ画像を呈示するためのコードを書いています。divとか出てきて謎と思うかもしれませんが，positionのところで画像をだす位置を決めていて(画面のtopつまり上から50%くらい，leftから20%くらいに呈示すると指定している)，img以降で画像のある場所と画像名を指定し，widthで大きさを指定しています。その次も同様に定義しています。
 
-```
+```{js}
 const choice = {
     stimulus: '',
     type: jsPsychHtmlButtonResponse,
@@ -130,7 +130,7 @@ const choice = {
 
 上記が追加できたら，timelineにchoiceも追加しておきましょう。demo_RL.htmlをブラウザで開いて，教示と図形２つが呈示されるか確認しましょう。
 
-```
+```{js}
 /*タイムラインの設定*/
 const timeline = [instruction, choice];
 ```
@@ -144,7 +144,7 @@ const timeline = [instruction, choice];
 
 さて，課題は80試行もあるので，ストループ課題と同じ用に，刺激をリストにした上で呈示することにします。ストループと同じ用に，stimuliに追加していきます。stimuli内のstimulusの[]内に２つ分の画像の呈示に関する指定をいれていきます。とえいあえず，以下に３試行分のリストを準備しました(2試行目で図形の左右が入れ替わるようにしました)。task.jsに追加してください。
 
-```
+```{js}
 const stimuli = [
  {
     stimulus: ['<div style="position: absolute; top: 50%; left: 20%"><img src="RL/stimuli/s1.jpeg" width="200px"/></div>',
@@ -161,7 +161,7 @@ const stimuli = [
 
 上記で準備したリストをchoice内で使います。choice内にtimelineを追加して，timeline_variablesに上記のstimuliを指定しています。そして，さきほど直接，画像の指定情報をいれていたchoicesには，jsPsych.timelineVariable('stimulus')を追加します。これで，stimuliリスト内を上から順番に実行していって，stimulusの情報がchoiceに入って画面に呈示されます。
 
-```
+```{js}
 const choice = {
   timeline:[{
     stimulus: '',
@@ -382,7 +382,7 @@ choices:が重要ですが，ここでは，jsPsych.data.get().last(1).values()[
 - else，つまり上記以外の場合は，last_selectがnull，つまり反応が無い場合です，そこで，「時間内に選択を行ってください」という教示を呈示します。
 
 
-```
+```{js}
 const choice = {
   timeline:[{
     stimulus: '',
@@ -449,7 +449,7 @@ const choice = {
 
 上記の9パターンのフィードバックをするために，4.1の内容に，以下を追加します（4.1での選択の確認試行の追加と同じようにしてみてください）。
 
-```
+```{js}
 {
       type: jsPsychHtmlButtonResponse,
       stimulus: '',
@@ -488,7 +488,7 @@ const choice = {
 
 フィードバックまで上手く呈示できたら，最後に固視点を追加してみましょう。フィードバックに続けて，以下を追加すると，固視点(+)が500~1500ms呈示されます。
 
-```
+```{js}
 {
     　type: jsPsychHtmlButtonResponse,
     　stimulus: '',
@@ -514,7 +514,7 @@ const choice = {
 
 最初にウェウカムメッセージとして以下のwelcomブロックを追加します。
 
-```
+```{js}
 var welcome = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: "<p><span style='font-size:20pt;'>実験にお越しいただき，ありがとうございます!!!</span></p>"+
@@ -524,7 +524,7 @@ var welcome = {
 
 最後に「キーボードのキーをどれか押すと画面に結果の記録が表示されます。ブラウザを閉じて終了してください。ご参加ありがとうございました。」というメッセージが画面に出てくるようにします。ストループ課題と同じくdebriefで画面を用意して，debriefをpushしておきます。
 
-```
+```{js}
 const debrief = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: "<p>キーボードのキーをどれか押すと結果がCSV形式でダウンロードされます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>"
@@ -534,7 +534,7 @@ const debrief = {
 welcome, fullscreen(これはダウンロードしたjsファイル内で既に設定されています)，debriefをtimelineに追加して，逆転学習課題は完成です。
 
 
-```
+```{js}
 /*タイムラインの設定*/
 const timeline = [welcome, fullscreen, instruction, choice, debrief];
 ```
@@ -543,7 +543,7 @@ const timeline = [welcome, fullscreen, instruction, choice, debrief];
 
 ストループ課題と同様に，debriefブロックで，「あなたの正答率は，80%でした。」というように，参加者の正答率を計算して，呈示しましょう！いきなりだと大変かなと思うので，以下を参考にしてください。
 
-```
+```{js}
 const s1_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 0}).select('reward_s1').sum();
 const s2_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 1}).select('reward_s2').sum();
 const correct_rate = ((s1_reward + s2_reward)/80)*100;
@@ -554,7 +554,7 @@ return "<p>あなたの正答率は，<strong>"+correct_rate+"%</strong>でし�
 
 オンライン実験の場合，参加したかどうかを確認するために，最後に確認コードを出すことがあります。その際に，jsPsych.randomization.randomIDを使うと便利です。以下を参考にして，デブリーフィングで参加者にIDを呈示してみましょう。なお，IDを参加者に呈示するだけでなく，data:{participant_id:sub_id}でIDも保存されるようにしましょう。
 
-```
+```{js}
 var sub_id = jsPsych.randomization.randomID(6)
 
 const debrief = {

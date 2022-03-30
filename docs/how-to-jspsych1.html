@@ -488,7 +488,7 @@ in Web Browser」を選びます。</p>
 <p><img src="fig/jspsych1_fig25.png" /></p>
 <p><br></p>
 <p>task.jsを開くと以下のようなコードが書き込んであります。(1)全画面化,(2)教示の呈示，(3)データ保存のうち(1)と(3)は別のところで書かれており，task.jsは(2)の部分を書いています。この(2)を増やしていくことで，認知課題を作っていきます。</p>
-<pre><code>/* 課題に関するコードを以下に書く */
+<pre class="js"><code>/* 課題に関するコードを以下に書く */
 var welcome = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: &quot;こんにちは！ この課題は何かキーボードのキーをタイプするとデータを保存して終わります。&quot;
@@ -496,6 +496,16 @@ var welcome = {
 
 /*タイムラインの設定*/
 var timeline = [fullscreen,welcome];</code></pre>
+<script type="text/javascript">
+/* 課題に関するコードを以下に書く */
+var welcome = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: "こんにちは！ この課題は何かキーボードのキーをタイプするとデータを保存して終わります。"
+};
+
+/*タイムラインの設定*/
+var timeline = [fullscreen,welcome];
+</script>
 <p><code>/* XXXX */</code>
 /と*でコメントアウトができて，XXXは実行されません。何かメモを残す場合に利用ください。jsPsychでは，<code>var 名前 = ｛type: "プラグイン"｝</code>で，行動課題の各画面（課題の説明画面，刺激の呈示画面，反応の取得画面など）を作っていきます。<code>var welcome</code>
 では，jsPsychのjsPsychHtmlKeyboardResponseプラグインを使用するため，typeでjsPsychHtmlKeyboardResponseを指定します。jsPsychHtmlKeyboardResponseは，名前の通り，HTMLファイル形式で定義した刺激を呈示して，キーボードの反応を記録するプラグインです。<code>stimulus: "こんにちは！ この課題は何かキーボードのキーをタイプするとデータを保存して終わります。"</code>
@@ -520,7 +530,7 @@ welcomeみたいに認知課題の各場面が作れたら，どういう順番�
 <h3>3.1 JavaScriptで変数と配列を使ってみる</h3>
 <p>プログラミングをしていると，変数というのが出てきます。変数は簡単にいうと箱です。箱ですので，好きなものをいれることができます（つまり入れるものを変更できます）。JavaScriptでは，「これが変数だよ」っと宣言する場合には，varを使います。なお，箱にいれてから（変数に代入してから）変更しないこともあります。つまり変数だけどjsファイル内で変わらないものの場合です。その場合は，varではなくてconstを使います。</p>
 <p>変数を上手く使うことで効率よくコードが書けるので，少し練習をしてみましょう。さきほどは，“こんにちは！〜”という文字をwelcome内で直接指定して画面に出してみましたが，今度は，textという変数に”ニイハオ”という文字をいれて，そのtextを画面に出すようにしてみましょう。以下のコードを書いて実行してください。なお，javascriptでは，；（セミコロン）を文字の区切りに使います。;を用いて，どこからどこまでが１文であるのかを示します。しばらくは以下の練習問題をやりつつ，;の使い方になれていってください。</p>
-<pre><code>/* 課題に関するコードを以下に書く */
+<pre class="js"><code>/* 課題に関するコードを以下に書く */
 const text = &quot;ニイハオ&quot;;
 
 const welcome = {
@@ -530,8 +540,23 @@ const welcome = {
 
 /*タイムラインの設定*/
 const timeline = [welcome];</code></pre>
+<script type="text/javascript">
+/* 課題に関するコードを以下に書く */
+const text = "ニイハオ";
+
+const welcome = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: text
+};
+
+/*タイムラインの設定*/
+const timeline = [welcome];
+</script>
 <p>変数に追加して覚えておくと良いのが配列です。配列は，簡単にいうと，複数の値を変数に格納したものです（箱の中に入っている物が複数ある状態です）。例えば，以下のように書くと，textの中には，“こんにちは”から始まって４つの挨拶が入っていると宣言することになります。</p>
-<pre><code>const text = [&quot;こんにちは&quot;,&quot;ニイハオ&quot;,&quot;アニョハセヨ&quot;,&quot;ハロー&quot;];</code></pre>
+<pre class="js"><code>const text = [&quot;こんにちは&quot;,&quot;ニイハオ&quot;,&quot;アニョハセヨ&quot;,&quot;ハロー&quot;];</code></pre>
+<script type="text/javascript">
+const text = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"];
+</script>
 <p>このtextの中の特定の挨拶を指定したい場合，その配列のインデックスで指定します。難しい言い方をしましたが，配列の何番目か数字で指定するという意味です。その際，その数字は0番目から始まるのに注意します。つまり，上記のtextの場合，text[1]は”ニイハオ”であり，“こんにちは”はtext[0]です。普通だと1番目から数えると思うのに0からスタートするので気をつけましょう（なお，Rだと1からスタートしますし，PythonだとJavaScriptと同じく0からスタートします。ややこしいですね）。</p>
 <div id="演習課題2" class="section level4">
 <h4>演習課題2</h4>
@@ -544,7 +569,7 @@ const timeline = [welcome];</code></pre>
 <h3>3.2 JavaScriptでfor文を使ってみる</h3>
 <p>3.1で配列を覚えました。その配列の中身４つを順番に呈示したい時，以下のように,welcomeを配列の中身の数だけ書くとそれができます。なお，さきほどまでの設定だと，なにかキーボード入力がないと次の刺激に進まないので，stimulusの後ろに”trial_duration:
 1000,“を追加しています。これは刺激を1000ms(1000ミリ秒つまり1秒)呈示するという意味です。</p>
-<pre><code>/* 課題に関するコードを以下に書く */
+<pre class="js"><code>/* 課題に関するコードを以下に書く */
 const text = [&quot;こんにちは&quot;,&quot;ニイハオ&quot;,&quot;アニョハセヨ&quot;,&quot;ハロー&quot;];
 
 const welcome1 = {
@@ -573,17 +598,53 @@ const welcome4 = {
 
 /*タイムラインの設定*/
 const timeline = [welcome1,welcome2,welcome3,welcome4];</code></pre>
+<script type="text/javascript">
+/* 課題に関するコードを以下に書く */
+const text = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"];
+
+const welcome1 = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: text[0],
+  trial_duration: 1000,
+};
+
+const welcome2 = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: text[1],
+  trial_duration: 1000,
+};
+
+const welcome3 = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: text[2],
+  trial_duration: 1000,
+};
+
+const welcome4 = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: text[3],
+  trial_duration: 1000,
+};
+
+/*タイムラインの設定*/
+const timeline = [welcome1,welcome2,welcome3,welcome4];
+</script>
 <p>これでもいいのですが，配列のインデックス以外welcomの設定に同じコードが４回も繰り返されており，なんだか無駄が多いように感じます。単純に繰り返しているだけですので，こういう場合は，繰り返し作業のためのfor文というのを使います。</p>
 <p>for文は以下のように書いて，繰り返したい内容をfor(){　
 }で囲みます。そして，for()の()内で，いつから初めていつ繰り返しをやめるのかを設定します。var
 i = 0; i&lt;4;
 i++とすると，0からはじまって3まで繰り返します(それぞれ繰り返すたびにその値がiに代入されます)。var
 i = 3; i&lt;6; i++とすると，3からはじまって5まで繰り返します。</p>
-<pre><code>for (var i = 0; i&lt;終了したい数+1; i++) {
+<pre class="js"><code>for (var i = 0; i&lt;終了したい数+1; i++) {
   // 繰り返したい内容
 }</code></pre>
+<script type="text/javascript">
+for (var i = 0; i<終了したい数+1; i++) {
+  // 繰り返したい内容
+}
+</script>
 <p>for文が分かったところで，さきほどの配列の中身４つを呈示するのは，以下のように書くことができます(今回はtimelineへのpushをfor文内ですることにしたので，タイムラインの設定が最後ではなく前にきています。認知課題を作る場合は，タイムラインは後ろにある方が作りやすいかと思います)。for文で書くとすっきりしますね。さて，for文で書いたものを動かしてみましょう。</p>
-<pre><code>/* 課題に関するコードを以下に書く */
+<pre class="js"><code>/* 課題に関するコードを以下に書く */
 const text = [&quot;こんにちは&quot;,&quot;ニイハオ&quot;,&quot;アニョハセヨ&quot;,&quot;ハロー&quot;];
 
 /* タイムラインの設定 */
@@ -596,6 +657,21 @@ for (var i = 0; i&lt;4; i++) {
   };
   timeline.push(welcome);
 }</code></pre>
+<script type="text/javascript">
+/* 課題に関するコードを以下に書く */
+const text = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"];
+
+/* タイムラインの設定 */
+const timeline = []
+for (var i = 0; i<4; i++) {
+  const welcome = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: text[i],
+    trial_duration: 1000,
+  };
+  timeline.push(welcome);
+}
+</script>
 <div id="演習課題3" class="section level4">
 <h4>演習課題3</h4>
 <ul>
@@ -609,7 +685,7 @@ for (var i = 0; i&lt;4; i++) {
 <p>if文は以下のように書きます。if()の()内に条件文を書き，その条件に合致していれば{}内の処理がなされます。もしその後に，else
 if()やelse()が続くなら，最初のif()に合致しない場合に，その後の条件に当てはまれば，その{}内の処理がなされます。なお，if()は最初だけで，その後はelse
 if()が続き，最後は上記以外を意味するelse()を使います。ただ，if()だけで終わることもあります。</p>
-<pre><code>if (条件1) {
+<pre class="js"><code>if (条件1) {
   条件1が真であれば実行
 } else if (条件2) {
   条件1が偽で条件2が真であれば実行
@@ -617,6 +693,16 @@ if()が続き，最後は上記以外を意味するelse()を使います。た�
 else {
   条件1も2も偽であれば実行
 }</code></pre>
+<script type="text/javascript">
+if (条件1) {
+  条件1が真であれば実行
+} else if (条件2) {
+  条件1が偽で条件2が真であれば実行
+}
+else {
+  条件1も2も偽であれば実行
+}
+</script>
 <p>具体例として，BMIから「やせ」，「普通」，「肥満」を判定する場合を考えます。この場合，if文は以下のようにかけます。最初のif()は「BMIが18.5より低いなら”やせ”とする」という意味です。次のelse
 if文は，「BMIが18.5以上25未満なら”普通”とする」という意味です。なお，このようにAかつBを表現するには&amp;&amp;を使い，AまたはBを表現するには||を使います。</p>
 <ul>
@@ -624,7 +710,7 @@ if文は，「BMIが18.5以上25未満なら”普通”とする」という意
 <li>A &amp;&amp; B ← A AND B(AかつB)</li>
 </ul>
 <p>最後のelse()は，「上記以外のBMIなら（つまりは25以上なら）“肥満”とする」という意味です。こんな感じでif文なら条件分岐を表現できます。</p>
-<pre><code>if (BMI &lt; 18.5) {
+<pre class="js"><code>if (BMI &lt; 18.5) {
   var himan = &quot;やせ&quot; 
 } else if (BMI &gt;=18.5 &amp;&amp; BMI &lt; 25) {
   var himan = &quot;普通&quot; 
@@ -632,8 +718,18 @@ if文は，「BMIが18.5以上25未満なら”普通”とする」という意
 else {
   var himan = &quot;肥満&quot; 
 }</code></pre>
+<script type="text/javascript">
+if (BMI < 18.5) {
+  var himan = "やせ" 
+} else if (BMI >=18.5 && BMI < 25) {
+  var himan = "普通" 
+}
+else {
+  var himan = "肥満" 
+}
+</script>
 <p>さて，本題に戻って，以下のように，「こんにちは」の配列のtext1と「こんばんは」の配列のtext2を用意します。そして，for文のindexが偶数(ここでは0か2です)ならtext1を，奇数ならtext2を呈示してみましょう。indexのiは0から始まるので，1が２に対応して，偶数が奇数となるのでややこしいですね。</p>
-<pre><code>/* 課題に関するコードを以下に書く */
+<pre class="js"><code>/* 課題に関するコードを以下に書く */
 const text1 = [&quot;こんにちは&quot;,&quot;ニイハオ&quot;,&quot;アニョハセヨ&quot;,&quot;ハロー&quot;];
 const text2 = [&quot;こんばんは&quot;,&quot;ワンシャンハオ&quot;,&quot;アンニョンヒジュムセヨ&quot;,&quot;グッドイーブニング&quot;];
 
@@ -652,8 +748,29 @@ for( var i = 0; i&lt;4; i++){
   };
   timeline.push(welcome);
 }</code></pre>
+<script type="text/javascript">
+/* 課題に関するコードを以下に書く */
+const text1 = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"];
+const text2 = ["こんばんは","ワンシャンハオ","アンニョンヒジュムセヨ","グッドイーブニング"];
+
+/* タイムラインの設定 */
+const timeline = []
+for( var i = 0; i<4; i++){
+  if (i==0 || i==2) {
+    var text = text1[i];
+  }else{
+    var text = text2[i];
+  }
+  const welcome = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: text,
+    trial_duration: 1000,
+  };
+  timeline.push(welcome);
+}
+</script>
 <p>確かに，奇数は昼の挨拶，偶数は夜の挨拶になったのですが，「こんにちは」，「ワンシャンハオ」，「アニョハセヨ」，「グッドイーブニング」といった感じで，配列のすべての単語を呈示できてないです。そこで，text1とtext2の要素すべてを使って，繰り返し呈示することにします。いろいろな方法があるのですが，ここでは，for文を重ねることにします。最初のfor文はiを０から３まで１つずつふやしていきます。そして，その１回ごとに，２つ目のfor文があり，これはjが0から１まで１つずつ増えます（実質は，jは０と１です）。このようにすると，text1とtext2の配列のすべての要素を呈示できます。</p>
-<pre><code>/* 課題に関するコードを以下に書く */
+<pre class="js"><code>/* 課題に関するコードを以下に書く */
 const text1 = [&quot;こんにちは&quot;,&quot;ニイハオ&quot;,&quot;アニョハセヨ&quot;,&quot;ハロー&quot;];
 const text2 = [&quot;こんばんは&quot;,&quot;ワンシャンハオ&quot;,&quot;アンニョンヒジュムセヨ&quot;,&quot;グッドイーブニング&quot;];
 
@@ -674,6 +791,29 @@ for( var i = 0; i&lt;4; i++){
   timeline.push(welcome);
   }
 }</code></pre>
+<script type="text/javascript">
+/* 課題に関するコードを以下に書く */
+const text1 = ["こんにちは","ニイハオ","アニョハセヨ","ハロー"];
+const text2 = ["こんばんは","ワンシャンハオ","アンニョンヒジュムセヨ","グッドイーブニング"];
+
+/* タイムラインの設定 */
+const timeline = []
+for( var i = 0; i<4; i++){
+  for( var j = 0; j<2; j++){
+    if (j==0) {
+      var text = text1[i];
+    }else{
+      var text = text2[i];
+    }
+  const welcome = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: text,
+    trial_duration: 1000,
+  };
+  timeline.push(welcome);
+  }
+}
+</script>
 <div id="演習課題4" class="section level4">
 <h4>演習課題4</h4>
 <ul>

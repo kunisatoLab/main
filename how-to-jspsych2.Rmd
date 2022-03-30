@@ -71,7 +71,7 @@ psyinfr::set_cbat("stroop","7.2.1")
 
 早速，教示を作ってみましょう。以下のような内容を画面に呈示して，説明をします（＜＞内はその前の単語の色を指定しています）。
 
-```
+```{js}
 この課題では, 以下のような色のついた単語を見ていただきます。
 青＜赤色＞
 単語の意味は無視して，それぞれの単語の「色」を以下のキーボードのキーを押して回答してください。
@@ -100,7 +100,7 @@ task.jsを開いて,コードを書いてみましょう。教示は，以下の
 
 以下のように，stimuliの中に16個のストループ刺激(stimulus)を用意します。p styleで色やフォントサイズの指定をしています（最初のstimulusは赤色の60ポイントの「赤」という文字ですね）。上の課題の設計図のところで作成したように，刺激を順番に指定します。これで，stimuliには，16個の色と文字の異なる刺激が準備できました。
 
-```
+```{js}
 /* 刺激 */
 const stimuli = [
   {stimulus: "<p style='color:red;   font-size:60pt;'>赤</p>"},
@@ -168,7 +168,7 @@ Timeline variablesは，ちょっと分かりにくいですが，呈示した�
 
 まず，刺激のランダム化は簡単で，timeline_variablesの後ろに，randomize_order: trueを入れればできます(ランダム化の詳細は，[こちら](https://www.jspsych.org/7.2/overview/timeline/)を参照ください)。
 
-```
+```{js}
 const stroop = {
   timeline:[{
     type: jsPsychHtmlKeyboardResponse,
@@ -191,7 +191,7 @@ const stroop = {
 
 今回の場合は，ストループ刺激のリストをランダムに2回（リストを2周する）呈示するので，fixed-repetitonsが適していますね。timeline_variables: stimuliの次にsample: {type: 'fixed-repetitions',size: 2}を追加しましょう。これで，simuliリストのアイテムを２回ランダムに呈示します。
 
-```
+```{js}
 const stroop = {
   timeline:[{
     type: jsPsychHtmlKeyboardResponse,
@@ -212,7 +212,7 @@ const stroop = {
 この情報も踏まえて，上のstimuliのリストに手を加えます。先程は，stimulusのみを書いていましたが，その後の正誤判定のためや解析で使えるように，dataにno（項目番号）,stim_type（一致か不一致か）,correct_key（正答のキーボードのキー）を以下のように追加します。
 
 
-```
+```{js}
 const stimuli = [
   {stimulus: "<p style='color:red;font-size:60pt;'>赤</p>",
   data: { no:'1', stim_type: 'congruent', correct_key: 'd'}},
@@ -257,7 +257,7 @@ const stimuli = [
 
 以下が設定できたら，一度走らせてみましょう！
 
-```
+```{js}
 const stroop = {
   timeline:[{
     type: jsPsychHtmlKeyboardResponse,
@@ -278,7 +278,7 @@ const stroop = {
 
 さて，データ収集後に解析することを考えると，反応の正誤判定をしておくと便利です。stimuliのリストのアイテムの正答反応を意味するcorrect_key(dataに保存されるとdata.correct_key)と実際の反応がdataに保存されたdata.responseとが一致していれば，その試行の反応は正答です。それをif文を使って表現すると以下になります。基本的にはcorrectは0としておいて，もしアイテムの正答反応と反応が一致したら，correctを1にして，dataに保存します。
 
-```
+```{js}
 var correct = 0;
 if(data.correct_key == data.response){
   correct = 1;
@@ -288,7 +288,7 @@ data.correct = correct;
 
 この作業は試行の最後にしてほしいので，試行終了時の作業を指示するon_finish: function()を使います。また，ここではstimuli内のdataを使うので，data: jsPsych.timelineVariable('data')も指定します。そうすると以下のようになります。
 
-```
+```{js}
 const stroop = {
   timeline:[{
     type: jsPsychHtmlKeyboardResponse,
@@ -334,7 +334,7 @@ const stroop = {
 
 最初にウェウカムメッセージとして以下のwelcomブロックを追加します。
 
-```
+```{js}
 /* 最初のメッセージ*/
 const welcome = {
   type: jsPsychHtmlKeyboardResponse,
@@ -345,7 +345,7 @@ const welcome = {
 
 timelineにもwelcomとfullscreenを追加します（fullscreenは元々設定されているので，timelineに追加するだけです）。
 
-```
+```{js}
 /*タイムラインの設定*/
 const timeline = [welcome, fullscreen, instruction, stroop];
 ```
@@ -356,7 +356,7 @@ const timeline = [welcome, fullscreen, instruction, stroop];
 
 いよいよ最後です。最後に，終了時の教示（今回は結果のフィードバックをする）のブロックを追加します。jsPsychHtmlKeyboardResponseを使って画面を表示しますが，stimulusにて，dataから結果を引っ張ってきて，一致試行と不一致試行の平均反応時間を計算しています。ややこしそうですが，dataからfilterで絞り込みをかけて，countなどで数えるという単純な作業をしているだけになります。その計算結果をいれこんだ文章をつくって表示しています。
 
-```
+```{js}
 /*デブリーフィングの設定*/
 const debrief = {
   type: jsPsychHtmlKeyboardResponse,
