@@ -367,7 +367,9 @@ for (i in 1:nrow(RL_stim)) {
 それでは，選択した画像の方にオレンジの枠で囲った画像(s1s.jpegかs2s.jpeg)が呈示されるようにしていきましょう。
 
 
-まず，3.4で作ったchoiceブロックを以下のように変更してみます。なんだか長くなっていますが，最初は3.4と同じで，それに続けて，選択した画像を画面に呈示する試行を追加しています("{type: 'html-keyboard-response'"以降の内容です)。選択した画像を呈示する試行では，stimulus:に参加者の選択時応じた画像刺激をセットし，trial_duration: 500 (試行は500ms),response_ends_trial: false(選択によって画像呈示が終わらないようにしています)とします。stimulus:が重要ですが，ここでは，jsPsych.data.get().last(1).values()[0]を使って１つ前の試行（つまり選択試行です）から.responseで選択結果，.left_right_s1でs1が左と右のどちらかに呈示されたかを取得します(それぞれ，last_selectとlast_left_right_s1に入る)。ちなみに，jsPsych.data.get().last(1).values()[0]のlast内の数字でいくつ前の施行かを指定します（数字によって2試行前のデータをもってくることもできます）。そして以下の5パターンで処理をします。
+まず，3.4で作ったchoiceブロックを以下のように変更してみます。なんだか長くなっていますが，最初は3.4と同じで，それに続けて，選択した画像を画面に呈示する試行を追加しています。選択した画像を呈示する試行では，stimulusは''として，choicesに参加者の選択時応じた画像刺激をセットし，trial_duration: 500 (試行は500ms),response_ends_trial: false(選択によって画像呈示が終わらないようにしています)とします。
+
+choices:が重要ですが，ここでは，jsPsych.data.get().last(1).values()[0]を使って１つ前の試行（つまり選択試行です）から.responseで選択結果，.left_right_s1でs1が左と右のどちらかに呈示されたのかを取得します(それぞれ，last_selectとlast_left_right_s1に入る)。ちなみに，jsPsych.data.get().last(1).values()[0]のlast内の数字でいくつ前の施行かを指定します。そして以下の5パターンで処理をします。
 
 - last_select==0 && last_left_right_s1 == 1の場合，ボタン押しのlast_selectが0なのでs1を選択し（java scriptは0始まりで，stimulusはいつもs1,s2の順番でした），last_left_right_s1が1なので，s1は左に出ていました。そのため，オレンジの選択枠のあるs1s.jpegを左に呈示します。
 
@@ -380,17 +382,6 @@ for (i in 1:nrow(RL_stim)) {
 - else，つまり上記以外の場合は，last_selectがnull，つまり反応が無い場合です，そこで，「時間内に選択を行ってください」という教示を呈示します。
 
 
-
-
-
-
-
-
-
-
-<更新中　　枠の呈示においてエラーがでている・・・>
-
-
 ```
 const choice = {
   timeline:[{
@@ -398,24 +389,27 @@ const choice = {
     type: jsPsychHtmlButtonResponse,
     choices: jsPsych.timelineVariable('stimulus'),
     button_html: '%choice%',
+    trial_duration: 2000,
     data: jsPsych.timelineVariable('data')
   　},{
     type: jsPsychHtmlButtonResponse,
-    stimulus: function(){
+    stimulus: '',
+    choices:  function(){
       var last_select = jsPsych.data.get().last(1).values()[0].response;
       var last_left_right_s1 = jsPsych.data.get().last(1).values()[0].left_right_s1;
       if (last_select==0 && last_left_right_s1 == 1){
-        return "<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p>"
+        return ["<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p>"]
       } else if (last_select==0 && last_left_right_s1 == 2){
-        return "<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p>"
+        return ["<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p>"]
       } else if (last_select==1 && last_left_right_s1 == 1){
-        return "<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p>"
+        return ["<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p>"]
       } else if (last_select==1 && last_left_right_s1 == 2){
-        return "<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p>"
+        return ["<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p>"]
       } else {
-        return '<p style="font-size: 48px">時間内に選択を行ってください</p>'
+        return ['<p style="font-size: 48px">時間内に選択を行ってください</p>']
       }
     },
+    button_html: '%choice%',
     trial_duration: 500,
     response_ends_trial: false,
   }],
@@ -424,7 +418,6 @@ const choice = {
 ```
 
 さて，上記のようにchoiceを変更してみて，実際に選択した画像の方がオレンジで囲われるようになったら成功です。
-
 
 ### 4.2 フィードバックする
 
@@ -454,39 +447,41 @@ const choice = {
 - else，つまり上記以外の場合は，last_selectがnull，つまり反応が無い場合です，そこで，「時間内に選択を行ってください」という教示を呈示します。
 
 
-上記の9パターンのフィードバックをするために，4.1の内容に，以下を追加します（4.1で選択の確認試行の追加と同じようにしてみてください）。
+上記の9パターンのフィードバックをするために，4.1の内容に，以下を追加します（4.1での選択の確認試行の追加と同じようにしてみてください）。
 
 ```
 {
-      type: 'html-keyboard-response',
-      stimulus: function(){
+      type: jsPsychHtmlButtonResponse,
+      stimulus: '',
+      choices: function(){
         var last_select = jsPsych.data.get().last(2).values()[0].response;
         var last_left_right_s1 = jsPsych.data.get().last(2).values()[0].left_right_s1;
         var last_reward_s1 = jsPsych.data.get().last(2).values()[0].reward_s1;
         var last_reward_s2 = jsPsych.data.get().last(2).values()[0].reward_s2;
         if (last_select==0 && last_left_right_s1 == 1 && last_reward_s1==1){
-           return "<p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='stimuli/reward.jpeg' width='200px'/></p>"
+           return ["<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/reward.jpeg' width='200px'/></p>"]
         } else if (last_select==0 && last_left_right_s1 == 1 && last_reward_s1==0){
-           return "<p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='stimuli/punishment.jpeg' width='200px'/></p>"
+           return ["<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/punishment.jpeg' width='200px'/></p>"]
         }else if (last_select==0 && last_left_right_s1 == 2 && last_reward_s1==1){
-           return "<p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='stimuli/reward.jpeg' width='200px'/></p>"
+           return ["<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/reward.jpeg' width='200px'/></p>"]
         } else if (last_select==0 && last_left_right_s1 == 2 && last_reward_s1==0){
-           return "<p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='stimuli/punishment.jpeg' width='200px'/></p>"
+           return ["<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/punishment.jpeg' width='200px'/></p>"]
         } else if (last_select==1 && last_left_right_s1 == 1 && last_reward_s2==1){
-           return "<p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='stimuli/reward.jpeg' width='200px'/></p>"
+           return ["<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/reward.jpeg' width='200px'/></p>"]
         } else if (last_select==1 && last_left_right_s1 == 1 && last_reward_s2==0){
-           return "<p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='stimuli/punishment.jpeg' width='200px'/></p>"
+           return ["<p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/punishment.jpeg' width='200px'/></p>"]
         }else if (last_select==1 && last_left_right_s1 == 2 && last_reward_s2==1){
-           return "<p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='stimuli/reward.jpeg' width='200px'/></p>"
+           return ["<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/reward.jpeg' width='200px'/></p>"]
         } else if (last_select==1 && last_left_right_s1 == 2 && last_reward_s2==0){
-           return "<p style='position: absolute; top: 40%;right: 20%'><img src='stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='stimuli/punishment.jpeg' width='200px'/></p>"
+           return ["<p style='position: absolute; top: 40%;right: 20%'><img src='RL/stimuli/s1.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;left: 20%'><img src='RL/stimuli/s2s.jpeg' width='200px'/></p> <p style='position: absolute; top: 40%;right: 45%'><img src='RL/stimuli/punishment.jpeg' width='200px'/></p>"]
         } else {
-           return '<p style="font-size: 48px">時間内に選択を行ってください</p>'
+           return ['<p style="font-size: 48px">時間内に選択を行ってください</p>']
         }
       },
+      button_html: '%choice%',
       trial_duration: 1000,
-      response_ends_trial: false,
-    }
+      response_ends_trial: false
+}
 ```
 
 ### 4.3 固視点の追加
@@ -495,8 +490,10 @@ const choice = {
 
 ```
 {
-    　type: 'html-keyboard-response',
-      stimulus: '<p style="font-size: 48px">+</p>',
+    　type: jsPsychHtmlButtonResponse,
+    　stimulus: '',
+      choices: ['<p style="font-size: 48px">+</p>'],
+      button_html: '%choice%',
       trial_duration: function() {
         return Math.floor(Math.random() * 1000) + 500;
       },
@@ -506,118 +503,70 @@ const choice = {
 
 ### 演習課題4
 
-4.3まで刺激はtop:40%に呈示してきましたが，top:35%に呈示してみましょう（何かがずれたら適切に調整をしてください）！
+4.3まで刺激はtop:40%に呈示してきましたが，top:35%に呈示してみましょう！RStudioの検索・置換をつかうと良いとかと思います。
+
 
 ## 5. メインブロック以外のブロックを追加していく
 
 メインブロックは完成したので，課題が始まった時に表示されるウェルカムメッセージとフルスクリーンで実施するための教示などのブロックを追加して，最後に終了メッセージを追加します。これはストループ課題の時と一緒です。
 
-### 5.1 ウェウカムメッセージとフルスクリーン化の追加
+### 5.1 ウェウカムメッセージ，フルスクリーン化，終了メッセージの追加
 
 最初にウェウカムメッセージとして以下のwelcomブロックを追加します。
 
 ```
 var welcome = {
-  type: "html-keyboard-response",
+  type: jsPsychHtmlKeyboardResponse,
   stimulus: "<p><span style='font-size:20pt;'>実験にお越しいただき，ありがとうございます!!!</span></p>"+
   "<p>キーボードのキーをどれか押して，開始してください</p>"
 };
 ```
 
-tagは以下のように設定します。
-
-```
-library(htmltools)
-tagList(
-tags$body(bgcolor="#000000", text="#ffffff"),
-tags$script(src='jspsych-6.3.1/jspsych.js'),
-tags$script(src='jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js'),
-tags$script(src='jspsych-6.3.1/plugins/jspsych-html-button-response.js'),
-tags$script(src='jspsych-6.3.1/plugins/jspsych-fullscreen.js')
-)
-```
-
-
-timelineのwelcomeの次にfullscreenをプッシュします。これで，ウェルカムメッセージが表示されて，全画面表示ができるようになっていると思います。
-
-```
-var fullscreen = {
-  type: 'fullscreen',
-  message: '<p>以下のボタンをクリックすると，画面は全画面表示に切り替わります。全画面表示を止めたい場合はEscキーを押してください。</p>',
-  button_label: "全画面表示に切り替え",
-  fullscreen_mode: true
-};
-
-var timeline = [];
-timeline.push(welcome);
-timeline.push(fullscreen);
-timeline.push(instructions);
-timeline.push(choice);
-```
-
-### 5.2 終了メッセージの追加
-
 最後に「キーボードのキーをどれか押すと画面に結果の記録が表示されます。ブラウザを閉じて終了してください。ご参加ありがとうございました。」というメッセージが画面に出てくるようにします。ストループ課題と同じくdebriefで画面を用意して，debriefをpushしておきます。
 
 ```
-var debrief = {
-  type: "html-keyboard-response",
-  stimulus: "<p>キーボードのキーをどれか押すと画面に結果の記録が表示されます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>"
+const debrief = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: "<p>キーボードのキーをどれか押すと結果がCSV形式でダウンロードされます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>"
 };
-
-var timeline = [];
-timeline.push(welcome);
-timeline.push(fullscreen);
-timeline.push(instructions);
-timeline.push(choice);
-timeline.push(debrief);
 ```
 
-これで逆転学習課題は完成です。
+welcome, fullscreen(これはダウンロードしたjsファイル内で既に設定されています)，debriefをtimelineに追加して，逆転学習課題は完成です。
+
+
+```
+/*タイムラインの設定*/
+const timeline = [welcome, fullscreen, instruction, choice, debrief];
+```
 
 ### 演習課題5 
 
 ストループ課題と同様に，debriefブロックで，「あなたの正答率は，80%でした。」というように，参加者の正答率を計算して，呈示しましょう！いきなりだと大変かなと思うので，以下を参考にしてください。
 
 ```
-var s1_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 0}).select('reward_s1').sum();
-var s2_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 1}).select('reward_s2').sum();
-var correct_rate = ((s1_reward + s2_reward)/80)*100;
-return "<p>あなたの正答率は，<strong>"+correct_rate+"%</strong>でした。</p> " + "<p>キーボードのfを押すと画面に結果の記録が表示されます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>";
+const s1_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 0}).select('reward_s1').sum();
+const s2_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 1}).select('reward_s2').sum();
+const correct_rate = ((s1_reward + s2_reward)/80)*100;
+return "<p>あなたの正答率は，<strong>"+correct_rate+"%</strong>でした。</p> " + "<p>キーボードのキーをどれか押すと結果がCSV形式でダウンロードされます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>";
 ```
-
 
 ### 演習課題6
 
-オンライン実験の場合，参加したかどうかを確認するために，最後に確認コードを出すことがあります。その際に，jsPsych.randomization.randomIDを使うと便利です。以下を参考にして，デブリーフィングで参加者にIDを呈示してみましょう。
+オンライン実験の場合，参加したかどうかを確認するために，最後に確認コードを出すことがあります。その際に，jsPsych.randomization.randomIDを使うと便利です。以下を参考にして，デブリーフィングで参加者にIDを呈示してみましょう。なお，IDを参加者に呈示するだけでなく，data:{participant_id:sub_id}でIDも保存されるようにしましょう。
 
 ```
 var sub_id = jsPsych.randomization.randomID(6)
 
-var debrief = {
-  type: "html-keyboard-response",
-  choices: ["f"],
+const debrief = {
+  type: jsPsychHtmlKeyboardResponse,
   stimulus: function() {
-    var s1_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 0}).select('reward_s1').sum();
-    var s2_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 1}).select('reward_s2').sum();
-    var correct_rate = ((s1_reward + s2_reward)/80)*100;
+    const s1_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 0}).select('reward_s1').sum();
+    const s2_reward = jsPsych.data.get().filter({trial_type: "html-button-response", response: 1}).select('reward_s2').sum();
+    const correct_rate = ((s1_reward + s2_reward)/80)*100;
     return "<p>あなたのIDは，<strong>"+sub_id+"</strong>です。紙にメモするか，コピーをして保存をしてください。</p> " +
     "<p>あなたの正答率は，<strong>"+correct_rate+"%</strong>でした。</p> " +
-    "<p>キーボードのfを押すと画面に結果の記録が表示されます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>";
-  }
+    "<p>キーボードのキーをどれか押すと結果がCSV形式でダウンロードされます。ブラウザを閉じて終了してください。ご参加ありがとうございました。</p>";
+  },
+  data:{participant_id:sub_id}
 };
 ```
-
-また，呈示したIDを保存する場合は，以下のようにjsPsych.init内でjsPsych.data.addProperties()を使って追加をしておきましょう。
-
-```
-jsPsych.init({
-    timeline: timeline,
-    on_finish: function() {
-     jsPsych.data.addProperties({id:sub_id});
-     jsPsych.data.displayData();
-    }
-});
-```
-
-
