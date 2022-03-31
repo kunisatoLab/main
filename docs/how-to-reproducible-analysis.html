@@ -13,12 +13,22 @@
 
 <title>再生可能なデータ解析入門</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +73,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -112,40 +89,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +126,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +138,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +149,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +177,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,7 +302,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -351,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -370,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -397,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -416,7 +381,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -427,33 +392,58 @@ div.tocify {
 
 <div id="再生可能性とは" class="section level2">
 <h2>再生可能性とは？</h2>
-<p>　研究における再現性を考える上で，Clarerbout, Jが提案したReplicabilityとReproducibilityの区分はとても便利です。Clarerbout, Jによると，</p>
+<p>　研究における再現性を考える上で，Clarerbout,
+Jが提案したReplicabilityとReproducibilityの区分はとても便利です。Clarerbout,
+Jによると，</p>
 <ul>
-<li>Replicability(再現可能性) = 新規に取得したデータに同じ解析をして同じ結果が得られること</li>
-<li>Reproducibility(再生可能性) = 既存データに同じ解析をして同じ結果が得られること<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></li>
+<li>Replicability(再現可能性) =
+新規に取得したデータに同じ解析をして同じ結果が得られること</li>
+<li>Reproducibility(再生可能性) =
+既存データに同じ解析をして同じ結果が得られること<a href="#fn1"
+class="footnote-ref" id="fnref1"><sup>1</sup></a></li>
 </ul>
-<p>とされます<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>。Replicability(再現可能性) は，簡単に言うと新たに追試をして同じ結果が得られることです。これについては，これ以上このページでは扱いません。</p>
-<p>　一方，Reproducibility(再生可能性)は，既に収集されたデータに対して，論文などで記載されている同じ解析を行った場合に，同じ結果が得られることです。再生が不可能な研究は，再現もしないと思われるので，まずは再生可能な研究ができることが前提になります。本ページの以降では，この再生可能なデータ解析について詳しく解説します。 　 <br /> <br /></p>
+<p>とされます<a href="#fn2" class="footnote-ref"
+id="fnref2"><sup>2</sup></a>。Replicability(再現可能性)
+は，簡単に言うと新たに追試をして同じ結果が得られることです。これについては，これ以上このページでは扱いません。</p>
+<p>　一方，Reproducibility(再生可能性)は，既に収集されたデータに対して，論文などで記載されている同じ解析を行った場合に，同じ結果が得られることです。再生が不可能な研究は，再現もしないと思われるので，まずは再生可能な研究ができることが前提になります。本ページの以降では，この再生可能なデータ解析について詳しく解説します。
+　 <br /> <br /></p>
 </div>
 <div id="再生可能なデータ解析のためにrを使おう" class="section level2">
 <h2>再生可能なデータ解析のためにRを使おう！</h2>
-<p>　再生可能なデータ解析をする際の原則は，「データに対して行った操作をすべて記録する」です。これが可能なら，ExcelやSPSSなどを使っても全く問題はありません。つまり，これらのソフトの操作をするたびに，テキストエディタなどにすべての作業を記入し，それを第三者にもわかるようにしておけば良いです。ただ，これはかなり骨が折れます<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>。なんで骨が折れるかというと，Excelなどでマウスを動かしてポチポチやった作業を記録するのですが，これが面倒です。面倒ですが，その記録がないと，生データから解析結果を得ることができなくなります（例えば，逆点処理・変数変換・データの除外をしたのに記録してないと結果は変わってきます）。</p>
-<p>　そこで便利なのがRやPythonなどのオープンソースなプログラミング言語です<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>。プログラムコードを書くのが面倒くさいなあと思われるかもしれませんが，インターネットで検索すれば，必ず優れた例や解説もあるので，すぐに慣れると思います。生データを読み込んで，それ以降Rなどで処理をすれば，その行った処理がすべて記録されます。ただ，Rのコンソールにそのまま書き込むと行った処理の記録になりませんので，R Markdownを使用することを強くおすすめします。</p>
-<p>　Rでのコードの書き方やR Markdownの使い方などは，以下のスライドで詳しく解説しているので，参照してください。R Markdonwについては，<a href="https://kazutan.github.io/kazutanR/index.html">kazutanのサイト</a>や<a href="https://www.amazon.co.jp/dp/4320112431/ref=cm_sw_em_r_mt_dp_U_wo9vDb0EMTZK9">中京大学の高橋康介先生による「再現可能性のすゝめ 」</a>を参照することを強くおすすめします。最近は，<a href="https://github.com/">github</a>や<a href="https://osf.io/dashboard">OSF</a>などで，データとコードが配布されていることも多くなりました。興味のある研究のデータやコードをダウンロードして，解析やRコードの書き方を学ぶのも実践的で良いかと思います。 　 <br /></p>
+<p>　再生可能なデータ解析をする際の原則は，「データに対して行った操作をすべて記録する」です。これが可能なら，ExcelやSPSSなどを使っても全く問題はありません。つまり，これらのソフトの操作をするたびに，テキストエディタなどにすべての作業を記入し，それを第三者にもわかるようにしておけば良いです。ただ，これはかなり骨が折れます<a
+href="#fn3" class="footnote-ref"
+id="fnref3"><sup>3</sup></a>。なんで骨が折れるかというと，Excelなどでマウスを動かしてポチポチやった作業を記録するのですが，これが面倒です。面倒ですが，その記録がないと，生データから解析結果を得ることができなくなります（例えば，逆点処理・変数変換・データの除外をしたのに記録してないと結果は変わってきます）。</p>
+<p>　そこで便利なのがRやPythonなどのオープンソースなプログラミング言語です<a
+href="#fn4" class="footnote-ref"
+id="fnref4"><sup>4</sup></a>。プログラムコードを書くのが面倒くさいなあと思われるかもしれませんが，インターネットで検索すれば，必ず優れた例や解説もあるので，すぐに慣れると思います。生データを読み込んで，それ以降Rなどで処理をすれば，その行った処理がすべて記録されます。ただ，Rのコンソールにそのまま書き込むと行った処理の記録になりませんので，R
+Markdownを使用することを強くおすすめします。</p>
+<p>　Rでのコードの書き方やR
+Markdownの使い方などは，以下のスライドで詳しく解説しているので，参照してください。R
+Markdonwについては，<a
+href="https://kazutan.github.io/kazutanR/index.html">kazutanのサイト</a>や<a
+href="https://www.amazon.co.jp/dp/4320112431/ref=cm_sw_em_r_mt_dp_U_wo9vDb0EMTZK9">中京大学の高橋康介先生による「再現可能性のすゝめ
+」</a>を参照することを強くおすすめします。最近は，<a
+href="https://github.com/">github</a>や<a
+href="https://osf.io/dashboard">OSF</a>などで，データとコードが配布されていることも多くなりました。興味のある研究のデータやコードをダウンロードして，解析やRコードの書き方を学ぶのも実践的で良いかと思います。
+　 <br /></p>
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTySEMxqNr-FrwAAbnJWm4gza2hkWQGbU-wI_3P0kHPFGGsrCt6EFjxcVNs3OP4OHYGYM8dA-AbT2lS/embed?start=false&amp;loop=false&amp;delayms=30000" frameborder="0" width="480" height="389" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
 </iframe>
 <p><br /> <br /></p>
 </div>
 <div id="急速なソフトウェア開発が再生性を低める" class="section level2">
 <h2>急速なソフトウェア開発が再生性を低める</h2>
-<p>　RやR Markdownを使っていれば大丈夫かというとそうではなくて，Rなどのオープンソースソフトウェアは，急速に発展しており，どんどん新しいパッケージが発表されたり変更が加えられています。Rパッケージはgithub上で開発されていることもあり，それをみると何人もの人が共同しつつ目まぐるしいスピードで変更を加えているのがわかりますし，エラーがあればissueに報告され，直ちに修正されている様子も確認できます。そのような急速にソフトウェアが開発される状況を踏まえて，Epskamp(2019)は<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>，再生可能性を低める脅威として以下のようなものを指摘しています。</p>
+<p>　RやR
+Markdownを使っていれば大丈夫かというとそうではなくて，Rなどのオープンソースソフトウェアは，急速に発展しており，どんどん新しいパッケージが発表されたり変更が加えられています。Rパッケージはgithub上で開発されていることもあり，それをみると何人もの人が共同しつつ目まぐるしいスピードで変更を加えているのがわかりますし，エラーがあればissueに報告され，直ちに修正されている様子も確認できます。そのような急速にソフトウェアが開発される状況を踏まえて，Epskamp(2019)は<a
+href="#fn5" class="footnote-ref"
+id="fnref5"><sup>5</sup></a>，再生可能性を低める脅威として以下のようなものを指摘しています。</p>
 <ul>
 <li><p>β版：よく使用されているけど，β版(よく0.x.xなどで表現される）のソフトも多い。しかし，β版は今後大きな変更が加えられる可能性があり，将来の再生性を低める可能性がある。</p></li>
 <li><p>アップデートと依存関係：ソフトが大きくアップデートされると再生性が低くなる。また，Rパッケージの多くは他のパッケージと依存関係にあるので，依存しているパッケージのどれかが変更されると芋づる式に再生性が低くなる可能性がある。</p></li>
 </ul>
 <p><br /></p>
 </div>
-<div id="急速なソフトウェア開発による再生性低下を防ぐ方法" class="section level2">
+<div id="急速なソフトウェア開発による再生性低下を防ぐ方法"
+class="section level2">
 <h2>急速なソフトウェア開発による再生性低下を防ぐ方法</h2>
 <p>　Epskamp(2019)は，急速なソフトウェア開発に伴う再生性低下のために，以下のような解決方法を提案しています。</p>
 <ol style="list-style-type: decimal">
@@ -471,16 +461,17 @@ div.tocify {
 <li>使用したソフトウェアパッケージの状態を再生できるようにする。</li>
 </ol>
 <p><br /></p>
-<p>上記の1と2だけでは，急速に開発されるソフトウェア環境で再生性を担保することができないので，３が必要になります。使用したソフトウェアパッケージの状態を再生できるようにするためには，(1)Rパッケージのバージョン管理, (2)解析環境のコンテナ化を推奨します。(Epskamp, 2019)。</p>
+<p>上記の1と2だけでは，急速に開発されるソフトウェア環境で再生性を担保することができないので，３が必要になります。使用したソフトウェアパッケージの状態を再生できるようにするためには，(1)Rパッケージのバージョン管理,
+(2)解析環境のコンテナ化を推奨します。(Epskamp, 2019)。</p>
 <p><br /></p>
 </div>
 <div id="rパッケージのパッケージ管理" class="section level2">
 <h2>Rパッケージのパッケージ管理</h2>
 <p>　一番シンプルな方法は，以下のようにsessionInfo()を実行して，使用しているRパッケージのバージョン情報を記録することです。sessionInfo()を実行することで，現在どういう環境で解析がなされたかが記録できます。</p>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>## R version 4.0.3 (2020-10-10)
+<pre><code>## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04 LTS
+## Running under: Ubuntu 20.04.3 LTS
 ## 
 ## Matrix products: default
 ## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so
@@ -488,7 +479,7 @@ div.tocify {
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
 ##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
 ##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
 ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
 ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
@@ -496,52 +487,28 @@ div.tocify {
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
-## other attached packages:
-##  [1] osfr_0.2.8           gridExtra_2.3        gemtc_0.8-7         
-##  [4] coda_0.19-4          loo_2.3.1            bayesplot_1.7.2     
-##  [7] tidybayes_2.1.1      rstan_2.21.2         StanHeaders_2.21.0-6
-## [10] hBayesDM_1.0.2       Rcpp_1.0.5           DiagrammeR_1.0.6.1  
-## [13] forcats_0.5.0        stringr_1.4.0        dplyr_1.0.2         
-## [16] purrr_0.3.4          readr_1.4.0          tidyr_1.1.2         
-## [19] tibble_3.0.4         ggplot2_3.3.2        tidyverse_1.3.0     
-## [22] jsonlite_1.7.2      
-## 
 ## loaded via a namespace (and not attached):
-##  [1] matrixStats_0.57.0   fs_1.5.0             lubridate_1.7.9     
-##  [4] RColorBrewer_1.1-2   httr_1.4.2           tools_4.0.3         
-##  [7] backports_1.1.10     utf8_1.1.4           R6_2.5.0            
-## [10] ggdist_2.2.0         DBI_1.1.0            colorspace_2.0-0    
-## [13] withr_2.3.0          tidyselect_1.1.0     prettyunits_1.1.1   
-## [16] processx_3.4.5       curl_4.3             compiler_4.0.3      
-## [19] cli_2.2.0            rvest_0.3.6          arrayhelpers_1.1-0  
-## [22] xml2_1.3.2           triebeard_0.3.0      labeling_0.4.2      
-## [25] scales_1.1.1         checkmate_2.0.0      ggridges_0.5.2      
-## [28] callr_3.5.1          digest_0.6.27        rmarkdown_2.6.0001  
-## [31] pkgconfig_2.0.3      htmltools_0.5.0      dbplyr_1.4.4        
-## [34] htmlwidgets_1.5.2    rlang_0.4.9          readxl_1.3.1        
-## [37] httpcode_0.3.0       rstudioapi_0.13      visNetwork_2.0.9    
-## [40] farver_2.0.3         generics_0.1.0       svUnit_1.0.3        
-## [43] distributional_0.2.1 inline_0.3.16        magrittr_2.0.1      
-## [46] munsell_0.5.0        fansi_0.4.1          lifecycle_0.2.0     
-## [49] stringi_1.5.3        yaml_2.2.1           plyr_1.8.6          
-## [52] pkgbuild_1.1.0       grid_4.0.3           blob_1.2.1          
-## [55] parallel_4.0.3       crayon_1.3.4         lattice_0.20-41     
-## [58] haven_2.3.1          hms_0.5.3            knitr_1.30          
-## [61] ps_1.5.0             pillar_1.4.7         igraph_1.2.6        
-## [64] codetools_0.2-16     stats4_4.0.3         crul_1.0.0          
-## [67] reprex_0.3.0         glue_1.4.2           evaluate_0.14       
-## [70] V8_3.2.0             data.table_1.13.2    RcppParallel_5.0.2  
-## [73] modelr_0.1.8         urltools_1.7.3       vctrs_0.3.5         
-## [76] cellranger_1.1.0     gtable_0.3.0         assertthat_0.2.1    
-## [79] xfun_0.19            broom_0.7.2.9000     memoise_1.1.0       
-## [82] ellipsis_0.3.1</code></pre>
-<p>　devtools::install_version()を使えば，sessionInfo()で記録されたのと同じバージョンのRパッケージをインストールすることができます。以下の例の場合は，古いバージョンのggplot2をインストールしています。詳しくは，<a href="https://support.rstudio.com/hc/en-us/articles/219949047-Installing-older-versions-of-packages">こちら</a>を参照ください。</p>
+##  [1] rstudioapi_0.13 knitr_1.37      magrittr_2.0.2  R6_2.5.1       
+##  [5] rlang_1.0.2     fastmap_1.1.0   fansi_1.0.2     stringr_1.4.0  
+##  [9] tools_4.1.2     xfun_0.30       utf8_1.2.2      cli_3.2.0      
+## [13] jquerylib_0.1.4 htmltools_0.5.2 ellipsis_0.3.2  yaml_2.3.5     
+## [17] digest_0.6.29   tibble_3.1.6    lifecycle_1.0.1 crayon_1.5.0   
+## [21] sass_0.4.0      vctrs_0.3.8     glue_1.6.2      evaluate_0.15  
+## [25] rmarkdown_2.12  stringi_1.7.6   compiler_4.1.2  bslib_0.3.1    
+## [29] pillar_1.7.0    jsonlite_1.8.0  pkgconfig_2.0.3</code></pre>
+<p>　devtools::install_version()を使えば，sessionInfo()で記録されたのと同じバージョンのRパッケージをインストールすることができます。以下の例の場合は，古いバージョンのggplot2をインストールしています。詳しくは，<a
+href="https://support.rstudio.com/hc/en-us/articles/219949047-Installing-older-versions-of-packages">こちら</a>を参照ください。</p>
 <pre><code>devtools::install_version(&quot;ggplot2&quot;, version = &quot;0.9.1&quot;)</code></pre>
 <p>　ただし，sessionInfo()+devtools::install_version()の組み合わせでは，Rパッケージの膨大な依存関係までは扱うことができないので，完全な環境の再現にはなりません。そこで，Rパッケージのバージョン管理では，現段階では，以下の３つのRパッケージを使うことを推奨します。それぞれ特徴はありますが，解析実施時or終了時のスナップショット(Rパッケージのバージョン情報などが含まれる)をとっておいて，後でその状態を再現するパッケージになります。なお，それぞれの解説については，既に優れた記事があるので，そちらを参照ください。</p>
 <ul>
-<li><p>checkpoint: <a href="https://cran.r-project.org/web/packages/checkpoint/vignettes/checkpoint.html">checkpointの解説記事</a></p></li>
-<li><p>renv: <a href="https://qiita.com/okiyuki99/items/688a00ca9a58e42e3bfa">Motoyuki Oki氏によるrenvの日本語解説資料</a></p></li>
-<li><p>packrat: <a href="https://qiita.com/uri/items/5d473a5df91954585e62">Shinya Uryu氏によるpackratの日本語解説資料</a></p></li>
+<li><p>checkpoint: <a
+href="https://cran.r-project.org/web/packages/checkpoint/vignettes/checkpoint.html">checkpointの解説記事</a></p></li>
+<li><p>renv: <a
+href="https://qiita.com/okiyuki99/items/688a00ca9a58e42e3bfa">Motoyuki
+Oki氏によるrenvの日本語解説資料</a></p></li>
+<li><p>packrat: <a
+href="https://qiita.com/uri/items/5d473a5df91954585e62">Shinya
+Uryu氏によるpackratの日本語解説資料</a></p></li>
 </ul>
 <p><br /></p>
 <p>　しかし，そもそもOSが違うとかR本体の大きな変更があった場合は，これらのパッケージのバージョン管理だけでは，解決することはできません（古いRをいれればいいとかもありますが，面倒ですね・・・）。OSやR本体の変更も含めた再生性の確保をする場合は，次で説明する解析環境のコンテナ化が必須です。</p>
@@ -550,67 +517,112 @@ div.tocify {
 <h2>解析環境のコンテナ化</h2>
 <p>　OSやRのバージョンなどが違っても再生性を担保するには，仮想環境を作って，そこにOSやソフトを用意するという方法があります。ただ，これだとかなり容量が大きくなるので，Dockerが提供するコンテナ技術を使って，最小限の構成でRを使った解析環境を作って，後で利用できるようにすることを推奨します。なんとなく難易度が高そうですが，ユーザーは作業が少なくて済むので，おすすめです。また，RStanやJAGSなどの準備が面倒だったり，難しいと感じるユーザーは，既に準備されたDockerを使えば，お手軽に解析環境を準備することができます。以下は，私が作成したRStudioを使った解析用Dockerのリストです。ベースのpaper-rを使用すれば，すぐにstanやJAGSが使えます。</p>
 <ul>
-<li><p><a href="https://hub.docker.com/r/ykunisato/paper-r">心理学で使うRパッケージの入ったRStudio Docker</a> (日本語環境対応版は，<a href="https://hub.docker.com/r/ykunisato/paper-r-jp">こちら</a>)</p></li>
-<li><p><a href="https://hub.docker.com/r/ykunisato/cog-model-r">認知モデリング用RStudio Docker</a></p></li>
-<li><p><a href="https://hub.docker.com/r/ykunisato/psynet-r">心理学的ネットワークモデリング用RStudio Docker</a></p></li>
-<li><p><a href="https://hub.docker.com/r/ykunisato/netmeta-r">ネットワークメタ分析用RStudio Docker</a></p></li>
-<li><p><a href="https://hub.docker.com/r/ykunisato/ccp-lab-r">上記が全部入ったラボ用RStudio Docker</a></p></li>
+<li><p><a
+href="https://hub.docker.com/r/ykunisato/paper-r">心理学で使うRパッケージの入ったRStudio
+Docker</a> (日本語環境対応版は，<a
+href="https://hub.docker.com/r/ykunisato/paper-r-jp">こちら</a>)</p></li>
+<li><p><a
+href="https://hub.docker.com/r/ykunisato/cog-model-r">認知モデリング用RStudio
+Docker</a></p></li>
+<li><p><a
+href="https://hub.docker.com/r/ykunisato/psynet-r">心理学的ネットワークモデリング用RStudio
+Docker</a></p></li>
+<li><p><a
+href="https://hub.docker.com/r/ykunisato/netmeta-r">ネットワークメタ分析用RStudio
+Docker</a></p></li>
+<li><p><a
+href="https://hub.docker.com/r/ykunisato/ccp-lab-r">上記が全部入ったラボ用RStudio
+Docker</a></p></li>
 </ul>
 <p><br /></p>
 <div id="dockerの始め方" class="section level3">
 <h3>Dockerの始め方</h3>
 <p>使用はとっても簡単で，以下の５ステップで利用可能です。</p>
-<p>1.Docker Desktop ( <a href="https://www.docker.com/products/docker-desktop" class="uri">https://www.docker.com/products/docker-desktop</a> )をインストールする。</p>
+<p>1.Docker Desktop ( <a
+href="https://www.docker.com/products/docker-desktop"
+class="uri">https://www.docker.com/products/docker-desktop</a>
+)をインストールする。</p>
 <p>2.ターミナル（Macの場合。Winはコマンドプロンプト)を開く</p>
 <p>3.ターミナルに以下を打ち込んで、コンテナーをrunする(runの前にPullが自動的なされます)。パスワードとコンテナ名はご自身の好きなように設定ください。</p>
 <pre><code>docker run -e PASSWORD=好きなパスワード -p 8787:8787 -v ~:/home/rstudio -d --好きなコンテナ名 ykunisato/国里のDockerHubで使いたいコンテナ名</code></pre>
-<p>4.ブラウザを開いて，urlバー（アドレスバー）に，<a href="http://localhost:8787/" class="uri">http://localhost:8787/</a> とタイプする</p>
+<p>4.ブラウザを開いて，urlバー（アドレスバー）に，<a
+href="http://localhost:8787/" class="uri">http://localhost:8787/</a>
+とタイプする</p>
 <p>5.ブラウザ上にRstudioが出てくるので，IDにrstudio，パスに上記で設定したパスワードをいれる。</p>
 </div>
 <div id="dockerの保存配布方法" class="section level3">
 <h3>Dockerの保存・配布方法</h3>
-<p>　国里のDocker hubに登録されているDockerはちょくちょく変更されます（ベースにしているrockerの変更があった場合，国里が気まぐれに変更した場合など）。そのため，解析が一段落したら，その現在使っているコンテナごと保存しておく必要があります。まず，解析で使っているコンテナのCONTAINER IDを確認します。確認には，ターミナルに以下のコマンドを打ち込んでください。</p>
+<p>　国里のDocker
+hubに登録されているDockerはちょくちょく変更されます（ベースにしているrockerの変更があった場合，国里が気まぐれに変更した場合など）。そのため，解析が一段落したら，その現在使っているコンテナごと保存しておく必要があります。まず，解析で使っているコンテナのCONTAINER
+IDを確認します。確認には，ターミナルに以下のコマンドを打ち込んでください。</p>
 <pre><code>docker ps -a</code></pre>
-<p>　CONTAINER IDが分かったら，以下のコマンドを打ち込んで，使っているコンテナをイメージ（保存しやすくまとめる程度の理解で良いと思います）にします。例えば，私の使っているコンテナ(IDはb1c05f9a452)をcog190817という名前でイメージ化する場合は，“docker commit b1c05f9a452 cog190817”と打ち込みます。</p>
+<p>　CONTAINER
+IDが分かったら，以下のコマンドを打ち込んで，使っているコンテナをイメージ（保存しやすくまとめる程度の理解で良いと思います）にします。例えば，私の使っているコンテナ(IDはb1c05f9a452)をcog190817という名前でイメージ化する場合は，“docker
+commit b1c05f9a452 cog190817”と打ち込みます。</p>
 <pre><code>docker commit コンテナのID 好きな名前+日付</code></pre>
-<p>　次に，以下のコマンドを打ち込んで，作成したイメージを保存します（形式はtar）。 例えば，先程作成したイメージのcog190817を保存する場合は，“docker save cogModel190817 &gt; cogModel190817.tar”と打ち込みます。まあまあ大きなサイズのファイルが保存されると思います（国里のDockerを使っている場合は，4GBを超えると思います）。これを保存しておけば，後で同じ環境で解析が実施できたり，配布すれば第三者が確認することもできます。</p>
+<p>　次に，以下のコマンドを打ち込んで，作成したイメージを保存します（形式はtar）。
+例えば，先程作成したイメージのcog190817を保存する場合は，“docker save
+cogModel190817 &gt;
+cogModel190817.tar”と打ち込みます。まあまあ大きなサイズのファイルが保存されると思います（国里のDockerを使っている場合は，4GBを超えると思います）。これを保存しておけば，後で同じ環境で解析が実施できたり，配布すれば第三者が確認することもできます。</p>
 <pre><code>docker save 上で付けた名前 &gt; 好きな名前.tar</code></pre>
 </div>
 <div id="保存配布したdockerの利用方法" class="section level3">
 <h3>保存・配布したDockerの利用方法</h3>
-<p>　tar形式で保存できたら，今度使うときは，ターミナルに以下のコマンドで読み込みます。先程の例の場合は，“docker load &lt; cogModel190817.tar”です。</p>
+<p>　tar形式で保存できたら，今度使うときは，ターミナルに以下のコマンドで読み込みます。先程の例の場合は，“docker
+load &lt; cogModel190817.tar”です。</p>
 <pre><code>docker load &lt; 上で付けた名前.tar</code></pre>
-<p>　“docker ps -a”を打ち込んで，上記のコマンドにより読み込まれた内容を確認します。REPOSITORYの列でリポジトリ名を確認します。そのリポジトリ名を使って，以下のようにrunをします（パスワードやコンテナ名は好きに設定する）。</p>
+<p>　“docker ps
+-a”を打ち込んで，上記のコマンドにより読み込まれた内容を確認します。REPOSITORYの列でリポジトリ名を確認します。そのリポジトリ名を使って，以下のようにrunをします（パスワードやコンテナ名は好きに設定する）。</p>
 <pre><code>run -e PASSWORD=パスワード -p 8787:8787 -v ~:/home/rstudio -d --name コンテナ名 リポジトリ名</code></pre>
 <p>ファイルサイズが大きめなのが悩ましいですが，これだと時間が経っても再生可能な形式で保存・配布が可能です。</p>
 <p><br /> <br /></p>
 </div>
 </div>
-<div id="holepunchを使ったbinder経由での解析環境の共有" class="section level2">
+<div id="holepunchを使ったbinder経由での解析環境の共有"
+class="section level2">
 <h2>holepunchを使ったBinder経由での解析環境の共有</h2>
-<p>　解析環境とともにコードとデータを提供する方法としては，holepunchパッケージを使って，Binder上で公開する方法があります。holepunchパッケージは，自動的に依存関係を調べた上で，Dockerファイルを生成し，Binderで使えるようにしてくれます。Binderは，github上のリポジトリを元にJupyterやRstudio serverを使えるようにしてくれるサービです。Binder上ではRstudio serverが動くので，非常に簡単に解析環境を共有できます。詳しくは，<a href="https://karthik.github.io/holepunch/">こちら</a>の公式の説明を確認ください。</p>
+<p>　解析環境とともにコードとデータを提供する方法としては，holepunchパッケージを使って，Binder上で公開する方法があります。holepunchパッケージは，自動的に依存関係を調べた上で，Dockerファイルを生成し，Binderで使えるようにしてくれます。Binderは，github上のリポジトリを元にJupyterやRstudio
+serverを使えるようにしてくれるサービです。Binder上ではRstudio
+serverが動くので，非常に簡単に解析環境を共有できます。詳しくは，<a
+href="https://karthik.github.io/holepunch/">こちら</a>の公式の説明を確認ください。</p>
 <p>　公式の解説にしたがって，holepunchをインストールした上で，以下のコードを実行すると，Binderへのリンク用バッジが出てきます。</p>
 <pre><code>library(holepunch)
 write_compendium_description(package = &quot;Your compendium name&quot;, 
                              description = &quot;Your compendium description&quot;)
 write_dockerfile(maintainer = &quot;your_name&quot;) 
 generate_badge() # This generates a badge for your readme.</code></pre>
-<p>　 　これを，GithubのREADME.mdファイルなどに貼り付けておくと，そこからbinderで飛ぶリンクになります。例として，<a href="https://github.com/ykunisato/somatori_kunisato_2019_replication_study">杣取さんと取り組んだ追試の解析用のGithubリポジトリ</a>をご確認ください。</p>
+<p>　
+　これを，GithubのREADME.mdファイルなどに貼り付けておくと，そこからbinderで飛ぶリンクになります。例として，<a
+href="https://github.com/ykunisato/somatori_kunisato_2019_replication_study">杣取さんと取り組んだ追試の解析用のGithubリポジトリ</a>をご確認ください。</p>
 <p><br /> <br /></p>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr />
 <ol>
-<li id="fn1"><p>ReproducibilityとReplicabilityの定訳はないと思います。どちらも再現可能性と訳されることもありますが，意味は違いますので，Reproducibilityを再生可能性，Replicabilityを再現可能性と分けて訳してみました。翻訳にあたり，すでに再現実験などの言葉が日本語として定着しており，再現性には追試のニュアンスがあることから，Replicabilityを再現可能性と訳しました。そして，Reproducibilityは再現という言葉を避けて，すでに得られたデータから同じ結果を繰り返すことができるかというニュアンスを含めるために，再生可能性と訳しました。これは国里が2017年からなんとなく使っている翻訳なので，正式な翻訳やもっと良い翻訳があれば修正したいと考えています。<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p>Goodman, S. N. et al. 2016 What does research reproducibility mean? Science Translational Medicine, 8(341), 341ps12.<a href="https://stm.sciencemag.org/content/8/341/341ps12.full">link</a><a href="#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p>私は，データに対して強迫的な傾向があるので，Rを本格的に導入する前は，すべてテキストエディタに記載していました。ただ，人間なので，どこかでエディタへのメモ記載を忘れることがあります。そうすると，また，最初からデータを処理し直したりしており，えらい無駄に時間をかけていました（データ解析版賽の河原の石積み）。こういう再生可能性への関心が高まってきて，ずいぶんと便利になってきました。<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p>RでもPythonでも良いのですが，データ解析のみの場合は，Rの方が便利と思います。また，インターネットで調べた時に，心理学関連の解析であれば，Rの方が圧倒的に情報が多いと思います。<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
-<li id="fn5"><p>Epskamp, S. (2019). Reproducibility and Replicability in a Fast-Paced Methodological World. Advances in Methods and Practices in Psychological Science, 2(2), 145-155. <a href="https://journals.sagepub.com/doi/full/10.1177/2515245919847421">link</a>, <a href="https://psyarxiv.com/cnq4d/">preprint</a><a href="#fnref5" class="footnote-back">↩︎</a></p></li>
+<li
+id="fn1"><p>ReproducibilityとReplicabilityの定訳はないと思います。どちらも再現可能性と訳されることもありますが，意味は違いますので，Reproducibilityを再生可能性，Replicabilityを再現可能性と分けて訳してみました。翻訳にあたり，すでに再現実験などの言葉が日本語として定着しており，再現性には追試のニュアンスがあることから，Replicabilityを再現可能性と訳しました。そして，Reproducibilityは再現という言葉を避けて，すでに得られたデータから同じ結果を繰り返すことができるかというニュアンスを含めるために，再生可能性と訳しました。これは国里が2017年からなんとなく使っている翻訳なので，正式な翻訳やもっと良い翻訳があれば修正したいと考えています。<a
+href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>Goodman, S. N. et al. 2016 What does research
+reproducibility mean? Science Translational Medicine, 8(341), 341ps12.<a
+href="https://stm.sciencemag.org/content/8/341/341ps12.full">link</a><a
+href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li
+id="fn3"><p>私は，データに対して強迫的な傾向があるので，Rを本格的に導入する前は，すべてテキストエディタに記載していました。ただ，人間なので，どこかでエディタへのメモ記載を忘れることがあります。そうすると，また，最初からデータを処理し直したりしており，えらい無駄に時間をかけていました（データ解析版賽の河原の石積み）。こういう再生可能性への関心が高まってきて，ずいぶんと便利になってきました。<a
+href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li
+id="fn4"><p>RでもPythonでも良いのですが，データ解析のみの場合は，Rの方が便利と思います。また，インターネットで調べた時に，心理学関連の解析であれば，Rの方が圧倒的に情報が多いと思います。<a
+href="#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>Epskamp, S. (2019). Reproducibility and Replicability in
+a Fast-Paced Methodological World. Advances in Methods and Practices in
+Psychological Science, 2(2), 145-155. <a
+href="https://journals.sagepub.com/doi/full/10.1177/2515245919847421">link</a>,
+<a href="https://psyarxiv.com/cnq4d/">preprint</a><a href="#fnref5"
+class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -641,7 +653,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -650,6 +662,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

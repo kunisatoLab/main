@@ -13,8 +13,8 @@
 
 <title>認知課題の解析データセット作成</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -299,12 +303,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -386,19 +390,23 @@ div.tocify {
 </div>
 
 
-<div id="統計解析よりも解析データセット作成が大切" class="section level2">
+<div id="統計解析よりも解析データセット作成が大切"
+class="section level2">
 <h2>1 統計解析よりも解析データセット作成が大切！</h2>
 <p>解析の再生可能性を高めるうえで，統計解析自体よりも解析データセット作成が大切です。特に認知課題から得られるデータは，統計解析にかけるまでのデータセットの作成段階で色々と操作が必要です（不要なものを除外したり，複数の参加者のデータを統合したり，変数に処理を加えたりなど）。その際に，ミスが生じがちです。これまで学生指導していて，データ解析でミスが混入する危険性が高いのがここです。この段階でのミスは発覚しにくく，後で追えないこともあり，最もデータ処理上気をつけなくてはいけない部分です。以下では，これらの問題をクリアするために，Rを用いた解析データセットの作成方法について解説します。</p>
 <p><br /></p>
-<div id="解析データセット作成ではexcelを使わない" class="section level3">
+<div id="解析データセット作成ではexcelを使わない"
+class="section level3">
 <h3>1.1 解析データセット作成ではExcelを使わない</h3>
 <p>最初に，解析データセットの作成では，<strong>Excelの使用を禁止</strong>します。ExcelもSPSSもマウスを使って操作をしますが，そのような操作はミスが生じやすく，その操作過程の記録が残らないことも多いので，注意が必要です（操作過程が残っていても追いにくい面もあります）。例えば以下のようなことがあります。</p>
 <ul>
-<li>例1) 各参加者のデータを解析用エクセルファイルにコピー＆ペーストしていたが，参加者Aのデータをコピー＆ペーストしてから，参加者Bのデータをコピー＆ペーストしたが，実際にはコピーができておらず，参加者Aのデータが２回入ってしまった。</li>
+<li>例1)
+各参加者のデータを解析用エクセルファイルにコピー＆ペーストしていたが，参加者Aのデータをコピー＆ペーストしてから，参加者Bのデータをコピー＆ペーストしたが，実際にはコピーができておらず，参加者Aのデータが２回入ってしまった。</li>
 </ul>
 <p>こういうことがあると，解析で得られた結果は真実とは違ったものになります。100%ミスせずにExcelでコピー＆ペーストできる保証はありません。</p>
 <ul>
-<li>例2) Excel上でデータの確認のために，特定の変数の値で並び替えたが，その並び替えが特定の変数だけに指定されており，参加者の本当の値とは違う値が入ることになった。</li>
+<li>例2)
+Excel上でデータの確認のために，特定の変数の値で並び替えたが，その並び替えが特定の変数だけに指定されており，参加者の本当の値とは違う値が入ることになった。</li>
 </ul>
 <p>こういうことがあると，解析で得られた結果は真実とは違ったものになります。ソートに限らず，なんらかの処理をエクセル上でしてしまうと，それが本当にただしい処理をしたのか後で確認できなくなることがあります。</p>
 <p><br /></p>
@@ -412,15 +420,21 @@ div.tocify {
 <li>オリジナルの生データを１つのファイルにまとめて，解析可能なフォーマットに変更する</li>
 <li>上記の操作について作業ログが残り，何度でもやり直せる</li>
 </ul>
-<p>このような条件を満たすもので，心理学科の学生にも使いやすいものとしては<strong>R</strong>があります。解析データセット作成では，<strong>R</strong>を使いましょう！以下では，(1)jsPsychを用いたWEB実験で得られたJSONファイルの処理(JATOSとPavloviaで分けています)，(2)PsychoPyを用いた実験で得られたcsvファイルの処理について解説します。なお，RやRstudioの基本的な使い方については，<a href="how-to-R-language.html">R言語の基本と解析のパッケージ化</a>で学んでいることを前提とします。</p>
+<p>このような条件を満たすもので，心理学科の学生にも使いやすいものとしては<strong>R</strong>があります。解析データセット作成では，<strong>R</strong>を使いましょう！以下では，(1)jsPsychを用いたWEB実験で得られたJSONファイルの処理(JATOSとPavloviaで分けています)，(2)PsychoPyを用いた実験で得られたcsvファイルの処理について解説します。なお，RやRstudioの基本的な使い方については，<a
+href="how-to-R-language.html">R言語の基本と解析のパッケージ化</a>で学んでいることを前提とします。</p>
 <p><br /></p>
 </div>
 </div>
-<div id="jspsychを用いたweb実験で得られたjsonファイルの処理jatos編" class="section level2">
+<div id="jspsychを用いたweb実験で得られたjsonファイルの処理jatos編"
+class="section level2">
 <h2>2 jsPsychを用いたWEB実験で得られたJSONファイルの処理(JATOS編)</h2>
 <div id="データとフォルダの準備" class="section level3">
 <h3>2.1 データとフォルダの準備</h3>
-<p><a href="materials/jatos_results_20210513054636.zip">jsPsychで作成しJATOSで収集したWEB実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，jatos_results_20210513054636.txtというファイルが出てくると思います（国里が 逆転学習課題に２回取り組んだデータです）。RstudioのWorking Directoryにこのjatos_results_20210513054636.txtを置くか，jatos_results_20210513054636.txtのある場所をRstudioのWorking Directoryにしてください。</p>
+<p><a
+href="materials/jatos_results_20210513054636.zip">jsPsychで作成しJATOSで収集したWEB実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，jatos_results_20210513054636.txtというファイルが出てくると思います（国里が
+逆転学習課題に２回取り組んだデータです）。RstudioのWorking
+Directoryにこのjatos_results_20210513054636.txtを置くか，jatos_results_20210513054636.txtのある場所をRstudioのWorking
+Directoryにしてください。</p>
 </div>
 <div id="使用するrパッケージ" class="section level3">
 <h3>2.2 使用するRパッケージ</h3>
@@ -432,7 +446,9 @@ library(tidyverse)</code></pre>
 </div>
 <div id="jsonファイルの読み込み" class="section level3">
 <h3>2.3 JSONファイルの読み込み</h3>
-<p>JATOSで収集してエクスポートしたデータはJSON形式ですが，そのままでは，jsonliteパッケージを使って読み込めません。そこで，<a href="https://labjs.readthedocs.io/en/latest/learn/deploy/3c-jatos.html" target="_blank">lab.jsで解説されている方法</a>を使います。以下のように,read_file()で読み込んだ内容を，str_split()を使って改行で区切ります（これによって参加者ごとのデータで区切られる）。するとリスト化されちゃうので，first()を使ってデータだけ取り出します。完全ではないデータの場合，”空白”になるので，それを，discard() で除外します。最後に，map_dfr(fromJSON, flatten=T)で各参加者のJSON形式のデータを読み込んでRで使えるようにします。</p>
+<p>JATOSで収集してエクスポートしたデータはJSON形式ですが，そのままでは，jsonliteパッケージを使って読み込めません。そこで，<a href="https://labjs.readthedocs.io/en/latest/learn/deploy/3c-jatos.html" target="_blank">lab.jsで解説されている方法</a>を使います。以下のように,read_file()で読み込んだ内容を，str_split()を使って改行で区切ります（これによって参加者ごとのデータで区切られる）。するとリスト化されちゃうので，first()を使ってデータだけ取り出します。完全ではないデータの場合，”空白”になるので，それを，discard()
+で除外します。最後に，map_dfr(fromJSON,
+flatten=T)で各参加者のJSON形式のデータを読み込んでRで使えるようにします。</p>
 <pre class="r"><code>data_raw &lt;- read_file(&#39;jatos_results_20210513054636.txt&#39;) %&gt;%
   str_split(&#39;\n&#39;) %&gt;% 
   first() %&gt;%
@@ -441,7 +457,16 @@ library(tidyverse)</code></pre>
 </div>
 <div id="読み込んだjsonファイルの整形" class="section level3">
 <h3>2.4 読み込んだJSONファイルの整形</h3>
-<p>JSONから読み込んだだけだと解析では使えないので，以下でデータ整形をしてきます。as_tibble()でtibble化します。今回の実験の場合，html-button-response以外は教示やフィードバックなので，filter(trial_type == “html-button-response”)でhtml-button-responseにしぼります。次に，参加者が受けた報酬を変数にするために，mutate(reward = ifelse(response == 0,reward_s1,reward_s2))でresponseで0の場合は（S1を選んだ場合），reward_s1，それ以外はreward_s2をrewardにいれます。次のgroup_by(id) %&gt;% mutate(trial = row_number()) %&gt;% ungroup() %&gt;% は，各参加者のidごとに試行番号(trial)をつけるために，idでグループ化して，row_number()をつかってtrial番号をつくって，最後にグループ化をといています。mutate(response = as.numeric(response),reward = as.numeric(reward))は，一部が文字型とかになっているので，数値型にしています。最後に，その後の解析必要なものをselect(id,trial,response,reward,rt) で選んでいます。</p>
+<p>JSONから読み込んだだけだと解析では使えないので，以下でデータ整形をしてきます。as_tibble()でtibble化します。今回の実験の場合，html-button-response以外は教示やフィードバックなので，filter(trial_type
+==
+“html-button-response”)でhtml-button-responseにしぼります。次に，参加者が受けた報酬を変数にするために，mutate(reward
+= ifelse(response ==
+0,reward_s1,reward_s2))でresponseで0の場合は（S1を選んだ場合），reward_s1，それ以外はreward_s2をrewardにいれます。次のgroup_by(id)
+%&gt;% mutate(trial = row_number()) %&gt;% ungroup() %&gt;%
+は，各参加者のidごとに試行番号(trial)をつけるために，idでグループ化して，row_number()をつかってtrial番号をつくって，最後にグループ化をといています。mutate(response
+= as.numeric(response),reward =
+as.numeric(reward))は，一部が文字型とかになっているので，数値型にしています。最後に，その後の解析必要なものをselect(id,trial,response,reward,rt)
+で選んでいます。</p>
 <pre class="r"><code>data &lt;- data_raw %&gt;% 
   as_tibble(validate = F) %&gt;%  
   filter(trial_type == &quot;html-button-response&quot;) %&gt;%
@@ -468,11 +493,16 @@ library(tidyverse)</code></pre>
 <p><br /></p>
 </div>
 </div>
-<div id="jspsychを用いたweb実験で得られたjsonファイルの処理pavlovia編" class="section level2">
-<h2>3 jsPsychを用いたWEB実験で得られたJSONファイルの処理(Pavlovia編)</h2>
+<div id="jspsychを用いたweb実験で得られたjsonファイルの処理pavlovia編"
+class="section level2">
+<h2>3
+jsPsychを用いたWEB実験で得られたJSONファイルの処理(Pavlovia編)</h2>
 <div id="データとフォルダの準備-1" class="section level3">
 <h3>3.1 データとフォルダの準備</h3>
-<p><a href="materials/stroop.zip">jsPsychで作成しPavloviaで収集したWEB実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います（国里がstroop課題に３回取り組んだデータです）。RstudioのWorking Directoryにこのstroop.jsonを置くか，stroop.jsonのある場所をRstudioのWorking Directoryにしてください。</p>
+<p><a
+href="materials/stroop.zip">jsPsychで作成しPavloviaで収集したWEB実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。解凍・展開すると，stroop.jsonというファイルが出てくると思います（国里がstroop課題に３回取り組んだデータです）。RstudioのWorking
+Directoryにこのstroop.jsonを置くか，stroop.jsonのある場所をRstudioのWorking
+Directoryにしてください。</p>
 </div>
 <div id="使用するrパッケージ-1" class="section level3">
 <h3>3.2 使用するRパッケージ</h3>
@@ -535,48 +565,51 @@ library(tidyverse)</code></pre>
 </ul>
 <pre class="r"><code>db_df &lt;- as_tibble(db_list, validate = F) 
 db_df</code></pre>
-<pre><code>## # A tibble: 1 x 3
-##   `2019_8_22_23_48_59_fxlmh… `2019_8_22_23_56_32_juSt… `2019_8_22_23_57_16_8Eyg…
-##   &lt;named list&gt;               &lt;named list&gt;              &lt;named list&gt;             
-## 1 &lt;df[,10] [19 × 10]&gt;        &lt;df[,10] [19 × 10]&gt;       &lt;df[,10] [19 × 10]&gt;</code></pre>
+<pre><code>## # A tibble: 1 × 3
+##   `2019_8_22_23_48_59_fxlmh9SL` `2019_8_22_23_56_32_juStKRbZ` `2019_8_22_23_57…`
+##   &lt;named list&gt;                  &lt;named list&gt;                  &lt;named list&gt;      
+## 1 &lt;df [19 × 10]&gt;                &lt;df [19 × 10]&gt;                &lt;df [19 × 10]&gt;</code></pre>
 <ul>
 <li>Rでは，第１行目に変数名があり，各変数名の下にデータがある形のものを扱います。上記の形式は，参加者名が列ではなく行になってしまっているので(wide型になっている)，困ります。そこで，tidyverseのgather()関数を使って，wide型とlong型にします。gather()関数では，gather(データ，wide型で変数名になっているものを格納するlong型での変数名，wide型でデータになっているものをlong型のデータにしたときの変数名)という感じで引数を設定します。なお，db_dfに代入すると上書きされるので，db_df2に代入をします。IDの列とdataの列ができていい感じです。</li>
 </ul>
 <pre class="r"><code>db_df2 &lt;- gather(db_df, ID, data)
 db_df2</code></pre>
-<pre><code>## # A tibble: 3 x 2
-##   ID                          data               
-##   &lt;chr&gt;                       &lt;list&gt;             
-## 1 2019_8_22_23_48_59_fxlmh9SL &lt;df[,10] [19 × 10]&gt;
-## 2 2019_8_22_23_56_32_juStKRbZ &lt;df[,10] [19 × 10]&gt;
-## 3 2019_8_22_23_57_16_8EygxO3q &lt;df[,10] [19 × 10]&gt;</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##   ID                          data          
+##   &lt;chr&gt;                       &lt;list&gt;        
+## 1 2019_8_22_23_48_59_fxlmh9SL &lt;df [19 × 10]&gt;
+## 2 2019_8_22_23_56_32_juStKRbZ &lt;df [19 × 10]&gt;
+## 3 2019_8_22_23_57_16_8EygxO3q &lt;df [19 × 10]&gt;</code></pre>
 <ul>
 <li>gatherでいい感じになってきましたが，各参加者のdataは，値ではなくてdata.frameがネストしちゃっているので，unnestします。これで，とりあえず解析データセットが完成しました。</li>
 </ul>
 <pre class="r"><code>db_df3 &lt;-unnest(db_df2,cols = data)
 db_df3</code></pre>
-<pre><code>## # A tibble: 57 x 11
-##    ID     internal_node_id key_press     rt stimulus    time_elapsed trial_index
-##    &lt;chr&gt;  &lt;chr&gt;                &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;              &lt;int&gt;       &lt;int&gt;
-##  1 2019_… 0.0-0.0                 13 3.90e5 &lt;p&gt;&lt;span s…       390012           0
-##  2 2019_… 0.0-1.0                 68 7.18e3 &lt;p style=&#39;…       397196           1
-##  3 2019_… 0.0-2.0-0.0             68 7.06e2 &lt;p style=&#39;…       398906           2
-##  4 2019_… 0.0-2.0-0.1             68 8.16e2 &lt;p style=&#39;…       401142           3
-##  5 2019_… 0.0-2.0-0.2             75 1.12e3 &lt;p style=&#39;…       404260           4
-##  6 2019_… 0.0-2.0-0.3             68 8.34e2 &lt;p style=&#39;…       406947           5
-##  7 2019_… 0.0-2.0-0.4             74 1.06e3 &lt;p style=&#39;…       408927           6
-##  8 2019_… 0.0-2.0-0.5             74 1.15e3 &lt;p style=&#39;…       411447           7
-##  9 2019_… 0.0-2.0-0.6             75 7.51e2 &lt;p style=&#39;…       412857           8
-## 10 2019_… 0.0-2.0-0.7             70 8.04e2 &lt;p style=&#39;…       414985           9
+<pre><code>## # A tibble: 57 × 11
+##    ID        internal_node_id key_press     rt stimulus time_elapsed trial_index
+##    &lt;chr&gt;     &lt;chr&gt;                &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;           &lt;int&gt;       &lt;int&gt;
+##  1 2019_8_2… 0.0-0.0                 13 3.90e5 &lt;p&gt;&lt;spa…       390012           0
+##  2 2019_8_2… 0.0-1.0                 68 7.18e3 &lt;p styl…       397196           1
+##  3 2019_8_2… 0.0-2.0-0.0             68 7.06e2 &lt;p styl…       398906           2
+##  4 2019_8_2… 0.0-2.0-0.1             68 8.16e2 &lt;p styl…       401142           3
+##  5 2019_8_2… 0.0-2.0-0.2             75 1.12e3 &lt;p styl…       404260           4
+##  6 2019_8_2… 0.0-2.0-0.3             68 8.34e2 &lt;p styl…       406947           5
+##  7 2019_8_2… 0.0-2.0-0.4             74 1.06e3 &lt;p styl…       408927           6
+##  8 2019_8_2… 0.0-2.0-0.5             74 1.15e3 &lt;p styl…       411447           7
+##  9 2019_8_2… 0.0-2.0-0.6             75 7.51e2 &lt;p styl…       412857           8
+## 10 2019_8_2… 0.0-2.0-0.7             70 8.04e2 &lt;p styl…       414985           9
 ## # … with 47 more rows, and 4 more variables: trial_type &lt;chr&gt;, correct &lt;lgl&gt;,
 ## #   response &lt;chr&gt;, stim_type &lt;chr&gt;</code></pre>
 <ul>
-<li>これでOKな気もしますが，不要な変数がいくつかありますし，教示などの参加者の反応が入ってないデータも不要だったりしますので，整形作業が必要です。まずは，その後の解析で使うであろうID,trial_index,stim_type,response,correct,rtのみを，tidyverseのselect()関数を使って選択します。なお，ここで“%&gt;%”というなぞのコマンドがでてきましたが，これはパイプ演算子です(tidyverseパッケージを読み込むと使えます)。“A %&gt;% B”は，Aを関数Bの第１引数（多くの関数の場合，データ）にいれるという意味です。大した機能ではなさそうですが，処理を重ねる場合に，関数から関数にデータを引き継いで処理が書けるので，わかりやすくかけるというメリットがあります（最後にその例を示します）。</li>
+<li>これでOKな気もしますが，不要な変数がいくつかありますし，教示などの参加者の反応が入ってないデータも不要だったりしますので，整形作業が必要です。まずは，その後の解析で使うであろうID,trial_index,stim_type,response,correct,rtのみを，tidyverseのselect()関数を使って選択します。なお，ここで”%&gt;%
+“というなぞのコマンドがでてきましたが，これはパイプ演算子です(tidyverseパッケージを読み込むと使えます)。”A
+%&gt;%
+B”は，Aを関数Bの第１引数（多くの関数の場合，データ）にいれるという意味です。大した機能ではなさそうですが，処理を重ねる場合に，関数から関数にデータを引き継いで処理が書けるので，わかりやすくかけるというメリットがあります（最後にその例を示します）。</li>
 </ul>
 <pre class="r"><code>db_df4 &lt;-db_df3 %&gt;% 
   select(ID,trial_index,stim_type,response,correct,rt)
 db_df4</code></pre>
-<pre><code>## # A tibble: 57 x 6
+<pre><code>## # A tibble: 57 × 6
 ##    ID                          trial_index stim_type   response correct      rt
 ##    &lt;chr&gt;                             &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;lgl&gt;     &lt;dbl&gt;
 ##  1 2019_8_22_23_48_59_fxlmh9SL           0 &lt;NA&gt;        &lt;NA&gt;     NA      390003.
@@ -598,7 +631,7 @@ db_df4</code></pre>
   filter(trial_index !=1) %&gt;%  #教示は不要
   filter(trial_index !=18)     #最後の教示も不要
 db_df5</code></pre>
-<pre><code>## # A tibble: 48 x 6
+<pre><code>## # A tibble: 48 × 6
 ##    ID                          trial_index stim_type   response correct    rt
 ##    &lt;chr&gt;                             &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;lgl&gt;   &lt;dbl&gt;
 ##  1 2019_8_22_23_48_59_fxlmh9SL           2 congruent   d        TRUE     706.
@@ -619,22 +652,22 @@ db_df5</code></pre>
   mutate(correct2 = as.numeric(correct))
   
 db_df6</code></pre>
-<pre><code>## # A tibble: 48 x 7
-##    ID                     trial_index stim_type  response correct    rt correct2
-##    &lt;chr&gt;                        &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;    &lt;lgl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
-##  1 2019_8_22_23_48_59_fx…           2 congruent  d        TRUE     706.        1
-##  2 2019_8_22_23_48_59_fx…           3 congruent  d        TRUE     816.        1
-##  3 2019_8_22_23_48_59_fx…           4 incongrue… k        TRUE    1119.        1
-##  4 2019_8_22_23_48_59_fx…           5 congruent  d        TRUE     834.        1
-##  5 2019_8_22_23_48_59_fx…           6 incongrue… j        TRUE    1056.        1
-##  6 2019_8_22_23_48_59_fx…           7 incongrue… j        TRUE    1151.        1
-##  7 2019_8_22_23_48_59_fx…           8 incongrue… k        TRUE     751.        1
-##  8 2019_8_22_23_48_59_fx…           9 incongrue… f        TRUE     804.        1
-##  9 2019_8_22_23_48_59_fx…          10 congruent  d        TRUE     768.        1
-## 10 2019_8_22_23_48_59_fx…          11 incongrue… j        TRUE    1206.        1
+<pre><code>## # A tibble: 48 × 7
+##    ID                      trial_index stim_type response correct    rt correct2
+##    &lt;chr&gt;                         &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;lgl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+##  1 2019_8_22_23_48_59_fxl…           2 congruent d        TRUE     706.        1
+##  2 2019_8_22_23_48_59_fxl…           3 congruent d        TRUE     816.        1
+##  3 2019_8_22_23_48_59_fxl…           4 incongru… k        TRUE    1119.        1
+##  4 2019_8_22_23_48_59_fxl…           5 congruent d        TRUE     834.        1
+##  5 2019_8_22_23_48_59_fxl…           6 incongru… j        TRUE    1056.        1
+##  6 2019_8_22_23_48_59_fxl…           7 incongru… j        TRUE    1151.        1
+##  7 2019_8_22_23_48_59_fxl…           8 incongru… k        TRUE     751.        1
+##  8 2019_8_22_23_48_59_fxl…           9 incongru… f        TRUE     804.        1
+##  9 2019_8_22_23_48_59_fxl…          10 congruent d        TRUE     768.        1
+## 10 2019_8_22_23_48_59_fxl…          11 incongru… j        TRUE    1206.        1
 ## # … with 38 more rows</code></pre>
 <ul>
-<li>上書きしなようにすると，db_dfが6まで増えてしまいました。ここで，“%&gt;%”が役に立ちます。関数を何度も使って処理を重ねていく場合に，以下のように“%&gt;%”でつないでいくと，一気にまとめて処理できますし，見た目も何をしているかわかりやすいです。なにか処理をした場合に，#を使ってコメントを残しておくとわかりやすいです。なお，mutate関数の位置を少し変えて，select関数適用後にlogical型のcorrectが残らないように変更しています。</li>
+<li>上書きしなようにすると，db_dfが6まで増えてしまいました。ここで，“%&gt;%”が役に立ちます。関数を何度も使って処理を重ねていく場合に，以下のように”%&gt;%“でつないでいくと，一気にまとめて処理できますし，見た目も何をしているかわかりやすいです。なにか処理をした場合に，#を使ってコメントを残しておくとわかりやすいです。なお，mutate関数の位置を少し変えて，select関数適用後にlogical型のcorrectが残らないように変更しています。</li>
 </ul>
 <pre class="r"><code>db_df &lt;- db_list %&gt;% 
   as_tibble(validate = F) %&gt;%  #データフレーム化
@@ -647,7 +680,7 @@ db_df6</code></pre>
   filter(trial_index !=18)     #終了時の教示を除外
 
 db_df</code></pre>
-<pre><code>## # A tibble: 48 x 6
+<pre><code>## # A tibble: 48 × 6
 ##    ID                          trial_index stim_type   response correct2    rt
 ##    &lt;chr&gt;                             &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;
 ##  1 2019_8_22_23_48_59_fxlmh9SL           2 congruent   d               1  706.
@@ -669,8 +702,9 @@ db_df</code></pre>
   mutate(id = ifelse(ID == &quot;2019_8_22_23_48_59_fxlmh9SL&quot;, &quot;time1&quot;, ifelse(ID == &quot;2019_8_22_23_56_32_juStKRbZ&quot;, &quot;time2&quot;,&quot;time3&quot;))) %&gt;% 
   group_by(id,stim_type) %&gt;% 
   summarise(正答率=sum(correct2,na.rm = TRUE)/length(correct2), 平均反応時間=mean(rt,na.rm = TRUE))</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;id&#39;. You can override using the `.groups` argument.</code></pre>
-<pre><code>## # A tibble: 6 x 4
+<pre><code>## `summarise()` has grouped output by &#39;id&#39;. You can override using the `.groups`
+## argument.</code></pre>
+<pre><code>## # A tibble: 6 × 4
 ##   id    stim_type   正答率 平均反応時間
 ##   &lt;chr&gt; &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;
 ## 1 time1 congruent    1             781.
@@ -688,20 +722,26 @@ db_df</code></pre>
 <p><img src="how-to-dataHandling_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 </div>
-<div id="psychopyを用いた実験で得られたcsvファイルの処理" class="section level2">
+<div id="psychopyを用いた実験で得られたcsvファイルの処理"
+class="section level2">
 <h2>3 PsychoPyを用いた実験で得られたcsvファイルの処理</h2>
 <p>本研究室では，2020年度からjsPsychを使った認知課題の作成を学ぶようになっていますが，BIOPACやEEGを用いた実験などでは，PsychoPyで実験をしたほうが良いことがあります。PsychoPyでの実験では，参加者ごとにcsvファイルが得られます，以下では，そのようなcsvファイルの処理について解説しています。</p>
 <div id="データとフォルダの準備-2" class="section level3">
 <h3>4.1 データとフォルダの準備</h3>
-<p><a href="materials/Analysis.zip">PsychoPyを用いた実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。“Analysis”フォルダ内に“Data”フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。RstudioのWorking Directoryにこの“Analysis”フォルダを置くか，“Analysis”フォルダのある場所をRstudioのWorking Directoryにしてください。</p>
+<p><a
+href="materials/Analysis.zip">PsychoPyを用いた実験のサンプルデータ</a>をクリックして，ダウンロードして，自分のパソコンの好きな場所に解凍・展開してください。“Analysis”フォルダ内に”Data”フォルダがあり，その中に，sub01.csvからsub04.csvという名前のcsvファイルが入っているかと思います。sub01.csvからsub04.csvは，逆転学習課題についての４名分の仮想データになります。RstudioのWorking
+Directoryにこの”Analysis”フォルダを置くか，“Analysis”フォルダのある場所をRstudioのWorking
+Directoryにしてください。</p>
 <p>今回は，すでにフォルダに名前がついていましたが，自分でフォルダ名を付ける場合は，日本語を使用するのは推奨しません。フォルダとファイルと変数名には，英語（日本語のローマ字化でけっこう）を使用してください。</p>
 </div>
 <div id="カレントディレクトリーの移動" class="section level3">
 <h3>4.2 カレントディレクトリーの移動</h3>
-<p>基本的には，Analysisフォルダで解析の前処理や解析は行いますが，一時的にフォルダ移動する必要があります。その時に便利なのが，getwd()とsetwd()です。wdは，作業ディレクトリ(working directory)を意味し，getwdで現在の作業ディレクトリの情報を取得し，setwdで作業ディレクトリを設定します。</p>
+<p>基本的には，Analysisフォルダで解析の前処理や解析は行いますが，一時的にフォルダ移動する必要があります。その時に便利なのが，getwd()とsetwd()です。wdは，作業ディレクトリ(working
+directory)を意味し，getwdで現在の作業ディレクトリの情報を取得し，setwdで作業ディレクトリを設定します。</p>
 <p>以下をRstudioのConsoleにタイプしてみましょう！</p>
 <pre><code>getwd()</code></pre>
-<p>おそらく，さきほど設定したAnalysisフォルダまでのパスが出力されたかと思います（そうじゃない場合は，Rstudioのworking directoryを設定し直してください）。</p>
+<p>おそらく，さきほど設定したAnalysisフォルダまでのパスが出力されたかと思います（そうじゃない場合は，Rstudioのworking
+directoryを設定し直してください）。</p>
 <p>次に，Analysisフォルダの１つ下の階層にあるDataフォルダに移動してみましょう。以下をRstudioのConsoleにタイプしてみましょう！</p>
 <pre><code>workDir &lt;- getwd()
 setwd(paste(workDir, &quot;Data&quot;, sep = &quot;/&quot;))</code></pre>
@@ -716,7 +756,7 @@ setwd(paste(workDir, &quot;Data&quot;, sep = &quot;/&quot;))</code></pre>
 <pre class="r"><code>workDir &lt;- getwd()</code></pre>
 <pre class="r"><code>setwd(paste(workDir, &quot;Data&quot;, sep = &quot;/&quot;))
 fileNames &lt;- list.files()</code></pre>
-<p>Analysisフォルダに“..”で戻ります。</p>
+<p>Analysisフォルダに”..”で戻ります。</p>
 <pre><code>setwd(&quot;..&quot;)</code></pre>
 <p>fileNamseの中身を確認します。フォルダに入っているファイル名がfileNamesに格納されているかと思います。</p>
 <pre class="r"><code>print(fileNames)</code></pre>
@@ -734,7 +774,7 @@ print(numberSubject)</code></pre>
 <p>では，早速，sub01.csvを読み込んでみましょう！tidyverseに入っているreadrパッケージのread_csv()でcsvファイルが読み込めます。そして，読み込むファイル名は，fileNamesに格納されているのものの１つ目（つまり，sub01）です。</p>
 <pre class="r"><code>sub01 &lt;- read_csv(paste(workDir, &quot;Data&quot;,fileNames[1], sep = &quot;/&quot;))
 sub01</code></pre>
-<pre><code>## # A tibble: 122 x 8
+<pre><code>## # A tibble: 122 × 8
 ##       rt key_press trial_type trial_index time_elapsed internal_node_id correct
 ##    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;        &lt;dbl&gt; &lt;chr&gt;            &lt;lgl&gt;  
 ##  1  8693        32 text                 0         8697 0.0-0.0          NA     
@@ -751,8 +791,13 @@ sub01</code></pre>
 </div>
 <div id="sub01のデータで必要な部分を抽出" class="section level3">
 <h3>4.6 sub01のデータで必要な部分を抽出</h3>
-<p>上記のsub01のデータの解析で必要なのは，rt（反応時間）, key_press（押したキー），trial_index(試行番号)，correct（正誤）になります。また，trial_typeでは，categorizeのデータだけが欲しい（textは教示なので，いらない）。このようなデータの整理では，tidyverseのdplyrパッケージを使います。ここで，%&gt;%というパイプ演算子というものがでてきます。これは，%&gt;%の左(or前)のものが，次にくる関数の第一引数に入ることを意味します（例えば，上のlength(fileNames)の場合，length()関数の第一引数は，ファイル名リストのfileNamesになります）。</p>
-<p>具体的な操作は以下になります。(1)まず，filterで，trial_typeが“categorize”なものにしぼります。(2)key_pressは，90だと紫の選択，77だと緑の選択になります。90と77だと扱いにくいので，90は1，77は0に変換します。ifelse(key_press == 90, 1,0)を使って，90なら1，それ以外は0になるようにして，mutateの新しい変数rewardを作成します（mutateは，新しい変数を作成する関数です）。(3)correctは，true,falseになるのですが，これも扱いにくいので，trueは1,falseは0にします。as.numeric(as.logical(correct))を使って，論理値にした上で，数値型に変換します。これもmutateを使って新たにrewardという名前を付けます。(4)この段階で，key_press, trial_type, time_elapsed, internal_node_id, correct, stimulusが要らなくなりました。selectを使って，不要な変数にマイナスをつけて除外します。(5)最後に，renameを使ってtrial_indexをnoに変更します。</p>
+<p>上記のsub01のデータの解析で必要なのは，rt（反応時間）,
+key_press（押したキー），trial_index(試行番号)，correct（正誤）になります。また，trial_typeでは，categorizeのデータだけが欲しい（textは教示なので，いらない）。このようなデータの整理では，tidyverseのdplyrパッケージを使います。ここで，%&gt;%というパイプ演算子というものがでてきます。これは，%&gt;%の左(or前)のものが，次にくる関数の第一引数に入ることを意味します（例えば，上のlength(fileNames)の場合，length()関数の第一引数は，ファイル名リストのfileNamesになります）。</p>
+<p>具体的な操作は以下になります。(1)まず，filterで，trial_typeが”categorize”なものにしぼります。(2)key_pressは，90だと紫の選択，77だと緑の選択になります。90と77だと扱いにくいので，90は1，77は0に変換します。ifelse(key_press
+== 90,
+1,0)を使って，90なら1，それ以外は0になるようにして，mutateの新しい変数rewardを作成します（mutateは，新しい変数を作成する関数です）。(3)correctは，true,falseになるのですが，これも扱いにくいので，trueは1,falseは0にします。as.numeric(as.logical(correct))を使って，論理値にした上で，数値型に変換します。これもmutateを使って新たにrewardという名前を付けます。(4)この段階で，key_press,
+trial_type, time_elapsed, internal_node_id, correct,
+stimulusが要らなくなりました。selectを使って，不要な変数にマイナスをつけて除外します。(5)最後に，renameを使ってtrial_indexをnoに変更します。</p>
 <pre class="r"><code># データの整理
 sub01 &lt;- sub01 %&gt;% 
   filter(trial_type==&quot;categorize&quot;) %&gt;% 
@@ -762,7 +807,7 @@ sub01 &lt;- sub01 %&gt;%
   rename(no = trial_index) 
 # データの確認
 sub01</code></pre>
-<pre><code>## # A tibble: 120 x 4
+<pre><code>## # A tibble: 120 × 4
 ##       rt    no choice reward
 ##    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
 ##  1  1194     1      1      1
@@ -782,7 +827,7 @@ sub01</code></pre>
 <h3>4.7 ４名のデータの読み込みと保存</h3>
 <div id="データの読み込み" class="section level4">
 <h4>4.7.1 データの読み込み</h4>
-<p>さて，今度は４名分のデータ（フォルダ内のすべてのデータ）を読み込んで，整理してみましょう。フォルダ内のデータ数分（今回は４）だけ，上記の操作を繰り返します。繰り返す場合は，for文を使います。for文は以下のように書きます。1から“繰り返す回数”までを順番にiに代入しつつ，“繰り返したい操作”を繰り返します。</p>
+<p>さて，今度は４名分のデータ（フォルダ内のすべてのデータ）を読み込んで，整理してみましょう。フォルダ内のデータ数分（今回は４）だけ，上記の操作を繰り返します。繰り返す場合は，for文を使います。for文は以下のように書きます。1から”繰り返す回数”までを順番にiに代入しつつ，“繰り返したい操作”を繰り返します。</p>
 <pre><code>for(i in 1:繰り返す回数){
     繰り返したい操作
 }</code></pre>
@@ -806,7 +851,7 @@ for(i in 1:numberSubject){
 }
 # データの確認
 analysisData</code></pre>
-<pre><code>## # A tibble: 480 x 5
+<pre><code>## # A tibble: 480 × 5
 ##       rt    no choice reward    id
 ##    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;
 ##  1  1194     1      1      1     1
@@ -846,7 +891,8 @@ print(idTable)</code></pre>
 ## 4 sub04.csv    04      4</code></pre>
 </div>
 </div>
-<div id="もう少し処理をしたデータの読み込みと保存" class="section level3">
+<div id="もう少し処理をしたデータの読み込みと保存"
+class="section level3">
 <h3>4.8 もう少し処理をしたデータの読み込みと保存</h3>
 <div id="データの読み込み-1" class="section level4">
 <h4>4.8.1 データの読み込み</h4>
@@ -881,9 +927,11 @@ for(i in 1:numberSubject){
 summaryData &lt;- as_data_frame(summaryData)</code></pre>
 <pre><code>## Warning: `as_data_frame()` was deprecated in tibble 2.0.0.
 ## Please use `as_tibble()` instead.
-## The signature and semantics have changed, see `?as_tibble`.</code></pre>
+## The signature and semantics have changed, see `?as_tibble`.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
 <pre class="r"><code>summaryData</code></pre>
-<pre><code>## # A tibble: 4 x 3
+<pre><code>## # A tibble: 4 × 3
 ##      id purpleRate correctRate
 ##   &lt;int&gt;      &lt;dbl&gt;       &lt;dbl&gt;
 ## 1     1      0.633       0.583
@@ -900,7 +948,7 @@ summaryData &lt;- as_data_frame(summaryData)</code></pre>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -940,6 +988,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

@@ -13,12 +13,22 @@
 
 <title>電子ラボノートeLabFTWの導入方法</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +73,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -112,40 +89,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +126,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +138,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +149,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +177,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,7 +302,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -351,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -370,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -397,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -416,7 +381,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -425,12 +390,22 @@ div.tocify {
 </div>
 
 
-<p>電子ラボノートはいくつか出ていますが，心理学者が使うには少々高いです。<a href="https://www.elabftw.net/">eLabFTW</a>は，オープンソースの電子ラボノートになり，設置するサーバーさえこちらで用意すれば，<a href="https://www.elabftw.net/">eLabFTW</a>自体はフリーで導入できます（サーバー費用は別途かかります）。インストールもDokcerを使うので，難しくなく，<a href="https://doc.elabftw.net/">こちらのドキュメント</a>を参考にすれば，すんなり導入できるかと思います。</p>
+<p>電子ラボノートはいくつか出ていますが，心理学者が使うには少々高いです。<a
+href="https://www.elabftw.net/">eLabFTW</a>は，オープンソースの電子ラボノートになり，設置するサーバーさえこちらで用意すれば，<a
+href="https://www.elabftw.net/">eLabFTW</a>自体はフリーで導入できます（サーバー費用は別途かかります）。インストールもDokcerを使うので，難しくなく，<a
+href="https://doc.elabftw.net/">こちらのドキュメント</a>を参考にすれば，すんなり導入できるかと思います。</p>
 <div id="サーバーの準備" class="section level2">
 <h2>サーバーの準備</h2>
-<p>サーバーは各自好きなものを用意すればいいですが，ここではGoogle Compute Engineを使って，仮想マシン(VM)を使います。まず，好きな構成＆Ubuntu 18.04 LTSでインスタンスを作成します。その際に，httpとhttpsを開放しておきます。構成はご予算と相談で決めてください。また，常時稼働させるならそのままでもいいですが，ちょくちょくインスタンスを止めるなら，静的外部 IP アドレスを使うといいかと思います。また，インスタンスを立ち上げた際に得られる外部IPアドレス（もしくは静的外部IPアドレス）をご自身のもっているドメインに登録してください（セキュリティ上HTTPSが良いのでLet’s EncryptをつかってHTTPS化するのですが，その際にドメインが必要です）。</p>
+<p>サーバーは各自好きなものを用意すればいいですが，ここではGoogle
+Compute
+Engineを使って，仮想マシン(VM)を使います。まず，好きな構成＆Ubuntu 18.04
+LTSでインスタンスを作成します。その際に，httpとhttpsを開放しておきます。構成はご予算と相談で決めてください。また，常時稼働させるならそのままでもいいですが，ちょくちょくインスタンスを止めるなら，静的外部
+IP
+アドレスを使うといいかと思います。また，インスタンスを立ち上げた際に得られる外部IPアドレス（もしくは静的外部IPアドレス）をご自身のもっているドメインに登録してください（セキュリティ上HTTPSが良いのでLet’s
+EncryptをつかってHTTPS化するのですが，その際にドメインが必要です）。</p>
 </div>
-<div id="仮想マシンvmに必要なソフトをインストール" class="section level2">
+<div id="仮想マシンvmに必要なソフトをインストール"
+class="section level2">
 <h2>仮想マシン(VM)に必要なソフトをインストール</h2>
 <div id="docker" class="section level3">
 <h3>Docker</h3>
@@ -466,18 +441,23 @@ sudo apt-get install -y dialog git zip unzip</code></pre>
 </div>
 <div id="elabftwのインストール" class="section level2">
 <h2>eLabFTWのインストール</h2>
-<p><a href="https://doc.elabftw.net/">公式のドキュメント</a>に書いてあるとおり，以下を実行して，eLabFTWをインストールします。</p>
+<p><a
+href="https://doc.elabftw.net/">公式のドキュメント</a>に書いてあるとおり，以下を実行して，eLabFTWをインストールします。</p>
 <pre><code>curl -sL https://get.elabftw.net -o elabctl &amp;&amp; chmod +x elabctl</code></pre>
 <pre><code>sudo mv elabctl /usr/local/bin/</code></pre>
 <p>以下を実行するとターミナル画面上にインストール用の画面がでてきますので，順番に以下を選択します。</p>
-<p>「OK」 → 「Looks good to me」　→　「Server」　→　ドメイン名がある場合「yes」　→　ご自身の用意したドメイン名を入力して，「yes」　→　「Use HTTPS」　→　「Use correct certification」→　「Use Let’s Encrypt」→　メールアドレスを入力して「OK」</p>
+<p>「OK」 → 「Looks good to
+me」　→　「Server」　→　ドメイン名がある場合「yes」　→　ご自身の用意したドメイン名を入力して，「yes」　→　「Use
+HTTPS」　→　「Use correct certification」→　「Use Let’s
+Encrypt」→　メールアドレスを入力して「OK」</p>
 <pre><code>sudo elabctl install</code></pre>
 <p>終わったら以下を実行して，eLabFTWを開始します。</p>
 <pre><code>sudo elabctl start</code></pre>
 </div>
 <div id="インストール後" class="section level2">
 <h2>インストール後</h2>
-<p>すぐにアクセスして，アドミン用のパスワードなどの設定をする。また，<a href="https://doc.elabftw.net/postinstall.html#postinstall">公式ドキュメント</a>にしたがって，eLabFTWからメールを送れるようにSMTP2GOに無料登録して設定する。</p>
+<p>すぐにアクセスして，アドミン用のパスワードなどの設定をする。また，<a
+href="https://doc.elabftw.net/postinstall.html#postinstall">公式ドキュメント</a>にしたがって，eLabFTWからメールを送れるようにSMTP2GOに無料登録して設定する。</p>
 </div>
 <div id="バックアップ" class="section level2">
 <h2>バックアップ</h2>
@@ -486,7 +466,8 @@ sudo apt-get install -y dialog git zip unzip</code></pre>
 </div>
 <div id="lets-encryptの更新" class="section level2">
 <h2>Let’s Encryptの更新</h2>
-<p>90日でLet’s Encryptの証明書が切れるので，更新する。以下のようにやればできるはずだが・・・上手くいかず・・・これはちょっと先延ばし</p>
+<p>90日でLet’s
+Encryptの証明書が切れるので，更新する。以下のようにやればできるはずだが・・・上手くいかず・・・これはちょっと先延ばし</p>
 <pre><code># stop webserver
 sudo docker exec elabftw supervisorctl stop nginx
 # renew certificate
@@ -496,11 +477,13 @@ sudo docker exec elabftw supervisorctl start nginx</code></pre>
 </div>
 <div id="日本語化" class="section level2">
 <h2>日本語化</h2>
-<p>eLabFTWは，様々な国の言語に翻訳されている（各研究者がボランティアで翻訳して，それが反映される。詳細は<a href="https://doc.elabftw.net/contributing.html">こちら</a>）。日本語版については，国里が翻訳をしており，次のバージョン(現在3.3.9)で日本語化されるのではないかと期待している。翻訳には自信はないので，もし日本語化された際に，問題を見つけたら，<a href="https://docs.google.com/forms/d/e/1FAIpQLSeVb0_ti9flHyGcRQcLESQO7Tzl3eH5hbCqXyzcGh7RWLQexA/viewform">こちら</a>までご連絡ください。</p>
+<p>eLabFTWは，様々な国の言語に翻訳されている（各研究者がボランティアで翻訳して，それが反映される。詳細は<a
+href="https://doc.elabftw.net/contributing.html">こちら</a>）。日本語版については，国里が翻訳をしており，次のバージョン(現在3.3.9)で日本語化されるのではないかと期待している。翻訳には自信はないので，もし日本語化された際に，問題を見つけたら，<a
+href="https://docs.google.com/forms/d/e/1FAIpQLSeVb0_ti9flHyGcRQcLESQO7Tzl3eH5hbCqXyzcGh7RWLQexA/viewform">こちら</a>までご連絡ください。</p>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -531,7 +514,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -540,6 +523,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

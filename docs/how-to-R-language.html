@@ -13,12 +13,22 @@
 
 <title>R言語の基本と解析のパッケージ化</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +73,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -112,40 +89,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +126,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +138,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +149,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +177,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,7 +302,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -351,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -370,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -397,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -416,7 +381,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -427,31 +392,41 @@ div.tocify {
 
 <div id="rとrstudior入門" class="section level2">
 <h2>RとRStudioR入門</h2>
-<p>本研究室では，研究室のRStudio上で，行動課題や調査票の作成（jsPsych），統計解析（R, tidyverse），卒論・修論の執筆（RMarkdown），バージョン管理(Github)を行います。極限までRStudio上でやります。そこまでこだわる必要はないのですが，マネジメントと効率化と再現性の観点から，そのようにします。ということで，RとRStudioについて</p>
+<p>本研究室では，研究室のRStudio上で，行動課題や調査票の作成（jsPsych），統計解析（R,
+tidyverse），卒論・修論の執筆（RMarkdown），バージョン管理(Github)を行います。極限までRStudio上でやります。そこまでこだわる必要はないのですが，マネジメントと効率化と再現性の観点から，そのようにします。ということで，RとRStudioについて</p>
 <p><br></p>
 <div id="第5回春の方法論セミナー" class="section level3">
 <h3>第5回春の方法論セミナー</h3>
-<p>RやRStudioの使用法については，すでに多くの優れた資料があります。今回は，小杉考司さん（みなさんの知っているコスギッチ先生ですね），紀ノ定保礼さん，前田和寛さんが講師を務められた<a href="http://www.socialpsychology.jp/seminar/seminar_180321.html">日本社会心理学会 第５回春の方法論セミナー「R/RStudio入門」</a>を中心に学んでいきましょう！第５回春の方法論セミナー「R/RStudio入門」は，<a href="https://kazutan.github.io/JSSP2018_spring/index.html">資料</a>と<a href="https://www.youtube.com/playlist?list=PL7OS4lcGSZ3B1R3kbwu57jPNEpacCCAwP">動画</a>が公開されています。資料だけで分からない場合は，動画も確認しましょう。</p>
+<p>RやRStudioの使用法については，すでに多くの優れた資料があります。今回は，小杉考司さん（みなさんの知っているコスギッチ先生ですね），紀ノ定保礼さん，前田和寛さんが講師を務められた<a
+href="http://www.socialpsychology.jp/seminar/seminar_180321.html">日本社会心理学会
+第５回春の方法論セミナー「R/RStudio入門」</a>を中心に学んでいきましょう！第５回春の方法論セミナー「R/RStudio入門」は，<a
+href="https://kazutan.github.io/JSSP2018_spring/index.html">資料</a>と<a
+href="https://www.youtube.com/playlist?list=PL7OS4lcGSZ3B1R3kbwu57jPNEpacCCAwP">動画</a>が公開されています。資料だけで分からない場合は，動画も確認しましょう。</p>
 <p><br></p>
 </div>
 <div id="rとrstudio入門" class="section level3">
 <h3>RとRStudio入門</h3>
-<p>まずは，RとRStudioへの入門から始めましょう！<a href="https://kazutan.github.io/JSSP2018_spring/intro_rstudio.html">R/RStudioの入門資料</a>を上から読んでいきましょう。「Rに触れてみよう」以降は，実際にコンソールにコマンドを打ち込んで確認しつつすすめましょう！RStudioの概要とRコンソールの操作になれればOKです。</p>
+<p>まずは，RとRStudioへの入門から始めましょう！<a
+href="https://kazutan.github.io/JSSP2018_spring/intro_rstudio.html">R/RStudioの入門資料</a>を上から読んでいきましょう。「Rに触れてみよう」以降は，実際にコンソールにコマンドを打ち込んで確認しつつすすめましょう！RStudioの概要とRコンソールの操作になれればOKです。</p>
 <p><br></p>
 </div>
 <div id="データハンドリング入門" class="section level3">
 <h3>データハンドリング入門</h3>
-<p>続けて，データハンドリングに入門します。統計解析や図を作る前に，データを整形する必要があります。エクセルなどで整形する人もありますが，ヒューマンエラーが確実に入り込みます。止めましょう。必ずRを使って，生データから解析や図を作るのに使うデータセットの前処理をするようにしましょう。この作業においては，tidyverseパッケージが便利です。<a href="https://kazutan.github.io/JSSP2018_spring/data_handling.html">データハンドリングの入門資料</a>を上から進めて，tidyverseパッケージに含まれるdplyrやtidyrに慣れていきましょう！</p>
+<p>続けて，データハンドリングに入門します。統計解析や図を作る前に，データを整形する必要があります。エクセルなどで整形する人もありますが，ヒューマンエラーが確実に入り込みます。止めましょう。必ずRを使って，生データから解析や図を作るのに使うデータセットの前処理をするようにしましょう。この作業においては，tidyverseパッケージが便利です。<a
+href="https://kazutan.github.io/JSSP2018_spring/data_handling.html">データハンドリングの入門資料</a>を上から進めて，tidyverseパッケージに含まれるdplyrやtidyrに慣れていきましょう！</p>
 <p><br></p>
 </div>
 <div id="データの可視化入門" class="section level3">
 <h3>データの可視化入門</h3>
-<p>最後に，データの可視化（つまり図を作る）に入門します。Rには標準のplot関数がありますが，ggplot2パッケージを使うと，きれいな図を簡単に作成することができます。<a href="https://kazutan.github.io/JSSP2018_spring/visualization.html">データの可視化の入門資料</a>を上から進めて，ggplot2に慣れていきましょう。</p>
+<p>最後に，データの可視化（つまり図を作る）に入門します。Rには標準のplot関数がありますが，ggplot2パッケージを使うと，きれいな図を簡単に作成することができます。<a
+href="https://kazutan.github.io/JSSP2018_spring/visualization.html">データの可視化の入門資料</a>を上から進めて，ggplot2に慣れていきましょう。</p>
 <p><br></p>
 </div>
 <div id="スタイルガイド" class="section level3">
 <h3>スタイルガイド</h3>
-<p>Rコードは，動けばいい部分もありますが，第３者も読みやすいように書く必要があります。そのような書き方の指針として，<a href="https://style.tidyverse.org/">tidyverseスタイルガイド</a>があります。以下のスライドにはその要点をまとめていますので，<a href="https://style.tidyverse.org/">tidyverseスタイルガイド</a>と合わせて確認をしてください。</p>
+<p>Rコードは，動けばいい部分もありますが，第３者も読みやすいように書く必要があります。そのような書き方の指針として，<a
+href="https://style.tidyverse.org/">tidyverseスタイルガイド</a>があります。以下のスライドにはその要点をまとめていますので，<a
+href="https://style.tidyverse.org/">tidyverseスタイルガイド</a>と合わせて確認をしてください。</p>
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vS54HiCsuieNDAzOdt4-lyh0w0H2L7SRE6ncM3dTEq3nojp70ADhhRA_WJ2oWlgSH83JYyubGiTe9LU/embed?start=false&amp;loop=false&amp;delayms=30000" frameborder="0" width="480" height="389" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
 </iframe>
 <p><br></p>
@@ -462,17 +437,24 @@ div.tocify {
 </div>
 <div id="推薦書籍" class="section level3">
 <h3>推薦書籍</h3>
-<p>R, RStudio, RMarkdown, Tidyverseの使用法としては，以下の書籍をオススメします。</p>
+<p>R, RStudio, RMarkdown,
+Tidyverseの使用法としては，以下の書籍をオススメします。</p>
 <ul>
-<li><p><a href="https://www.amazon.co.jp/dp/4774198536/ref=cm_sw_em_r_mt_dp_U_UOWoEbZT5F0ET">RユーザのためのRStudio実践入門−tidyverseによるモダンな分析フローの世界−(松村優哉・湯谷啓明・紀ノ定保礼・前田和寛, 技術評論社)</a></p></li>
-<li><p><a href="https://www.amazon.co.jp/dp/4320112431/ref=cm_sw_em_r_mt_dp_U_7OWoEbBG1R974">再現可能性のすゝめ(高橋康介，共立出版)</a></p></li>
-<li><p><a href="https://www.amazon.co.jp/dp/487311814X/ref=cm_sw_em_r_mt_dp_U_3OWoEbHD8BA75">Rではじめるデータサイエンス(Hadley Wickham &amp; Garrett Grolemund, 大橋真也・黒川利明(訳)，オライリー・ジャパン)</a></p></li>
+<li><p><a
+href="https://www.amazon.co.jp/dp/4774198536/ref=cm_sw_em_r_mt_dp_U_UOWoEbZT5F0ET">RユーザのためのRStudio実践入門−tidyverseによるモダンな分析フローの世界−(松村優哉・湯谷啓明・紀ノ定保礼・前田和寛,
+技術評論社)</a></p></li>
+<li><p><a
+href="https://www.amazon.co.jp/dp/4320112431/ref=cm_sw_em_r_mt_dp_U_7OWoEbBG1R974">再現可能性のすゝめ(高橋康介，共立出版)</a></p></li>
+<li><p><a
+href="https://www.amazon.co.jp/dp/487311814X/ref=cm_sw_em_r_mt_dp_U_3OWoEbHD8BA75">Rではじめるデータサイエンス(Hadley
+Wickham &amp; Garrett Grolemund,
+大橋真也・黒川利明(訳)，オライリー・ジャパン)</a></p></li>
 </ul>
 </div>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -503,7 +485,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -512,6 +494,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

@@ -13,7 +13,7 @@
 
 <title>JATOSでコンポーネント間でIDなどの対応づけをする方法</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -389,12 +393,16 @@ div.tocify {
 <ul>
 <li>注意：以下の解説は，jsPsych6.1に基づいて書いています。後日7.1に対応させます。</li>
 </ul>
-<p>JATOSはコンポーネントを組み合わせて１つの課題を作ることができます。以下のように，ID入力，Stroop課題，質問紙のようにコンポーネントに分けたうえで，１つの課題として実施ができます。具体的には，左上の「Run」を押すと，上から順番に実行されます（ウェブ実験でURLのリンクを配布する場合も同じです）。独立したコンポーネントを用意しておけば，あとは組み合わせでいろいろなバリエーションの課題を行うことができます。また，<a href="https://kunisatolab.github.io/main/how-to-labjs-jspsych-jatos.html">jsPsychとlab.jsをまぜてJATOSで動かす</a>ことも可能です。</p>
+<p>JATOSはコンポーネントを組み合わせて１つの課題を作ることができます。以下のように，ID入力，Stroop課題，質問紙のようにコンポーネントに分けたうえで，１つの課題として実施ができます。具体的には，左上の「Run」を押すと，上から順番に実行されます（ウェブ実験でURLのリンクを配布する場合も同じです）。独立したコンポーネントを用意しておけば，あとは組み合わせでいろいろなバリエーションの課題を行うことができます。また，<a
+href="https://kunisatolab.github.io/main/how-to-labjs-jspsych-jatos.html">jsPsychとlab.jsをまぜてJATOSで動かす</a>ことも可能です。</p>
 <p><img src="fig/jatos_fig23.png" width="600"></p>
-<p>ただ，複数のコンポーネントを統合して課題を行った場合には少し工夫も必要です。以下の赤で囲った部分のResultsにjsPsychで設定した情報がJSON形式で保存され，出力して解析に利用できます。ただし，出力されたファイル内には，JATOS側で指定するWorker IDなどは含まれません（JATOS上では確認できますが，それが出力はされない）。また，jsPsych内で設定をしないかぎりはタスク名などの情報も含まれないので，Rなどで一括処理する際に若干不便です。さらに，匿名の参加者によるオンライン実験の場合は良いのですが，対面実験などでID入力をしてIDで対応づけをしたい場合もあるかと思います。その場合，以下のtask00_IDでIDを入力しても，それが次のtask02_stroopには入らないのでちょっと不便です。</p>
+<p>ただ，複数のコンポーネントを統合して課題を行った場合には少し工夫も必要です。以下の赤で囲った部分のResultsにjsPsychで設定した情報がJSON形式で保存され，出力して解析に利用できます。ただし，出力されたファイル内には，JATOS側で指定するWorker
+IDなどは含まれません（JATOS上では確認できますが，それが出力はされない）。また，jsPsych内で設定をしないかぎりはタスク名などの情報も含まれないので，Rなどで一括処理する際に若干不便です。さらに，匿名の参加者によるオンライン実験の場合は良いのですが，対面実験などでID入力をしてIDで対応づけをしたい場合もあるかと思います。その場合，以下のtask00_IDでIDを入力しても，それが次のtask02_stroopには入らないのでちょっと不便です。</p>
 <p><img src="fig/jatos_fig23.png" width="600"></p>
-<p>そこで，JATOSで複数コンポーネントからなる課題を行う場合は，JATOSが用意している関数を用いてコンポーネント間でIDの対応づけをします。なお，JATOSの関数については，<a href="https://www.jatos.org/jatos.js-Reference.html">JATOSのサイトのリファレンス</a>に詳しいです。思ったよりいろいろな関数が用意されていて，使いこなすと課題の幅が広がりそうです。</p>
-<p>さて，具体的な関数について説明します。以下のように，survey-textを使って，参加者からID入力を求めるとします（対面実験で研究者が入力することもあるかと思います）。その際に，on_finishでJATOSの関数を用いてJATOS側のWorker IDや課題名を追加し，さらに入力したIDを他のコンポーネントでも使えるようにします。</p>
+<p>そこで，JATOSで複数コンポーネントからなる課題を行う場合は，JATOSが用意している関数を用いてコンポーネント間でIDの対応づけをします。なお，JATOSの関数については，<a
+href="https://www.jatos.org/jatos.js-Reference.html">JATOSのサイトのリファレンス</a>に詳しいです。思ったよりいろいろな関数が用意されていて，使いこなすと課題の幅が広がりそうです。</p>
+<p>さて，具体的な関数について説明します。以下のように，survey-textを使って，参加者からID入力を求めるとします（対面実験で研究者が入力することもあるかと思います）。その際に，on_finishでJATOSの関数を用いてJATOS側のWorker
+IDや課題名を追加し，さらに入力したIDを他のコンポーネントでも使えるようにします。</p>
 <pre><code>var id = {
   type: &#39;survey-text&#39;,
   questions: [
@@ -436,7 +444,7 @@ jatos.studySessionData = subjectID;</code></pre>
 <p>ちょっと面倒な気もしなくもないですが，このような一手間をかけておくと，あとでJATOSから出力される結果をRで処理する際の処理が随分と楽になるかと思います。特にウェブ実験で参加者が多い場合には，とても楽になるかと思います。</p>
 
 <footer>
-  <p>Copyright &copy; 2013-2021 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 

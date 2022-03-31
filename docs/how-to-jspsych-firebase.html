@@ -13,12 +13,22 @@
 
 <title>jsPsychを用いたWEB実験の実施：Firebaseでホスティング＆データ保存しよう！</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +73,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -112,40 +89,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +126,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +138,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +149,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +177,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,7 +302,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -351,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -370,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -397,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -416,7 +381,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -427,13 +392,18 @@ div.tocify {
 
 <div id="はじめに" class="section level2">
 <h2>はじめに</h2>
-<p>WEB実験をするには，jsPsychで作成したWEB実験用htmlファイルを，どこかのウェブサーバーにおく必要があります。サーバーの知識のある方は自前でサーバーを立てて実施できますし，有料ですがpavlovia(<a href="https://pavlovia.org/about.html" class="uri">https://pavlovia.org/about.html</a> )などのサービスを使っても実施できます。自前でサーバーを立てると，その維持費用が必要なのと，サーバーの設定や管理には結構スキルが必要です。pavloviaは，サーバーの管理は不要で，設定も簡単ですが，ある程度の予算が必要です(2019年8月現在，1名の実験につき0.2ポンド)。Googleのサービスの1つのFirebaseなら，サーバーの管理は不要で（最初に少し設定が必要です），通常のWEB実験なら無料枠内で実施できます。以下では，Firebaseを用いたWEB実験の解説をしています。</p>
+<p>WEB実験をするには，jsPsychで作成したWEB実験用htmlファイルを，どこかのウェブサーバーにおく必要があります。サーバーの知識のある方は自前でサーバーを立てて実施できますし，有料ですがpavlovia(<a
+href="https://pavlovia.org/about.html"
+class="uri">https://pavlovia.org/about.html</a>
+)などのサービスを使っても実施できます。自前でサーバーを立てると，その維持費用が必要なのと，サーバーの設定や管理には結構スキルが必要です。pavloviaは，サーバーの管理は不要で，設定も簡単ですが，ある程度の予算が必要です(2019年8月現在，1名の実験につき0.2ポンド)。Googleのサービスの1つのFirebaseなら，サーバーの管理は不要で（最初に少し設定が必要です），通常のWEB実験なら無料枠内で実施できます。以下では，Firebaseを用いたWEB実験の解説をしています。</p>
 <p><br /></p>
 </div>
 <div id="firebaseアカウントプロジェクトの作成1" class="section level2">
-<h2>Firebaseアカウント＆プロジェクトの作成<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>:</h2>
+<h2>Firebaseアカウント＆プロジェクトの作成<a href="#fn1"
+class="footnote-ref" id="fnref1"><sup>1</sup></a>:</h2>
 <ul>
-<li>まずは，<a href="https://firebase.google.com/?hl=ja">Firebase</a>で，Firebaseのアカウントを作成します（Googleアカウントでログインすると使えるようになると思います）。</li>
+<li>まずは，<a
+href="https://firebase.google.com/?hl=ja">Firebase</a>で，Firebaseのアカウントを作成します（Googleアカウントでログインすると使えるようになると思います）。</li>
 <li>「プロジェクトを作成」をクリックして，プロジェクト名を設定します。</li>
 </ul>
 <p>プロジェクトはアプリのコンテナになるので，１つのデータ収集に１つのプロジェクトを割り当てます（1web実験につき1プロジェクトです）。わかりやすく認知課題名or研究名をプロジェクト名にしてもいいですが，そのプロジェクト名がweb実験時のURLに記載されるので，参加者の回答に影響のない名前を選ぶと良いかと思います。</p>
@@ -446,11 +416,15 @@ div.tocify {
 </div>
 <div id="firebase-cliのインストール" class="section level2">
 <h2>Firebase CLIのインストール</h2>
-<p>　 Firebaseのサイト上のプロジェクトの設定は終わったので，次はローカルPC（手元のパソコンです）の設定をします。</p>
+<p>　
+Firebaseのサイト上のプロジェクトの設定は終わったので，次はローカルPC（手元のパソコンです）の設定をします。</p>
 <ul>
-<li><a href="https://firebase.google.com/docs/cli?hl=ja">こちら</a>にしたがって，Firebase CLI をインストールします。</li>
+<li><a
+href="https://firebase.google.com/docs/cli?hl=ja">こちら</a>にしたがって，Firebase
+CLI をインストールします。</li>
 </ul>
-<p>手順は，Node.jsをインストールしてから（これはOSによって違います），以下のコマンドをターミナルに打ち込んで，Firebase CLIをインストールします。</p>
+<p>手順は，Node.jsをインストールしてから（これはOSによって違います），以下のコマンドをターミナルに打ち込んで，Firebase
+CLIをインストールします。</p>
 <pre><code>npm install -g firebase-tools</code></pre>
 <p>その後，Google アカウントで Firebase にログインします。</p>
 <pre><code>firebase login</code></pre>
@@ -462,7 +436,7 @@ div.tocify {
 <li>Firebase用のフォルダをローカルPCに作成します（フォルダ名は英語ならなんでもいいと思います。場所もどこでもいいです）。</li>
 <li>ターミナルを開いて（Windowsならコマンドプロンプト？），作ったフォルダをカレントディレクトリに設定します(cdコマンドを使って設定します)。</li>
 </ul>
-<p>なお，以下がその例です。ターミナルの“$”の次にcdと打ち込んで，カレントディレクトリにするフォルダの場所を指定します(Macの場合，当該フォルダをターミナルにドラッグ&amp;ドロップするとパスがはいると思います)。今回の例では，Documents内にfirebaseというフォルダを作って，さらに，その下にstroopというフォルダを作った上で，それをカレントディレクトリにしています。</p>
+<p>なお，以下がその例です。ターミナルの”$“の次にcdと打ち込んで，カレントディレクトリにするフォルダの場所を指定します(Macの場合，当該フォルダをターミナルにドラッグ&amp;ドロップするとパスがはいると思います)。今回の例では，Documents内にfirebaseというフォルダを作って，さらに，その下にstroopというフォルダを作った上で，それをカレントディレクトリにしています。</p>
 <pre><code>cd Documents/firebase/stroop</code></pre>
 <ul>
 <li>以下のコマンドを使って，firebaseの初期化をします。</li>
@@ -471,14 +445,20 @@ div.tocify {
 <p>こんな感じの文字が出てきます。</p>
 <p><img src="fig/firebase_fig4.png" /></p>
 <ul>
-<li>以下のように，“Which Firebase CLI features do you want to set up for this folder?”と聞いてくるので，スペースキーを使って，Database, Hostingを選択してエンターを押します。</li>
+<li>以下のように，“Which Firebase CLI features do you want to set up for
+this folder?”と聞いてくるので，スペースキーを使って，Database,
+Hostingを選択してエンターを押します。</li>
 </ul>
 <p><img src="fig/firebase_fig5.png" /></p>
 <ul>
-<li><p>“Select a default Firebase project for this directory”と聞いてきますので，最初にFirebase上で設定したプロジェクト名を選択して，エンターを押します。</p></li>
-<li><p>“What file should be used for Database Rules?”と聞いてきますので，そのままエンターを押します。</p></li>
-<li><p>“What do you want to use as your public directory?”と聞いてきますので，そのままエンターを押します。</p></li>
-<li><p>“Configure as a single-page app (rewrite all urls to /index.html)?”と聞いてきますので， Nをタイプします。</p></li>
+<li><p>“Select a default Firebase project for this
+directory”と聞いてきますので，最初にFirebase上で設定したプロジェクト名を選択して，エンターを押します。</p></li>
+<li><p>“What file should be used for Database
+Rules?”と聞いてきますので，そのままエンターを押します。</p></li>
+<li><p>“What do you want to use as your public
+directory?”と聞いてきますので，そのままエンターを押します。</p></li>
+<li><p>“Configure as a single-page app (rewrite all urls to
+/index.html)?”と聞いてきますので， Nをタイプします。</p></li>
 </ul>
 <p>これで，firebaseプロジェクトの初期化が終わりました。　</p>
 <p><br /></p>
@@ -506,7 +486,8 @@ div.tocify {
   }
 }</code></pre>
 <ul>
-<li>この変更内容をクラウド上のFirebaseに反映させるために，以下をターミナルに打ち込んで，デプロイします。しばらくかかりますが，“Deploy complete!”とか出てきたら成功です。</li>
+<li>この変更内容をクラウド上のFirebaseに反映させるために，以下をターミナルに打ち込んで，デプロイします。しばらくかかりますが，“Deploy
+complete!”とか出てきたら成功です。</li>
 </ul>
 <pre><code>firebase deploy</code></pre>
 <p><br /></p>
@@ -515,7 +496,9 @@ div.tocify {
 <div id="databaseとアプリの設定" class="section level2">
 <h2>Databaseとアプリの設定</h2>
 <ul>
-<li>今度は，<a href="https://firebase.google.com/?hl=ja">Firebase</a>のプロジェクトのページに移動して，左側のメニューからDatabaseを選びます。 　</li>
+<li>今度は，<a
+href="https://firebase.google.com/?hl=ja">Firebase</a>のプロジェクトのページに移動して，左側のメニューからDatabaseを選びます。
+　</li>
 <li>「データベースの作成」をクリックします。</li>
 </ul>
 <p><img src="fig/firebase_fig6.png" /></p>
@@ -524,16 +507,19 @@ div.tocify {
 </ul>
 <p><img src="fig/firebase_fig7.png" /></p>
 <ul>
-<li>Cloud Firestoreのロケーションを選択する。なお，“asia-northeast1”は東京，“asia-northeast2”は大阪です。</li>
+<li>Cloud
+Firestoreのロケーションを選択する。なお，“asia-northeast1”は東京，“asia-northeast2”は大阪です。</li>
 </ul>
 <p><img src="fig/firebase_fig8.png" /></p>
 <ul>
-<li>実際に使うのはCloud Firestoreではなく，Realtime Databaseなので，そちらを選択します。</li>
+<li>実際に使うのはCloud Firestoreではなく，Realtime
+Databaseなので，そちらを選択します。</li>
 </ul>
 <p><img src="fig/firebase_fig9.png" /></p>
 <p><img src="fig/firebase_fig10.png" /></p>
 <ul>
-<li>Realtime Databaseの「ルール」を開いて，さきほどローカルで設定した内容になっているか確認します（writeがtrueになっていれば成功です）。</li>
+<li>Realtime
+Databaseの「ルール」を開いて，さきほどローカルで設定した内容になっているか確認します（writeがtrueになっていれば成功です）。</li>
 </ul>
 <p><img src="fig/firebase_fig11.png" /></p>
 <ul>
@@ -549,17 +535,20 @@ div.tocify {
 </ul>
 <p><img src="fig/firebase_fig14.png" /></p>
 <ul>
-<li>Firebase SDKの追加というのが出てくるので，これをコピーします。この内容をjsPsychを使って作ったweb実験用HTML内に挿入することで，web実験サイトで入力された参加者の反応をRealtime databaseに保存できます。</li>
+<li>Firebase
+SDKの追加というのが出てくるので，これをコピーします。この内容をjsPsychを使って作ったweb実験用HTML内に挿入することで，web実験サイトで入力された参加者の反応をRealtime
+databaseに保存できます。</li>
 </ul>
 <p><img src="fig/firebase_fig15.png" /></p>
 </div>
-<div id="realtime-databaseにデータを保存するためのjspsychの設定" class="section level2">
+<div id="realtime-databaseにデータを保存するためのjspsychの設定"
+class="section level2">
 <h2>Realtime databaseにデータを保存するためのjsPsychの設定</h2>
 <ul>
 <li><p>コピーしたFirebase SDKをHTMLに挿入します。</p></li>
-<li><p>まずは，"</p>
+<li><p>まずは，“</p>
 <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-app.js"></script>
-<p>"を追加します。RstudioでjsPsychを使っている場合は，jsPsychのタグ設定部分にfirebase関連のjsを追加します。データベースも使うので，firebase-appだけでなく，firebase-database.jsも追加します。</p></li>
+<p>“を追加します。RstudioでjsPsychを使っている場合は，jsPsychのタグ設定部分にfirebase関連のjsを追加します。データベースも使うので，firebase-appだけでなく，firebase-database.jsも追加します。</p></li>
 </ul>
 <pre><code>library(htmltools)
 tagList(
@@ -585,7 +574,8 @@ tags$script(src=&#39;jspsych-6/plugins/jspsych-html-keyboard-response.js&#39;)
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);</code></pre>
 <ul>
-<li>Realtime Databaseに書き込む際のIDを設定します。jsPsychの設定の本体である{js}に以下コードを追加すると，exp_idに「日付時刻_8桁の乱数」が用意されます（この辺の保存IDなどは個人の好みに合わせて設定ください）。</li>
+<li>Realtime
+Databaseに書き込む際のIDを設定します。jsPsychの設定の本体である{js}に以下コードを追加すると，exp_idに「日付時刻_8桁の乱数」が用意されます（この辺の保存IDなどは個人の好みに合わせて設定ください）。</li>
 </ul>
 <pre><code>/*ID(日付時刻_８桁の乱数)の設定*/
 // 乱数
@@ -607,7 +597,8 @@ var second = time_date.getSeconds();
 // ID
 var exp_id = year +&#39;_&#39;+ month +&#39;_&#39;+ date +&#39;_&#39;+ hour +&#39;_&#39;+ minute +&#39;_&#39;+ second +&#39;_&#39; + r_num;</code></pre>
 <ul>
-<li>最後に，以下のコードを。jsPsychの設定の本体である{js}に書き込むと，データがRealtime Databaseに書き込まれます。</li>
+<li>最後に，以下のコードを。jsPsychの設定の本体である{js}に書き込むと，データがRealtime
+Databaseに書き込まれます。</li>
 </ul>
 <pre><code>/*タイムラインの開始*/
 jsPsych.init({
@@ -622,10 +613,13 @@ jsPsych.init({
 <li>上記のように設定して，実験用HTMLファイルをknitします。</li>
 </ul>
 </div>
-<div id="実験用htmlをホスティングしてrealtime-databaseにデータを保存する" class="section level2">
-<h2>実験用HTMLをホスティングして，Realtime Databaseにデータを保存する。</h2>
+<div
+id="実験用htmlをホスティングしてrealtime-databaseにデータを保存する"
+class="section level2">
+<h2>実験用HTMLをホスティングして，Realtime
+Databaseにデータを保存する。</h2>
 <ul>
-<li>上記で準備し実験用HTMLファイルとjsPyschのフォルダを“public”フォルダ内におきます。以下の場合は，stroop_jp.htmlをおきました。</li>
+<li>上記で準備し実験用HTMLファイルとjsPyschのフォルダを”public”フォルダ内におきます。以下の場合は，stroop_jp.htmlをおきました。</li>
 </ul>
 <p><img src="fig/firebase_fig16.png" /></p>
 <ul>
@@ -634,27 +628,37 @@ jsPsych.init({
 <pre><code>firebase deploy</code></pre>
 <ul>
 <li><p>“https://プロジェクト名.firebaseapp.com/ファイル名.html”で実験画面が出てくればHostingは成功です。</p></li>
-<li><p>そして，実験課題に取り組んでから，firebaseのプロジェクトページに行って，Realtime Databaseにデータが入っていれば，データベースの方も成功です。以下は私が３回ストループ課題を行ったデータです。</p></li>
+<li><p>そして，実験課題に取り組んでから，firebaseのプロジェクトページに行って，Realtime
+Databaseにデータが入っていれば，データベースの方も成功です。以下は私が３回ストループ課題を行ったデータです。</p></li>
 </ul>
 <p><img src="fig/firebase_fig17.png" /></p>
 </div>
 <div id="realtime-databaseのデータを読み込む" class="section level2">
 <h2>Realtime Databaseのデータを読み込む</h2>
 <ul>
-<li>Realtime Databaseに保存されたデータは，Realtime Databaseのページの右上から，「JSONをエクスポート」をクリックすると，データが入ったJSONファイルがダウンロードされます。ダウンロードしたJSONファイルは，Rで読み込んで解析などに使えます。</li>
+<li>Realtime Databaseに保存されたデータは，Realtime
+Databaseのページの右上から，「JSONをエクスポート」をクリックすると，データが入ったJSONファイルがダウンロードされます。ダウンロードしたJSONファイルは，Rで読み込んで解析などに使えます。</li>
 </ul>
 <p><img src="fig/firebase_fig18.png" /></p>
-<p>以上，Firebaseの登録からウェブ実験の準備をして，データ収集までを解説しました。なお，FirebaseからダウンロードしたJSONファイルを解析可能なデータセットにする方法は，<a href="how-to-dataHandling.html">認知課題の解析データセット作成</a>にて解説しています。 　</p>
+<p>以上，Firebaseの登録からウェブ実験の準備をして，データ収集までを解説しました。なお，FirebaseからダウンロードしたJSONファイルを解析可能なデータセットにする方法は，<a
+href="how-to-dataHandling.html">認知課題の解析データセット作成</a>にて解説しています。
+　</p>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr />
 <ol>
-<li id="fn1"><p>本資料の作成にあたり，<a href="https://firebase.google.com/docs/cli?hl=ja">Firebaseのサイト</a>，<a href="https://github.com/nu-childlab/firebase-experiment-tutorial">Northwestern Child Language Development Labのチュートリアル資料</a>，<a href="https://github.com/Narquelion/lpl-training">Alex K.氏の資料</a>を参考にした。<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>本資料の作成にあたり，<a
+href="https://firebase.google.com/docs/cli?hl=ja">Firebaseのサイト</a>，<a
+href="https://github.com/nu-childlab/firebase-experiment-tutorial">Northwestern
+Child Language Development Labのチュートリアル資料</a>，<a
+href="https://github.com/Narquelion/lpl-training">Alex
+K.氏の資料</a>を参考にした。<a href="#fnref1"
+class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -685,7 +689,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -694,6 +698,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

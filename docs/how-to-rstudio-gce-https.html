@@ -13,12 +13,22 @@
 
 <title>Docker-composeを使ってGCE上のRstudio serverをHTTPS化する方法</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +73,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -112,40 +89,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +126,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +138,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +149,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +177,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,7 +302,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -351,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -370,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -397,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -416,36 +381,63 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
-<h1 class="title toc-ignore">Docker-composeを使ってGCE上のRstudio serverをHTTPS化する方法</h1>
+<h1 class="title toc-ignore">Docker-composeを使ってGCE上のRstudio
+serverをHTTPS化する方法</h1>
 
 </div>
 
 
 <div id="はじめに" class="section level2">
 <h2>はじめに</h2>
-<p>本ページでは，Google Compute Engine上でRocker(RStudio ServerのDocker)をベースにしたDockerでRStudio Serverを使う場合にHTTPS化する方法を解説しています。SSL暗号化通信については，RStudio Server Proが対応していますが，Open Source Editionは対応していません。そのため，Rocker(RStudio ServerのDocker)を使ってRStudio Serverを立ち上げると，http接続になり，セキュリティ上リスクがありますし，ブラウザでも警告が出て気持ちよくありません。しかし，RStudio Server Proは心理学者が個人で定期的に支出できる額ではないので，SSL暗号化通信に対応してないRockerでもそれを可能にするというのが，今回の主な目的です。</p>
-<p>なお，国里は，サーバーに関して専門的な教育を受けたことはないので，間違っている部分も多いかと思います。本ページを参考に作業された結果，何らかの問題が生じた場合に，国里は責任を負えません。予めご了承ください（Google Compute Engineを使用すると課金されますので，慎重に作業ください。例えば何度もVMインスタンスを作成し，それを稼働したまま放置していたら，結構な金額になると思います）。また，お詳しい方は，誤りを見つけられましたら，ご指摘いただけましたら幸いです。</p>
+<p>本ページでは，Google Compute Engine上でRocker(RStudio
+ServerのDocker)をベースにしたDockerでRStudio
+Serverを使う場合にHTTPS化する方法を解説しています。SSL暗号化通信については，RStudio
+Server Proが対応していますが，Open Source
+Editionは対応していません。そのため，Rocker(RStudio
+ServerのDocker)を使ってRStudio
+Serverを立ち上げると，http接続になり，セキュリティ上リスクがありますし，ブラウザでも警告が出て気持ちよくありません。しかし，RStudio
+Server
+Proは心理学者が個人で定期的に支出できる額ではないので，SSL暗号化通信に対応してないRockerでもそれを可能にするというのが，今回の主な目的です。</p>
+<p>なお，国里は，サーバーに関して専門的な教育を受けたことはないので，間違っている部分も多いかと思います。本ページを参考に作業された結果，何らかの問題が生じた場合に，国里は責任を負えません。予めご了承ください（Google
+Compute
+Engineを使用すると課金されますので，慎重に作業ください。例えば何度もVMインスタンスを作成し，それを稼働したまま放置していたら，結構な金額になると思います）。また，お詳しい方は，誤りを見つけられましたら，ご指摘いただけましたら幸いです。</p>
 </div>
-<div id="google-compute-engineを使えるようにする" class="section level2">
+<div id="google-compute-engineを使えるようにする"
+class="section level2">
 <h2>1. Google Compute Engineを使えるようにする</h2>
-<p><a href="https://cloud.google.com/compute/?hl=ja">公式のドキュメント</a>などを参考にGoogle Compute Engineを使えるように設定します（これは解説資料も多いので省略します）。</p>
+<p><a
+href="https://cloud.google.com/compute/?hl=ja">公式のドキュメント</a>などを参考にGoogle
+Compute
+Engineを使えるように設定します（これは解説資料も多いので省略します）。</p>
 </div>
 <div id="仮想マシンvmの準備" class="section level2">
 <h2>2. 仮想マシン(VM)の準備</h2>
-<p>1.名前やマシンの構成は好みで選択してください（マシンの構成によって金額が変わるので，お財布と相談ください）。ブートディスクの設定で変更を押して，Ubuntu 18.04 LTS(Ubuntu 20.04 LTSでも動作します)を選んで，ディスクサイズは30GBくらいにしておきます<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>。</p>
-<p>2.ファイヤーウォールの設定(「HTTP トラフィックを許可する」と「HTTPS トラフィックを許可する」にチェックをいれる)</p>
-<p>※ よく使う仮想マシン構成が決まっている場合は，インスタンステンプレートを使うと便利と思います。</p>
+<p>1.名前やマシンの構成は好みで選択してください（マシンの構成によって金額が変わるので，お財布と相談ください）。ブートディスクの設定で変更を押して，Ubuntu
+18.04 LTS(Ubuntu 20.04
+LTSでも動作します)を選んで，ディスクサイズは30GBくらいにしておきます<a
+href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>。</p>
+<p>2.ファイヤーウォールの設定(「HTTP トラフィックを許可する」と「HTTPS
+トラフィックを許可する」にチェックをいれる)</p>
+<p>※
+よく使う仮想マシン構成が決まっている場合は，インスタンステンプレートを使うと便利と思います。</p>
 <p>3.VMインスタンスを作成します。勝手に作ったVMが起動します。</p>
-<p>4.VMインスタンスは起動している間課金されるので，使わないときは停止しておきます。でも，VMインスタンスは起動のたびに外部IPが変わっちゃうのが困る場合は，<a href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address?hl=ja">静的外部 IP アドレスの予約</a>をします（常時起動している場合は，気にしなくても良いと思います）。</p>
+<p>4.VMインスタンスは起動している間課金されるので，使わないときは停止しておきます。でも，VMインスタンスは起動のたびに外部IPが変わっちゃうのが困る場合は，<a
+href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address?hl=ja">静的外部
+IP
+アドレスの予約</a>をします（常時起動している場合は，気にしなくても良いと思います）。</p>
 <p>5.このまま稼働させると，sshdに攻撃がされます（結構頻繁にアタックされます・・・）。SSHポート番号を変更しておきます。ちょっとややこしいですが，以下の手順でSSHポートは変更できます。</p>
 <ul>
-<li>GCPの「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール ルールの作成」を押して新しいSSHポートを設定します。名前やターゲットタグは好きな名前にしてください。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは許可，ソースのIP範囲は， <code>0.0.0.0/0</code> とします。プロトコルは<code>tcp</code>でポートに好きなポート番号を入れます。</li>
+<li>GCPの「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール
+ルールの作成」を押して新しいSSHポートを設定します。名前やターゲットタグは好きな名前にしてください。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは許可，ソースのIP範囲は，
+<code>0.0.0.0/0</code>
+とします。プロトコルは<code>tcp</code>でポートに好きなポート番号を入れます。</li>
 <li>設定した新しいファイアウォールルールを適用するため，VMインスタンスをクリックして，「編集」ボタンを押して，ネットワークタグに上記で決めたターゲットタグを入れて保存します。</li>
-<li>通常のSSH接続(22portを使用)をします（「Compute Engine」の「VMインスタンス」の当該VMインスタンスの右端にある「SSH」をクリックします）。</li>
+<li>通常のSSH接続(22portを使用)をします（「Compute
+Engine」の「VMインスタンス」の当該VMインスタンスの右端にある「SSH」をクリックします）。</li>
 <li>コンソールっぽい画面が出てきたら，以下のコマンドを打って，viでsshdの設定ファイルを開きます。</li>
 </ul>
 <pre><code>sudo vi /etc/ssh/sshd_config</code></pre>
@@ -456,7 +448,10 @@ div.tocify {
 <pre><code>sudo systemctl restart sshd</code></pre>
 <ul>
 <li><p>ここで今22番portで開いた画面はそのままにして（閉じない），VMインスタンスの右端にある「SSH」の下矢印を押して，「ブラウザウィンドウでカスタムポートを開く」をクリックします。入力欄が出てくるので，そこに先程設定した新しいSSHのポートを入力して開きます。</p></li>
-<li><p>新しいSSHのポートでも開けたら，22番portを閉じます。もう一度，「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール ルールの作成」を押します。名前やターゲットタグは好きな名前にしてください。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは<code>拒否</code>，ソースのIP範囲は， <code>0.0.0.0/0</code> とします。プロトコルは<code>tcp</code>でポートは<code>22</code>にします。</p></li>
+<li><p>新しいSSHのポートでも開けたら，22番portを閉じます。もう一度，「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール
+ルールの作成」を押します。名前やターゲットタグは好きな名前にしてください。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは<code>拒否</code>，ソースのIP範囲は，
+<code>0.0.0.0/0</code>
+とします。プロトコルは<code>tcp</code>でポートは<code>22</code>にします。</p></li>
 <li><p>VMインスタンスをクリックして，「編集」を押し，ネットワークタグに上記で決めたターゲットタグを入れて保存します(これで，httpのタグ，httpsのタグ，新しいsshポートのタグ，22番ポートを閉じるタグの４つがあると思います)。</p></li>
 <li><p>通常のSSH接続(22番ポート)をしても接続できず，「ブラウザウィンドウでカスタムポートを開く」で自分で設定したSSHポートを使って接続できたら成功です。</p></li>
 <li><p>ちなみに，SSH接続後に以下を入力するとアクセス状況を見れます（<code>f</code>で次の画面に進んで，<code>q</code>で閉じます）。</p></li>
@@ -465,14 +460,18 @@ div.tocify {
 </div>
 <div id="ドメイン名の入手" class="section level2">
 <h2>3. ドメイン名の入手</h2>
-<p>色々とサービスがありますが，私は<a href="https://domains.google/">GoogleのDomainサービス</a>を使いました。少々お金はかかりますが（私の場合は年1400円でした），HTTPS化には必要な作業です。ドメイン名が入手できたら，以下のように静的外部IPを使ってDNSの登録をします。</p>
+<p>色々とサービスがありますが，私は<a
+href="https://domains.google/">GoogleのDomainサービス</a>を使いました。少々お金はかかりますが（私の場合は年1400円でした），HTTPS化には必要な作業です。ドメイン名が入手できたら，以下のように静的外部IPを使ってDNSの登録をします。</p>
 <p><img src="fig/https_fig1.png" /></p>
 <p><img src="fig/https_fig2.png" /></p>
-<p>※もしjupyter notebookのdockerも走らせる場合は，カスタムリソースレコードで，rstudio.取得したドメイン名とjupyter.取得したドメイン名で２つ用意して実施すると，１つのドメインで２つのサービスを走らせられるので，便利かもしれません。</p>
+<p>※もしjupyter
+notebookのdockerも走らせる場合は，カスタムリソースレコードで，rstudio.取得したドメイン名とjupyter.取得したドメイン名で２つ用意して実施すると，１つのドメインで２つのサービスを走らせられるので，便利かもしれません。</p>
 </div>
 <div id="仮想マシンvmにdockerをインストール" class="section level2">
 <h2>4. 仮想マシン(VM)にDockerをインストール</h2>
-<p>Compute EngineのページのVMインスタンスをみると先程設定したVMインスタンスがあると思います。こちらが起動していると接続というところの「SSH」がクリック可能になっていると思います。SSHをクリックしてください。すると，別ウィンドウが起動して，ターミナルが出現します。そこで，<a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">こちら</a>を参考に以下を打ち込んでDockerをインストールします。途中何か聞かれると思いますが，質問に従って，Yなどの返事をタイプください。</p>
+<p>Compute
+EngineのページのVMインスタンスをみると先程設定したVMインスタンスがあると思います。こちらが起動していると接続というところの「SSH」がクリック可能になっていると思います。SSHをクリックしてください。すると，別ウィンドウが起動して，ターミナルが出現します。そこで，<a
+href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">こちら</a>を参考に以下を打ち込んでDockerをインストールします。途中何か聞かれると思いますが，質問に従って，Yなどの返事をタイプください。</p>
 <pre><code>sudo apt update</code></pre>
 <pre><code>sudo apt install \
     apt-transport-https \
@@ -490,21 +489,29 @@ div.tocify {
 </div>
 <div id="docker-composeをインストール" class="section level2">
 <h2>5. docker-composeをインストール</h2>
-<p>続けて，<a href="https://docs.docker.com/compose/install/">こちら</a>を参考にして，Docker-composeもインストールします。</p>
+<p>続けて，<a
+href="https://docs.docker.com/compose/install/">こちら</a>を参考にして，Docker-composeもインストールします。</p>
 <pre><code>sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose
 
 sudo chmod +x /usr/local/bin/docker-compose
 
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</code></pre>
 <p>これで，Dockerを動かす準備ができました。</p>
-<div id="必要に応じてgoogle-cloud-sdkのインストール" class="section level3">
+<div id="必要に応じてgoogle-cloud-sdkのインストール"
+class="section level3">
 <h3>＜必要に応じて＞Google Cloud SDKのインストール</h3>
-<p>私はホスト側でGoogle Cloud SDKでバックアップしたかったので，docker-composeに続いて，それらをインストールしています(Githubなどを使ったバックアップのみの場合は，こちらは不要で６にお進みください)。Rsutido serverを使っていてホスト側からGoogle Cloud Strageを使ったバックアップやアップロードをしたい場合に，Google Cloud SDKが必要です。</p>
+<p>私はホスト側でGoogle Cloud
+SDKでバックアップしたかったので，docker-composeに続いて，それらをインストールしています(Githubなどを使ったバックアップのみの場合は，こちらは不要で６にお進みください)。Rsutido
+serverを使っていてホスト側からGoogle Cloud
+Strageを使ったバックアップやアップロードをしたい場合に，Google Cloud
+SDKが必要です。</p>
 <div id="google-cloud-sdkをインストール" class="section level4">
 <h4>Google Cloud SDKをインストール</h4>
-<p>詳しくは<a href="https://cloud.google.com/storage/docs/gsutil_install?hl=ja#linux">こちら</a>を参照ください。</p>
+<p>詳しくは<a
+href="https://cloud.google.com/storage/docs/gsutil_install?hl=ja#linux">こちら</a>を参照ください。</p>
 <ul>
-<li>コマンド プロンプトで次のコマンドを入力します。ディレクトリ名は，gc_sdkにします。あとは言われるままに，対応をしてください。</li>
+<li>コマンド
+プロンプトで次のコマンドを入力します。ディレクトリ名は，gc_sdkにします。あとは言われるままに，対応をしてください。</li>
 </ul>
 <pre><code>curl https://sdk.cloud.google.com | bash</code></pre>
 <ul>
@@ -512,11 +519,14 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</code></pre>
 </ul>
 <pre><code>exec -l $SHELL</code></pre>
 <ul>
-<li>gcloud init を実行して gcloud 環境を初期化します。プロジェクトIDが聞かれるので，Google Cloud Platformで確認ください。</li>
+<li>gcloud init を実行して gcloud
+環境を初期化します。プロジェクトIDが聞かれるので，Google Cloud
+Platformで確認ください。</li>
 </ul>
 <pre><code>gcloud init</code></pre>
 <ul>
-<li>cloud strageを使うためのgsutilを準備します。この認証では，Strageの設定における相互運用性タブのサービスアカウントHMACを使います。作るとアクセスキーとシークレットキーが出てくるので，以下をタイプ後にコピペします。</li>
+<li>cloud
+strageを使うためのgsutilを準備します。この認証では，Strageの設定における相互運用性タブのサービスアカウントHMACを使います。作るとアクセスキーとシークレットキーが出てくるので，以下をタイプ後にコピペします。</li>
 </ul>
 <pre><code>gsutil config -a</code></pre>
 <ul>
@@ -524,7 +534,8 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</code></pre>
 </ul>
 <pre><code>gcloud config set pass_credentials_to_gsutil false</code></pre>
 <ul>
-<li>Rstudio server保存用のバケット作ってみます。これでCloud Strageが使えるようになりました。</li>
+<li>Rstudio server保存用のバケット作ってみます。これでCloud
+Strageが使えるようになりました。</li>
 </ul>
 <pre><code>gsutil mb -l asia-northeast1 gs://保存用バケット名/</code></pre>
 </div>
@@ -532,11 +543,24 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</code></pre>
 </div>
 <div id="docker-compose用ymlの準備" class="section level2">
 <h2>6. docker-compose用YMLの準備</h2>
-<p>DockerやDocker-composeについては解説をしませんので，<a href="https://knowledge.sakura.ad.jp/13265/">さくらナレッジのDocker入門</a>や<a href="https://www.amazon.co.jp/dp/4297100339/ref=cm_sw_r_tw_dp_U_x_HunBDbSJ25G3S">「Docker/Kubernetes 実践コンテナ開発入門」</a>などで別途学習をされると良いかと思います。</p>
-<p>今回は，docker-composeを使います。これは，複数のDockerを使う場合に，それらの構成をyamlで定義して，それを元にしてDockerを用意するサービスです。今回は，<a href="https://hub.docker.com/r/ykunisato/ccp-lab-r">国里が作成したRStudio Sever用Docker(Rockerをベースに必要なソフトを色々といれたもの。Stanも使えます)</a>と<a href="https://github.com/SteveLTN/https-portal">https-portal</a>を使いますが，この２つのDockerの設定と接続などについてymalで記載をします。</p>
-<p>まずは，テキストエディタに以下の内容を貼り付けて（インデントに意味があるので崩れないようにする），ドメイン名（上で設定したもの），ユーザー名（自由につける），ユーザーパスワード（自由につける）を変更します。それを“docker-compose.yml”という名前をつけて保存します(必ず，“docker-compose.yml”という名前にしてください)。<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
-<p>ざっくり内容を説明すると， 以下のyamlでは，https-portalとrstudioの２つのサービスをそれぞれ設定しています。https-portalは，設定するとnginxというWEBサーバーを用意して，Let’s EncryptというSSL証明の認証局から証明書を自動でとってきて設定してくれます（これは１つずつ設定することを考えると驚くくらい楽です）。rstudioは，国里が用意したykunisato/ccp-lab-rから作られるRStudio Serverです。Rockerベースであれば，ykunisato/ccp-lab-rの代わりに他のDockerを使うことも可能です。https-portalとrstudioの関係としては，外のインターネットの世界とはnginxが接していて，nginxには外からHTTPSで接続がきます，そしてそこを経由して，Rstudio serverの8787番ポートに接続する感じです（8787番ポートが暗号化されずに外にでているのではなくnginxを介する＆暗号化することで安全性を高めているという理解を私はしています）。その他の細かい設定は，Dockerについて学習をすると段々とわかってくるかと思います。</p>
-<p>※<a href="https://hub.docker.com/r/ykunisato/ccp-lab-r">国里のdockerhub</a>には，R4.0.2に対応したykunisato/ccp-lab-r:4.0.2がありますが，docker-compose up時のユーザーのホームディレクトリの作成がうまく行かないのとRMarkdownの日本語入力がうまく行かない問題があります。&lt;2020/7/29&gt;</p>
+<p>DockerやDocker-composeについては解説をしませんので，<a
+href="https://knowledge.sakura.ad.jp/13265/">さくらナレッジのDocker入門</a>や<a
+href="https://www.amazon.co.jp/dp/4297100339/ref=cm_sw_r_tw_dp_U_x_HunBDbSJ25G3S">「Docker/Kubernetes
+実践コンテナ開発入門」</a>などで別途学習をされると良いかと思います。</p>
+<p>今回は，docker-composeを使います。これは，複数のDockerを使う場合に，それらの構成をyamlで定義して，それを元にしてDockerを用意するサービスです。今回は，<a
+href="https://hub.docker.com/r/ykunisato/ccp-lab-r">国里が作成したRStudio
+Sever用Docker(Rockerをベースに必要なソフトを色々といれたもの。Stanも使えます)</a>と<a
+href="https://github.com/SteveLTN/https-portal">https-portal</a>を使いますが，この２つのDockerの設定と接続などについてymalで記載をします。</p>
+<p>まずは，テキストエディタに以下の内容を貼り付けて（インデントに意味があるので崩れないようにする），ドメイン名（上で設定したもの），ユーザー名（自由につける），ユーザーパスワード（自由につける）を変更します。それを”docker-compose.yml”という名前をつけて保存します(必ず，“docker-compose.yml”という名前にしてください)。<a
+href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p>ざっくり内容を説明すると，
+以下のyamlでは，https-portalとrstudioの２つのサービスをそれぞれ設定しています。https-portalは，設定するとnginxというWEBサーバーを用意して，Let’s
+EncryptというSSL証明の認証局から証明書を自動でとってきて設定してくれます（これは１つずつ設定することを考えると驚くくらい楽です）。rstudioは，国里が用意したykunisato/ccp-lab-rから作られるRStudio
+Serverです。Rockerベースであれば，ykunisato/ccp-lab-rの代わりに他のDockerを使うことも可能です。https-portalとrstudioの関係としては，外のインターネットの世界とはnginxが接していて，nginxには外からHTTPSで接続がきます，そしてそこを経由して，Rstudio
+serverの8787番ポートに接続する感じです（8787番ポートが暗号化されずに外にでているのではなくnginxを介する＆暗号化することで安全性を高めているという理解を私はしています）。その他の細かい設定は，Dockerについて学習をすると段々とわかってくるかと思います。</p>
+<p>※<a
+href="https://hub.docker.com/r/ykunisato/ccp-lab-r">国里のdockerhub</a>には，R4.0.2に対応したykunisato/ccp-lab-r:4.0.2がありますが，docker-compose
+up時のユーザーのホームディレクトリの作成がうまく行かないのとRMarkdownの日本語入力がうまく行かない問題があります。&lt;2020/7/29&gt;</p>
 <pre><code>version: &#39;3&#39;
 
 services:
@@ -567,7 +591,13 @@ services:
       - 8787
     volumes:
       - ./rstudio:/home</code></pre>
-<p>なお，上記のyamlのhttps-portalの設定ではSTAGE: productionとなっていますが，これは本番環境での実施を意味しています。Let’s Encryptは何度も実施すると一定期間使えなくなるので，まずはSTAGE: localでちゃんと動かくか確認してから，STAGE: productionを実施することを強く勧めます。STAGE: localは自己証明なので，これで実施をするとhttps化されますがブラウザでは警告がでると思います。警告を無視してちゃんと動作しているかを確認して，大丈夫そうなら，STAGE: productionに進むと良いと思います。</p>
+<p>なお，上記のyamlのhttps-portalの設定ではSTAGE:
+productionとなっていますが，これは本番環境での実施を意味しています。Let’s
+Encryptは何度も実施すると一定期間使えなくなるので，まずはSTAGE:
+localでちゃんと動かくか確認してから，STAGE:
+productionを実施することを強く勧めます。STAGE:
+localは自己証明なので，これで実施をするとhttps化されますがブラウザでは警告がでると思います。警告を無視してちゃんと動作しているかを確認して，大丈夫そうなら，STAGE:
+productionに進むと良いと思います。</p>
 <p>以下のようにすれば，１つのサーバー上で，RStudioとJupyterを走らせることができます。ykunisato/ccp-lab-jは，jupyter/datascience-notebookをベースにjuliaやPythonのパッケージを追加したものです。別々にサーバーを建てなくてもいいので，ちょっとPythonやJuliaも使いたい場合は，便利かもしれません。</p>
 <pre><code>version: &#39;3&#39;
 
@@ -616,9 +646,12 @@ services:
 </div>
 <div id="docker-composeの実行" class="section level2">
 <h2>7. docker-composeの実行</h2>
-<p>上記で設定したdocker-compose.ymlを実行するために，VMインスタンスにSSH接続します。ウィンドウの右上の設定っぽいボタンをクリックするとアップロードの選択肢がでてくると思うので，それを使って，さきほどの“docker-compose.yml”をアップロードします。それができたら，以下を打ち込んで，docker-compose.ymlを実行します。</p>
+<p>上記で設定したdocker-compose.ymlを実行するために，VMインスタンスにSSH接続します。ウィンドウの右上の設定っぽいボタンをクリックするとアップロードの選択肢がでてくると思うので，それを使って，さきほどの”docker-compose.yml”をアップロードします。それができたら，以下を打ち込んで，docker-compose.ymlを実行します。</p>
 <pre><code>sudo docker-compose up</code></pre>
-<p>なんか終わった感じになったらSSH接続を切って，ブラウザに <a href="https://ドメイン名" class="uri">https://ドメイン名</a> を打ち込んでみます。Rstudioのログイン画面が出てくる＆URLバーに警告がでてなければ，Rstudio serverがHTTPS化できました。結構ややこしいことをしているのですが，殆どの作業を事前に設定したDockerがやってくているので，こちらの作業はかなり少なくて済みました。</p>
+<p>なんか終わった感じになったらSSH接続を切って，ブラウザに <a
+href="https://ドメイン名" class="uri">https://ドメイン名</a>
+を打ち込んでみます。Rstudioのログイン画面が出てくる＆URLバーに警告がでてなければ，Rstudio
+serverがHTTPS化できました。結構ややこしいことをしているのですが，殆どの作業を事前に設定したDockerがやってくているので，こちらの作業はかなり少なくて済みました。</p>
 </div>
 <div id="ユーザーとパスワードの追加" class="section level2">
 <h2>8. ユーザーとパスワードの追加</h2>
@@ -636,8 +669,18 @@ services:
 <pre><code>userdel -r ユーザ名</code></pre>
 <div id="ユーザーの一括追加" class="section level3">
 <h3>ユーザーの一括追加</h3>
-<p>上記の方法でもユーザーは追加できますが，人数が多くなると途方にくれてしまいます。そこで，以下ではnewusersを使った一括登録をします。まずは，以下のような感じの情報を表計算ソフトにいれます。ユーザーごとに変更が必要なのは，ユーザー名，ユーザーID（1001から連番にするので良いと思います），パスワード，ホームディレクトリ名（homeの下にユーザー名をいれる）です。残りの，グループID（50）, フルネーム（空白），ログインシェル（/bin/sh)は全員同じで問題ありません。</p>
-<table>
+<p>上記の方法でもユーザーは追加できますが，人数が多くなると途方にくれてしまいます。そこで，以下ではnewusersを使った一括登録をします。まずは，以下のような感じの情報を表計算ソフトにいれます。ユーザーごとに変更が必要なのは，ユーザー名，ユーザーID（1001から連番にするので良いと思います），パスワード，ホームディレクトリ名（homeの下にユーザー名をいれる）です。残りの，グループID（50）,
+フルネーム（空白），ログインシェル（/bin/sh)は全員同じで問題ありません。</p>
+<table style="width:100%;">
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>ユーザー名</th>
@@ -699,7 +742,8 @@ exit</code></pre>
 </div>
 <div id="よく使うdocker-composeコマンド" class="section level3">
 <h3>よく使うDocker-composeコマンド</h3>
-<p>docker-composは，up, down, psくらいです。細かい設定は，dockerコマンドを使うことが多いです。</p>
+<p>docker-composは，up, down,
+psくらいです。細かい設定は，dockerコマンドを使うことが多いです。</p>
 <ul>
 <li>コンテナの作成と起動</li>
 </ul>
@@ -732,7 +776,8 @@ exit</code></pre>
 <ul>
 <li>コンテナの起動</li>
 </ul>
-<p>なお，「9. 起動時にdocker-composeが起動するように設定」ではこれを使っています。</p>
+<p>なお，「9.
+起動時にdocker-composeが起動するように設定」ではこれを使っています。</p>
 <pre><code>sudo docker start コンテナ名</code></pre>
 <ul>
 <li>コンテナの削除</li>
@@ -742,17 +787,20 @@ exit</code></pre>
 <ul>
 <li>Docker イメージの確認</li>
 </ul>
-<p>コンテナを削除してもイメージは残っています。イメージの一覧は以下で確認できます。次のイメージの削除の際に，ここで確認できるIMAGE IDが必要です。</p>
+<p>コンテナを削除してもイメージは残っています。イメージの一覧は以下で確認できます。次のイメージの削除の際に，ここで確認できるIMAGE
+IDが必要です。</p>
 <pre><code>sudo docker images</code></pre>
 <ul>
 <li>Docker イメージの削除</li>
 </ul>
-<p>docker imagesで確認したイメージID(IMAGE ID)を指定して，イメージを削除します。</p>
+<p>docker imagesで確認したイメージID(IMAGE
+ID)を指定して，イメージを削除します。</p>
 <pre><code>sudo docker rmi イメージID</code></pre>
 </div>
 <div id="google-cloud-platformのiosアプリ" class="section level3">
 <h3>Google Cloud PlatformのiOSアプリ</h3>
-<p>iOSにGCPのアプリがあります。それほど機能はありませんが，スマホからVMインスタンスの監視や起動と停止はできます。起動・停止にPCが不要＆RStudo serverはウェブブラウザがあれば使用できるので，以下のように，iPadにキーボードを付けておけば，普通にRが使えます。</p>
+<p>iOSにGCPのアプリがあります。それほど機能はありませんが，スマホからVMインスタンスの監視や起動と停止はできます。起動・停止にPCが不要＆RStudo
+serverはウェブブラウザがあれば使用できるので，以下のように，iPadにキーボードを付けておけば，普通にRが使えます。</p>
 <table>
 <thead>
 <tr class="header">
@@ -762,7 +810,8 @@ exit</code></pre>
 <tbody>
 </tbody>
 </table>
-<p>R Markdownを用いたjsPsychによるウェブ実験課題の作成もこの通り。これで出張はiPadだけでいいですね！</p>
+<p>R
+Markdownを用いたjsPsychによるウェブ実験課題の作成もこの通り。これで出張はiPadだけでいいですね！</p>
 <table>
 <thead>
 <tr class="header">
@@ -773,10 +822,14 @@ exit</code></pre>
 </tbody>
 </table>
 </div>
-<div id="googlecloudstoragerとgooglecomputeenginerで解析後に自動保存とインスタンスの自動停止をする" class="section level3">
+<div
+id="googlecloudstoragerとgooglecomputeenginerで解析後に自動保存とインスタンスの自動停止をする"
+class="section level3">
 <h3>googleCloudStorageRとgoogleComputeEngineRで解析後に自動保存とインスタンスの自動停止をする</h3>
 <p>googleCloudStorageRもgoogleComputeEngineRも非常に優れたパッケージですが，比較的時間のかかる重い処理が終わったらワークスペースのものを自動保存し，インスタンスも停止するコマンドにだけ紹介します。これは地味に重要な機能です。というのは，GCEのVMインスタンスは稼働しているとずっと課金されますので，解析が終わったら結果を保存し，自動的にインスタンスも停止してくれるとすごく助かります。</p>
-<p>まず，<a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">googleCloudStorageRのセットアップ</a>と<a href="https://cloudyr.github.io/googleComputeEngineR/articles/installation-and-authentication.html">googleComputeEngineRのセットアップ</a>は，公式ドキュメントに従って，事前に済ませておきます。簡単に説明すると，GCPの「APIとサービス」→「認証情報」→「認証情報の作成」で認証に関するjsonファイルを得ます。それをインスタンスの安全な場所に置いた上で，Homeに“.Renviron”という名前のファイルを作って，以下の情報を書き込みます。</p>
+<p>まず，<a
+href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">googleCloudStorageRのセットアップ</a>と<a
+href="https://cloudyr.github.io/googleComputeEngineR/articles/installation-and-authentication.html">googleComputeEngineRのセットアップ</a>は，公式ドキュメントに従って，事前に済ませておきます。簡単に説明すると，GCPの「APIとサービス」→「認証情報」→「認証情報の作成」で認証に関するjsonファイルを得ます。それをインスタンスの安全な場所に置いた上で，Homeに”.Renviron”という名前のファイルを作って，以下の情報を書き込みます。</p>
 <pre><code>GCE_AUTH_FILE=&quot;/フルパス/認証.json&quot;
 GCE_DEFAULT_PROJECT_ID=&quot;プロジェクトID&quot;
 GCE_DEFAULT_ZONE=&quot;asia-northeast1-c&quot;
@@ -785,7 +838,9 @@ GCS_AUTH_FILE = &quot;/フルパス/認証.json&quot;</code></pre>
 <p>そして，以下を実行して，認証に成功した旨がでてきたら，成功です。</p>
 <pre><code>library(googleCloudStorageR)
 library(googleComputeEngineR)</code></pre>
-<p>解析コードの最後に以下を書き込んでおいて，実行すると，終了時点の日付時間などが名前になったRdataファイルをGoogle Cloud Storageに保存し，使っているVMインスタンスを停止します(ファイル名のtzは，Europe/AmsterdamやAsia/Tokyoなど，自分の住んでる地域に設定する)。これがちゃんと動作すれば，長い時間のかかる解析であっても夜安心してゆっくり寝れますね。</p>
+<p>解析コードの最後に以下を書き込んでおいて，実行すると，終了時点の日付時間などが名前になったRdataファイルをGoogle
+Cloud
+Storageに保存し，使っているVMインスタンスを停止します(ファイル名のtzは，Europe/AmsterdamやAsia/Tokyoなど，自分の住んでる地域に設定する)。これがちゃんと動作すれば，長い時間のかかる解析であっても夜安心してゆっくり寝れますね。</p>
 <pre><code># 終了時点の日付時間などが名前になったRdataファイルをGoogle Cloud Storageに保存
 gcs_save(list=ls(all=TRUE), file=paste(format(as.POSIXlt(Sys.time(), tz = &quot;Asia/Tokyo&quot;),&quot;%Y_%m%d_%H%M_%s&quot;),&quot;_all.Rdata&quot;,sep=&quot;&quot;), bucket = gcs_get_global_bucket())
 # 使っているVMインスタンスを停止
@@ -793,7 +848,8 @@ gce_vm_stop(&quot;インスタンス名&quot;)</code></pre>
 </div>
 <div id="rstudio-serverからslackへ投稿する" class="section level3">
 <h3>Rstudio serverからslackへ投稿する</h3>
-<p><a href="https://dichika.hateblo.jp/entry/20150701/p1">盆栽日記</a>に紹介されていたhttrパッケージを使う方法で解析終了時にslackに自動的に投稿することができます。まず，slackでボットを作ってそのトークンを取得する（このやり方がいつも試行錯誤です。各自でお願いします・・・）。そして，トークン，slackのチャンネル名，ボット名を以下のように指定するとslackに通知が飛ぶようになります。なお，以下のコードでは，proc.time()を使って，経過時間の測定もしています。googleCloudStorageR・googleComputeEngineRと組み合わせると，slackを使った解析終了の連絡，データのバックアップ，インスタンスの停止が自動化できます。</p>
+<p><a
+href="https://dichika.hateblo.jp/entry/20150701/p1">盆栽日記</a>に紹介されていたhttrパッケージを使う方法で解析終了時にslackに自動的に投稿することができます。まず，slackでボットを作ってそのトークンを取得する（このやり方がいつも試行錯誤です。各自でお願いします・・・）。そして，トークン，slackのチャンネル名，ボット名を以下のように指定するとslackに通知が飛ぶようになります。なお，以下のコードでは，proc.time()を使って，経過時間の測定もしています。googleCloudStorageR・googleComputeEngineRと組み合わせると，slackを使った解析終了の連絡，データのバックアップ，インスタンスの停止が自動化できます。</p>
 <pre><code>t&lt;-proc.time()
 
 ここに解析のコードを書く
@@ -812,16 +868,22 @@ httr::POST(url=&quot;https://slack.com/api/chat.postMessage&quot;,
 </div>
 <div id="ウェブから直接zipファイルを得る方法" class="section level3">
 <h3>ウェブから直接zipファイルを得る方法</h3>
-<p>RStudio serverを使っていて，Githubから直接ファイルがzipなどのファイルがほしい時があります。githubならgitを使ってもいいですが，以下のようにしてもzipファイルの取得＆解凍ができます。</p>
+<p>RStudio
+serverを使っていて，Githubから直接ファイルがzipなどのファイルがほしい時があります。githubならgitを使ってもいいですが，以下のようにしてもzipファイルの取得＆解凍ができます。</p>
 <pre><code>temp &lt;- tempfile()
 curl &lt;- &quot;https://github.com/jspsych/jsPsych/releases/download/v6.1.0/jspsych-6.1.0.zip&quot;
 download.file(curl, temp, mode=&quot;wb&quot;) 
 unzip (temp, exdir = &quot;./jspsych-6.1.0&quot;)
 unlink(temp)</code></pre>
 </div>
-<div id="ファイルのアップや保存についてgoogle-cloud-strageの活用" class="section level3">
+<div id="ファイルのアップや保存についてgoogle-cloud-strageの活用"
+class="section level3">
 <h3>ファイルのアップや保存について(Google Cloud Strageの活用)</h3>
-<p>Rstudio serverではペインからファイルのアップロードやダウンロードができますが，ある程度のファイルサイズになると難しくなります。その場合は，Google Cloud Strageを使うのが良いかと思います。なお，ユーザーとしてGoogle Cloud Strageを使う場合は，<a href="http://code.markedmondson.me/googleCloudStorageR/index.html">googleCloudStorageR</a>を使うのが良いです。以下では，ホスト側から各ユーザーのRstudioディレクトリにファイルをコピーしたり，バックアップしたりする場合の作業を記載しています。</p>
+<p>Rstudio
+serverではペインからファイルのアップロードやダウンロードができますが，ある程度のファイルサイズになると難しくなります。その場合は，Google
+Cloud Strageを使うのが良いかと思います。なお，ユーザーとしてGoogle Cloud
+Strageを使う場合は，<a
+href="http://code.markedmondson.me/googleCloudStorageR/index.html">googleCloudStorageR</a>を使うのが良いです。以下では，ホスト側から各ユーザーのRstudioディレクトリにファイルをコピーしたり，バックアップしたりする場合の作業を記載しています。</p>
 <div id="バケットの作成" class="section level4">
 <h4>バケットの作成</h4>
 <p>Cloud Strageにバケットを作成します。</p>
@@ -834,29 +896,35 @@ unlink(temp)</code></pre>
 <p>lsでどんなファイルがあるか確認できます。</p>
 <pre><code>sudo gsutil ls gs://バケット名</code></pre>
 </div>
-<div id="google-cloud-strageからファイルやフォルダのコピー" class="section level4">
+<div id="google-cloud-strageからファイルやフォルダのコピー"
+class="section level4">
 <h4>Google Cloud Strageからファイルやフォルダのコピー</h4>
 <p>以下のようにして，Google Cloud Strageからファイルをコピーします。</p>
 <pre><code>sudo gsutil cp gs://バケット名/ファイル名 rstudio/ユーザー名/フォルダ名/</code></pre>
 <p>フォルダの場合は-rをつけます。</p>
 <pre><code>sudo gsutil cp -r gs://バケット名/フォルダ名/ rstudio/ユーザー名/フォルダ名/</code></pre>
-<p>sudoで操作するので，Google Cloud Strageからコピーしたファイルはrootがユーザーになるので，以下のように変更をしておきます(私の環境では，ubuntu:ubuntuでうまくいきましたが，ちょっと自信はないです)。ただ，これしなくても動作することもあり，ちょっとよくわからない点ではあります。</p>
+<p>sudoで操作するので，Google Cloud
+Strageからコピーしたファイルはrootがユーザーになるので，以下のように変更をしておきます(私の環境では，ubuntu:ubuntuでうまくいきましたが，ちょっと自信はないです)。ただ，これしなくても動作することもあり，ちょっとよくわからない点ではあります。</p>
 <pre><code>sudo chown -R ubuntu:ubuntu rstudio/ユーザフォルダ名</code></pre>
 </div>
 <div id="google-cloud-strageへのフォルダコピー" class="section level4">
 <h4>Google Cloud Strageへのフォルダコピー</h4>
-<p>Rstudio serverからGoogle Cloud Strageへのフォルダコピーは以下のようにします。以下だと，rstudio以下のすべてのユーザーのホーム以下のデータがバックアップされています。</p>
+<p>Rstudio serverからGoogle Cloud
+Strageへのフォルダコピーは以下のようにします。以下だと，rstudio以下のすべてのユーザーのホーム以下のデータがバックアップされています。</p>
 <pre><code>sudo gsutil cp -r rstudio/ gs://バケット名/フォルダ名/</code></pre>
 </div>
 <div id="google-cloud-strageへのバックアップ" class="section level4">
 <h4>Google Cloud Strageへのバックアップ</h4>
-<p>ユーザーのHome以下のデータをバックアップする場合は以下のようにしても良いかと思います。homeのrstudioフォルダを圧縮した上で，フォルダ名をバックアプした年月日_時間にしたCloud Strage上バケットに保存して，最後に圧縮したフォルダを削除しています。</p>
+<p>ユーザーのHome以下のデータをバックアップする場合は以下のようにしても良いかと思います。homeのrstudioフォルダを圧縮した上で，フォルダ名をバックアプした年月日_時間にしたCloud
+Strage上バケットに保存して，最後に圧縮したフォルダを削除しています。</p>
 <pre><code>sudo tar czf rstudio.tar.gz rstudio
 sudo gsutil cp ./rstudio.tar.gz gs://バケット名/`TZ=Asia/Tokyo date &quot;+%Y_%m%d_%H%M_%S&quot;`/
 sudo rm rstudio.tar.gz</code></pre>
 <p>以下の一行でも実行できます。</p>
 <pre><code>sudo tar czf rstudio.tar.gz rstudio;sudo gsutil cp ./rstudio.tar.gz gs://バケット名/`TZ=Asia/Tokyo date &quot;+%Y_%m%d_%H%M_%S&quot;`/;sudo rm rstudio.tar.gz</code></pre>
-<p>そして，crontabを使って，定期的に実行できます。/etc/cron.d/に拡張子なしのファイルを作って，以下を書き込みます（私はファイル名をrstudioにして，“sudo vi /etc/cron.d/rstudio”を実行して書き込みをしています。viやcrontabの使い方はちょっと癖があるのでネットの情報を確認ください）。</p>
+<p>そして，crontabを使って，定期的に実行できます。/etc/cron.d/に拡張子なしのファイルを作って，以下を書き込みます（私はファイル名をrstudioにして，“sudo
+vi
+/etc/cron.d/rstudio”を実行して書き込みをしています。viやcrontabの使い方はちょっと癖があるのでネットの情報を確認ください）。</p>
 <p>sudo vi /home/ykunisato/backup.sh</p>
 <pre><code>#!/bin/bash
 cd /home/ykunisato/rstudio/ykunisato
@@ -878,32 +946,55 @@ BOTO_CONFIG=&quot;/home/ykunisato/.boto&quot;
 50 21   * * *   ykunisato       sudo /bin/bash /home/ykunisato/backup.sh &gt;&gt; /home/ykunisato/corn.log 2&gt;&amp;1</code></pre>
 <p>sudo service cron restart</p>
 <p>上手くいきそうなのに，ファイルがアップされてない・・・</p>
-<p>Copying <a href="file://Analysis.tar.gz" class="uri">file://Analysis.tar.gz</a> [Content-Type=application/x-tar]… / [0 files][ 0.0 B/155.3 MiB] ^M==&gt; NOTE: You are uploading one or more large file(s), which would run significantly faster if you enable parallel composite uploads. This feature can be enabled by editing the “parallel_composite_upload_threshold” value in your .boto configuration file. However, note that if you do this large files will be uploaded as <code>composite objects &lt;https://cloud.google.com/storage/docs/composite-objects&gt;</code>_,which means that any user who downloads such objects will need to have a compiled crcmod installed (see “gsutil help crcmod”). This is because without a compiled crcmod, computing checksums on composite objects is so slow that gsutil disables downloads of composite objects. -^M- [0 files][155.3 MiB/155.3 MiB] ^M^M [1 files][155.3 MiB/155.3 MiB] <sup> M|</sup>M Operation completed over 1 objects/155.3 MiB.</p>
+<p>Copying <a href="file://Analysis.tar.gz"
+class="uri">file://Analysis.tar.gz</a> [Content-Type=application/x-tar]…
+/ [0 files][ 0.0 B/155.3 MiB] ^M==&gt; NOTE: You are uploading one or
+more large file(s), which would run significantly faster if you enable
+parallel composite uploads. This feature can be enabled by editing the
+“parallel_composite_upload_threshold” value in your .boto configuration
+file. However, note that if you do this large files will be uploaded as
+<code>composite objects &lt;https://cloud.google.com/storage/docs/composite-objects&gt;</code>_,which
+means that any user who downloads such objects will need to have a
+compiled crcmod installed (see “gsutil help crcmod”). This is because
+without a compiled crcmod, computing checksums on composite objects is
+so slow that gsutil disables downloads of composite objects. -^M- [0
+files][155.3 MiB/155.3 MiB] ^M^M [1 files][155.3 MiB/155.3 MiB] ^ M|^M
+Operation completed over 1 objects/155.3 MiB.</p>
 </div>
-<div id="dockerをまるごとimageにして保存して送る" class="section level4">
+<div id="dockerをまるごとimageにして保存して送る"
+class="section level4">
 <h4>Dockerをまるごとimageにして保存して，送る</h4>
-<p>解析が終了したら，解析の再現性のためにも，使っているDockerイメージも保存すると良いかと思います。ただ，これはかなり重いので，Cloud Strageが必須です。まずは，以下のように，Dockerコマンドでイメージを保存します。</p>
+<p>解析が終了したら，解析の再現性のためにも，使っているDockerイメージも保存すると良いかと思います。ただ，これはかなり重いので，Cloud
+Strageが必須です。まずは，以下のように，Dockerコマンドでイメージを保存します。</p>
 <pre><code>sudo docker commit コンテナのID 好きな名前
 
 sudo docker save 上で付けた名前 &gt; 好きな名前.tar</code></pre>
 <p>保存したイメージをCloud Strageにコピーします。</p>
 <pre><code>sudo gsutil cp 好きな名前.tar gs://バケット名/フォルダ名/</code></pre>
-<p>Cloud StrageにコピーされたDockerイメージは，loadすれば，その環境のDockerイメージの一覧に入ります。あとは，runをすれば，同じ解析環境になるかと思います。</p>
+<p>Cloud
+StrageにコピーされたDockerイメージは，loadすれば，その環境のDockerイメージの一覧に入ります。あとは，runをすれば，同じ解析環境になるかと思います。</p>
 <pre><code>docker load &lt; 上で付けた名前.tar
 run -e PASSWORD=パスワード -p 8787:8787 -v ~:/home/rstudio -d --name コンテナ名 リポジトリ名</code></pre>
 </div>
 </div>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr />
 <ol>
-<li id="fn1"><p>Dockerの活用を考えると，Container-Optimized OSが良いのですが，ホスト側でGoogle Cloud SDKを使いたかったので，Container-Optimized OSを使いました。Ubuntuを使う必然性はないのですが，なんとなく前に使ったことがあるLinuxだったので選びました。<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p><a href="https://twitter.com/masaha03">林真広様</a>より，(1)ymlにrestart: alwaysを追加することで，メタデータにstartup-scriptを記載する必要がなくなること，(2)GCSに送る際にtarで圧縮することを教えていただきました。誠にありがとうございました。<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>Dockerの活用を考えると，Container-Optimized
+OSが良いのですが，ホスト側でGoogle Cloud
+SDKを使いたかったので，Container-Optimized
+OSを使いました。Ubuntuを使う必然性はないのですが，なんとなく前に使ったことがあるLinuxだったので選びました。<a
+href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p><a
+href="https://twitter.com/masaha03">林真広様</a>より，(1)ymlにrestart:
+alwaysを追加することで，メタデータにstartup-scriptを記載する必要がなくなること，(2)GCSに送る際にtarで圧縮することを教えていただきました。誠にありがとうございました。<a
+href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -934,7 +1025,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -943,6 +1034,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

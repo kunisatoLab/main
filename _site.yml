@@ -22,8 +22,8 @@ navbar:
       href: presentation.html
     - text: 国内学会・研究会発表
       href: presentation-japanese.html
-  - text: Code & Tips
-    href: code_tips.html
+  - text: Research Module
+    href: research-module.html
   - text: Education
     href: education.html
   - text: News

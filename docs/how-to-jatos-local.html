@@ -13,7 +13,7 @@
 
 <title>JATOSをDockerを使ってローカルPCに導入する方法</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -386,14 +390,19 @@ div.tocify {
 </div>
 
 
-<p><a href="https://www.jatos.org/">JATOS</a>は，オンライン実験を実施する上で便利なサーバー用アプリケーションです。ただ，ローカルのパソコンにもインストールはできて，オンライン実験だけでなく対面実験でも利用可能です。そのため，JATOSは対面とオンラインをシームレスにつないで研究を行う上では，とても便利なツールに思います。以下では，ローカルパソコンにJATOSをDockerを使ってインストールする方法について説明をします。</p>
+<p><a
+href="https://www.jatos.org/">JATOS</a>は，オンライン実験を実施する上で便利なサーバー用アプリケーションです。ただ，ローカルのパソコンにもインストールはできて，オンライン実験だけでなく対面実験でも利用可能です。そのため，JATOSは対面とオンラインをシームレスにつないで研究を行う上では，とても便利なツールに思います。以下では，ローカルパソコンにJATOSをDockerを使ってインストールする方法について説明をします。</p>
 <div id="dockerを準備する" class="section level3">
 <h3>Dockerを準備する</h3>
-<p>Docker以外の方法もありますが，個人的にはDockerなら１行コピペするだけで設定できるので楽と思います。Dockerの導入方法は，<a href="https://ykunisato.github.io/jpa2020-tws-002/02.html">2 事前準備（Dockerとは）</a> を参照ください。Macは簡単なのですが，Windowsは少し手順が必要になります。</p>
+<p>Docker以外の方法もありますが，個人的にはDockerなら１行コピペするだけで設定できるので楽と思います。Dockerの導入方法は，<a
+href="https://ykunisato.github.io/jpa2020-tws-002/02.html">2
+事前準備（Dockerとは）</a>
+を参照ください。Macは簡単なのですが，Windowsは少し手順が必要になります。</p>
 </div>
 <div id="jatosをdockerで準備する" class="section level3">
 <h3>JATOSをDockerで準備する。</h3>
-<p>Dockerがインストールできたら，以下のコマンドを実行します。なお，デフォルトでは日本ではないタイムゾーンになって日本時間とずれるので，-e TZ=Asia/Tokyoを追加しています。</p>
+<p>Dockerがインストールできたら，以下のコマンドを実行します。なお，デフォルトでは日本ではないタイムゾーンになって日本時間とずれるので，-e
+TZ=Asia/Tokyoを追加しています。</p>
 <div id="macの場合" class="section level4">
 <h4>Macの場合</h4>
 <p>ターミナルを開いて，以下をコピペして実行ください。</p>
@@ -410,11 +419,12 @@ div.tocify {
 <p>上記のインストール作業が終わったら，カレントディレクトにjatosというフォルダができるかと思います(さらに，その下にstudy_assets_rootというフォルダができると思います)。それでは，ブラウザで確認しましょう。ブラウザのURLバーに<code>localhost:9000</code>を打ち込みます。</p>
 <p>以下のような画面がブラウザ上に出てくるので，Usernameに<code>admin</code>,Passwordに<code>admin</code>をいれてください。</p>
 <p><img src="fig/jatos_fig3.png" width="600"></p>
-<p>JATOSの使用法については，<a href="https://kunisatolab.github.io/main/how-to-jspsych-jatos-local.html">こちら</a>を御覧ください。</p>
+<p>JATOSの使用法については，<a
+href="https://kunisatolab.github.io/main/how-to-jspsych-jatos-local.html">こちら</a>を御覧ください。</p>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2021 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 

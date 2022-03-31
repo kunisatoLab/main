@@ -13,12 +13,22 @@
 
 <title>オープンデータの利用法</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +73,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -112,40 +89,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +126,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +138,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +149,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +177,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,7 +302,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -351,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -370,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -397,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -416,7 +381,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -429,13 +394,15 @@ div.tocify {
 <h2>1. 心理学関連オープンデータのリスト</h2>
 <p>心理学関連オープンデータをリスト化してみました（私以外にも有志の方に追加をしてもらっています。もし，ご存知のオープンデータがありましたら，追加ください）。</p>
 <ul>
-<li><a href="https://docs.google.com/spreadsheets/d/1LMREITla_T3caRrPhGihTEB2U7QDiEn78HH4VBgQ8Rs/edit#gid=0">心理学関連オープンデータのリスト</a></li>
+<li><a
+href="https://docs.google.com/spreadsheets/d/1LMREITla_T3caRrPhGihTEB2U7QDiEn78HH4VBgQ8Rs/edit#gid=0">心理学関連オープンデータのリスト</a></li>
 </ul>
 <p><br /></p>
 </div>
 <div id="openpsychdataパッケージ" class="section level2">
 <h2>2. openPsychDataパッケージ</h2>
-<p>心理学関連のオープンデータの一部をRにダウンロードできる<a href="https://github.com/ykunisato/openPsychData">RパッケージopenPsychData</a>をつくりました。まだ開発途中で，本パッケージの使用に関わるトラブルについては責任は負えませんので，予めご了承ください（一緒に開発してくれる人がいれば，連絡ください）。</p>
+<p>心理学関連のオープンデータの一部をRにダウンロードできる<a
+href="https://github.com/ykunisato/openPsychData">RパッケージopenPsychData</a>をつくりました。まだ開発途中で，本パッケージの使用に関わるトラブルについては責任は負えませんので，予めご了承ください（一緒に開発してくれる人がいれば，連絡ください）。</p>
 <div id="インストール" class="section level3">
 <h3>インストール</h3>
 <p>openPsychDataは，Rコンソールに以下を打ち込むことで，GitHubからインストールできます。</p>
@@ -444,33 +411,50 @@ devtools::install_github(&quot;ykunisato/openPsychData&quot;)</code></pre>
 </div>
 <div id="使い方" class="section level3">
 <h3>使い方</h3>
-<p>現状では，<a href="https://openpsychometrics.org/_rawdata/">Open-Source Psychometrics Project</a>のデータをダウンロードして，Rにデータとして読み込みができます。<a href="https://openpsychometrics.org/_rawdata/">Open-Source Psychometrics Project</a>をみて，以下のGoogleスプレッドシートのdataset_name in openPsychDataの列から，必要なデータセットの「dataset_name」を確認ください。利用可能なデータセットは順次増やしていく予定です。</p>
-<p><a href="https://docs.google.com/spreadsheets/d/1FHiqq7q5iItaU8KfYZTo_8bKhUGM_yGwMiklx8GiMXI/edit?usp=sharing">openPsychDataのGoogleスプレッドシート</a></p>
-<p>データの読み込み データを読み込む場合は，load_openPsyData()を使ってください。「dataset_name」に使いたいデータの名前を指定ください。もし，まだカレントディレクトリにデータをダウンロードしていない場合は，自動的にダウンロードします（カレントディレクトリに「dataset_name」と同じ名前のディレクトリを作成して，データを保存します）。 codebookをTRUEにしておくと変数の説明をしたcodebookを開きます。</p>
+<p>現状では，<a
+href="https://openpsychometrics.org/_rawdata/">Open-Source Psychometrics
+Project</a>のデータをダウンロードして，Rにデータとして読み込みができます。<a
+href="https://openpsychometrics.org/_rawdata/">Open-Source Psychometrics
+Project</a>をみて，以下のGoogleスプレッドシートのdataset_name in
+openPsychDataの列から，必要なデータセットの「dataset_name」を確認ください。利用可能なデータセットは順次増やしていく予定です。</p>
+<p><a
+href="https://docs.google.com/spreadsheets/d/1FHiqq7q5iItaU8KfYZTo_8bKhUGM_yGwMiklx8GiMXI/edit?usp=sharing">openPsychDataのGoogleスプレッドシート</a></p>
+<p>データの読み込み
+データを読み込む場合は，load_openPsyData()を使ってください。「dataset_name」に使いたいデータの名前を指定ください。もし，まだカレントディレクトリにデータをダウンロードしていない場合は，自動的にダウンロードします（カレントディレクトリに「dataset_name」と同じ名前のディレクトリを作成して，データを保存します）。
+codebookをTRUEにしておくと変数の説明をしたcodebookを開きます。</p>
 <pre class="r"><code>library(openPsychData)
 data &lt;- load_openPsyData(dataset_name = &quot;16PF&quot;, codebook = TRUE)</code></pre>
 <p><br /></p>
 </div>
 </div>
-<div id="open-science-frameworkのデータをrで使う" class="section level2">
+<div id="open-science-frameworkのデータをrで使う"
+class="section level2">
 <h2>3. Open Science FrameworkのデータをRで使う</h2>
-<p>Open Science Frameworkには，有用＆貴重なデータセットが公開されています。例えば，以下のデータセットには，COVID-19が流行る前の日本における1382名の感染脆弱意識尺度への回答が収められています。</p>
+<p>Open Science
+Frameworkには，有用＆貴重なデータセットが公開されています。例えば，以下のデータセットには，COVID-19が流行る前の日本における1382名の感染脆弱意識尺度への回答が収められています。</p>
 <ul>
-<li>Yamada Y, Xu H and Sasaki K. A dataset for the perceived vulnerability to disease scale in Japan before the spread of COVID-19 [version 1; peer review: awaiting peer review]. F1000Research 2020, 9:334 (<a href="https://doi.org/10.12688/f1000research.23713.1" class="uri">https://doi.org/10.12688/f1000research.23713.1</a>)</li>
+<li>Yamada Y, Xu H and Sasaki K. A dataset for the perceived
+vulnerability to disease scale in Japan before the spread of COVID-19
+[version 1; peer review: awaiting peer review]. F1000Research 2020,
+9:334 (<a href="https://doi.org/10.12688/f1000research.23713.1"
+class="uri">https://doi.org/10.12688/f1000research.23713.1</a>)</li>
 </ul>
 <p>OSFにあるデータをRで使う場合は，osfrパッケージが便利です。使うのは，tidyverseパッケージとosfrパッケージです。</p>
 <pre class="r"><code>library(tidyverse)
 library(osfr)</code></pre>
-<p>Japan PVD 2018リポジトリ(<a href="https://osf.io/qw2af/)をosf_retrieve_node" class="uri">https://osf.io/qw2af/)をosf_retrieve_node</a>()でリトリーブしてみます。 metaにいろいろな情報が入っています。</p>
+<p>Japan PVD 2018リポジトリ(<a
+href="https://osf.io/qw2af/)をosf_retrieve_node"
+class="uri">https://osf.io/qw2af/)をosf_retrieve_node</a>()でリトリーブしてみます。
+metaにいろいろな情報が入っています。</p>
 <pre class="r"><code>osf_retrieve_node(&quot;qw2af&quot;)</code></pre>
-<pre><code>## # A tibble: 1 x 3
+<pre><code>## # A tibble: 1 × 3
 ##   name           id    meta            
 ##   &lt;chr&gt;          &lt;chr&gt; &lt;list&gt;          
 ## 1 Japan PVD 2018 qw2af &lt;named list [3]&gt;</code></pre>
 <p>次に，リトリーブしたものをosf_ls_files()にいれて，リポジトリのファイルを確認します。PVDJapan2018.xlsxとDataset.txtがあるのがわかりますね。</p>
 <pre class="r"><code>osf_retrieve_node(&quot;qw2af&quot;) %&gt;% 
   osf_ls_files()</code></pre>
-<pre><code>## # A tibble: 2 x 3
+<pre><code>## # A tibble: 2 × 3
 ##   name                       id                       meta            
 ##   &lt;chr&gt;                      &lt;chr&gt;                    &lt;list&gt;          
 ## 1 PVDJapan2018.xlsx          5ea32abf3854e2001c69dcbb &lt;named list [3]&gt;
@@ -482,7 +466,9 @@ library(osfr)</code></pre>
 <h2>4. GitHubのデータをRで使う</h2>
 <p>データやコードがOSFにある論文も多いが，データとコードがGitHubにアップロードされている論文も多いです。例えば，以下の論文のデータやコードはGitHubにアップロードされています。</p>
 <ul>
-<li>杣取恵太・国里愛彦 (2019). アンヘドニア(anhedonia)と遅延割引：Lempert &amp; Pizzagalli(2010)の追試　心理学評論, 62(3), 231-243.</li>
+<li>杣取恵太・国里愛彦 (2019).
+アンヘドニア(anhedonia)と遅延割引：Lempert &amp;
+Pizzagalli(2010)の追試　心理学評論, 62(3), 231-243.</li>
 </ul>
 <p><img src="fig/osf_somatori.png" /></p>
 <p>GitHubのデータやコードをRで使う場合，リポジトリのリンクを取得して，Rで読み込むと楽です。まず，以下のようにして，右クリックして，リンクアドレスをコピーします。</p>
@@ -491,7 +477,7 @@ library(osfr)</code></pre>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -522,7 +508,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -531,6 +517,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

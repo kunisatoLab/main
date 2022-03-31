@@ -13,12 +13,22 @@
 
 <title>PresentationのTips</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +73,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -112,40 +89,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +126,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +138,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +149,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +177,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,7 +302,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -351,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -370,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -397,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -416,7 +381,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -432,29 +397,44 @@ div.tocify {
 <div id="presentationとは" class="section level2">
 <h2>Presentationとは</h2>
 <p>NeurobehavioralSystems社の実験用刺激呈示ソフト。USB認証のライセンスが比較的便利になります。プログラミングが必要ですが，fMRIのトリガーの扱いが便利で，柔軟性に富むソフトです。ちなみに，Windowsのみで動作するので，Macユーザーは，BootcampでWindowsをいれて，そこでPresenatationを使うと良いかもしれません。</p>
-<p>NeurobehavioralSystems社のHP(<a href="http://www.neurobs.com/" class="uri">http://www.neurobs.com/</a>)</p>
-<p>日本での代理店のHP(<a href="http://www.physio-tech.co.jp/products/nbs/nbs.htm" class="uri">http://www.physio-tech.co.jp/products/nbs/nbs.htm</a>)</p>
-<p>まず，日本語の資料として， <a href="http://www.baic.jp/seminar_j/seminar1.html">国際電気通信基礎技術研究所の脳活動イメージングセンタの資料</a>を参考にしてください。現行のPresentationでは変更された機能もありますが，大まかに理解出来ますし，プログラムをつくる良いとっかかりになると思います。</p>
+<p>NeurobehavioralSystems社のHP(<a href="http://www.neurobs.com/"
+class="uri">http://www.neurobs.com/</a>)</p>
+<p>日本での代理店のHP(<a
+href="http://www.physio-tech.co.jp/products/nbs/nbs.htm"
+class="uri">http://www.physio-tech.co.jp/products/nbs/nbs.htm</a>)</p>
+<p>まず，日本語の資料として， <a
+href="http://www.baic.jp/seminar_j/seminar1.html">国際電気通信基礎技術研究所の脳活動イメージングセンタの資料</a>を参考にしてください。現行のPresentationでは変更された機能もありますが，大まかに理解出来ますし，プログラムをつくる良いとっかかりになると思います。</p>
 </div>
 <div id="インストール" class="section level2">
 <h2>インストール</h2>
-<p>Neurobehavioral Systemsのサイトからダウンロードできます。アカウント登録しておけば，インストールまでは簡単にできます。しかし，使用するには，USB型のライセンスキーが必要になります。最初の１ヶ月は，お試しで利用することもできます。</p>
+<p>Neurobehavioral
+Systemsのサイトからダウンロードできます。アカウント登録しておけば，インストールまでは簡単にできます。しかし，使用するには，USB型のライセンスキーが必要になります。最初の１ヶ月は，お試しで利用することもできます。</p>
 </div>
 <div id="ファイルの種類" class="section level2">
 <h2>ファイルの種類</h2>
-<p>Presentationは複数のファイルを利用します。 - Experiment File(*.exp): 実験のプロジェクトファイルです。実験に関する設定(使用するファイル・刺激やログファイルの保存場所，使用するボタンの指定)などを保存しておく場所です。</p>
+<p>Presentationは複数のファイルを利用します。 - Experiment File(*.exp):
+実験のプロジェクトファイルです。実験に関する設定(使用するファイル・刺激やログファイルの保存場所，使用するボタンの指定)などを保存しておく場所です。</p>
 <ul>
-<li><p>Scenario File(*.sce): 呈示に関するシナリオファイルです。このシナリオに沿って実験は進められます。どのような刺激を何秒呈示するとか，反応をとるとかについて指定します。 イメージとしては，実験中の作業（教示呈示，刺激呈示，反応採取）を個別のパーツとして作成することになります。</p></li>
-<li><p>PCL File(*.pcl): プレゼンテーションをコントロールするファイルです。シナリオファイルだけでもプレゼンテーションすることは出来るのですが、 実験が複雑になってきたときや、テンプレートの一部を修正して実験を行うときに利用します。イメージとしては，Scenarioファイルで作成したパーツを組み合わせて実験を組み立てるような作業になります。</p></li>
+<li><p>Scenario File(*.sce):
+呈示に関するシナリオファイルです。このシナリオに沿って実験は進められます。どのような刺激を何秒呈示するとか，反応をとるとかについて指定します。
+イメージとしては，実験中の作業（教示呈示，刺激呈示，反応採取）を個別のパーツとして作成することになります。</p></li>
+<li><p>PCL File(*.pcl):
+プレゼンテーションをコントロールするファイルです。シナリオファイルだけでもプレゼンテーションすることは出来るのですが、
+実験が複雑になってきたときや、テンプレートの一部を修正して実験を行うときに利用します。イメージとしては，Scenarioファイルで作成したパーツを組み合わせて実験を組み立てるような作業になります。</p></li>
 </ul>
-<p>なお，このファイルを利用する場合は、シナリオファイルで「pcl_file = “pclファイル名.pcl”;」のようにファイルを指定する必要があります。しかし，シナリオファイルないにPCLファイルを組み込む方法もあるので，その場合は，必要ないです。</p>
+<p>なお，このファイルを利用する場合は、シナリオファイルで「pcl_file =
+“pclファイル名.pcl”;」のようにファイルを指定する必要があります。しかし，シナリオファイルないにPCLファイルを組み込む方法もあるので，その場合は，必要ないです。</p>
 <ul>
-<li>Log File(*.log): ログファイルです。テキストファイルです。刺激を呈示した時間とか，被験者の反応とかが記録されます。sdfに従って記録されます。</li>
+<li>Log File(*.log):
+ログファイルです。テキストファイルです。刺激を呈示した時間とか，被験者の反応とかが記録されます。sdfに従って記録されます。</li>
 </ul>
 <p>おもに，上の４つのファイルを使用して，脳機能画像研究での刺激呈示はなされます。</p>
 <ul>
-<li><p>Template File(*.tem): 再利用の為のテンプレートファイルです。シナリオや、オブジェクト、トライアルなどを書いておきます。主に、シナリオ用（シナリオとオブジェクト）と、トライアル用の２種類に分けることができます。</p></li>
-<li><p>Set Definition File(*.sdf): ログファイルに記録される内容をコントロールするファイルです。とくに作成しなければ、Presentationをインストールしたフォルダにあるdefault.sdfが使われます。発生したイベント（レスポンス）ごとの記録するログの定義の他、 測定値の平均や分散といった解析も行うことができるようです。</p></li>
+<li><p>Template File(*.tem):
+再利用の為のテンプレートファイルです。シナリオや、オブジェクト、トライアルなどを書いておきます。主に、シナリオ用（シナリオとオブジェクト）と、トライアル用の２種類に分けることができます。</p></li>
+<li><p>Set Definition File(*.sdf):
+ログファイルに記録される内容をコントロールするファイルです。とくに作成しなければ、Presentationをインストールしたフォルダにあるdefault.sdfが使われます。発生したイベント（レスポンス）ごとの記録するログの定義の他、
+測定値の平均や分散といった解析も行うことができるようです。</p></li>
 </ul>
 </div>
 <div id="課題作成のヒント" class="section level2">
@@ -485,7 +465,8 @@ trial{
 }stinst_trial;
 </code></pre>
 <p>シナリオファイルで，実験に関する設定や区切られた動作（「刺激Aを出す」→「ボタン押しを待つ」など）をtrialとして作成して。そのパーツを並べたり，中の刺激を変更したりするのをPCLで設定して実験課題を作る感じです。</p>
-<p>PCLをScenarioファイルに埋め込むことができる。PCLが始まる前に， begin_pcl;と打ってから始めるので良い。</p>
+<p>PCLをScenarioファイルに埋め込むことができる。PCLが始まる前に，
+begin_pcl;と打ってから始めるので良い。</p>
 </div>
 <div id="演習課題" class="section level2">
 <h2>演習課題</h2>
@@ -497,13 +478,17 @@ trial{
 <div id="課題２" class="section level3">
 <h3>課題２</h3>
 <p>課題１で出した「１」〜「５」の数字を３回繰り返すプログラムを作成しましょう。ただし，シナリオのtrialはそのままで，PCLで制御するようにしましょう。</p>
-<p>※ヒント：PCLの記述をする場合は，シナリオの記述が終わったところに， 「begin_pcl;」と書いてください。繰り返す場合は，loopを使います。 以下の場合は，kという変数を作って，そのkが 15になるまで繰り返すという命令になります。</p>
+<p>※ヒント：PCLの記述をする場合は，シナリオの記述が終わったところに，
+「begin_pcl;」と書いてください。繰り返す場合は，loopを使います。
+以下の場合は，kという変数を作って，そのkが
+15になるまで繰り返すという命令になります。</p>
 <pre><code>loop int k=1;until k&gt;15 begin
 命令（数字を提示するなど） 
 k=k+1;
 end;
 </code></pre>
-<p>なお，kは繰り返す度に増やさないと，延々とk=1の ままになるので，１回命令する度にk=k+1;というコマンドを動かします。</p>
+<p>なお，kは繰り返す度に増やさないと，延々とk=1の
+ままになるので，１回命令する度にk=k+1;というコマンドを動かします。</p>
 </div>
 <div id="課題３" class="section level3">
 <h3>課題３</h3>
@@ -511,12 +496,16 @@ end;
 </div>
 <div id="課題4" class="section level3">
 <h3>課題4</h3>
-<p>それでは，次のステップとして，PCLでだらだらと呈示するテキストを指定するのではなくて，配列を組んでおいて，その配列（or変数）をつかって，PCLをつくることにしましょう。 まず，変数の型には，intとstringがあります。intは整数(数字)で， stringは文字（「あ」とか「い」とか）です。 変数の宣言は普通は以下のようにやります。</p>
+<p>それでは，次のステップとして，PCLでだらだらと呈示するテキストを指定するのではなくて，配列を組んでおいて，その配列（or変数）をつかって，PCLをつくることにしましょう。
+まず，変数の型には，intとstringがあります。intは整数(数字)で，
+stringは文字（「あ」とか「い」とか）です。
+変数の宣言は普通は以下のようにやります。</p>
 <pre><code>int kurikaeshi=0;
 # int形式のkurikaeshiという変数作って，0を代入した。 
 string kanji;
 # string形式のkanjiという変数を作った。stringは文字なので，0とか代入しない。</code></pre>
-<p>ただし，今回は，呈示する刺激（文字）を並べた配列形式の変数が必要です。 たとえば，「あいうえお」と「かきくけこ」と「さしすせそ」を並べる配列だと以下のようになります。</p>
+<p>ただし，今回は，呈示する刺激（文字）を並べた配列形式の変数が必要です。
+たとえば，「あいうえお」と「かきくけこ」と「さしすせそ」を並べる配列だと以下のようになります。</p>
 <pre><code>array&lt;string&gt;hiragana[5][3];
 hiragana[1][1]=&quot;あ&quot;;hiragana[1][2]=&quot;か&quot;;hiragana[1][3]=&quot;さ&quot;;
 hiragana[2][1]=&quot;い&quot;;hiragana[2][2]=&quot;き&quot;;hiragana[2][3]=&quot;し&quot;;
@@ -524,13 +513,18 @@ hiragana[3][1]=&quot;う&quot;;hiragana[3][2]=&quot;く&quot;;hiragana[3][3]=&qu
 hiragana[4][1]=&quot;え&quot;;hiragana[4][2]=&quot;け&quot;;hiragana[4][3]=&quot;せ&quot;;
 hiragana[5][1]=&quot;お&quot;;hiragana[5][2]=&quot;こ&quot;;hiragana[5][3]=&quot;そ&quot;;
 </code></pre>
-<p>こういう配列をつくっておくと.set_captionの時に，hiragana[4][2]と指定すると「け」が出るようになります。一見面倒くさいように思うかもしれませんが， 心理実験だと同じ刺激を繰り返し使うことは少ないので，配列を作っていて， [1][1]は条件１の１回目を表し，[3][4]は条件３の４回目を表すと考えると楽になることが多いです。</p>
+<p>こういう配列をつくっておくと.set_captionの時に，hiragana[4][2]と指定すると「け」が出るようになります。一見面倒くさいように思うかもしれませんが，
+心理実験だと同じ刺激を繰り返し使うことは少ないので，配列を作っていて，
+[1][1]は条件１の１回目を表し，[3][4]は条件３の４回目を表すと考えると楽になることが多いです。</p>
 </div>
 <div id="課題５" class="section level3">
 <h3>課題５</h3>
-<p>配列を使って，「あ」から「そ」まで呈示してみましょう。 なお，あ行が１ブロック目，か行が２ブロック目， さ行が３ブロック目と考えるようにしてください。</p>
+<p>配列を使って，「あ」から「そ」まで呈示してみましょう。
+なお，あ行が１ブロック目，か行が２ブロック目，
+さ行が３ブロック目と考えるようにしてください。</p>
 <p>※ヒント：ループを2つ使うと便利です。色々試行錯誤してみましょう。</p>
-<p>なお，今回の課題とは関係ないのですが，以下は数字の場合の配列です。 こうやって，条件の設定や呈示時間やITIを設定することができます。</p>
+<p>なお，今回の課題とは関係ないのですが，以下は数字の場合の配列です。
+こうやって，条件の設定や呈示時間やITIを設定することができます。</p>
 <pre><code>array&lt;int&gt;suuji[5][3]; 
 suuji[1][1]=1;suuji[1][2]=1;suuji[1][3]=1;
 suuji[2][1]=2;suuji[2][2]=2;suuji[2][3]=2;
@@ -540,7 +534,8 @@ suuji[5][1]=5;suuji[5][2]=5;suuji[5][3]=5;</code></pre>
 </div>
 <div id="課題６" class="section level3">
 <h3>課題６</h3>
-<p>思い出写真のスライドショーを作成すること。 それぞれ２秒間呈示する。</p>
+<p>思い出写真のスライドショーを作成すること。
+それぞれ２秒間呈示する。</p>
 <p>※ヒント：画像はbitmapを使います。</p>
 <pre><code>trial{         
    stimulus_event{
@@ -560,12 +555,20 @@ bitmap{filename=&quot;E.jpg&quot;;}pic5;
 </div>
 <div id="課題７" class="section level3">
 <h3>課題７</h3>
-<p>画面に「マウスをクリックしてください」という教示を だして，マウスがクリックされるのを待つ課題を作ってください。 これは，主にシナリオでの制御になります。helpを見てみて，作ってみてください。</p>
+<p>画面に「マウスをクリックしてください」という教示を
+だして，マウスがクリックされるのを待つ課題を作ってください。
+これは，主にシナリオでの制御になります。helpを見てみて，作ってみてください。</p>
 </div>
 <div id="課題８" class="section level3">
 <h3>課題８</h3>
-<p>こんどは，反応によって分岐するタイプの課題になります。 (1)最初に，「課題が始まります」と教示が５秒でます。 (2)その後，「右クリックしてください」と教示します。 (3)実際に右クリックだったら，「正解です」と３秒出してください。 左クリックしていたら，「不正解です」と３秒出してください。 (2)から(3)を３回繰り返してください。</p>
-<p>今回は，if文を使ったプログラムになります。基本形は以下のように なります。</p>
+<p>こんどは，反応によって分岐するタイプの課題になります。
+(1)最初に，「課題が始まります」と教示が５秒でます。
+(2)その後，「右クリックしてください」と教示します。
+(3)実際に右クリックだったら，「正解です」と３秒出してください。
+左クリックしていたら，「不正解です」と３秒出してください。
+(2)から(3)を３回繰り返してください。</p>
+<p>今回は，if文を使ったプログラムになります。基本形は以下のように
+なります。</p>
 <pre><code>if (X==A)then
 　    C
 elseif(X==B)then
@@ -574,15 +577,19 @@ else
 　　E
 end;
 </code></pre>
-<p>AだったらCをし，BだったらDをします。そして，AでもBでもないなら Eをします。</p>
-<p>ここまで来たら，あとは，自分で工夫して既存の実験課題を作ってみよう！ ！！</p>
+<p>AだったらCをし，BだったらDをします。そして，AでもBでもないなら
+Eをします。</p>
+<p>ここまで来たら，あとは，自分で工夫して既存の実験課題を作ってみよう！
+！！</p>
 </div>
 </div>
 <div id="presentationでnirs実験" class="section level2">
 <h2>PresentationでNIRS実験</h2>
 <p>あまりNIRS実験をすることはないのですが，少し測定の同期の問題が気になった時に調べた内容です。NIRS実験に関しては，NIRSでの測定を行いながら，どこで刺激が出たのかNIRS側で記録（マーカー）をしていく必要があります。それは，Presentationを使って，USB-シリアル接続で簡単にできたので，メモを残しておきます。</p>
-<p>NIRSやfMRIのパルスボックスなどのシリアル接続タイプの外部機器との同期する場で，USBポートしか無い場合は，USB-シリアルケーブルでも接続可能です(<a href="https://www.amazon.co.jp/gp/product/B00009Y7UZ/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;tag=ykunisato-22&amp;linkCode=as2&amp;camp=247&amp;creative=1211&amp;creativeASIN=B00009Y7UZ">バッファローコクヨのUSBシリアルケーブル</a>がオススメです)。USB-シリアルケーブルでPCとNIRSを接続したら，以下の操作をすることでPresentationからマーカーなどをNIRSに送ることができるようになります。</p>
-<div id="presentationからusb-serial接続でnirsにトリガーを送る方法" class="section level3">
+<p>NIRSやfMRIのパルスボックスなどのシリアル接続タイプの外部機器との同期する場で，USBポートしか無い場合は，USB-シリアルケーブルでも接続可能です(<a
+href="https://www.amazon.co.jp/gp/product/B00009Y7UZ/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;tag=ykunisato-22&amp;linkCode=as2&amp;camp=247&amp;creative=1211&amp;creativeASIN=B00009Y7UZ">バッファローコクヨのUSBシリアルケーブル</a>がオススメです)。USB-シリアルケーブルでPCとNIRSを接続したら，以下の操作をすることでPresentationからマーカーなどをNIRSに送ることができるようになります。</p>
+<div id="presentationからusb-serial接続でnirsにトリガーを送る方法"
+class="section level3">
 <h3>PresentationからUSB-Serial接続で，NIRSにトリガーを送る方法</h3>
 <p>Port設定で，接続したUSB-Serial機器を設定します（設定はNIRSの会社が作成したマニュアル参照）。PCLに最初に以下のように接続していない場合の警告とPortを定義します。</p>
 <pre><code>if (output_port_manager.port_count() == 0) then
@@ -590,7 +597,7 @@ end;
 term.print( &quot;Forgot to add an output port!&quot; ) end;
 
 output_port oport = output_port_manager.get_port( 1 );</code></pre>
-<p>あとは，NIRSにMarkを入れたいところで以下のように書き込みます（以下は「A」をMarkに入れる場合です。""内に，A＋スペース＋エンターのアスキーコードが入っています）</p>
+<p>あとは，NIRSにMarkを入れたいところで以下のように書き込みます（以下は「A」をMarkに入れる場合です。““内に，A＋スペース＋エンターのアスキーコードが入っています）</p>
 <pre><code>oport.send_string( &quot;A 0x0d&quot;);
 </code></pre>
 <p>※Presentationでのエンターキーはアスキーコードで0x0dになることを，早稲田大学人間科学研究科の光山君より教えていただきました。一部，修正を加えました（2013/9/23）。</p>
@@ -598,7 +605,7 @@ output_port oport = output_port_manager.get_port( 1 );</code></pre>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -629,7 +636,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -638,6 +645,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

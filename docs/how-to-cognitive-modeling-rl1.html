@@ -13,8 +13,8 @@
 
 <title>強化学習モデル: 最尤推定</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -299,12 +303,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -388,10 +392,12 @@ div.tocify {
 
 <div id="認知モデリングの推奨実践法" class="section level2">
 <h2>認知モデリングの推奨実践法</h2>
-<p>Busemeyer &amp; Diederich(2010), Heathcote (2015), Palminteri et al.(2017)を参考に，認知モデリングの推奨実践法をまとめると，以下のようになります。</p>
+<p>Busemeyer &amp; Diederich(2010), Heathcote (2015), Palminteri et
+al.(2017)を参考に，認知モデリングの推奨実践法をまとめると，以下のようになります。</p>
 <ul>
 <li>A 認知課題と認知モデルを準備</li>
-<li>B 人工データ生成とパラメータリカバリーを確認（モデルや課題の修正）</li>
+<li>B
+人工データ生成とパラメータリカバリーを確認（モデルや課題の修正）</li>
 <li>C データ収集と行動データを確認</li>
 <li>D パラメータ推定</li>
 <li>E 相対モデル比較</li>
@@ -413,12 +419,17 @@ library(pso)</code></pre>
 <h3>逆転学習課題</h3>
 <p>逆転学習課題は以下のような課題です。</p>
 <ul>
-<li><p>Cools et al.(2001)：合計80試行（前半40試行，後半逆転して40試行），フィードバックは顔（ポジティブが緑の嬉しい顔，ネガティブが赤の悲しい顔)，報酬:罰比は，80:20。</p></li>
-<li><p>Cools et al.(2002)を参考に，選択刺激の呈示位置は左右，刺激の選択画面は2000ms呈示されて（2000msを超えると遅いことを伝える「2秒以内に選択してください」），フィードバックは２つの刺激の間に500ms呈示。</p></li>
-<li><p>den Ouden et al.(2013)を参考に，選択はマウスでクリックする，80試行は疑似ランダム化された事前に決めた順番で提示する，参加者には変化する正答刺激を特定するように教示する。</p></li>
-<li><p>Waegeman et al.(2014)を参考に，最大2000ms選択画面を呈示する（押したら次に進む），選択した刺激を枠で囲って500ms呈示し，フィードバックを500ms呈示し，500ms-1500ms固視点(+)を呈示する。</p></li>
+<li><p>Cools et
+al.(2001)：合計80試行（前半40試行，後半逆転して40試行），フィードバックは顔（ポジティブが緑の嬉しい顔，ネガティブが赤の悲しい顔)，報酬:罰比は，80:20。</p></li>
+<li><p>Cools et
+al.(2002)を参考に，選択刺激の呈示位置は左右，刺激の選択画面は2000ms呈示されて（2000msを超えると遅いことを伝える「2秒以内に選択してください」），フィードバックは２つの刺激の間に500ms呈示。</p></li>
+<li><p>den Ouden et
+al.(2013)を参考に，選択はマウスでクリックする，80試行は疑似ランダム化された事前に決めた順番で提示する，参加者には変化する正答刺激を特定するように教示する。</p></li>
+<li><p>Waegeman et
+al.(2014)を参考に，最大2000ms選択画面を呈示する（押したら次に進む），選択した刺激を枠で囲って500ms呈示し，フィードバックを500ms呈示し，500ms-1500ms固視点(+)を呈示する。</p></li>
 </ul>
-<p>この逆転学習課題をjsPsychで作る方法は，<a href="https://kunisatolab.github.io/main/how-to-jspsych3.html">jsPsychを用いた認知課題の作成3：確率的逆転学習課題</a>にあります。</p>
+<p>この逆転学習課題をjsPsychで作る方法は，<a
+href="https://kunisatolab.github.io/main/how-to-jspsych3.html">jsPsychを用いた認知課題の作成3：確率的逆転学習課題</a>にあります。</p>
 <div id="逆転学習課題の構造の確認" class="section level4">
 <h4>逆転学習課題の構造の確認</h4>
 <p>s1は，前半40試行において20％の確率で報酬のフィードバックがなされ，後半40試行で80%の確率でフィードバックがなされます（s2はその逆になる）。prob_s1とprob_s2に確率を設定して，reward_s1とreward_s2でランダムに80%や20%の確率で報酬が出てくるのを設定します。なお，報酬は１，罰は０としています。</p>
@@ -442,13 +453,17 @@ library(pso)</code></pre>
 <li>Q learningモデルにおける更新式は以下の通りになります。</li>
 </ul>
 <p><span class="math display">\[
-Q\left(s_{t}, a_{t}\right) \leftarrow Q\left(s_{t}, a_{t}\right)+\alpha\left(r_{t+1}+\gamma \max _{a} Q\left(s_{t+1}, a\right)-Q\left(s_{t}, a_{t}\right)\right)
+Q\left(s_{t}, a_{t}\right) \leftarrow Q\left(s_{t},
+a_{t}\right)+\alpha\left(r_{t+1}+\gamma \max _{a} Q\left(s_{t+1},
+a\right)-Q\left(s_{t}, a_{t}\right)\right)
 \]</span></p>
 <ul>
-<li>今回の逆転学習課題の場合は，状態が1つの特殊なQ learningになります。γのついた項は不要になり，報酬も選択した時点の報酬で更新します。</li>
+<li>今回の逆転学習課題の場合は，状態が1つの特殊なQ
+learningになります。γのついた項は不要になり，報酬も選択した時点の報酬で更新します。</li>
 </ul>
 <p><span class="math display">\[
-Q\left(s_{t}, a_{t}\right) \leftarrow Q\left(s_{t}, a_{t}\right)+\alpha\left(r_{t}-Q\left(s_{t}, a_{t}\right)\right)
+Q\left(s_{t}, a_{t}\right) \leftarrow Q\left(s_{t},
+a_{t}\right)+\alpha\left(r_{t}-Q\left(s_{t}, a_{t}\right)\right)
 \]</span></p>
 <ul>
 <li>Qlearningでは，学習した価値を元にして，選択肢を選びます（方策）。</li>
@@ -460,10 +475,13 @@ Q\left(s_{t}, a_{t}\right) \leftarrow Q\left(s_{t}, a_{t}\right)+\alpha\left(r_{
 </ul>
 <p>→　ざっくり言うと，特定の行動(i)のQ値を，全ての行動(1…m)のQ値の合計で割っている。その際に，Q値にベータをかけて，指数関数にいれています。</p>
 <ul>
-<li>ソフトマックス行動選択は，逆温度(inverse temperature)βで，探索と利用のバランスをとります。β=0でランダム法，βが大きくなるとグリーディ法に近づきます。</li>
+<li>ソフトマックス行動選択は，逆温度(inverse
+temperature)βで，探索と利用のバランスをとります。β=0でランダム法，βが大きくなるとグリーディ法に近づきます。</li>
 </ul>
 <p><span class="math display">\[
-P\left(a_{i} \mid s\right)=\frac{\exp \left[\beta Q\left(s, a_{i}\right)\right]}{\sum_{j=1}^{m} \exp \left[\beta Q\left(s, a_{j}\right)\right]}
+P\left(a_{i} \mid s\right)=\frac{\exp \left[\beta Q\left(s,
+a_{i}\right)\right]}{\sum_{j=1}^{m} \exp \left[\beta Q\left(s,
+a_{j}\right)\right]}
 \]</span></p>
 <ul>
 <li><p>もし選択肢が２つの場合は以下のように書けます（今回は状態もかわらないので，sやaも省略しています）。選択肢AとBがあった場合，Aを選択する確率は,指数関数（β×Aの価値）を{指数関数（β×Aの価値）＋指数関数（β×Bの価値）}で割ったものになります。</p></li>
@@ -517,7 +535,8 @@ P(A)=\frac{\exp(\beta Q_{A})}{\exp(\beta Q_{A}) + \exp(\beta Q_{B})}
 </div>
 <div id="q-learningの関数の動作確認" class="section level4">
 <h4>Q learningの関数の動作確認</h4>
-<p>α，β，各施行の報酬の有無(入力刺激)がはいったデータを指定すればQ leaningを試すことができます（とりあえず，ここでは，プロットして，動作するかだけ確認しましょう）。</p>
+<p>α，β，各施行の報酬の有無(入力刺激)がはいったデータを指定すればQ
+leaningを試すことができます（とりあえず，ここでは，プロットして，動作するかだけ確認しましょう）。</p>
 <pre class="r"><code>result &lt;- q_learning_sim(alpha = 0.5, beta = 5,data = sim_data) 
 result %&gt;% 
   ggplot(aes(x = trial, y = value_s1)) +
@@ -530,11 +549,14 @@ result %&gt;%
 </div>
 </div>
 </div>
-<div id="b-人工データ生成とパラメータリカバリーを確認モデルや課題の修正" class="section level2">
-<h2>B 人工データ生成とパラメータリカバリーを確認（モデルや課題の修正）</h2>
+<div id="b-人工データ生成とパラメータリカバリーを確認モデルや課題の修正"
+class="section level2">
+<h2>B
+人工データ生成とパラメータリカバリーを確認（モデルや課題の修正）</h2>
 <div id="人工データの生成" class="section level3">
 <h3>人工データの生成</h3>
-<p>Q learningモデルとソフトマックス行動選択を用いて，個々の参加者のパラメータ推定を行うのが最終的な目標になります。すぐにリアルデータの推定をしたくなりますが，まずはシミュレーション(人工データ生成)から始めます。モデルとパラメータと実験状況（刺激の種類やFBの確率など）を準備して，データを生成してみましょう。その際に，αをβを色々と変更させて，生成されるデータの挙動も確認しましょう！上記で作成したq_learning_sim関数を使えば，以下のようにαをβを色々と変更したときのデータの挙動が確認できます。</p>
+<p>Q
+learningモデルとソフトマックス行動選択を用いて，個々の参加者のパラメータ推定を行うのが最終的な目標になります。すぐにリアルデータの推定をしたくなりますが，まずはシミュレーション(人工データ生成)から始めます。モデルとパラメータと実験状況（刺激の種類やFBの確率など）を準備して，データを生成してみましょう。その際に，αをβを色々と変更させて，生成されるデータの挙動も確認しましょう！上記で作成したq_learning_sim関数を使えば，以下のようにαをβを色々と変更したときのデータの挙動が確認できます。</p>
 <pre class="r"><code>result &lt;- q_learning_sim(alpha = 0.3, beta = 1,data = sim_data) 
 result %&gt;% 
   ggplot(aes(x = trial, y = value_s1)) +
@@ -550,7 +572,8 @@ result %&gt;%
 </ul>
 </div>
 </div>
-<div id="シミュレーションデータを用いてパラメータリカバリーを行う" class="section level3">
+<div id="シミュレーションデータを用いてパラメータリカバリーを行う"
+class="section level3">
 <h3>シミュレーションデータを用いてパラメータリカバリーを行う</h3>
 <div id="パラメータ推定の手順" class="section level4">
 <h4>パラメータ推定の手順</h4>
@@ -563,20 +586,27 @@ result %&gt;%
 <ul>
 <li>1.パラメータを含むモデルを設定</li>
 </ul>
-<p>→ Q learning model, 方策はソフトマックス行動選択ルールを仮定します（なお，仮定というが重要で，これが真実のモデルは全く無くて，可能性のあるモデルの１つであるという点は意識しておく必要があります）。</p>
+<p>→ Q learning model,
+方策はソフトマックス行動選択ルールを仮定します（なお，仮定というが重要で，これが真実のモデルは全く無くて，可能性のあるモデルの１つであるという点は意識しておく必要があります）。</p>
 <ul>
 <li>2.パラメータを評価する基準を設定</li>
 </ul>
-<p>→ モデルとパラメータが与えられた時の観察されたデータの尤もらしさ（尤度: Likekihood）を評価基準にします。尤度が高いほど，そのモデル（パラメータ）の仮定は尤もらしいと考えられます。尤度は，実際に選んだ選択肢の行動選択確率を全ての試行でかけ合わせたもの（総積）です。モデルが考えた選択確率がどれくらい実際のデータにフィットしているか調べています。</p>
+<p>→
+モデルとパラメータが与えられた時の観察されたデータの尤もらしさ（尤度:
+Likekihood）を評価基準にします。尤度が高いほど，そのモデル（パラメータ）の仮定は尤もらしいと考えられます。尤度は，実際に選んだ選択肢の行動選択確率を全ての試行でかけ合わせたもの（総積）です。モデルが考えた選択確率がどれくらい実際のデータにフィットしているか調べています。</p>
 <p><span class="math display">\[
 \text {Likelihood}=\prod_{t=1}^{T} P\left(a_{t}\right)
-\]</span> 尤度を対数化した対数尤度を使うことが多いです。試行ごとに確率をかけていくと桁が小さくなりすぎるので，対数をとっておきます（例 0.00000000001は対数をとると-25.32844です）。</p>
+\]</span>
+尤度を対数化した対数尤度を使うことが多いです。試行ごとに確率をかけていくと桁が小さくなりすぎるので，対数をとっておきます（例
+0.00000000001は対数をとると-25.32844です）。</p>
 <p><span class="math display">\[
-\text { LogLikelihood }=\log \left(\prod_{t=1}^{T} P\left(a_{t}\right)\right)
+\text { LogLikelihood }=\log \left(\prod_{t=1}^{T}
+P\left(a_{t}\right)\right)
 \]</span></p>
 <p>確率の総積は，桁が小さくなりすぎて計算上の不都合があるので（桁落ちがある），対数化した上で，総和を求めるのが良いです（log(A*B)=log(A)+log(B)という公式があります）。</p>
 <p><span class="math display">\[
-\text {LogLikelihood}=\sum_{i=1}^{T} \log \left(P\left(a_{t}\right)\right)
+\text {LogLikelihood}=\sum_{i=1}^{T} \log
+\left(P\left(a_{t}\right)\right)
 \]</span></p>
 <p>さて，対数尤度を計算してみましょう！q_learning_simを少し改変して，q_learning_ll関数を作ります。選択確率から選択を生成する部分を削除して，対数尤度の計算をいれたのが大きな変更点です。</p>
 <pre class="r"><code>q_learning_ll &lt;- function(alpha, beta,data) {
@@ -622,11 +652,15 @@ result %&gt;%
 <pre class="r"><code>data &lt;- q_learning_sim(alpha = 0.2, beta = 5,data = sim_data) 
 result &lt;- q_learning_ll(alpha = 0.2, beta = 5,data = data) 
 result$ll</code></pre>
-<pre><code>## [1] -31.63395</code></pre>
-<p>alpha = 0.2, beta = 5で生成されたデータにたいして，alpha = 0.6, beta = 1の時の尤度を計算します。尤度が小さくなったかと思います。他にもαとβを変更して（生成時の値alpha = 0.2, beta = 5に近づけたり，遠ざけたりする），尤度の挙動を確認してみましょう。</p>
+<pre><code>## [1] -21.32361</code></pre>
+<p>alpha = 0.2, beta = 5で生成されたデータにたいして，alpha = 0.6, beta
+=
+1の時の尤度を計算します。尤度が小さくなったかと思います。他にもαとβを変更して（生成時の値alpha
+= 0.2, beta =
+5に近づけたり，遠ざけたりする），尤度の挙動を確認してみましょう。</p>
 <pre class="r"><code>result &lt;- q_learning_ll(alpha = 0.6, beta = 1,data = data) 
 result$ll</code></pre>
-<pre><code>## [1] -45.45817</code></pre>
+<pre><code>## [1] -38.75351</code></pre>
 <ul>
 <li>3.最良の評価を与えるパラメータを決定する</li>
 </ul>
@@ -635,7 +669,8 @@ result$ll</code></pre>
 <div id="パラメータリカバリーグリッドサーチ定" class="section level4">
 <h4>パラメータリカバリー（グリッドサーチ定）</h4>
 <ul>
-<li>グリッドサーチは，可能性のあるパラメータの組み合わせを格子状にして，順番に尤度を評価する方法です。指定したパラメータの範囲内で最も高い尤度のパラメータを選択します（最尤推定法：maximum likelihood estimate）</li>
+<li>グリッドサーチは，可能性のあるパラメータの組み合わせを格子状にして，順番に尤度を評価する方法です。指定したパラメータの範囲内で最も高い尤度のパラメータを選択します（最尤推定法：maximum
+likelihood estimate）</li>
 <li>グリッドは研究者が決めます。今回は，αは0から１まで0.01刻みでサーチし(101個の値)，βは0から15まで0.2刻みでサーチする(76個の値)ことにします(つまり7676個のパラメータの組み合わせで尤度を評価します)。</li>
 </ul>
 </div>
@@ -712,7 +747,8 @@ beta_marginal_like_data %&gt;%
   labs(x=&quot;Parameter α&quot;, y=&quot;p(data|model)&quot;)</code></pre>
 <p><img src="how-to-cognitive-modeling-rl1_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
 </div>
-<div id="最尤推定値とパラメータリカバリのチェック" class="section level4">
+<div id="最尤推定値とパラメータリカバリのチェック"
+class="section level4">
 <h4>最尤推定値とパラメータリカバリのチェック</h4>
 <p>最も対数尤度が高いパラメータの値を選択するのが最尤推定法です。which.maxで最も対数尤度の高いパラメータの値をとってきましょう。α=0.3，β=5で作ったデータなので，パラメータリカバリできているか確認しましょう。なお，もともとのデータ生成の部分で確率的な変動が入るので，ある程度誤差がはいります。一致するかというよりは，大幅にずれてないかチェックします。</p>
 <pre class="r"><code># 最尤推定値
@@ -720,13 +756,18 @@ maxIndex &lt;- which.max(grid_result$calc_results$store_loglike)
 paste(&quot;最尤推定値: α =&quot;,grid_result$calc_results$store_alpha[maxIndex],
       &quot;β =&quot;,grid_result$calc_results$store_beta[maxIndex], 
       &quot;,対数尤度: Log Likelihood = &quot;,grid_result$calc_results$store_loglike[maxIndex])</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.31 β = 5.8 ,対数尤度: Log Likelihood =  -21.8161719751654&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.36 β = 4.4 ,対数尤度: Log Likelihood =  -26.5071942804073&quot;</code></pre>
 </div>
-<div id="価値と行動選択確率のプロットモデルシミュレーション" class="section level4">
+<div id="価値と行動選択確率のプロットモデルシミュレーション"
+class="section level4">
 <h4>価値と行動選択確率のプロット（モデル・シミュレーション）</h4>
 <ul>
-<li><p>与えられたモデルがデータを生成する能力のことを生成パフォーマンスと言います（Palminteri et al., 2017）。この生成パフォーマンスを検討するには，パラメータ推定によって最もフィットしたパラメータ値と認知モデルを用いてデータ生成を行って，実際の行動レベルでの効果が検出できるのかを検討するモデル・シミュレーションが必要です（Palminteri et al., 2017）。</p></li>
-<li><p>さっそくグリッドサーチによって推定された最尤推定値を q_learning_sim()に投入して，データ生成をしてみましょう。そして，今回生成されたデータ（選択反応）と最初のデータをまとめたデータセットを作りましょう。</p></li>
+<li><p>与えられたモデルがデータを生成する能力のことを生成パフォーマンスと言います（Palminteri
+et al.,
+2017）。この生成パフォーマンスを検討するには，パラメータ推定によって最もフィットしたパラメータ値と認知モデルを用いてデータ生成を行って，実際の行動レベルでの効果が検出できるのかを検討するモデル・シミュレーションが必要です（Palminteri
+et al., 2017）。</p></li>
+<li><p>さっそくグリッドサーチによって推定された最尤推定値を
+q_learning_sim()に投入して，データ生成をしてみましょう。そして，今回生成されたデータ（選択反応）と最初のデータをまとめたデータセットを作りましょう。</p></li>
 </ul>
 <pre class="r"><code># グリードサーチで推定された最尤推定値を使ってデータを生成する。
 sim_estimated &lt;- q_learning_sim(grid_result$calc_results$store_alpha[maxIndex],
@@ -749,8 +790,8 @@ data_original_estimated &lt;- tibble(trial = data$trial,
 <pre class="r"><code>table(data_original_estimated$choice_original,data_original_estimated$choice_estimated)</code></pre>
 <pre><code>##    
 ##      0  1
-##   0 39  3
-##   1 15 23</code></pre>
+##   0 31 10
+##   1 11 28</code></pre>
 </div>
 </div>
 </div>
@@ -772,25 +813,17 @@ file_names</code></pre>
 <h4>sub01のデータの確認</h4>
 <p>sub01.csvをread_csv()で読み込む</p>
 <pre class="r"><code>sub01 &lt;- read_csv(&quot;data/sub01.csv&quot;)</code></pre>
-<pre><code>## 
+<pre><code>## Rows: 325 Columns: 13
 ## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   trial_type = col_character(),
-##   trial_index = col_double(),
-##   time_elapsed = col_double(),
-##   internal_node_id = col_character(),
-##   rt = col_character(),
-##   stimulus = col_character(),
-##   key_press = col_character(),
-##   success = col_logical(),
-##   button_pressed = col_double(),
-##   left_right_s1 = col_double(),
-##   left_right_s2 = col_double(),
-##   reward_s1 = col_double(),
-##   reward_s2 = col_double()
-## )</code></pre>
+## Delimiter: &quot;,&quot;
+## chr (5): trial_type, internal_node_id, rt, stimulus, key_press
+## dbl (7): trial_index, time_elapsed, button_pressed, left_right_s1, left_righ...
+## lgl (1): success
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>sub01</code></pre>
-<pre><code>## # A tibble: 325 x 13
+<pre><code>## # A tibble: 325 × 13
 ##    trial_type trial_index time_elapsed internal_node_id rt    stimulus key_press
 ##    &lt;chr&gt;            &lt;dbl&gt;        &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;    
 ##  1 pavlovia             0            3 0.0-0.0          &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;     
@@ -809,7 +842,7 @@ file_names</code></pre>
 <p>教示とか刺激が出た時(trial_typeがhtml-keyboard-response)やpavloviaの関数(trial_typeがpavlovia)は邪魔なので除外する（このデータはpavloviaで収集されました）。</p>
 <pre class="r"><code>sub01 %&gt;% 
     filter(trial_type == &quot;html-button-response&quot;)</code></pre>
-<pre><code>## # A tibble: 80 x 13
+<pre><code>## # A tibble: 80 × 13
 ##    trial_type trial_index time_elapsed internal_node_id rt    stimulus key_press
 ##    &lt;chr&gt;            &lt;dbl&gt;        &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;    
 ##  1 html-butt…           4        49837 0.0-4.0-0.0      812.… &lt;NA&gt;     &lt;NA&gt;     
@@ -832,7 +865,7 @@ file_names</code></pre>
          s1_prob = rep(c(0.8,0.2),each = 40),
          reward = ifelse(button_pressed == 0, reward_s1, reward_s2)) %&gt;% 
   select(trial,choice=button_pressed, rt, reward, s1_prob,reward_s1, reward_s2)</code></pre>
-<pre><code>## # A tibble: 80 x 7
+<pre><code>## # A tibble: 80 × 7
 ##    trial choice rt                 reward s1_prob reward_s1 reward_s2
 ##    &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
 ##  1     1      0 812.3649999979534       1     0.8         1         0
@@ -854,7 +887,7 @@ file_names</code></pre>
          reward = ifelse(button_pressed == 0, reward_s1, reward_s2)) %&gt;% 
   select(trial,choice=button_pressed, rt, reward, s1_prob,reward_s1, reward_s2)
 sub01</code></pre>
-<pre><code>## # A tibble: 80 x 7
+<pre><code>## # A tibble: 80 × 7
 ##    trial choice rt                 reward s1_prob reward_s1 reward_s2
 ##    &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
 ##  1     1      0 812.3649999979534       1     0.2         1         0
@@ -878,7 +911,8 @@ sub01</code></pre>
   geom_point(aes(x = trial, y = reward),colour = &#39;red&#39;)</code></pre>
 <p><img src="how-to-cognitive-modeling-rl1_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 </div>
-<div id="名分のデータを読み込んでlong形式のデータにする" class="section level4">
+<div id="名分のデータを読み込んでlong形式のデータにする"
+class="section level4">
 <h4>5名分のデータを読み込んでlong形式のデータにする</h4>
 <p>１名ずつ読み込むのは大変なので，一気に処理をしてしまいましょう。for文でfile_namesに入っているデータの数の回数分処理をします。</p>
 <pre class="r"><code># 確認用の図を入れる場所を確保
@@ -1030,7 +1064,9 @@ for (i in 1:length(file_names)) {
 grid_result1 &lt;- grid_search(data)
 grid_result2 &lt;- grid_search2(data)</code></pre>
 <pre><code>## Warning: `data_frame()` was deprecated in tibble 1.1.0.
-## Please use `tibble()` instead.</code></pre>
+## Please use `tibble()` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
 <p>元々のグリッドサーチはいい感じに推定できていると思います。</p>
 <pre class="r"><code>rownames(grid_result1$store_3d) &lt;- NULL
 y &lt;- seq(0,1,0.01)
@@ -1041,13 +1077,13 @@ image.plot(x,y,grid_result1$store_3d)</code></pre>
 paste(&quot;最尤推定値: α =&quot;,grid_result1$calc_results$store_alpha[maxIndex],
       &quot;β =&quot;,grid_result1$calc_results$store_beta[maxIndex], 
       &quot;,対数尤度: Log Likelihood = &quot;,grid_result1$calc_results$store_loglike[maxIndex])</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.22 β = 5.8 ,対数尤度: Log Likelihood =  -22.2265180374821&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.21 β = 6.8 ,対数尤度: Log Likelihood =  -10.7381687527344&quot;</code></pre>
 <p>当たり前ですが，間隔を広げたり，範囲を狭めると，範囲外の推定値は求まりませんし（βは範囲外），きめが荒いので，推定値もずれます。実際は，グリッドサーチではなく，最適化手法を使って最尤推定値を求めたり，ベイズ推定で求めたりします。ただ，推定においては，狭い範囲内で最も良いだけの値（局所最適解という）をもってくる可能性があるのは気をつけないといけません。</p>
 <pre class="r"><code>maxIndex &lt;- which.max(grid_result2$calc_results$store_loglike)
 paste(&quot;最尤推定値: α =&quot;,grid_result2$calc_results$store_alpha[maxIndex],
       &quot;β =&quot;,grid_result2$calc_results$store_beta[maxIndex], 
       &quot;,対数尤度: Log Likelihood = &quot;,grid_result2$calc_results$store_loglike[maxIndex])</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.4 β = 1 ,対数尤度: Log Likelihood =  -41.3508387894541&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.6 β = 1 ,対数尤度: Log Likelihood =  -33.7595314670729&quot;</code></pre>
 <pre class="r"><code>rownames(grid_result2$store_3d) &lt;- NULL
 y &lt;- seq(0,1,0.2)
 x &lt;- seq(0,1,0.2)
@@ -1056,7 +1092,9 @@ image.plot(x,y,grid_result2$store_3d)</code></pre>
 </div>
 <div id="汎用最適化関数で最尤推定する" class="section level3">
 <h3>汎用最適化関数で最尤推定する</h3>
-<p>グリッドサーチはわかりやすいですが，上記のような問題もあるので，実際のパラメータ推定では，汎用最適化関数を用います。以下では，Rでよく使用されるoptim関数とより洗練されたアルゴリズムである粒子群最適化(Particle Swarm Optimization)を実装したpsoパッケージを用いたパラメータ推定について紹介します。</p>
+<p>グリッドサーチはわかりやすいですが，上記のような問題もあるので，実際のパラメータ推定では，汎用最適化関数を用います。以下では，Rでよく使用されるoptim関数とより洗練されたアルゴリズムである粒子群最適化(Particle
+Swarm
+Optimization)を実装したpsoパッケージを用いたパラメータ推定について紹介します。</p>
 <p>汎用最適化関数を使うために，q_learning_ll関数を少し変更して，パラメータとデータを与えたら，負の対数尤度を返すq_learning_nll関数を作ります（不要な部分を削除して，最後に対数尤度にマイナスをつけただけです）。</p>
 <pre class="r"><code>q_learning_nll &lt;- function(par,data) {
   alpha &lt;- par[1]
@@ -1093,7 +1131,8 @@ image.plot(x,y,grid_result2$store_3d)</code></pre>
   }
   return(-ll)
 }</code></pre>
-<p>今回は，sub03のデータでグリッドサーチ，optim, psoの推定をしてみましょう。まずは，データを用意して，グリッドサーチをしてみます。</p>
+<p>今回は，sub03のデータでグリッドサーチ，optim,
+psoの推定をしてみましょう。まずは，データを用意して，グリッドサーチをしてみます。</p>
 <pre class="r"><code># データの用意
 sub03_data &lt;- data_long %&gt;% 
     filter(id == 3)
@@ -1124,7 +1163,8 @@ print(paste(&quot;最尤推定値: α =&quot;,result_optim$par[1],&quot;β =&quo
 </div>
 <div id="pso" class="section level4">
 <h4>pso</h4>
-<p>粒子群最適化(pso)は，最小値の探索において，複数の初期値からスタートして，局所的な最小化と全体としての最小化を同時に行うことで局所最適解に陥らないように工夫された最適化アルゴリズムです。粒子群最適化について説明は，<a href="result_pso">こちら</a>が簡潔でわかりやすいかと思います。psoパッケージは，optimと同じ使い方ができるように，引数の設定と出力が同じになっています。optimと同様に以下のように設定して，実行します。</p>
+<p>粒子群最適化(pso)は，最小値の探索において，複数の初期値からスタートして，局所的な最小化と全体としての最小化を同時に行うことで局所最適解に陥らないように工夫された最適化アルゴリズムです。粒子群最適化について説明は，<a
+href="result_pso">こちら</a>が簡潔でわかりやすいかと思います。psoパッケージは，optimと同じ使い方ができるように，引数の設定と出力が同じになっています。optimと同様に以下のように設定して，実行します。</p>
 <pre class="r"><code>result_pso &lt;- psoptim(par = c(0.5,0.5),
                       fn = q_learning_nll,
                       data = sub03_data,
@@ -1132,7 +1172,7 @@ print(paste(&quot;最尤推定値: α =&quot;,result_optim$par[1],&quot;β =&quo
                       upper = c(1,15))
 
 print(paste(&quot;最尤推定値: α =&quot;,result_pso$par[1],&quot;β =&quot;,result_pso$par[2], &quot;,対数尤度: Log Likelihood = &quot;, -result_pso$value))</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.691211112736872 β = 2.26477598952136 ,対数尤度: Log Likelihood =  -38.8506377123594&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.691211119372265 β = 2.26477599855068 ,対数尤度: Log Likelihood =  -38.8506377123594&quot;</code></pre>
 </div>
 <div id="つの比較" class="section level4">
 <h4>３つの比較</h4>
@@ -1181,14 +1221,20 @@ knitr::kable(compare_table)</code></pre>
 <div id="引用参考文献" class="section level2">
 <h2>引用・参考文献</h2>
 <ul>
-<li>Busemeyer, J. R., &amp; Diederich, A. (2010). Cognitive Modeling. SAGE.</li>
-<li>Heathcote, A., Brown, S. D., &amp; Wagenmakers, E.-J. (2015). An Introduction to Good Practices in Cognitive Modeling. In B. U. Forstmann &amp; E.-J. Wagenmakers (Eds.), An Introduction to Model-Based Cognitive Neuroscience (pp. 25–48). Springer New York.</li>
-<li>Palminteri, S., Wyart, V., &amp; Koechlin, E. (2017). The Importance of Falsification in Computational Cognitive Modeling. Trends in Cognitive Sciences, 21(6), 425–433.</li>
+<li>Busemeyer, J. R., &amp; Diederich, A. (2010). Cognitive Modeling.
+SAGE.</li>
+<li>Heathcote, A., Brown, S. D., &amp; Wagenmakers, E.-J. (2015). An
+Introduction to Good Practices in Cognitive Modeling. In B. U. Forstmann
+&amp; E.-J. Wagenmakers (Eds.), An Introduction to Model-Based Cognitive
+Neuroscience (pp. 25–48). Springer New York.</li>
+<li>Palminteri, S., Wyart, V., &amp; Koechlin, E. (2017). The Importance
+of Falsification in Computational Cognitive Modeling. Trends in
+Cognitive Sciences, 21(6), 425–433.</li>
 </ul>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -1228,6 +1274,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

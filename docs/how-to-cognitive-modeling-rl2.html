@@ -13,8 +13,8 @@
 
 <title>強化学習モデル: ベイズ推定(1)</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -299,12 +303,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -388,16 +392,19 @@ div.tocify {
 
 <div id="認知モデリングの推奨実践法" class="section level2">
 <h2>認知モデリングの推奨実践法</h2>
-<p>Busemeyer &amp; Diederich(2010), Heathcote (2014), Palminteri et al.(2017)を参考にまとめると，以下のような感じになります。</p>
+<p>Busemeyer &amp; Diederich(2010), Heathcote (2014), Palminteri et
+al.(2017)を参考にまとめると，以下のような感じになります。</p>
 <ul>
 <li>A 認知課題と認知モデルを準備</li>
-<li>B 人工データ生成とパラメータリカバリーを確認（モデルや課題の修正）</li>
+<li>B
+人工データ生成とパラメータリカバリーを確認（モデルや課題の修正）</li>
 <li>C データ収集と行動データを確認</li>
 <li>D パラメータ推定</li>
 <li>E 相対モデル比較</li>
 <li>F モデル・シミュレーションと選択的影響テスト</li>
 </ul>
-<p><a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl1.html" target="_blank">「強化学習モデル: 最尤推定」</a>ではABCDとすすめてきました。今回は，ベイズ推定をcmdstanを使って行ってみます。そこで，一度Bに戻ってからDに取り組みます。</p>
+<p><a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl1.html" target="_blank">「強化学習モデル:
+最尤推定」</a>ではABCDとすすめてきました。今回は，ベイズ推定をcmdstanを使って行ってみます。そこで，一度Bに戻ってからDに取り組みます。</p>
 <div id="使用するrパッケージ" class="section level3">
 <h3>使用するRパッケージ</h3>
 <p>適宜必要なパッケージをインストールしてください。cmdstnrのインストールは，<a href="https://mc-stan.org/cmdstanr/" target="_blank">こちら</a>をご確認ください。</p>
@@ -409,8 +416,10 @@ library(posterior)
 library(bridgesampling)</code></pre>
 </div>
 </div>
-<div id="b-人工データ生成とパラメータリカバリーを確認モデルや課題の修正" class="section level2">
-<h2>B 人工データ生成とパラメータリカバリーを確認（モデルや課題の修正）</h2>
+<div id="b-人工データ生成とパラメータリカバリーを確認モデルや課題の修正"
+class="section level2">
+<h2>B
+人工データ生成とパラメータリカバリーを確認（モデルや課題の修正）</h2>
 <div id="人工データの生成" class="section level3">
 <h3>人工データの生成</h3>
 <p>改めて人工データを生成するために，実験状況の入ったsim_dataの準備とq_learning_sim関数とq_learning_ll関数の準備をします。</p>
@@ -507,7 +516,9 @@ data_1 &lt;- q_learning_sim(alpha = 0.3, beta = 2, sim_data)</code></pre>
 <h3>cmdstanrでの推定</h3>
 <div id="stanコードの作成" class="section level4">
 <h4>Stanコードの作成</h4>
-<p>“q_learning.stan”というファイルを作成して，以下のコードを書き込みます。Stanは統計モデリング用のプラットフォームで，MCMCサンプリングによるベイズ推定，変分推定，最適化による最尤推定が可能です。Stanでは，data,parameters,modelのようにブロックごとに指定をして，書いていきます（この３つが最小限のブロック数かと思います）。dataブロックでは入力するデータについて記述します（型と範囲の指定が必要です）。parameterブロックでは，推定するパラメータについて記述します（型と範囲の指定が必要です）。modelブロックでは，データとパラメータを用いた生成モデルの記載をします。なお，データ~分布(y ~ normal(mu, sig))のような形で記述もできますし，target += 対数尤度のように，対数尤度でも記述ができます。以下は，Q学習の推定用のコードですが，グリッドサーチで用意したものに比べて，すっきりしているかと思います。</p>
+<p>“q_learning.stan”というファイルを作成して，以下のコードを書き込みます。Stanは統計モデリング用のプラットフォームで，MCMCサンプリングによるベイズ推定，変分推定，最適化による最尤推定が可能です。Stanでは，data,parameters,modelのようにブロックごとに指定をして，書いていきます（この３つが最小限のブロック数かと思います）。dataブロックでは入力するデータについて記述します（型と範囲の指定が必要です）。parameterブロックでは，推定するパラメータについて記述します（型と範囲の指定が必要です）。modelブロックでは，データとパラメータを用いた生成モデルの記載をします。なお，データ~分布(y
+~ normal(mu, sig))のような形で記述もできますし，target +=
+対数尤度のように，対数尤度でも記述ができます。以下は，Q学習の推定用のコードですが，グリッドサーチで用意したものに比べて，すっきりしているかと思います。</p>
 <pre><code>data {
   int&lt;lower=1&gt; trial;
   int&lt;lower=1,upper=2&gt; choice[trial]; // 1 or 2
@@ -541,7 +552,9 @@ model {
 </div>
 <div id="最尤推定" class="section level3">
 <h3>最尤推定</h3>
-<p>コンパイルができたら，最適化による最尤推定をしてみましょう。最尤推定は，<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl1.html" target="_blank">「強化学習モデル: 最尤推定」 </a>でも見てきたように，optimやpsoなどのRパッケージでできますが，ここではstanで最尤推定値を推定します。コンパイルしたモデル$optimize()で推定ができます。</p>
+<p>コンパイルができたら，最適化による最尤推定をしてみましょう。最尤推定は，<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl1.html" target="_blank">「強化学習モデル:
+最尤推定」
+</a>でも見てきたように，optimやpsoなどのRパッケージでできますが，ここではstanで最尤推定値を推定します。コンパイルしたモデル$optimize()で推定ができます。</p>
 <pre><code>mle_cmdstan &lt;- q_learning$optimize(
   data = list(trial = nrow(data_1),
               reward = data_1$reward,
@@ -607,7 +620,11 @@ parameter_recovery_mle &lt;- data.frame(alpha_true = alpha_true[1:length(alpha_e
 <div id="ベイズ推定" class="section level3">
 <h3>ベイズ推定</h3>
 <ul>
-<li>今度は，MCMCを用いたベイズ推定をしてみましょう！最尤推定のときは，optimizeでしたが，今度は，sampleを使います。違う点としては，MCMCの連鎖（チェーン）の本数（chains 4本が良いと思います），MCMCの初期のあまり収束してい部分をどのくらい捨てるか(iter_warmup, モデルに依存するのでtrace plotを見てから判断するのが良いと思います）,MCMCサンプルの数(iter_sampling 多いほうが推定は安定しますが，時間がかかります)，　並列化で使用するコアの数（parallel_chains，MCMCのチェーンを４とした場合は，４がいいですが，お手持ちのパソコンのコア数に依存します）を指定する点です。</li>
+<li>今度は，MCMCを用いたベイズ推定をしてみましょう！最尤推定のときは，optimizeでしたが，今度は，sampleを使います。違う点としては，MCMCの連鎖（チェーン）の本数（chains
+4本が良いと思います），MCMCの初期のあまり収束してい部分をどのくらい捨てるか(iter_warmup,
+モデルに依存するのでtrace
+plotを見てから判断するのが良いと思います）,MCMCサンプルの数(iter_sampling
+多いほうが推定は安定しますが，時間がかかります)，　並列化で使用するコアの数（parallel_chains，MCMCのチェーンを４とした場合は，４がいいですが，お手持ちのパソコンのコア数に依存します）を指定する点です。</li>
 </ul>
 <pre><code>q_learning_mcmc &lt;- q_learning$sample(
   data = list(trial = nrow(data_1),
@@ -620,15 +637,15 @@ parameter_recovery_mle &lt;- data.frame(alpha_true = alpha_true[1:length(alpha_e
   parallel_chains = 4)</code></pre>
 <p>結果の要約を確認してみましょう。</p>
 <pre class="r"><code>q_learning_mcmc$summary()</code></pre>
-<pre><code>## # A tibble: 3 x 10
-##   variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
-##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1 lp__     -37.5   -37.1   1.13   0.799  -39.7   -36.4    1.00    1578.    1900.
-## 2 alpha      0.326   0.312 0.0959 0.0885   0.197   0.510  1.00    1892.    1693.
-## 3 beta       2.74    2.73  0.584  0.566    1.84    3.74   1.00    2187.    2025.</code></pre>
+<pre><code>## # A tibble: 3 × 10
+##   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
+##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 lp__     -43.0   -42.6   1.19  0.889 -45.3   -41.8    1.00    1399.    1646.
+## 2 alpha      0.511   0.489 0.178 0.185   0.250   0.841  1.00    2129.    1688.
+## 3 beta       2.09    2.07  0.512 0.500   1.28    2.97   1.00    1531.    1724.</code></pre>
 <p>以下はMCMCについての診断結果です。</p>
 <pre class="r"><code>q_learning_mcmc$cmdstan_diagnose()</code></pre>
-<pre><code>## Processing csv files: /tmp/RtmpS3XHIz/q_learning-202105260852-1-079c26.csv, /tmp/RtmpS3XHIz/q_learning-202105260852-2-079c26.csv, /tmp/RtmpS3XHIz/q_learning-202105260852-3-079c26.csv, /tmp/RtmpS3XHIz/q_learning-202105260852-4-079c26.csv
+<pre><code>## Processing csv files: /tmp/RtmpJJ3WAj/q_learning-202203310003-1-4c61b3.csv, /tmp/RtmpJJ3WAj/q_learning-202203310003-2-4c61b3.csv, /tmp/RtmpJJ3WAj/q_learning-202203310003-3-4c61b3.csv, /tmp/RtmpJJ3WAj/q_learning-202203310003-4-4c61b3.csv
 ## 
 ## Checking sampler transitions treedepth.
 ## Treedepth satisfactory for all transitions.
@@ -637,14 +654,15 @@ parameter_recovery_mle &lt;- data.frame(alpha_true = alpha_true[1:length(alpha_e
 ## No divergent transitions found.
 ## 
 ## Checking E-BFMI - sampler transitions HMC potential energy.
-## E-BFMI satisfactory for all transitions.
+## E-BFMI satisfactory.
 ## 
 ## Effective sample size satisfactory.
 ## 
 ## Split R-hat values satisfactory all parameters.
 ## 
 ## Processing complete, no problems detected.</code></pre>
-<p>trace plot と事後分布をプロットしてみましょう。trace plotはMCMCのチェーンがきれいにまざっているか確認をしましょう。</p>
+<p>trace plot と事後分布をプロットしてみましょう。trace
+plotはMCMCのチェーンがきれいにまざっているか確認をしましょう。</p>
 <pre class="r"><code># ggplotやtidyverseで扱いやすく処理する
 mcmc_samples = as_draws_df(q_learning_mcmc$draws())
 # alphaのtrace plot
@@ -729,21 +747,30 @@ parameter_recovery_mcmc &lt;- data.frame(alpha_true = alpha_true,
 </div>
 <div id="情報事前分布の活用" class="section level3">
 <h3>情報事前分布の活用</h3>
-<p>上記の最尤推定や無情報の事前分布の場合だと，ベータがとても大きな値になる点が気にかかるところです。そこで事前分布にも情報をもたせることにします。最尤推定にはないベイズ推定の特徴は，事前分布と尤度からパラメータの事後分布を推定する点です。例えば，逆転学習課題でのパタメータ推定において，おおよそパラメータの分布が分かっていると，それを事前分布に使って，推定を安定化させることができます。例えば，Kanen et al.(2019)では，学習率αはden Ouden et al.(2013)を参考にベータ分布を事前分布に用い，逆温度βはGershman(2016)を参考にガンマ分布を用いています（なお，Karen et al.(2019)で用いるのは逆温度ではなく報酬感受性ですが，意味は同じです）。</p>
+<p>上記の最尤推定や無情報の事前分布の場合だと，ベータがとても大きな値になる点が気にかかるところです。そこで事前分布にも情報をもたせることにします。最尤推定にはないベイズ推定の特徴は，事前分布と尤度からパラメータの事後分布を推定する点です。例えば，逆転学習課題でのパタメータ推定において，おおよそパラメータの分布が分かっていると，それを事前分布に使って，推定を安定化させることができます。例えば，Kanen
+et al.(2019)では，学習率αはden Ouden et
+al.(2013)を参考にベータ分布を事前分布に用い，逆温度βはGershman(2016)を参考にガンマ分布を用いています（なお，Karen
+et
+al.(2019)で用いるのは逆温度ではなく報酬感受性ですが，意味は同じです）。</p>
 <ul>
-<li>学習率αは極端に０や１に近い値が推定されることがありますが，実際は0や１に近い値を取ることは稀であると考えられるので，den Ouden et al.(2013)が用いているベータ分布(beta(α = 1.2,β = 1.2))のような形状だと推定が安定するかもしれません。</li>
+<li>学習率αは極端に０や１に近い値が推定されることがありますが，実際は0や１に近い値を取ることは稀であると考えられるので，den
+Ouden et al.(2013)が用いているベータ分布(beta(α = 1.2,β =
+1.2))のような形状だと推定が安定するかもしれません。</li>
 </ul>
 <pre class="r"><code>alpha = seq(0,1, length=100)
 plot(alpha, dbeta(alpha, 1.2, 1.2), ylab=&quot;density&quot;, type =&quot;l&quot;, col=4)</code></pre>
 <p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <ul>
-<li>学習率βは極端に大きな値が推定されることがありますが，実際はあまりに大きな推定値は少ないですし，大きくてもその効果は地位ので，Gershman(2016)が用いているガンマ分布(gamma(α = 4.82,β = 0.88))のような形状だと，極端に大きな推定値を避けられるかもしれません。</li>
+<li>学習率βは極端に大きな値が推定されることがありますが，実際はあまりに大きな推定値は少ないですし，大きくてもその効果は地位ので，Gershman(2016)が用いているガンマ分布(gamma(α
+= 4.82,β =
+0.88))のような形状だと，極端に大きな推定値を避けられるかもしれません。</li>
 </ul>
 <pre class="r"><code>beta = seq(0,15, length=500)
 plot(beta, dgamma(beta, 4.82, 0.88), ylab=&quot;density&quot;, type =&quot;l&quot;, col=4)</code></pre>
 <p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
-<div id="情報の有る事前分布を用いた場合のパラメータリカバリ" class="section level3">
+<div id="情報の有る事前分布を用いた場合のパラメータリカバリ"
+class="section level3">
 <h3>情報の有る事前分布を用いた場合のパラメータリカバリ</h3>
 <p>上記を踏まえて，αの事前分布にベータ分布，βの事前分布にガンマ分布を仮定したStanコードを書いて，q_learning_prior.stanという名前で保存します。</p>
 <pre><code>data {
@@ -791,15 +818,15 @@ model {
   parallel_chains = 4)</code></pre>
 <p>結果の要約を確認してみましょう。</p>
 <pre class="r"><code>q_learning_prior_mcmc$summary()</code></pre>
-<pre><code>## # A tibble: 3 x 10
-##   variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
-##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1 lp__     -36.2   -35.9   1.11   0.783  -38.4   -35.2    1.00    1677.    2005.
-## 2 alpha      0.320   0.308 0.0907 0.0846   0.200   0.492  1.00    2270.    1613.
-## 3 beta       2.88    2.85  0.561  0.562    2.00    3.84   1.00    2422.    2108.</code></pre>
+<pre><code>## # A tibble: 3 × 10
+##   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
+##   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 lp__     -42.0   -41.6   1.15  0.820 -44.4   -40.9    1.00    1313.    1796.
+## 2 alpha      0.479   0.461 0.162 0.160   0.242   0.778  1.00    2206.    1671.
+## 3 beta       2.33    2.32  0.486 0.475   1.55    3.16   1.00    2084.    2177.</code></pre>
 <p>以下はMCMCについての診断結果です。</p>
 <pre class="r"><code>q_learning_prior_mcmc$cmdstan_diagnose()</code></pre>
-<pre><code>## Processing csv files: /tmp/RtmpS3XHIz/q_learning_prior-202105260856-1-7b0039.csv, /tmp/RtmpS3XHIz/q_learning_prior-202105260856-2-7b0039.csv, /tmp/RtmpS3XHIz/q_learning_prior-202105260856-3-7b0039.csv, /tmp/RtmpS3XHIz/q_learning_prior-202105260856-4-7b0039.csv
+<pre><code>## Processing csv files: /tmp/RtmpJJ3WAj/q_learning_prior-202203310009-1-89764c.csv, /tmp/RtmpJJ3WAj/q_learning_prior-202203310009-2-89764c.csv, /tmp/RtmpJJ3WAj/q_learning_prior-202203310009-3-89764c.csv, /tmp/RtmpJJ3WAj/q_learning_prior-202203310009-4-89764c.csv
 ## 
 ## Checking sampler transitions treedepth.
 ## Treedepth satisfactory for all transitions.
@@ -808,7 +835,7 @@ model {
 ## No divergent transitions found.
 ## 
 ## Checking E-BFMI - sampler transitions HMC potential energy.
-## E-BFMI satisfactory for all transitions.
+## E-BFMI satisfactory.
 ## 
 ## Effective sample size satisfactory.
 ## 
@@ -854,7 +881,8 @@ parameter_recovery_prior_mcmc &lt;- data.frame(alpha_true = alpha_true,
                                      beta_true = beta_true,
                                      alpha_estimated = alpha_estimated,
                                      beta_estimated = beta_estimated)</code></pre>
-<div id="情報事前分布を用いた場合のパラメータリカバリの確認" class="section level4">
+<div id="情報事前分布を用いた場合のパラメータリカバリの確認"
+class="section level4">
 <h4>情報事前分布を用いた場合のパラメータリカバリの確認</h4>
 <p>いい感じにパラメータリカバリーできています。無情報事前分布のときのようにすごく大きなβが発生しなくなっています。</p>
 <pre class="r"><code>parameter_recovery_prior_mcmc %&gt;% 
@@ -989,23 +1017,39 @@ ggplot() +
 <p><img src="how-to-cognitive-modeling-rl2_files/figure-html/unnamed-chunk-29-4.png" width="672" /></p>
 <pre class="r"><code>q_values &lt;- q_learning_ll(mean(mcmc_samples$alpha),mean(mcmc_samples$beta),data_individual)</code></pre>
 <p>sub01のトレースプロットや事後分布をみる限りでは，有情報事前分布の方が推定がうまくいっているように見えます。</p>
-<p>さて，ここまでで，ベイズ推定が出来るようになりました。次は<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl3.html" target="_blank">「強化学習モデル: ベイズ推定(2)」</a>で，モデル比較などに取り組みます。</p>
+<p>さて，ここまでで，ベイズ推定が出来るようになりました。次は<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl3.html" target="_blank">「強化学習モデル:
+ベイズ推定(2)」</a>で，モデル比較などに取り組みます。</p>
 </div>
 </div>
 <div id="引用参考文献" class="section level2">
 <h2>引用・参考文献</h2>
 <ul>
-<li>Busemeyer, J. R., &amp; Diederich, A. (2010). Cognitive Modeling. SAGE.</li>
-<li>den Ouden, H. E. M., Daw, N. D., Fernandez, G., Elshout, J. A., Rijpkema, M., Hoogman, M., Franke, B., &amp; Cools, R. (2013). Dissociable effects of dopamine and serotonin on reversal learning. Neuron, 80(4), 1090–1100.</li>
-<li>Gershman, S. J. (2016). Empirical priors for reinforcement learning models. Journal of Mathematical Psychology, 71, 1–6.</li>
-<li>Heathcote, A., Brown, S. D., &amp; Wagenmakers, E.-J. (2015). An Introduction to Good Practices in Cognitive Modeling. In B. U. Forstmann &amp; E.-J. Wagenmakers (Eds.), An Introduction to Model-Based Cognitive Neuroscience (pp. 25–48). Springer New York.</li>
-<li>Kanen, J. W., Ersche, K. D., Fineberg, N. A., Robbins, T. W., &amp; Cardinal, R. N. (2019). Computational modelling reveals contrasting effects on reinforcement learning and cognitive flexibility in stimulant use disorder and obsessive-compulsive disorder: remediating effects of dopaminergic D2/3 receptor agents. Psychopharmacology, 236(8), 2337–2358.</li>
-<li>Palminteri, S., Wyart, V., &amp; Koechlin, E. (2017). The Importance of Falsification in Computational Cognitive Modeling. Trends in Cognitive Sciences, 21(6), 425–433.</li>
+<li>Busemeyer, J. R., &amp; Diederich, A. (2010). Cognitive Modeling.
+SAGE.</li>
+<li>den Ouden, H. E. M., Daw, N. D., Fernandez, G., Elshout, J. A.,
+Rijpkema, M., Hoogman, M., Franke, B., &amp; Cools, R. (2013).
+Dissociable effects of dopamine and serotonin on reversal learning.
+Neuron, 80(4), 1090–1100.</li>
+<li>Gershman, S. J. (2016). Empirical priors for reinforcement learning
+models. Journal of Mathematical Psychology, 71, 1–6.</li>
+<li>Heathcote, A., Brown, S. D., &amp; Wagenmakers, E.-J. (2015). An
+Introduction to Good Practices in Cognitive Modeling. In B. U. Forstmann
+&amp; E.-J. Wagenmakers (Eds.), An Introduction to Model-Based Cognitive
+Neuroscience (pp. 25–48). Springer New York.</li>
+<li>Kanen, J. W., Ersche, K. D., Fineberg, N. A., Robbins, T. W., &amp;
+Cardinal, R. N. (2019). Computational modelling reveals contrasting
+effects on reinforcement learning and cognitive flexibility in stimulant
+use disorder and obsessive-compulsive disorder: remediating effects of
+dopaminergic D2/3 receptor agents. Psychopharmacology, 236(8),
+2337–2358.</li>
+<li>Palminteri, S., Wyart, V., &amp; Koechlin, E. (2017). The Importance
+of Falsification in Computational Cognitive Modeling. Trends in
+Cognitive Sciences, 21(6), 425–433.</li>
 </ul>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -1045,6 +1089,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

@@ -1,0 +1,31 @@
+---
+title: "オンラインデータ収集モジュール"
+---
+
+## JATOSを用いた実験実施方法
+
+- [JATOSをDockerを使ってローカルPCに導入する方法](how-to-jatos-local.html)　○
+
+- [JATOSをDockerを使ってサーバーに導入する方法](how-to-jatos-web.html)　○
+
+- [JATOSをローカルで使用する方法](how-to-jspsych-jatos-local.html)　○
+
+- [JATOSをサーバーで使用する方法](how-to-jspsych-jatos-web.html)　○
+
+- [jsPsychとlab.jsをまぜてJATOSで動かす方法](how-to-labjs-jspsych-jatos.html) 
+
+- [Data URIによってJATOSサーバーの負荷を低くする方法](jspsych-data-uri.html)　
+
+- [JATOSでコンポーネント間でIDなどの対応づけをする方法](jspsych-id-jatos.html)
+
+- [JATOSでローカルにもバックアップをとる方法](japsych-jatos-locak-backup.html)
+
+<br />
+
+### JATOS以外の方法
+
+- [jsPsychを用いたWEB実験(Firebaseを使う方法)](how-to-jspsych-firebase.html)
+
+- [jsPsychを用いたWEB実験(Pavloviaを使う方法)](how-to-jspsych-pavlovia.html)
+
+- [jsPsychを用いたWEB実験(Google Spreadsheetを使う方法)](how-to-jspsych-google-sheet.html)

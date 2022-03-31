@@ -13,7 +13,7 @@
 
 <title>心理ネットワーク入門１：横断データ</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -390,10 +394,20 @@ div.tocify {
 <h2>心理ネットワークとは？</h2>
 <p>心理ネットワーク（精神病理ネットワーク）については，まずは以下の２つの論文を読んでください。以降は，それを前提として，技術的な側面のみを解説します。</p>
 <ul>
-<li><a href="https://www.jstage.jst.go.jp/article/jjbct/advpub/0/advpub_20-015/_article/-char/ja/">樫原 潤・伊藤正哉(印刷中) 心理ネットワークアプローチがもたらす「臨床革命」—認知行動療法の文脈に基づく展望— 認知行動療法研究</a></li>
-<li><a href="https://www.jstage.jst.go.jp/article/sjpr/62/2/62_143/_article/-char/ja">樫原 潤(2019) 精神病理ネットワークの応用可能性―うつ病治療のテイラー化を促進するために― 心理学評論 62(2),143-165</a></li>
+<li><a
+href="https://www.jstage.jst.go.jp/article/jjbct/advpub/0/advpub_20-015/_article/-char/ja/">樫原
+潤・伊藤正哉(印刷中)
+心理ネットワークアプローチがもたらす「臨床革命」—認知行動療法の文脈に基づく展望—
+認知行動療法研究</a></li>
+<li><a
+href="https://www.jstage.jst.go.jp/article/sjpr/62/2/62_143/_article/-char/ja">樫原
+潤(2019)
+精神病理ネットワークの応用可能性―うつ病治療のテイラー化を促進するために―
+心理学評論 62(2),143-165</a></li>
 </ul>
-<p>心理ネットワークとは，観察可能な変数を表すノードと統計的関係を表すエッジから構成されるものです(Epskamp, Borsboom &amp; Fried, 2018　以下の内容は基本的にEpskamp et al., 2018に従っています)。心理ネットワークモデルは，因子分析やSEMなどのように潜在変数を仮定してそれから各項目・症状を説明するのではなく，症状（心理変数）間のネットワーク構造を検討します。</p>
+<p>心理ネットワークとは，観察可能な変数を表すノードと統計的関係を表すエッジから構成されるものです(Epskamp,
+Borsboom &amp; Fried, 2018　以下の内容は基本的にEpskamp et al.,
+2018に従っています)。心理ネットワークモデルは，因子分析やSEMなどのように潜在変数を仮定してそれから各項目・症状を説明するのではなく，症状（心理変数）間のネットワーク構造を検討します。</p>
 <p>心理ネットワークは，以下の図のように，観察可能な変数を表すノードは円で，関係を表すエッジは線でプロットされます。</p>
 <p><img src="fig/net01.png" /></p>
 <div id="心理ネットワーク分析の手順" class="section level3">
@@ -405,7 +419,9 @@ div.tocify {
 <li>ネットワーク特性の指標の検討する</li>
 <li>ネットワークの精度の検討する</li>
 </ol>
-<p>ここで注意すべき点は，一般的なネットワーク科学で扱うネットワークの場合は，エッジは観察可能です（例えば，電力網ネットワークのエッジは直接観察・測定可能です）。しかし，心理ネットワークのエッジは，データから推定されます（重み付けネットワーク）。そのため，サンプルサイズの影響も受けますので，ネットワークのエッジの精度も検討する必要があります。また，ネットワーク科学では，グローバルなネットワーク特性の指標が使われます(small worldness, density, global clustering)。しかし，心理ネットワークのような重み付けネットワークでは使えません。そのため，２つのノードの関係や１つのノードがどのような影響力をもつのか（中心性の指標）といったローカルなネットワーク特性を用いることが多いです。</p>
+<p>ここで注意すべき点は，一般的なネットワーク科学で扱うネットワークの場合は，エッジは観察可能です（例えば，電力網ネットワークのエッジは直接観察・測定可能です）。しかし，心理ネットワークのエッジは，データから推定されます（重み付けネットワーク）。そのため，サンプルサイズの影響も受けますので，ネットワークのエッジの精度も検討する必要があります。また，ネットワーク科学では，グローバルなネットワーク特性の指標が使われます(small
+worldness, density, global
+clustering)。しかし，心理ネットワークのような重み付けネットワークでは使えません。そのため，２つのノードの関係や１つのノードがどのような影響力をもつのか（中心性の指標）といったローカルなネットワーク特性を用いることが多いです。</p>
 </div>
 <div id="有向無向ネットワーク" class="section level3">
 <h3>有向・無向ネットワーク</h3>
@@ -419,7 +435,9 @@ div.tocify {
 </div>
 <div id="ノードの中心性指標" class="section level3">
 <h3>ノードの中心性指標</h3>
-<p>心理ネットワークは，重み付けネットワークのため，その他のネットワークと違って，グローバルなネットワーク特性の指標（small worldness, density, global clustering）が使えません。そこで，各ノードの他のノードの影響性のようなローカルなネットワーク特性（中心性指標）を用います。そのようなローカルなネットワーク特性としては，strength，closeness，betweenessの３つがあります。</p>
+<p>心理ネットワークは，重み付けネットワークのため，その他のネットワークと違って，グローバルなネットワーク特性の指標（small
+worldness, density, global
+clustering）が使えません。そこで，各ノードの他のノードの影響性のようなローカルなネットワーク特性（中心性指標）を用います。そのようなローカルなネットワーク特性としては，strength，closeness，betweenessの３つがあります。</p>
 <p><strong>Strength</strong></p>
 <p>Strength（重み付けのないネットワークの場合は，degreeと言う）は，あるノードがつながっている全てのエッジの強さを合計したものです。あるノードが他のノードとどのくらい強くつながっているのかを表す指標であり，そのノードの全体に対する影響力を表しているといえます。</p>
 <p>以下のようなネットワークを例にして，ノード１のStrengthを計算してみましょう。ノード1とノード2の間には，0.3の緑のエッジがあります。ノード1とノード3の間には，0.1の緑のエッジがあります。ノード1とノード6の間には，0.2の緑のエッジがあります。最後にノード1とノード4の間には，0.2の赤のエッジがあります。これらを合計した0.8がノード１のStrengthになります。ここの計算では，エッジの正負は問われません。なお，Strengthは接続しているノードの合計ですので，ノードが増えるほど大きくなるのでプロットする際には標準化されます。これは他の指標も同様です。</p>
@@ -436,20 +454,41 @@ div.tocify {
 </div>
 <div id="gaussian-graphical-modelggm" class="section level2">
 <h2>Gaussian Graphical Model(GGM)</h2>
-<p>変数間の関係がある・ないというグラフを作る場合に，確率分布と結びつけるようなモデルのことをベアワイズ・マルコフ・グラフ(pairwise Markov graph)と呼びます。そして，心理ネットワークで用いる無向ネットワークモデルの推定では，ペアワイズ・マルコフ確率場(pairwise Markov random field)がよく使われます。さらに，無向ネットワークでも，データが連続かつ正規分布の場合には，多変量正規分布を用いたGaussian Graphical Model(GGM)が用いられます。心理学で収集するデータは，連続変数かつ正規分布を仮定できることも多いので，心理ネットワーク分析ではGGMがよく用いられます。</p>
-<p>GGMでは，以下のように，<span class="math inline">\(y_{C}\)</span> は平均0, 分散共分散行列 <span class="math inline">\(\mathbf{\Sigma}\)</span> の多変量正規分布に従う。ここでのyは確率変数ベクトルYの実現値で，中心化をしたものである（中心化は値から平均値を引く手続きです）。<span class="math inline">\(y_{C}\)</span> のCはcaseつまりデータフレームの行に対応しており，yはベクトルなので，１つの値ではなく複数の変数が収められている（例. y[c=1,1]は１人目の不安得点，y[c=2,1]は2人目の不安得点, y[c=1,2]は１人目のうつ得点など）。そして，分散共分散行列 <span class="math inline">\(\mathbf{\Sigma}\)</span>は，ベクトルyに含まれる変数間の分散共分散行列になります。</p>
+<p>変数間の関係がある・ないというグラフを作る場合に，確率分布と結びつけるようなモデルのことをベアワイズ・マルコフ・グラフ(pairwise
+Markov
+graph)と呼びます。そして，心理ネットワークで用いる無向ネットワークモデルの推定では，ペアワイズ・マルコフ確率場(pairwise
+Markov random
+field)がよく使われます。さらに，無向ネットワークでも，データが連続かつ正規分布の場合には，多変量正規分布を用いたGaussian
+Graphical
+Model(GGM)が用いられます。心理学で収集するデータは，連続変数かつ正規分布を仮定できることも多いので，心理ネットワーク分析ではGGMがよく用いられます。</p>
+<p>GGMでは，以下のように，<span class="math inline">\(y_{C}\)</span>
+は平均0, 分散共分散行列 <span
+class="math inline">\(\mathbf{\Sigma}\)</span>
+の多変量正規分布に従う。ここでのyは確率変数ベクトルYの実現値で，中心化をしたものである（中心化は値から平均値を引く手続きです）。<span
+class="math inline">\(y_{C}\)</span>
+のCはcaseつまりデータフレームの行に対応しており，yはベクトルなので，１つの値ではなく複数の変数が収められている（例.
+y[c=1,1]は１人目の不安得点，y[c=2,1]は2人目の不安得点,
+y[c=1,2]は１人目のうつ得点など）。そして，分散共分散行列 <span
+class="math inline">\(\mathbf{\Sigma}\)</span>は，ベクトルyに含まれる変数間の分散共分散行列になります。</p>
 <p><span class="math display">\[
 y_{C} \sim N(\mathbf{0}, \mathbf{\Sigma})
 \]</span></p>
 <div id="分散共分散行列精度行列偏相関行列" class="section level3">
 <h3>分散共分散行列→精度行列→偏相関行列</h3>
-<p>GGMでは，<span class="math inline">\(y_{C}\)</span> は平均0, 分散共分散行列 <span class="math inline">\(\mathbf{\Sigma}\)</span> の多変量正規分布に従うとして，その分散共分散行列から偏相関行列を算出します。具体的な手続きとしては，分散共分散行列からその逆行列である精度行列を計算し，精度行列から偏相関行列を計算します。なんだかややこしそうですが，そうでもありません。</p>
+<p>GGMでは，<span class="math inline">\(y_{C}\)</span> は平均0,
+分散共分散行列 <span class="math inline">\(\mathbf{\Sigma}\)</span>
+の多変量正規分布に従うとして，その分散共分散行列から偏相関行列を算出します。具体的な手続きとしては，分散共分散行列からその逆行列である精度行列を計算し，精度行列から偏相関行列を計算します。なんだかややこしそうですが，そうでもありません。</p>
 <p>まず，Kは精度行列です。この精度行列Kは，分散共分散行列の逆行列になります。</p>
 <p><span class="math display">\[
 \boldsymbol{K}=\boldsymbol{\Sigma}^{-1}
 \]</span></p>
 <p>逆行列って何？ってなるかもしれないのですが，逆行列は，ｎ次正方行列Aに掛けた場合に以下のような単位行列Eとなるような行列のことです。分散共分散行列に何か行列をかけ合わせた時に，以下のような単位行列Eになるようなものがここで知りたい逆行列です。どうやって逆行列計算するの？って思われたかもしれませんが，以降はパソコンに頼ってRで計算させつつ分散共分散行列から精度行列を経由して，偏相関行列を計算してみましょう。</p>
-<p><span class="math display">\[\boldsymbol{E}=\left[\begin{array}{lcc}1 &amp; 0 \\ 0 &amp; 1\end{array}\right]\]</span> 以降の計算は，Epskamp, Waldorp, Mõttus &amp; Borsboom(2018)に記載されている例を用います。まず，以下のような分散共分散行列( <span class="math inline">\(\mathbf{\Sigma}\)</span> ) Aを使って，これを偏相関行列にします。Aは以下の通りです。Rで計算できますので，以下をコピペして実行ください。変数１と変数２は負の関連があり，変数１と変数３は正の関連があり，変数２と変数３は関連は弱そうです。</p>
+<p><span class="math display">\[\boldsymbol{E}=\left[\begin{array}{lcc}1
+&amp; 0 \\ 0 &amp; 1\end{array}\right]\]</span> 以降の計算は，Epskamp,
+Waldorp, Mõttus &amp;
+Borsboom(2018)に記載されている例を用います。まず，以下のような分散共分散行列(
+<span class="math inline">\(\mathbf{\Sigma}\)</span> )
+Aを使って，これを偏相関行列にします。Aは以下の通りです。Rで計算できますので，以下をコピペして実行ください。変数１と変数２は負の関連があり，変数１と変数３は正の関連があり，変数２と変数３は関連は弱そうです。</p>
 <pre class="r"><code>A &lt;- matrix(c(1,-0.26,0.31,-0.26,1,-0.08,0.31,-0.08,1), 3, 3)
 A</code></pre>
 <pre><code>##       [,1]  [,2]  [,3]
@@ -464,7 +503,10 @@ inv_A</code></pre>
 ## [2,]  0.2790711  1.0725015306 -0.0007119161
 ## [3,] -0.3431435 -0.0007119161  1.1063175430</code></pre>
 <p>以下の式を使って，上記で算出した精度行列から偏相関係数を求めることができます。</p>
-<p><span class="math display">\[\operatorname{Cor}\left(Y_{i}, Y_{j} \mid \boldsymbol{y}_{-(i, j)}\right)=-\frac{\kappa_{i j}}{\sqrt{\kappa_{i i}} \sqrt{\kappa_{j j}}}\]</span> これは手計算でも簡単にできるのですが，現代人なので，Rのstatsパッケージのcov2cor関数を使って偏相関行列を計算をしちゃいましょう。あまり大きな変化はないかもしれませんが，変数２と３の関係が分散共分散行列行列よりも小さくなり，関係がないと言ってもよいかと思われます。この偏相関行列の偏相関係数をエッジにしてネットワークを描きます。</p>
+<p><span class="math display">\[\operatorname{Cor}\left(Y_{i}, Y_{j}
+\mid \boldsymbol{y}_{-(i, j)}\right)=-\frac{\kappa_{i
+j}}{\sqrt{\kappa_{i i}} \sqrt{\kappa_{j j}}}\]</span>
+これは手計算でも簡単にできるのですが，現代人なので，Rのstatsパッケージのcov2cor関数を使って偏相関行列を計算をしちゃいましょう。あまり大きな変化はないかもしれませんが，変数２と３の関係が分散共分散行列行列よりも小さくなり，関係がないと言ってもよいかと思われます。この偏相関行列の偏相関係数をエッジにしてネットワークを描きます。</p>
 <pre class="r"><code>library(stats)
 -1 * cov2cor(inv_A)</code></pre>
 <pre><code>##            [,1]          [,2]          [,3]
@@ -475,7 +517,10 @@ inv_A</code></pre>
 </div>
 <div id="クロスセクショナルデータのggm" class="section level3">
 <h3>クロスセクショナルデータのGGM</h3>
-<p>GGMは上記で説明をしたように，推定は簡単なので，最尤推定，最小二乗法，ベイズどれを使っても良いです。ただし，精度行列を求める方法としては，分散共分散行列の逆行列の計算でもできるけど，ネットワークのエッジが多すぎるとネットワークの理解がしにくくなります。そのため，ネットワークを疎(sparse)にするような手法が用いられることが多いです。そのような手法の１つとして，正則化(regularization)があります。正則化は，機械学習などにおいて発展してきた手法で，モデルの複雑さに罰則をかけて，過学習を避けるような手法です。ざっくり説明すると，多数の変数を使って予測をする場合に，影響力が弱い変数の影響をゼロに近づけるような工夫を導入することで，不要なエッジを除くことができる。影響力は弱いけそ存在している変数が減るとモデルが複雑じゃなくなりますが，複雑さに罰則をかけると，影響力は弱いけそ存在している変数の影響をゼロに近づけるようになります。このようにして，解釈に置いて煩雑なエッジを減らすことができます。GGMでは，LASSO(least absokute shrinkage and selection operator)が使われます。特にLASSOの一種のGraphical LASSOは，精度行列に直接的に罰則をかけられ，分散共分散行列があれば計算でき，一般的に他の方法よりも早いです。そして，このGLASSOのパラメータ調整では，EBICを使うのが推奨されています。</p>
+<p>GGMは上記で説明をしたように，推定は簡単なので，最尤推定，最小二乗法，ベイズどれを使っても良いです。ただし，精度行列を求める方法としては，分散共分散行列の逆行列の計算でもできるけど，ネットワークのエッジが多すぎるとネットワークの理解がしにくくなります。そのため，ネットワークを疎(sparse)にするような手法が用いられることが多いです。そのような手法の１つとして，正則化(regularization)があります。正則化は，機械学習などにおいて発展してきた手法で，モデルの複雑さに罰則をかけて，過学習を避けるような手法です。ざっくり説明すると，多数の変数を使って予測をする場合に，影響力が弱い変数の影響をゼロに近づけるような工夫を導入することで，不要なエッジを除くことができる。影響力は弱いけそ存在している変数が減るとモデルが複雑じゃなくなりますが，複雑さに罰則をかけると，影響力は弱いけそ存在している変数の影響をゼロに近づけるようになります。このようにして，解釈に置いて煩雑なエッジを減らすことができます。GGMでは，LASSO(least
+absokute shrinkage and selection
+operator)が使われます。特にLASSOの一種のGraphical
+LASSOは，精度行列に直接的に罰則をかけられ，分散共分散行列があれば計算でき，一般的に他の方法よりも早いです。そして，このGLASSOのパラメータ調整では，EBICを使うのが推奨されています。</p>
 </div>
 <div id="ggmの解釈法" class="section level3">
 <h3>GGMの解釈法</h3>
@@ -483,8 +528,10 @@ inv_A</code></pre>
 </div>
 <div id="ネットワークの正確度accurary" class="section level3">
 <h3>ネットワークの正確度(accurary)</h3>
-<p>エッジは統計的に推定されるものなのでサンプルサイズの影響をうけます。ノードが増えると推定するパラメータはどんどん増えるので一般的な心理学研究では，サンプルサイズが足りないこともあります。そのため，ネットワークの正確度についても検討しておく必要があります（ネットワークの正確度については，Epskamp, Borsboom,&amp; Fried (2018)に詳しいです）。</p>
-<p>エッジの重みと中心性指標の精度の検証方法は，以下の３ステップになります(Epskamp, Borsboom,&amp; Fried, 2018)。</p>
+<p>エッジは統計的に推定されるものなのでサンプルサイズの影響をうけます。ノードが増えると推定するパラメータはどんどん増えるので一般的な心理学研究では，サンプルサイズが足りないこともあります。そのため，ネットワークの正確度についても検討しておく必要があります（ネットワークの正確度については，Epskamp,
+Borsboom,&amp; Fried (2018)に詳しいです）。</p>
+<p>エッジの重みと中心性指標の精度の検証方法は，以下の３ステップになります(Epskamp,
+Borsboom,&amp; Fried, 2018)。</p>
 <ol style="list-style-type: decimal">
 <li>ブートストラップされた信頼区間をプロットすることでエッジの重みの正確度を検討する。</li>
 <li>データのサブセットを用いた場合の中心性指標の安定性(Stability)を検討する。</li>
@@ -494,22 +541,42 @@ inv_A</code></pre>
 </div>
 <div id="rパッケージ" class="section level3">
 <h3>Rパッケージ</h3>
-<p>偏相関行列の計算自体は複数のRパッケージで可能になりますので，心理ネットワーク分析に使えるRパッケージは複数あります。ただし，心理ネットワーク分析の中心地でもあるアムステルダム大学の<a href="http://sachaepskamp.com/">Sacha Epskamp</a>が開発した<a href="https://cran.r-project.org/web/packages/qgraph/index.html">qgraph</a>と<a href="https://cran.r-project.org/web/packages/bootnet/index.html">bootnet</a>があれば，横断データの心理ネットワーク分析は実施できます。なお，あとで説明するブリッジ中心性指標は<a href="https://cran.r-project.org/web/packages/networktools/index.html">networktools</a>,ネットワークの比較は<a href="https://cran.r-project.org/web/packages/NetworkComparisonTest/index.html">NetworkComparisonTest</a>を使用します。</p>
+<p>偏相関行列の計算自体は複数のRパッケージで可能になりますので，心理ネットワーク分析に使えるRパッケージは複数あります。ただし，心理ネットワーク分析の中心地でもあるアムステルダム大学の<a
+href="http://sachaepskamp.com/">Sacha Epskamp</a>が開発した<a
+href="https://cran.r-project.org/web/packages/qgraph/index.html">qgraph</a>と<a
+href="https://cran.r-project.org/web/packages/bootnet/index.html">bootnet</a>があれば，横断データの心理ネットワーク分析は実施できます。なお，あとで説明するブリッジ中心性指標は<a
+href="https://cran.r-project.org/web/packages/networktools/index.html">networktools</a>,ネットワークの比較は<a
+href="https://cran.r-project.org/web/packages/NetworkComparisonTest/index.html">NetworkComparisonTest</a>を使用します。</p>
 <ul>
-<li><a href="https://cran.r-project.org/web/packages/qgraph/index.html">qgraph</a>:ネットワークのプロットと推定</li>
-<li><a href="https://cran.r-project.org/web/packages/bootnet/index.html">bootnet</a>: 様々な種類のネットワーク推定，ネットワークの正確度の検討</li>
-<li><a href="https://cran.r-project.org/web/packages/networktools/index.html">networktools</a>:ブリッジ中心性を含むノードの検討に有用なツール</li>
-<li><a href="https://cran.r-project.org/web/packages/NetworkComparisonTest/index.html">NetworkComparisonTest</a>: ネットワークの比較検定</li>
+<li><a
+href="https://cran.r-project.org/web/packages/qgraph/index.html">qgraph</a>:ネットワークのプロットと推定</li>
+<li><a
+href="https://cran.r-project.org/web/packages/bootnet/index.html">bootnet</a>:
+様々な種類のネットワーク推定，ネットワークの正確度の検討</li>
+<li><a
+href="https://cran.r-project.org/web/packages/networktools/index.html">networktools</a>:ブリッジ中心性を含むノードの検討に有用なツール</li>
+<li><a
+href="https://cran.r-project.org/web/packages/NetworkComparisonTest/index.html">NetworkComparisonTest</a>:
+ネットワークの比較検定</li>
 </ul>
-<p>なお，アムステルダム大学で開発しているベイズ統計と頻度論統計のGUIソフトウェアである<a href="https://jasp-stats.org/">JASP</a>には，心理ネットワーク分析が組み込まれており，簡単に実施して見る上ではかなり有用と思います。JASPは国里を含む日本語化チームにより2021年9月(v0.15)より一部が日本語化されています。心理ネットワーク分析の説明は，<a href="https://jasp-stats.org/2018/03/20/perform-network-analysis-jasp/">こちら</a>をご確認ください。</p>
+<p>なお，アムステルダム大学で開発しているベイズ統計と頻度論統計のGUIソフトウェアである<a
+href="https://jasp-stats.org/">JASP</a>には，心理ネットワーク分析が組み込まれており，簡単に実施して見る上ではかなり有用と思います。JASPは国里を含む日本語化チームにより2021年9月(v0.15)より一部が日本語化されています。心理ネットワーク分析の説明は，<a
+href="https://jasp-stats.org/2018/03/20/perform-network-analysis-jasp/">こちら</a>をご確認ください。</p>
 </div>
 </div>
 <div id="心理ネットワーク分析を試してみよう" class="section level2">
 <h2>心理ネットワーク分析を試してみよう！</h2>
-<p>さて，以下では，実際にRで心理ネットワーク分析を実行してみましょう。その題材として， <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0182162">Jordan, P., Shedden-Mora, M. C., &amp; Löwe, B. (2017). Psychometric analysis of the Generalized Anxiety Disorder scale (GAD-7) in primary care using modern item response theory. PloS One, 12(8), e0182162.</a>を選びました。この研究は，不安の症状評価で用いられるGAD-7について項目反応理論を用いた検討を行った研究です。Hamburgのプライマリケアを受診した3404名からGAD-7(全般性不安)，PHQ-9(うつ),PHQ-15(身体症状)データを収集しており，比較的サンプルサイズが大きいのと，雑誌のサイト上でデータを公開していることから，以下の心理ネットワーク分析の練習で使ってみましょう。</p>
+<p>さて，以下では，実際にRで心理ネットワーク分析を実行してみましょう。その題材として，
+<a
+href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0182162">Jordan,
+P., Shedden-Mora, M. C., &amp; Löwe, B. (2017). Psychometric analysis of
+the Generalized Anxiety Disorder scale (GAD-7) in primary care using
+modern item response theory. PloS One, 12(8),
+e0182162.</a>を選びました。この研究は，不安の症状評価で用いられるGAD-7について項目反応理論を用いた検討を行った研究です。Hamburgのプライマリケアを受診した3404名からGAD-7(全般性不安)，PHQ-9(うつ),PHQ-15(身体症状)データを収集しており，比較的サンプルサイズが大きいのと，雑誌のサイト上でデータを公開していることから，以下の心理ネットワーク分析の練習で使ってみましょう。</p>
 <div id="使用するrパッケージの読み込み" class="section level3">
 <h3>使用するRパッケージの読み込み</h3>
-<p>Jordan et al.(2017)のデータがSPSS形式で配布されているのでSPSS形式のデータを読み込むforeignパッケージとデータ処理用にtidyverseパッケージを読み込みます。そして，心理ネットワーク分析では，上述したbootnetパッケージとqgraphパッケージを読み込みます。</p>
+<p>Jordan et
+al.(2017)のデータがSPSS形式で配布されているのでSPSS形式のデータを読み込むforeignパッケージとデータ処理用にtidyverseパッケージを読み込みます。そして，心理ネットワーク分析では，上述したbootnetパッケージとqgraphパッケージを読み込みます。</p>
 <pre class="r"><code>library(tidyverse)
 library(foreign)
 library(bootnet)
@@ -517,7 +584,8 @@ library(qgraph)</code></pre>
 </div>
 <div id="データの読み込み" class="section level3">
 <h3>データの読み込み</h3>
-<p>Jordan et al.(2017)のデータを雑誌のサイトからdownload.fileでダウンロードして，それを読み込みます。変数名がややこしかったので，renameで名前を変更しています。</p>
+<p>Jordan et
+al.(2017)のデータを雑誌のサイトからdownload.fileでダウンロードして，それを読み込みます。変数名がややこしかったので，renameで名前を変更しています。</p>
 <pre class="r"><code>download.file(&quot;https://doi.org/10.1371/journal.pone.0182162.s004&quot;,&quot;pone.0182162.s004.sav&quot;)
 data &lt;- read.spss(&quot;pone.0182162.s004.sav&quot;, 
                   to.data.frame=TRUE)
@@ -535,9 +603,10 @@ data_gad &lt;- data %&gt;%
 </div>
 <div id="ネットワークの推定とプロット" class="section level3">
 <h3>ネットワークの推定とプロット</h3>
-<p>早速，エッジの推定をしましょう。bootnetパッケージのestimateNetwork()関数を使います。エッジの推定にあたり，EBICでモデル選択して，パラメータ調整をするGLASSOを使います(defaultで“EBICglasso”を指定する）。GAD-7は，不安症状について，「まったくない」から「ほとんど毎日」の４件法で頻度を問います。これは，順序変数と考えられるので，通常の分散共分散ではなくて，ポリコリック相関（順序変数の相関）を計算します。corMethodで “cor_auto”を指定すれば，自動的に順序変数にはポリコリック相関を計算してエッジの推定をしてくれます（なお，“cor_auto”では７件法以下は順序変数として扱います）。</p>
+<p>早速，エッジの推定をしましょう。bootnetパッケージのestimateNetwork()関数を使います。エッジの推定にあたり，EBICでモデル選択して，パラメータ調整をするGLASSOを使います(defaultで”EBICglasso”を指定する）。GAD-7は，不安症状について，「まったくない」から「ほとんど毎日」の４件法で頻度を問います。これは，順序変数と考えられるので，通常の分散共分散ではなくて，ポリコリック相関（順序変数の相関）を計算します。corMethodで
+“cor_auto”を指定すれば，自動的に順序変数にはポリコリック相関を計算してエッジの推定をしてくれます（なお，“cor_auto”では７件法以下は順序変数として扱います）。</p>
 <pre class="r"><code>results_gad &lt;- estimateNetwork(data_gad,default = &quot;EBICglasso&quot;, corMethod = &quot;cor_auto&quot;)</code></pre>
-<p>推定したエッジをネットワークとしてプロットしてみましょう（layoutは“spring”を指定します）</p>
+<p>推定したエッジをネットワークとしてプロットしてみましょう（layoutは”spring”を指定します）</p>
 <pre class="r"><code>plot(results_gad, layout = &quot;spring&quot;,labels = TRUE)</code></pre>
 <p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
@@ -553,16 +622,16 @@ data_gad &lt;- data %&gt;%
 <pre><code>## # A tibble: 42 × 17
 ##    type  id    node1 node2  sample   mean      sd CIlower CIupper   q2.5   q97.5
 ##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
-##  1 betw… gad7a gad7a &quot;&quot;     2      1.52   1.20    -0.393   4.39   0       4     
-##  2 betw… gad7b gad7b &quot;&quot;     2      3.16   1.90    -1.81    5.81   2       8     
-##  3 betw… gad7c gad7c &quot;&quot;     0      1.72   2.44    -4.88    4.88   0       8     
-##  4 betw… gad7d gad7d &quot;&quot;    12      9.31   2.26     7.48   16.5    4      12     
-##  5 betw… gad7e gad7e &quot;&quot;     0      1.01   1.85    -3.70    3.70   0       6     
-##  6 betw… gad7f gad7f &quot;&quot;     0      0.379  0.822   -1.64    1.64   0       2     
-##  7 betw… gad7g gad7g &quot;&quot;     0      1.13   1.62    -3.24    3.24   0       6     
-##  8 clos… gad7a gad7a &quot;&quot;     0.0252 0.0255 0.00149  0.0222  0.0282 0.0225  0.0284
-##  9 clos… gad7b gad7b &quot;&quot;     0.0260 0.0262 0.00167  0.0227  0.0293 0.0233  0.0298
-## 10 clos… gad7c gad7c &quot;&quot;     0.0252 0.0257 0.00177  0.0216  0.0287 0.0223  0.0292
+##  1 betw… gad7a gad7a &quot;&quot;     2      1.54   1.19    -0.377   4.38   0       4     
+##  2 betw… gad7b gad7b &quot;&quot;     2      3.11   1.87    -1.73    5.73   2       8     
+##  3 betw… gad7c gad7c &quot;&quot;     0      1.70   2.41    -4.81    4.81   0       8     
+##  4 betw… gad7d gad7d &quot;&quot;    12      9.37   2.27     7.47   16.5    4      12     
+##  5 betw… gad7e gad7e &quot;&quot;     0      1.10   2.01    -4.01    4.01   0       8     
+##  6 betw… gad7f gad7f &quot;&quot;     0      0.374  0.800   -1.60    1.60   0       2     
+##  7 betw… gad7g gad7g &quot;&quot;     0      1.18   1.68    -3.35    3.35   0       6     
+##  8 clos… gad7a gad7a &quot;&quot;     0.0257 0.0257 0.00148  0.0227  0.0286 0.0227  0.0284
+##  9 clos… gad7b gad7b &quot;&quot;     0.0260 0.0264 0.00155  0.0229  0.0291 0.0237  0.0296
+## 10 clos… gad7c gad7c &quot;&quot;     0.0252 0.0257 0.00171  0.0217  0.0286 0.0226  0.0290
 ## # … with 32 more rows, and 6 more variables: q2.5_non0 &lt;dbl&gt;, mean_non0 &lt;dbl&gt;,
 ## #   q97.5_non0 &lt;dbl&gt;, var_non0 &lt;dbl&gt;, sd_non0 &lt;dbl&gt;, prop0 &lt;dbl&gt;</code></pre>
 <p>それでは，プロットしてみましょう。サンプルサイズが大きいためか，95%信頼区間の幅が狭いですね。</p>
@@ -571,15 +640,20 @@ data_gad &lt;- data %&gt;%
 </div>
 <div id="中心性の指標のプロット" class="section level3">
 <h3>中心性の指標のプロット</h3>
-<p>中心性の指標は，qgraphパッケージのcontralityPlot関数でプロットできます。中心性指標は複数あるので，includeで“Strength”, “Betweenness”, “Closeness”の３つを指定します。</p>
+<p>中心性の指標は，qgraphパッケージのcontralityPlot関数でプロットできます。中心性指標は複数あるので，includeで”Strength”,
+“Betweenness”, “Closeness”の３つを指定します。</p>
 <pre class="r"><code>centralityPlot(results_gad, include = c(&quot;Strength&quot;, &quot;Betweenness&quot;, &quot;Closeness&quot;))</code></pre>
 <p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 <div id="中心性指標の安定性stability" class="section level3">
 <h3>中心性指標の安定性(Stability)</h3>
 <p>中心性指標の正確度の解釈ができるように，データのサブセットを用いて，中心性指標の順序がどのくらい安定しているか検討します。具体的には，参加者を減らしていった場合（ケースドロップ）もしくはノードを減らしていった場合（ノードドロップ）にどのくらい中心性指標の順序が安定しているかを検討します。ノードドロップは解釈が難しくなるので（ノードをへらすと別のネットワークになるのは当然なので評価しにくい），ケースドロップを使用するのが良いかと思います。</p>
-<p>中心性指標の安定性は，CS係数(correlation stability coefficient)によって評価します。CSはドロップできるケースの最大比率を表現しています。具体的には，参加者数を減らしていった場合に，元の中心性指標とドロップした中心性指標間に0.7以上の相関がブートストラップしたサンプルの95%にあるような最大のドロップケース比率である。多少恣意的な基準にはなるが，中心性の解釈をする上では，CS係数が0.25未満は不適切であり，できればCS係数は0.5を越えている必要がある(Epskamp, Borsboom, &amp; Fried, 2018)。</p>
-<p>中心性指標の安定性は，エッジの重みの正確度と同様にbootnetを使います。typeで”case”を指定するとケースドロップ時の安定性を推定します。なお，中心性の指標は複数あるので，statisticsで“strength”, “closeness”, “betweenness”を指定します。なお，国里のゼミ生でサーバーを使っている人は，コアは１つで実行してください。</p>
+<p>中心性指標の安定性は，CS係数(correlation stability
+coefficient)によって評価します。CSはドロップできるケースの最大比率を表現しています。具体的には，参加者数を減らしていった場合に，元の中心性指標とドロップした中心性指標間に0.7以上の相関がブートストラップしたサンプルの95%にあるような最大のドロップケース比率である。多少恣意的な基準にはなるが，中心性の解釈をする上では，CS係数が0.25未満は不適切であり，できればCS係数は0.5を越えている必要がある(Epskamp,
+Borsboom, &amp; Fried, 2018)。</p>
+<p>中心性指標の安定性は，エッジの重みの正確度と同様にbootnetを使います。typeで”case”を指定するとケースドロップ時の安定性を推定します。なお，中心性の指標は複数あるので，statisticsで”strength”,
+“closeness”,
+“betweenness”を指定します。なお，国里のゼミ生でサーバーを使っている人は，コアは１つで実行してください。</p>
 <pre class="r"><code>stability_centrality &lt;- bootnet(results_gad, nBoots = 2500, type = &quot;case&quot;, nCores =4, statistics =  c(&quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))</code></pre>
 <p>プロットして確認します。</p>
 <pre class="r"><code>plot(stability_centrality, c(&quot;strength&quot;, &quot;closeness&quot;, &quot;betweenness&quot;))</code></pre>
@@ -590,24 +664,24 @@ data_gad &lt;- data %&gt;%
 ## 
 ## Sampling levels tested:
 ##    nPerson Drop%   n
-## 1      851  75.0 228
-## 2     1116  67.2 252
-## 3     1381  59.4 230
-## 4     1645  51.7 241
-## 5     1910  43.9 264
-## 6     2175  36.1 251
-## 7     2440  28.3 255
-## 8     2704  20.6 266
-## 9     2969  12.8 269
-## 10    3234   5.0 244
+## 1      851  75.0 231
+## 2     1116  67.2 261
+## 3     1381  59.4 209
+## 4     1645  51.7 236
+## 5     1910  43.9 259
+## 6     2175  36.1 277
+## 7     2440  28.3 254
+## 8     2704  20.6 279
+## 9     2969  12.8 254
+## 10    3234   5.0 240
 ## 
 ## Maximum drop proportions to retain correlation of 0.7 in at least 95% of the samples:
 ## 
-## betweenness: 0.361 
-##   - For more accuracy, run bootnet(..., caseMin = 0.283, caseMax = 0.439) 
+## betweenness: 0.283 
+##   - For more accuracy, run bootnet(..., caseMin = 0.206, caseMax = 0.361) 
 ## 
-## closeness: 0.594 
-##   - For more accuracy, run bootnet(..., caseMin = 0.517, caseMax = 0.672) 
+## closeness: 0.672 
+##   - For more accuracy, run bootnet(..., caseMin = 0.594, caseMax = 0.75) 
 ## 
 ## strength: 0.75 (CS-coefficient is highest level tested)
 ##   - For more accuracy, run bootnet(..., caseMin = 0.672, caseMax = 1) 
@@ -616,13 +690,15 @@ data_gad &lt;- data %&gt;%
 </div>
 <div id="有意差検定" class="section level3">
 <h3>有意差検定</h3>
-<p>ブートストラップを活用して，エッジの重みの比較や中心性指標の比較もできる。例えば，項目１と項目２のエッジは，項目１と項目３のエッジよりも大きいことを確認したい場合や項目１のノードのStrengthは項目２のノードのStrengthよりも大きいことを確認したい時です。これには，ブートストラップ差異検定(bootstrapped difference test)と呼ばれます。具体的には，比較したいエッジ（中心性指標）のブートストラップ値の差を計算して，その差の95%信頼区間を計算することで，０をまたぐかどうかで差の有無を判断できます。なお，この際に，０をまたぐことは，そこに差があることを示しますが，０をまたがないことでエッジや中心性指標が等しいとはいえない点に注意が必要です。</p>
+<p>ブートストラップを活用して，エッジの重みの比較や中心性指標の比較もできる。例えば，項目１と項目２のエッジは，項目１と項目３のエッジよりも大きいことを確認したい場合や項目１のノードのStrengthは項目２のノードのStrengthよりも大きいことを確認したい時です。これには，ブートストラップ差異検定(bootstrapped
+difference
+test)と呼ばれます。具体的には，比較したいエッジ（中心性指標）のブートストラップ値の差を計算して，その差の95%信頼区間を計算することで，０をまたぐかどうかで差の有無を判断できます。なお，この際に，０をまたぐことは，そこに差があることを示しますが，０をまたがないことでエッジや中心性指標が等しいとはいえない点に注意が必要です。</p>
 <p>最もStrengthの高いgadbと最も低いgadfを比較します。bootnetパッケージのdifferenceTest関数で検討できます。実行すると，95%CIが0をまたいでいることが分かります。</p>
 <pre class="r"><code>differenceTest(accuracy_edge, 2, 6, &quot;strength&quot;)   </code></pre>
 <pre><code>## # A tibble: 1 × 6
 ##   id1   id2   measure   lower  upper significant
 ##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt;      
-## 1 gad7b gad7f strength -0.593 -0.406 TRUE</code></pre>
+## 1 gad7b gad7f strength -0.593 -0.408 TRUE</code></pre>
 <p>エッジ間の差の検定結果をプロットします。それぞれのエッジ間で有意な差がある場合は黒く塗りつぶされ，有意ではない場合は灰色に塗りつぶされます。</p>
 <pre class="r"><code>plot(accuracy_edge, &quot;edge&quot;, plot = &quot;difference&quot;, onlyNonZero = TRUE, order = &quot;sample&quot;)  </code></pre>
 <p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
@@ -633,22 +709,34 @@ data_gad &lt;- data %&gt;%
 </div>
 <div id="ブリッジ中心性" class="section level2">
 <h2>ブリッジ中心性</h2>
-<p>心理ネットワークの検討において，異なる症状項目のネットワークを示し，それぞれの症状ごとのまとまりをつなぐような項目を探すことがあります。例えば，うつ，社交不安，強迫症などの項目を含んだネットワークから，うつの特定の項目は，社交不安や強迫症にも影響が強いので，その項目がうつ，社交不安，強迫症の橋渡しをしているのではと検討する方法です。これを視覚的に検討することもできますが，ネットワークが大きなったり複雑化すると難しいため，ブリッジ中心性(Bridge centrality)という指標が提案されています(Jones, Ma, &amp; McNally, 2021)。</p>
+<p>心理ネットワークの検討において，異なる症状項目のネットワークを示し，それぞれの症状ごとのまとまりをつなぐような項目を探すことがあります。例えば，うつ，社交不安，強迫症などの項目を含んだネットワークから，うつの特定の項目は，社交不安や強迫症にも影響が強いので，その項目がうつ，社交不安，強迫症の橋渡しをしているのではと検討する方法です。これを視覚的に検討することもできますが，ネットワークが大きなったり複雑化すると難しいため，ブリッジ中心性(Bridge
+centrality)という指標が提案されています(Jones, Ma, &amp; McNally,
+2021)。</p>
 <div id="ブリッジ中心性の指標" class="section level3">
 <h3>ブリッジ中心性の指標</h3>
 <p>ブリッジ中心性では，各項目が所属するカテゴリーをネットワークのコミュニティ(community)と呼びます。つまり，うつ症状を測定する項目がいくつかあるとすれば，それらは「うつ症状」というコミュニティに所属します。その項目が所属するコミュニティと他のコミュニティとの関係を表すのがブリッジ中心性の指標になります。</p>
 <p><strong>bridge strength</strong></p>
-<p>bridge strengthは，あるノードから他のコミュニティへの接続の合計です。上記の例だと，うつ病症状の特定の項目から社交不安や強迫症のコミュニティに伸びているエッジの絶対値を合計したものです。bridge strengthで，その項目(ノード)が，所属外のコミュニティにどのくらいの影響力を持っているのかが分かります。</p>
+<p>bridge
+strengthは，あるノードから他のコミュニティへの接続の合計です。上記の例だと，うつ病症状の特定の項目から社交不安や強迫症のコミュニティに伸びているエッジの絶対値を合計したものです。bridge
+strengthで，その項目(ノード)が，所属外のコミュニティにどのくらいの影響力を持っているのかが分かります。</p>
 <p><strong>bridge closeness</strong></p>
-<p>bridge closenessは，あるノードから他のコミュニティの全てのノードまでの平均距離の逆数です。上記の例だと，うつ症状の特定の項目から社交不安や強迫症に所属する全ノードまでの距離（エッジの重みの逆数）を計算して平均化して，逆数を取ります。bridge closenessで，その項目（ノード）が，どのくらい他のコミュニティに近いのかが分かります。</p>
+<p>bridge
+closenessは，あるノードから他のコミュニティの全てのノードまでの平均距離の逆数です。上記の例だと，うつ症状の特定の項目から社交不安や強迫症に所属する全ノードまでの距離（エッジの重みの逆数）を計算して平均化して，逆数を取ります。bridge
+closenessで，その項目（ノード）が，どのくらい他のコミュニティに近いのかが分かります。</p>
 <p><strong>bridge betweenness</strong></p>
-<p>bridge betweennessは，２つの異なるコミュニティからの任意の２つのノード間の最短経路上にそのノードがある回数です。上記の例だと，うつ症状の項目（ノード）が，うつ症状ノードと社交不安ノード間，うつ症状ノードと強迫症ノード間，社交不安ノードと強迫症ノード間の最短経路上に何度出てくるのかをカウントします。bridge betweennessで，その項目（ノード）が，コミュニティ間をどのくらい媒介しているのかが分かります。</p>
+<p>bridge
+betweennessは，２つの異なるコミュニティからの任意の２つのノード間の最短経路上にそのノードがある回数です。上記の例だと，うつ症状の項目（ノード）が，うつ症状ノードと社交不安ノード間，うつ症状ノードと強迫症ノード間，社交不安ノードと強迫症ノード間の最短経路上に何度出てくるのかをカウントします。bridge
+betweennessで，その項目（ノード）が，コミュニティ間をどのくらい媒介しているのかが分かります。</p>
 <p><strong>Bridge expected influence</strong></p>
-<p>Bridge expected influenceは，あるノードの他のコミュニティへの接続の合計です。これだと，bridge strengthと同じに見えるのですが，エッジの絶対値をとって合計しないのがbridge strengthとの違いです。これによって正負に意味が出てきて，そのノードが他のコミュニティに全体的に負の影響を与えるのか正の影響を与えるのかが分かります。</p>
+<p>Bridge expected
+influenceは，あるノードの他のコミュニティへの接続の合計です。これだと，bridge
+strengthと同じに見えるのですが，エッジの絶対値をとって合計しないのがbridge
+strengthとの違いです。これによって正負に意味が出てきて，そのノードが他のコミュニティに全体的に負の影響を与えるのか正の影響を与えるのかが分かります。</p>
 </div>
 <div id="rでブリッジ中心性指標を計算する" class="section level3">
 <h3>Rでブリッジ中心性指標を計算する</h3>
-<p>さて，これまで使ってきたJordan et al.(2017)のデータを使ってブリッジ中心性指標を計算してみましょう。このデータでは，GAD-7(全般性不安)だけでなく，PHQ-9(うつ)，PHQ-15(身体症状)も測定しています。以降では，３尺度のデータを使います。</p>
+<p>さて，これまで使ってきたJordan et
+al.(2017)のデータを使ってブリッジ中心性指標を計算してみましょう。このデータでは，GAD-7(全般性不安)だけでなく，PHQ-9(うつ)，PHQ-15(身体症状)も測定しています。以降では，３尺度のデータを使います。</p>
 <pre class="r"><code>data_bridge &lt;- data %&gt;% 
   rename(gad7a = S_GAD7_a, gad7b = S_GAD7_b, gad7c = S_GAD7_c, gad7d = S_GAD7_d, 
          gad7e = S_GAD7_e, gad7f = S_GAD7_f, gad7g = S_GAD7_g, phq9a = S_PHQ9_a, 
@@ -672,18 +760,25 @@ data_gad &lt;- data %&gt;%
 group &lt;- list(&quot;GAD7&quot;=c(1:7),&quot;PHQ9&quot;=c(8:16), &quot;PHQ15&quot;= c(17:31)) 
 plot_res_bridge &lt;- plot(res_bridge, layout = &quot;spring&quot;, groups = group, labels = label)</code></pre>
 <p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-<p>ブリッジ中心指標を計算してみましょう。networktoolsパッケージのbridge関数を使います。estimateNetwork()の出力を使うとうまく走りませんので，plotの内容をplot_res_bridgeに保存して，それを使っています。communitiesで各項目の所属を指定します(1がGAD-7, 2がPHQ-9, 3がPHQ-15です)。</p>
+<p>ブリッジ中心指標を計算してみましょう。networktoolsパッケージのbridge関数を使います。estimateNetwork()の出力を使うとうまく走りませんので，plotの内容をplot_res_bridgeに保存して，それを使っています。communitiesで各項目の所属を指定します(1がGAD-7,
+2がPHQ-9, 3がPHQ-15です)。</p>
 <pre class="r"><code>library(networktools)
 bridge_centrality &lt;- bridge(plot_res_bridge, 
             communities=c(&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,
                           &#39;2&#39;,&#39;2&#39;,&#39;2&#39;,&#39;2&#39;,&#39;2&#39;,&#39;2&#39;,&#39;2&#39;,&#39;2&#39;,&#39;2&#39;,
                           &#39;3&#39;,&#39;3&#39;,&#39;3&#39;,&#39;3&#39;,&#39;3&#39;,&#39;3&#39;,&#39;3&#39;,&#39;3&#39;,&#39;3&#39;,&#39;3&#39;,&#39;3&#39;,&#39;3&#39;,&#39;3&#39;,&#39;3&#39;,&#39;3&#39;))</code></pre>
-<p>ブリッジ中心性指標をプロットしてみましょう。なお，bridge関数では，Bridge Expected Influenceが1-stepと2-stepの２種類用意されています。両者の違いのは以下の通りです。</p>
+<p>ブリッジ中心性指標をプロットしてみましょう。なお，bridge関数では，Bridge
+Expected
+Influenceが1-stepと2-stepの２種類用意されています。両者の違いのは以下の通りです。</p>
 <ul>
-<li>Bridge Expected Influence (1-step): あるノードと異なるコミュニティにある他のノード間にあるエッジの値の合計です。</li>
-<li>Bridge Expected Influence (2-step): 1-Stepと同様だが，間接的な効果も考慮して計算している（つまり，ノードAからCに直接エッジがなくても，AからBを経由してCにいくエッジがあればカウントする。その際，はAからBのエッジの重みを用いる）。</li>
+<li>Bridge Expected Influence (1-step):
+あるノードと異なるコミュニティにある他のノード間にあるエッジの値の合計です。</li>
+<li>Bridge Expected Influence (2-step):
+1-Stepと同様だが，間接的な効果も考慮して計算している（つまり，ノードAからCに直接エッジがなくても，AからBを経由してCにいくエッジがあればカウントする。その際，はAからBのエッジの重みを用いる）。</li>
 </ul>
-<p>Bridge Strength, Bridge Betweenness, Bridge Closenessを算出してみます。Bridge Strengthをみると，PHQ9の項目３(不眠)と４(気力低下)が高くなっており，これらのうつ項目が不安と身体症状によく接続していることが分かります。</p>
+<p>Bridge Strength, Bridge Betweenness, Bridge
+Closenessを算出してみます。Bridge
+Strengthをみると，PHQ9の項目３(不眠)と４(気力低下)が高くなっており，これらのうつ項目が不安と身体症状によく接続していることが分かります。</p>
 <pre class="r"><code>plot(bridge_centrality, include = c(&quot;Bridge Strength&quot;,
                                     &quot;Bridge Betweenness&quot;,
                                     &quot;Bridge Closeness&quot;))</code></pre>
@@ -694,7 +789,9 @@ bridge_centrality &lt;- bridge(plot_res_bridge,
 #                                    &quot;Bridge Closeness&quot;,
 #                                    &quot;Bridge Expected Influence (1-step)&quot;,
 #                                    &quot;Bridge Expected Influence (2-step)&quot;))</code></pre>
-<p>bootnetでブリッジ中心性指標の安定性を検討できます。ただし，Bridge Expected Influencには対応していないようです。なお，国里のゼミ生でサーバーを使っている人は，コアは１つで実行してください。</p>
+<p>bootnetでブリッジ中心性指標の安定性を検討できます。ただし，Bridge
+Expected
+Influencには対応していないようです。なお，国里のゼミ生でサーバーを使っている人は，コアは１つで実行してください。</p>
 <pre class="r"><code>stability_centrality_bridge &lt;- bootnet(res_bridge, nBoots = 2500, type = &quot;case&quot;, nCores =4, statistics =  c(&quot;bridgeStrength&quot;,&quot;bridgeCloseness&quot;,&quot;bridgeBetweenness&quot;), communities = group)</code></pre>
 <p>CS係数を算出すると，このデータについては，bridgeClosenessのCS係数を係数が0.25以下ですので，解釈は避けたほうが良さそうです。</p>
 <pre class="r"><code>corStability(stability_centrality_bridge)</code></pre>
@@ -702,24 +799,24 @@ bridge_centrality &lt;- bridge(plot_res_bridge,
 ## 
 ## Sampling levels tested:
 ##    nPerson Drop%   n
-## 1      851  75.0 248
-## 2     1116  67.2 275
-## 3     1381  59.4 245
-## 4     1645  51.7 249
-## 5     1910  43.9 246
-## 6     2175  36.1 223
-## 7     2440  28.3 262
-## 8     2704  20.6 270
-## 9     2969  12.8 248
-## 10    3234   5.0 234
+## 1      851  75.0 216
+## 2     1116  67.2 240
+## 3     1381  59.4 222
+## 4     1645  51.7 270
+## 5     1910  43.9 244
+## 6     2175  36.1 257
+## 7     2440  28.3 245
+## 8     2704  20.6 273
+## 9     2969  12.8 268
+## 10    3234   5.0 265
 ## 
 ## Maximum drop proportions to retain correlation of 0.7 in at least 95% of the samples:
 ## 
-## bridgeBetweenness: 0.594 
-##   - For more accuracy, run bootnet(..., caseMin = 0.517, caseMax = 0.672) 
-## 
-## bridgeCloseness: 0.128 
+## bridgeBetweenness: 0.128 
 ##   - For more accuracy, run bootnet(..., caseMin = 0.05, caseMax = 0.206) 
+## 
+## bridgeCloseness: 0.517 
+##   - For more accuracy, run bootnet(..., caseMin = 0.439, caseMax = 0.594) 
 ## 
 ## bridgeStrength: 0.75 (CS-coefficient is highest level tested)
 ##   - For more accuracy, run bootnet(..., caseMin = 0.672, caseMax = 1) 
@@ -763,10 +860,12 @@ plot(network_female, layout = L, title = &quot;Females&quot;, maximum = Max)</co
 </div>
 <div id="ネットワーク比較テスト-1" class="section level3">
 <h3>ネットワーク比較テスト</h3>
-<p>NetworkComparisonTestパッケージのNCT関数を使って， permutationベースの仮説検定を行います。NCTの引数では各データを引数にいれるのですが，NCTには“cor_auto”を使って自動で順序尺度を処理する機能はないので，bootnetで推定したネットワークをいれます（データでも推定したネットワークもどちらも可能です）。test.edgesとtest.centralityをTRUEにしてエッジと中心性指標を検定しましょう。</p>
+<p>NetworkComparisonTestパッケージのNCT関数を使って，
+permutationベースの仮説検定を行います。NCTの引数では各データを引数にいれるのですが，NCTには”cor_auto”を使って自動で順序尺度を処理する機能はないので，bootnetで推定したネットワークをいれます（データでも推定したネットワークもどちらも可能です）。test.edgesとtest.centralityをTRUEにしてエッジと中心性指標を検定しましょう。</p>
 <pre class="r"><code>library(NetworkComparisonTest)
 res_nct &lt;- NCT(network_male, network_female, progressbar=FALSE, test.edges=TRUE, test.centrality=TRUE)</code></pre>
-<p>結果をプロットしてみます。what=“network”で，ネットワーク構造の差異の検定結果が示されます。what=“strength” で，全体のStrengthの差異の検定結果が示されます。what=“edge”を指定すれば，個々のエッジの差異の検定結果が示されます。</p>
+<p>結果をプロットしてみます。what=“network”で，ネットワーク構造の差異の検定結果が示されます。what=“strength”
+で，全体のStrengthの差異の検定結果が示されます。what=“edge”を指定すれば，個々のエッジの差異の検定結果が示されます。</p>
 <pre class="r"><code>plot(res_nct, what=&quot;network&quot;)</code></pre>
 <p><img src="how-to-psychological-network1_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <pre class="r"><code>plot(res_nct, what=&quot;strength&quot;)</code></pre>
@@ -776,21 +875,33 @@ res_nct &lt;- NCT(network_male, network_female, progressbar=FALSE, test.edges=TR
 </div>
 <div id="おわりに" class="section level2">
 <h2>おわりに</h2>
-<p>心理ネットワークでの解析を概観してきましたが，心理ネットワーク分析手法は日進月歩です。どんどん新しい手法が提案されている現状がありますので，<a href="http://psychosystems.org/">Psych Systems</a>のサイトを確認したり，そこで紹介されているサマースクールやワークショップに参加するのも良いかと思います。</p>
+<p>心理ネットワークでの解析を概観してきましたが，心理ネットワーク分析手法は日進月歩です。どんどん新しい手法が提案されている現状がありますので，<a
+href="http://psychosystems.org/">Psych
+Systems</a>のサイトを確認したり，そこで紹介されているサマースクールやワークショップに参加するのも良いかと思います。</p>
 </div>
 <div id="文献" class="section level2">
 <h2>文献</h2>
 <ul>
-<li>Epskamp, S., Borsboom, D., &amp; Fried, E. I. (2018). Estimating psychological networks and their accuracy: A tutorial paper. Behavior Research Methods, 50(1), 195–212.</li>
-<li>Epskamp, S., Waldorp, L. J., Mõttus, R., &amp; Borsboom, D. (2018). The Gaussian Graphical Model in Cross-Sectional and Time-Series Data. Multivariate Behavioral Research, 53(4), 453–480.</li>
-<li>Epskamp, S., Borsboom, D., &amp; Fried, E. I. (2018). Estimating psychological networks and their accuracy: A tutorial paper. Behavior Research Methods, 50(1), 195–212.</li>
-<li>Jones, P. J., Ma, R., &amp; McNally, R. J. (2021). Bridge Centrality: A Network Approach to Understanding Comorbidity. Multivariate Behavioral Research, 56(2), 353–367.</li>
-<li>Jordan, P., Shedden-Mora, M. C., &amp; Löwe, B. (2017). Psychometric analysis of the Generalized Anxiety Disorder scale (GAD-7) in primary care using modern item response theory. PloS One, 12(8), e0182162.</li>
+<li>Epskamp, S., Borsboom, D., &amp; Fried, E. I. (2018). Estimating
+psychological networks and their accuracy: A tutorial paper. Behavior
+Research Methods, 50(1), 195–212.</li>
+<li>Epskamp, S., Waldorp, L. J., Mõttus, R., &amp; Borsboom, D. (2018).
+The Gaussian Graphical Model in Cross-Sectional and Time-Series Data.
+Multivariate Behavioral Research, 53(4), 453–480.</li>
+<li>Epskamp, S., Borsboom, D., &amp; Fried, E. I. (2018). Estimating
+psychological networks and their accuracy: A tutorial paper. Behavior
+Research Methods, 50(1), 195–212.</li>
+<li>Jones, P. J., Ma, R., &amp; McNally, R. J. (2021). Bridge
+Centrality: A Network Approach to Understanding Comorbidity.
+Multivariate Behavioral Research, 56(2), 353–367.</li>
+<li>Jordan, P., Shedden-Mora, M. C., &amp; Löwe, B. (2017). Psychometric
+analysis of the Generalized Anxiety Disorder scale (GAD-7) in primary
+care using modern item response theory. PloS One, 12(8), e0182162.</li>
 </ul>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 

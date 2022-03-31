@@ -13,8 +13,8 @@
 
 <title>研究室のメンバー</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -299,12 +303,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -401,7 +405,8 @@ div.tocify {
 <div id="大学院生博士過程" class="section level3">
 <h3>大学院生（博士過程）</h3>
 <ul>
-<li><a href="https://ksomatori.github.io/homepage/index.html">杣取恵太</a></li>
+<li><a
+href="https://ksomatori.github.io/homepage/index.html">杣取恵太</a></li>
 </ul>
 </div>
 <div id="大学院生修士３年" class="section level3">
@@ -448,10 +453,14 @@ div.tocify {
 <div id="学部" class="section level4">
 <h4>学部</h4>
 <ul>
-<li>齋藤裕希子 (卒業論文題目「心理学的ネットワーク解析を用いた内受容感覚及び不安や抑うつとの関係の検討」)</li>
-<li>ウ ジヒ (卒業論文題目「自己複雑性と抑うつの関連についてのメタ分析：文化差の検討」)</li>
-<li>田中遼太 (卒業論文題目「社交不安に対する注意バイアス修正の効果に対するメタ分析―文化差に注目して―」)</li>
-<li>五十嵐大知 (卒業論文題目「心理学的ネットワーク解析を用いた社交不安症と対人恐怖症の比較」)</li>
+<li>齋藤裕希子
+(卒業論文題目「心理学的ネットワーク解析を用いた内受容感覚及び不安や抑うつとの関係の検討」)</li>
+<li>ウ ジヒ
+(卒業論文題目「自己複雑性と抑うつの関連についてのメタ分析：文化差の検討」)</li>
+<li>田中遼太
+(卒業論文題目「社交不安に対する注意バイアス修正の効果に対するメタ分析―文化差に注目して―」)</li>
+<li>五十嵐大知
+(卒業論文題目「心理学的ネットワーク解析を用いた社交不安症と対人恐怖症の比較」)</li>
 </ul>
 </div>
 </div>
@@ -479,8 +488,10 @@ div.tocify {
 <li>阿久津裕史(卒業論文題目「感情への恐れがマインドフルネス特性及びひきこもり親和性に与える影響について」）</li>
 <li>広瀬友彩(卒業論文題目「妬みのサブタイプとセルフ・コンパッション及びネガティブ感情の関連」)</li>
 <li>小嶋那奈(卒業論文題目「課題解決場面における防衛的悲観主義者の他者サポートについての検討」)</li>
-<li>アン ミョンヒ(卒業論文題目「日韓比較を通した養育態度が強迫傾向に影響するプロセスの検討:パーソナリティの媒介効果の検討」)</li>
-<li>井上圭右(卒業論文題目「社交不安と心的イメージとの関連: 認知課題を用いた検討」)</li>
+<li>アン
+ミョンヒ(卒業論文題目「日韓比較を通した養育態度が強迫傾向に影響するプロセスの検討:パーソナリティの媒介効果の検討」)</li>
+<li>井上圭右(卒業論文題目「社交不安と心的イメージとの関連:
+認知課題を用いた検討」)</li>
 <li>小澤千尋(卒業論文題目「感情価を伴う写真刺激の呈示による課題価値割引における先延ばしの変化」)</li>
 <li>西田千夏(卒業論文題目「メランコリー親和型性格とコーピング及びサポート模索の関連」)</li>
 </ul>
@@ -499,9 +510,12 @@ div.tocify {
 <h4>学部</h4>
 <ul>
 <li>福地友輔(卒業論文題目「重要他者に対する再確認傾向と表情認知及び不安の関連」）</li>
-<li>関 海真(卒業論文題目「曖昧さへの態度と思考抑制が強迫傾向に与える影響について」）</li>
-<li>中川卓知(卒業論文題目「抑うつとリスクテイキング行動との関連: Automatic BARTにおけるベイジアン認知モデリングの適応」）</li>
-<li>中西由紀奈(卒業論文題目「社交不安症と対人恐怖症の比較: 自己主体感と友人関係への動機づけとの関連の検討」）</li>
+<li>関
+海真(卒業論文題目「曖昧さへの態度と思考抑制が強迫傾向に与える影響について」）</li>
+<li>中川卓知(卒業論文題目「抑うつとリスクテイキング行動との関連:
+Automatic BARTにおけるベイジアン認知モデリングの適応」）</li>
+<li>中西由紀奈(卒業論文題目「社交不安症と対人恐怖症の比較:
+自己主体感と友人関係への動機づけとの関連の検討」）</li>
 <li>長尾雅春(卒業論文題目「アプリ課金依存の類型と実体」）</li>
 <li>関谷朋志</li>
 </ul>
@@ -509,15 +523,21 @@ div.tocify {
 <div id="修士-1" class="section level4">
 <h4>修士</h4>
 <ul>
-<li>金子美帆 (修士論文題目「反実仮想思考を用いた先延ばし行動低減プログラムの効果の検討」）</li>
-<li>菊池羽音 (修士論文題目「外傷後認知の時系列的変化と症状・個人差要因との関連―トラウマフィルムパラダイムと経験サンプリング法による測定―」）</li>
-<li>土谷美月 (修士論文題目「不確実さ不耐性と条件づけ場所嗜好性の関連-強化率の操作とvirtual realityを用いた検討-」）</li>
+<li>金子美帆
+(修士論文題目「反実仮想思考を用いた先延ばし行動低減プログラムの効果の検討」）</li>
+<li>菊池羽音
+(修士論文題目「外傷後認知の時系列的変化と症状・個人差要因との関連―トラウマフィルムパラダイムと経験サンプリング法による測定―」）</li>
+<li>土谷美月
+(修士論文題目「不確実さ不耐性と条件づけ場所嗜好性の関連-強化率の操作とvirtual
+realityを用いた検討-」）</li>
 </ul>
 </div>
 <div id="博士2年" class="section level4">
 <h4>博士2年</h4>
 <ul>
-<li><a href="https://mrunadon.github.io/blogdown_page/post/profile/">坂本次郎</a>　(日本学術振興会 特別研究員DC1)</li>
+<li><a
+href="https://mrunadon.github.io/blogdown_page/post/profile/">坂本次郎</a>　(日本学術振興会
+特別研究員DC1)</li>
 </ul>
 </div>
 <div id="pd" class="section level4">
@@ -533,7 +553,8 @@ div.tocify {
 <h4>学部</h4>
 <ul>
 <li>山本由佳(卒業論文題目「対人場面における認知的方略の違いと抑うつの関連」）</li>
-<li>村越祐也(卒業論文題目「行動活性化, パーソナリティ特性,抑うつとの関連について-行動活性化の抑うつ低減効果にパーソナリティ特性がおよぼす影響-」）</li>
+<li>村越祐也(卒業論文題目「行動活性化,
+パーソナリティ特性,抑うつとの関連について-行動活性化の抑うつ低減効果にパーソナリティ特性がおよぼす影響-」）</li>
 <li>金子　瑶(卒業論文題目「悲しみ喚起場面における抑うつの時間的変化に対する反芻・省察の影響」）</li>
 <li>荒井遼河(卒業論文題目「完全主義が誘発する抑うつ傾向へのストレスマインドセットの調整効果の検討」）</li>
 <li>岡本亮平(卒業論文題目「抑うつを伝染しやすい人の特徴について-抑うつ伝染尺度の作成と対人依存・感情制御との関連の検討-」）</li>
@@ -553,20 +574,27 @@ div.tocify {
 <div id="学部-5" class="section level4">
 <h4>学部</h4>
 <ul>
-<li>仁添未亜(卒業論文題目「イメージの視点と対人不安・抑うつの関連: 公的自己意識と不快情動喚起状況におけるイメージの内的・外的視点の観点から」）</li>
-<li>大場広貴(卒業論文題目「拒絶に対する過敏性と社交不安が抑うつに及ぼす影響: ソーシャルサポートの影響による緩衝効果の観点から」）</li>
+<li>仁添未亜(卒業論文題目「イメージの視点と対人不安・抑うつの関連:
+公的自己意識と不快情動喚起状況におけるイメージの内的・外的視点の観点から」）</li>
+<li>大場広貴(卒業論文題目「拒絶に対する過敏性と社交不安が抑うつに及ぼす影響:
+ソーシャルサポートの影響による緩衝効果の観点から」）</li>
 <li>井上ゆかり(卒業論文題目「シナリオが惹起する妬みに認知的負荷が及ぼす影響」）</li>
-<li>土谷美月(卒業論文題目「スチューデント・アパシーと認知コントロールの関連: -切替情動ストループを用いて」）</li>
-<li>金子美帆(卒業論文題目「価値割引パラダイムを用いた先延ばしの測定: 回避・衝動性の観点から」）</li>
+<li>土谷美月(卒業論文題目「スチューデント・アパシーと認知コントロールの関連:
+-切替情動ストループを用いて」）</li>
+<li>金子美帆(卒業論文題目「価値割引パラダイムを用いた先延ばしの測定:
+回避・衝動性の観点から」）</li>
 <li>土舘佳子(卒業論文題目「肯定的・否定的自己複雑性と自己受容、問題解決能力との関連」）</li>
 </ul>
 </div>
 <div id="修士-3" class="section level4">
 <h4>修士</h4>
 <ul>
-<li>坂本次郎(修士論文題目「抑うつと痛みの将来予測: 階層ベイズモデルによる意思決定の検討」）</li>
-<li>杣取恵太(修士論文題目「メタ認知が恐怖条件づけの獲得・消去プロセスに与える影響: ベイジアン認知モデリングによる潜在過程の推定」）</li>
-<li>時田椋子(修士論文題目「生態学的経時的評価法を用いた喫煙と渇望の関係: マインドフルネスの調整効果の観点から」）</li>
+<li>坂本次郎(修士論文題目「抑うつと痛みの将来予測:
+階層ベイズモデルによる意思決定の検討」）</li>
+<li>杣取恵太(修士論文題目「メタ認知が恐怖条件づけの獲得・消去プロセスに与える影響:
+ベイジアン認知モデリングによる潜在過程の推定」）</li>
+<li>時田椋子(修士論文題目「生態学的経時的評価法を用いた喫煙と渇望の関係:
+マインドフルネスの調整効果の観点から」）</li>
 </ul>
 </div>
 </div>
@@ -583,7 +611,8 @@ div.tocify {
 <div id="修士-4" class="section level4">
 <h4>修士</h4>
 <ul>
-<li>鈴木彩夏(修士論文題目「妬み感情と情動制御方略の関連 −Grossの情動制御プロセスモデルを用いて−」)</li>
+<li>鈴木彩夏(修士論文題目「妬み感情と情動制御方略の関連
+−Grossの情動制御プロセスモデルを用いて−」)</li>
 </ul>
 </div>
 </div>
@@ -594,15 +623,17 @@ div.tocify {
 <ul>
 <li>上野駿介(卒業論文題目「火のある風景描画法による攻撃性へのカタルシス効果の検討」)</li>
 <li>鬼澤詩織(卒業論文題目「家族関係単純図式投影法に表わされるきょうだい関係」)</li>
-<li>道口尚弥(卒業論文題目「親密度の異なる対人場面における自他への攻撃性と自己愛傾向の関連について の検討」)</li>
+<li>道口尚弥(卒業論文題目「親密度の異なる対人場面における自他への攻撃性と自己愛傾向の関連について
+の検討」)</li>
 <li>加瀬左緒里(卒業論文題目「大学生における対人恐怖心性と劣等感が生きがい感に及ぼす影響」)</li>
-<li>兼松太郎(卒業論文題目「バウム・テストの空間使用量と Jung のタイプ論の検討」)</li>
+<li>兼松太郎(卒業論文題目「バウム・テストの空間使用量と Jung
+のタイプ論の検討」)</li>
 </ul>
 </div>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -642,6 +673,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

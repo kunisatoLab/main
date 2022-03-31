@@ -13,7 +13,7 @@
 
 <title>jsPsychとlab.jsをまぜてJATOSで動かす方法</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -390,15 +394,18 @@ div.tocify {
 <div id="jspsych課題の準備" class="section level3">
 <h3>jsPsych課題の準備</h3>
 <p>jsPsych課題は以下のGitHubリポジトリの構造を意識して設定をします。</p>
-<p><a href="https://github.com/ykunisato/template-jsPsych-task" class="uri">https://github.com/ykunisato/template-jsPsych-task</a></p>
+<p><a href="https://github.com/ykunisato/template-jsPsych-task"
+class="uri">https://github.com/ykunisato/template-jsPsych-task</a></p>
 <p>一般的には，jsPsych課題の名前のついたフォルダ内に，HTMLファイル，jsPsychのプラグインのフォルダ，刺激のフォルダなどを配置すると思います。JATOS上の統合をする場合は，以下のように，HTMLファイルはそれらの１つ上の階層におきます（HTMLファイルがname_of_repositoryフォルダから出て同じ階層にいるかと思います）。それに伴ってHTMLファイルないでのjsPsychプラグインのパス指定は，name_of_repositoryフォルダを含んだものになります（上記のGitHubリポジトリを参照ください）。</p>
 <p><img src="fig/jatos_fig17.png" width="600"></p>
 </div>
 <div id="lab.js課題の準備" class="section level3">
 <h3>lab.js課題の準備</h3>
-<p>lab.js Buliderで作業して完成したら（<a href="https://mklab-japan.github.io/jpa2021tws/labjs/">lab.jsの導入はこちらをどうぞ</a>），以下のように，JATOS形式で保存します。するとzipファイルがダウンロードされると思います。</p>
+<p>lab.js Buliderで作業して完成したら（<a
+href="https://mklab-japan.github.io/jpa2021tws/labjs/">lab.jsの導入はこちらをどうぞ</a>），以下のように，JATOS形式で保存します。するとzipファイルがダウンロードされると思います。</p>
 <p><img src="fig/jatos_fig21.png" width="600"></p>
-<p>ダウロードされたzipを開くと以下のようになっていると思います。 <img src="fig/jatos_fig16.png" width="600"></p>
+<p>ダウロードされたzipを開くと以下のようになっていると思います。
+<img src="fig/jatos_fig16.png" width="600"></p>
 <p>まず，study.jasを削除します。次に，Study内のindex.htmlを上の階層に移動させて，名前を変えます(ここではname_of_taskにしています)。そして，Studyフォルダも課題名にしておきます（以下のような感じにします）。最後に，index.htmlから名前を変更したHTMLファイルを開いて，パスを変更します（各種ファイルの間にname_of_taskフォルダ名が挟まります）。</p>
 <p><img src="fig/jatos_fig22.png" width="600"></p>
 </div>
@@ -408,13 +415,14 @@ div.tocify {
 <p><img src="fig/jatos_fig18.png" width="600"></p>
 <p>上の「JATOSで実験を登録する」を参考にJSATOS上でこの課題をローカルのJATOS上に登録していきます。今回は，Componentsでstroop.htmlとquestion.htmlを登録します。登録すると以下のような感じになります。stroopとquestionが登録されていますね。この順番で課題が実施されるので，JATOS上で実行すると，ストループ課題をしてから，質問紙が実施されます。</p>
 <p><img src="fig/jatos_fig19.png" width="600"></p>
-<p>ローカルで作成したJATOSify済みのフォルダをエクスポートすれば，サーバー上のJATOSで実行できて，オンライン実験が可能です。以下は，私で試してみた結果です（同一IPアドレスからアクセスするので，テストではGeneral Multipleで実施しました）。参加者ごとにWorkerIDが割り振られて，その下にストループと質問紙の回答があります。</p>
+<p>ローカルで作成したJATOSify済みのフォルダをエクスポートすれば，サーバー上のJATOSで実行できて，オンライン実験が可能です。以下は，私で試してみた結果です（同一IPアドレスからアクセスするので，テストではGeneral
+Multipleで実施しました）。参加者ごとにWorkerIDが割り振られて，その下にストループと質問紙の回答があります。</p>
 <p><img src="fig/jatos_fig20.png" width="600"></p>
 <p>jsPsychとlab.jsを混ぜることができるのは便利ですね。</p>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2021 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 

@@ -13,8 +13,8 @@
 
 <title>jsPsychを用いたWEB実験の実施：Google Spreadsheetにデータを保存しよう！</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -299,12 +303,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -381,42 +385,60 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">jsPsychを用いたWEB実験の実施：Google Spreadsheetにデータを保存しよう！</h1>
+<h1 class="title toc-ignore">jsPsychを用いたWEB実験の実施：Google
+Spreadsheetにデータを保存しよう！</h1>
 
 </div>
 
 
 <p><br /></p>
-<p>jsPsychはFirebaseやPavloviaを使って実施することができますが，Google Spreadsheet上で実施することもできます。それぞれ一長一短はありますが，Google Spreadsheetは日常的に使っている方もおられるでしょうし，サーバー費用などはかからないので，かなりお手軽に実施できます（ただ，Googleのサービスによって１日に作成可能なスプレッドシートの数には制限があるので，大規模なデータ収集には向かないと思います）。</p>
-<p>詳しくは，<a href="https://medium.com/@shashikg.iitk/jspsychsheet-running-online-behavioral-experiments-using-jspsych-and-google-sheet-adf29fb4d1a0">jsPsychSheet: Running online behavioral experiments using jsPsych and Google Sheet</a>を読んでいただけたらとは思いますが，以下では簡単に解説をします。</p>
+<p>jsPsychはFirebaseやPavloviaを使って実施することができますが，Google
+Spreadsheet上で実施することもできます。それぞれ一長一短はありますが，Google
+Spreadsheetは日常的に使っている方もおられるでしょうし，サーバー費用などはかからないので，かなりお手軽に実施できます（ただ，Googleのサービスによって１日に作成可能なスプレッドシートの数には制限があるので，大規模なデータ収集には向かないと思います）。</p>
+<p>詳しくは，<a
+href="https://medium.com/@shashikg.iitk/jspsychsheet-running-online-behavioral-experiments-using-jspsych-and-google-sheet-adf29fb4d1a0">jsPsychSheet:
+Running online behavioral experiments using jsPsych and Google
+Sheet</a>を読んでいただけたらとは思いますが，以下では簡単に解説をします。</p>
 <p><br /></p>
 <div id="事前準備" class="section level2">
 <h2>事前準備</h2>
 <ul>
-<li>GitHubアカウントを作成する（詳しくは<a href="https://kunisatolab.github.io/main/how-to-github.html">こちら</a>）。</li>
-<li>RStudioでjsPsychを使えるようにする（詳しくは<a href="https://kunisatolab.github.io/main/how-to-jspsych1.html">こちら</a>）。</li>
+<li>GitHubアカウントを作成する（詳しくは<a
+href="https://kunisatolab.github.io/main/how-to-github.html">こちら</a>）。</li>
+<li>RStudioでjsPsychを使えるようにする（詳しくは<a
+href="https://kunisatolab.github.io/main/how-to-jspsych1.html">こちら</a>）。</li>
 </ul>
 <p><br /></p>
 </div>
-<div id="jspsychsheetをforkしてgithub-pageを設定する" class="section level2">
+<div id="jspsychsheetをforkしてgithub-pageを設定する"
+class="section level2">
 <h2>1.jsPsychSheetをForkして，GitHub pageを設定する</h2>
-<p><a href="https://github.com/Brain2AI/jsPsychSheet">jsPsychSheetのGitHubリポジトリ</a>に移動して，Forkします(赤で囲った部分をクリックします)。</p>
+<p><a
+href="https://github.com/Brain2AI/jsPsychSheet">jsPsychSheetのGitHubリポジトリ</a>に移動して，Forkします(赤で囲った部分をクリックします)。</p>
 <p><img src="fig/jspsych_gsheet01.png" /></p>
 <p><br /></p>
 <p>自分のGitHubアカウントにjsPsychSheetリポジトリがForkされたら，Settingsタブをクリックします。</p>
 <p><img src="fig/jspsych_gsheet02.png" /> <br /></p>
-<p>Settingsタブで下にスクロールして，GitHub Pagesってところにいきます。そこで，masterブランチを選んでください。「save」って出てくるので，それを押します。これで，ForkしたリポジトリのGitHub Pagesが有効になりました。</p>
+<p>Settingsタブで下にスクロールして，GitHub
+Pagesってところにいきます。そこで，masterブランチを選んでください。「save」って出てくるので，それを押します。これで，ForkしたリポジトリのGitHub
+Pagesが有効になりました。</p>
 <p><img src="fig/jspsych_gsheet03.png" /> <br /></p>
 </div>
 <div id="jspsych課題の準備" class="section level2">
 <h2>2.jsPsych課題の準備</h2>
-<p>以下の赤線で囲っている部分を押して，「Clone with HTTPS」のURLをコピーする。</p>
+<p>以下の赤線で囲っている部分を押して，「Clone with
+HTTPS」のURLをコピーする。</p>
 <p><img src="fig/jspsych_gsheet04.png" /> <br /></p>
-<p>RStudioでFile→New Project..→Version Contriol→Gitで，コピーしたURLを貼り付ける。</p>
+<p>RStudioでFile→New Project..→Version
+Contriol→Gitで，コピーしたURLを貼り付ける。</p>
 <p><br /></p>
 <div id="simple-reaction-time-taskの準備" class="section level3">
 <h3>Simple Reaction Time Taskの準備</h3>
-<p>jsPsychのチュートリアルにあるSimple Reaction Time Taskを作ります。jsPsychSheetのリポジトリ内のexperimentフォルダ内に課題をおきます(2021/9/8 追記。現在，experimentフォルダがなくなっているようです，ご自身で追加をお願いします)。すでに，experimentフォルダ内には，Simple Reaction Time Taskが配置されていますが，以下では，Rmarkdownで再度作りましょう。</p>
+<p>jsPsychのチュートリアルにあるSimple Reaction Time
+Taskを作ります。jsPsychSheetのリポジトリ内のexperimentフォルダ内に課題をおきます(2021/9/8
+追記。現在，experimentフォルダがなくなっているようです，ご自身で追加をお願いします)。すでに，experimentフォルダ内には，Simple
+Reaction Time
+Taskが配置されていますが，以下では，Rmarkdownで再度作りましょう。</p>
 <ul>
 <li><p>RStudioでexperimentフォルダをカレントワーキングディレクトリにする</p></li>
 <li><p>以下をコンソールで実行</p></li>
@@ -424,7 +446,10 @@ div.tocify {
 <pre><code>library(jsPsychRmd)
 set_jsPsych()</code></pre>
 <ul>
-<li><p>index.Rmdを開いて，{js}チャンク内に<a href="https://www.jspsych.org/tutorials/rt-task/#the-final-code">jsPsychチュートリアルのThe final code</a>の scriptから /scriptの内容をコピーして貼り付けします。</p></li>
+<li><p>index.Rmdを開いて，{js}チャンク内に<a
+href="https://www.jspsych.org/tutorials/rt-task/#the-final-code">jsPsychチュートリアルのThe
+final code</a>の scriptから
+/scriptの内容をコピーして貼り付けします。</p></li>
 <li><p>{js}チャンクの上の{r}チャンク内を以下のようにします。</p></li>
 </ul>
 <pre><code>library(htmltools)
@@ -437,14 +462,18 @@ tags$script(src=&#39;jspsych-6.1.0/plugins/jspsych-fullscreen.js&#39;)
 <p>ちゃんと動作するかKnitをして確かめてください。課題が動いたら，Gitでコミット＆プッシュをしてください。</p>
 <p><br /></p>
 </div>
-<div id="jspsych課題でjspsychsheetを使うための調整" class="section level3">
+<div id="jspsych課題でjspsychsheetを使うための調整"
+class="section level3">
 <h3>jsPsych課題でjsPsychSheetを使うための調整</h3>
 <ul>
-<li>ForkしたjsPsychSheetリポジトリは，GitHub Pagesになっているので，以下のURLのいち部をユーザーアカウント名にするとアクセスできます。</li>
+<li>ForkしたjsPsychSheetリポジトリは，GitHub
+Pagesになっているので，以下のURLのいち部をユーザーアカウント名にするとアクセスできます。</li>
 </ul>
-<p><a href="https://" class="uri">https://</a><GitHubのユーザーアカウント名>.github.io/jsPsychSheet/experiment/</p>
+<p><a href="https://"
+class="uri">https://</a><GitHubのユーザーアカウント名>.github.io/jsPsychSheet/experiment/</p>
 <ul>
-<li>上記の課題をGoogle spreadsheet上で走らせる場合に，上記のURLからファイルにアクセスをします。そこで，画像を含む刺激系のファイル，jsPsychのjsライブラリなどは，上記のURLに変更をします。具体的には以下のようにします。</li>
+<li>上記の課題をGoogle
+spreadsheet上で走らせる場合に，上記のURLからファイルにアクセスをします。そこで，画像を含む刺激系のファイル，jsPsychのjsライブラリなどは，上記のURLに変更をします。具体的には以下のようにします。</li>
 </ul>
 <p><br /></p>
 <div id="修正1前rチャンク内のjsライブラリ" class="section level4">
@@ -558,7 +587,8 @@ tags$link(rel=&quot;stylesheet&quot;,href=&quot;https://&lt;GitHubのユーザ�
 </div>
 <div id="google-spreadsheetの設定" class="section level2">
 <h2>3.Google Spreadsheetの設定</h2>
-<p>Google Driveで新規にスプレッドシートを作ります（名前を適当につけてください）。</p>
+<p>Google
+Driveで新規にスプレッドシートを作ります（名前を適当につけてください）。</p>
 <p><img src="fig/jspsych_gsheet05.png" /></p>
 <p><br /></p>
 <p>「ツール」から「スクリプトエディタ」を押してください。</p>
@@ -609,12 +639,14 @@ function addDataMultiBlock(data, start=0) {
 <p>必ず，index.htmlという名前にしてから，「OK」を押してください。</p>
 <p><img src="fig/jspsych_gsheet11.png" /></p>
 <p><br /></p>
-<p>index.htmlが開くので，ここに，先程RStudio上で作成した実験課題のHTMLを貼り付けます（具体的には，HTMLファイルをクリックして，Open in Editorを選びます。その開いた内容をコピーして，貼り付けます）。</p>
+<p>index.htmlが開くので，ここに，先程RStudio上で作成した実験課題のHTMLを貼り付けます（具体的には，HTMLファイルをクリックして，Open
+in Editorを選びます。その開いた内容をコピーして，貼り付けます）。</p>
 <p><img src="fig/jspsych_gsheet12.png" /></p>
 <p><br /></p>
 <p>「公開」から「ウェブアプリケーションとして導入」を押します。</p>
 <p><img src="fig/jspsych_gsheet13.png" /></p>
-<p>「who has access to the app:」では，「全ユーザー」を選んでください。Deployを押します。</p>
+<p>「who has access to the
+app:」では，「全ユーザー」を選んでください。Deployを押します。</p>
 <p><img src="fig/jspsych_gsheet14.png" /></p>
 <p><br /></p>
 <p>「許可を確認」を押します。</p>
@@ -631,11 +663,12 @@ function addDataMultiBlock(data, start=0) {
 <p><br /></p>
 <p>課題が終わったら，以下のようにスプレッドシートにデータが保存されます。</p>
 <p><img src="fig/jspsych_gsheet19.png" /></p>
-<p>設定を丁寧にすれば，思ったよりも簡単にGoogle スプレッドシートを使って課題の実行とデータの保存ができました！</p>
+<p>設定を丁寧にすれば，思ったよりも簡単にGoogle
+スプレッドシートを使って課題の実行とデータの保存ができました！</p>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -675,6 +708,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

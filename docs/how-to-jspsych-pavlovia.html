@@ -13,8 +13,8 @@
 
 <title>jsPsychを用いたWEB実験の実施：Pavloviaで簡単に実施してみよう！</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -299,12 +303,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -388,38 +392,60 @@ div.tocify {
 
 <div id="pavlovia側の設定" class="section level2">
 <h2>1.Pavlovia側の設定</h2>
-<p>Pavlovia(<a href="https://gitlab.pavlovia.org/users/sign_in" class="uri">https://gitlab.pavlovia.org/users/sign_in</a> )にログインします(アカウントを作ってない方はRegisterで登録ください）。</p>
+<p>Pavlovia(<a href="https://gitlab.pavlovia.org/users/sign_in"
+class="uri">https://gitlab.pavlovia.org/users/sign_in</a>
+)にログインします(アカウントを作ってない方はRegisterで登録ください）。</p>
 <p>Pavloviaの利用には課金が必要ですが（詳しくはPavloviaのサイトでご確認ください），専修大学の心理学科では機関ライセンスを購入していますので，学科のメールアドレスで登録をしてください。</p>
 <p><img src="fig/pavlovia01.png" /> <br /></p>
-<p>次に，PavloviaのGitLabページ（<a href="https://gitlab.pavlovia.org/dashboard/projects" class="uri">https://gitlab.pavlovia.org/dashboard/projects</a> ）にアクセスします。以下のような感じの画面がでてくるので，「New project」をクリックして，実験を新規作成します。</p>
+<p>次に，PavloviaのGitLabページ（<a
+href="https://gitlab.pavlovia.org/dashboard/projects"
+class="uri">https://gitlab.pavlovia.org/dashboard/projects</a>
+）にアクセスします。以下のような感じの画面がでてくるので，「New
+project」をクリックして，実験を新規作成します。</p>
 <p><img src="fig/pavlovia02.png" /></p>
 <p><br /></p>
-<p>Project nameに研究名とか課題名をいれてください（参加者に見えるので名前は工夫ください）。「Create project」をクリックします。なお，１つのPavloviaアカウント下に複数の研究グループなどがある場合は，グループを設定しておくと良いかと思います（以下では練習で，kunisatolabグループを設定してみました）。</p>
+<p>Project
+nameに研究名とか課題名をいれてください（参加者に見えるので名前は工夫ください）。「Create
+project」をクリックします。なお，１つのPavloviaアカウント下に複数の研究グループなどがある場合は，グループを設定しておくと良いかと思います（以下では練習で，kunisatolabグループを設定してみました）。</p>
 <p><img src="fig/pavlovia03.png" /></p>
 <p><br /></p>
-<p>プロジェクトを作ると，以下の画面が出てきます。赤色の部分（Clone with HTTP）のURLと青色の部分の情報（git configではじまる２行です）が必要なのでコピーして，どこかにメモしておきます。</p>
+<p>プロジェクトを作ると，以下の画面が出てきます。赤色の部分（Clone with
+HTTP）のURLと青色の部分の情報（git
+configではじまる２行です）が必要なのでコピーして，どこかにメモしておきます。</p>
 <p><img src="fig/pavlovia04.png" /></p>
 <p><br /></p>
 </div>
 <div id="pavloviaのリポジトリをクローンする" class="section level2">
 <h2>Pavloviaのリポジトリをクローンする</h2>
-<p>まず，Git global setupをします。Rstudioを開いて，Terminalタブで，上記の図の青色の部分をコピペして実行します。</p>
-<p>次に，RStudio上でFile → New Project→Version Control→Gitと進めます。</p>
+<p>まず，Git global
+setupをします。Rstudioを開いて，Terminalタブで，上記の図の青色の部分をコピペして実行します。</p>
+<p>次に，RStudio上でFile → New Project→Version
+Control→Gitと進めます。</p>
 <p><img src="fig/github_gif3.gif" /></p>
 <p><br /></p>
-<p>このRepogitory URLに上記の図の赤色のClone with HTTPをコピペします。おそらくクローン（ダウンロード）がなされます。</p>
-<p>次に，RStudioのTerminalというタブを探します。そして，そこに，上記の図の青色のgit configではじまる２行をコピペします。</p>
+<p>このRepogitory URLに上記の図の赤色のClone with
+HTTPをコピペします。おそらくクローン（ダウンロード）がなされます。</p>
+<p>次に，RStudioのTerminalというタブを探します。そして，そこに，上記の図の青色のgit
+configではじまる２行をコピペします。</p>
 <p>これで，RStudio上からPavloviaに行動課題をPush（アップロード）したり，データをPull（ダウンロード）することができます。</p>
 <p><br /></p>
 </div>
 <div id="pavlovia用の実験課題の作成" class="section level2">
 <h2>Pavlovia用の実験課題の作成</h2>
-<p>次に，ここまで設定したRstudio上のPavloviaの課題リポジトリ上でR Markdownを使って行動課題を作っていきます（pavloviaからクローンしたフォルダ内でR Markdownで行動課題を作ります）。その際に，jsPsychRmd(<a href="https://github.com/ykunisato/jsPsychRmd" class="uri">https://github.com/ykunisato/jsPsychRmd</a> )を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の<code>remotes::install_github("ykunisato/jsPsychRmd")</code>を打ち込んで，インストールしてから，<code>library(jsPsychRmd)</code>を実行してください。</p>
+<p>次に，ここまで設定したRstudio上のPavloviaの課題リポジトリ上でR
+Markdownを使って行動課題を作っていきます（pavloviaからクローンしたフォルダ内でR
+Markdownで行動課題を作ります）。その際に，jsPsychRmd(<a
+href="https://github.com/ykunisato/jsPsychRmd"
+class="uri">https://github.com/ykunisato/jsPsychRmd</a>
+)を使うと，jsPscyhをPavloviaで実施する時に便利な関数などもついてきます。まず，Consoleに以下を打ち込んで，jsPsychRmdを読み込みます。もしエラーが出たら，まだインストールされてないかとおもいますので，その下の<code>remotes::install_github("ykunisato/jsPsychRmd")</code>を打ち込んで，インストールしてから，<code>library(jsPsychRmd)</code>を実行してください。</p>
 <pre><code>library(jsPsychRmd)</code></pre>
-<p>jsPsychRmdが読み込めたら，以下をConsoleに打ち込みます。以下を実行すると，jsPsychを使って行動課題のHTMLを出力するR Markdownファイル（index.Rmd），jsPsychのライブラリ(jspsych-6.3.1)，刺激をいれるstimuliフォルダを作ります。</p>
+<p>jsPsychRmdが読み込めたら，以下をConsoleに打ち込みます。以下を実行すると，jsPsychを使って行動課題のHTMLを出力するR
+Markdownファイル（index.Rmd），jsPsychのライブラリ(jspsych-6.3.1)，刺激をいれるstimuliフォルダを作ります。</p>
 <pre><code>set_jsPsych()</code></pre>
 <p><br /></p>
-<p>index.Rmdを開いてみましょう。まずは練習で，以下の青で囲ったKnitをクリックしてみましょう。しばらくすると，HTMLファイルが出力されて（index.html），「こんにちわあ」と表示されます。あとは，ご自身の作りたい行動課題の要素を追加していくとR Markdownから行動課題のHTMLファイルが作れるようになります（jsPsych自体のチュートリアルは<a href="https://kunisatolab.github.io/main/code_tips.html">こちら</a>を確認ください）。</p>
+<p>index.Rmdを開いてみましょう。まずは練習で，以下の青で囲ったKnitをクリックしてみましょう。しばらくすると，HTMLファイルが出力されて（index.html），「こんにちわあ」と表示されます。あとは，ご自身の作りたい行動課題の要素を追加していくとR
+Markdownから行動課題のHTMLファイルが作れるようになります（jsPsych自体のチュートリアルは<a
+href="https://kunisatolab.github.io/main/code_tips.html">こちら</a>を確認ください）。</p>
 <p><strong>以降のスクリーンショット画像はjsPsychのバージョンなどが古いままになっていますが，そこは適宜最新版に置き換えて読んでください</strong></p>
 <p><img src="fig/pavlovia05.png" /></p>
 <p><br /></p>
@@ -436,13 +462,16 @@ timeline.push(pavlovia_finish);</code></pre>
 <h2>Pavloviaへ課題をPushする</h2>
 <p>さて，作成した課題をPavloviaにCommitして，Pushします。まず，RstudioのGitタブを開きます。Commitをクリックします。</p>
 <p><img src="fig/pavlovia06.png" /></p>
-<p>Pushするファイルを選んで，Stageをクリックして，Commit messageにコメントを書きます（自分が分かれば何でもいいです）。Commitをクリックします。それがうまく言ったら，Pushをクリックすれば，完了です（初回は少し時間かかるかもしれません）。</p>
+<p>Pushするファイルを選んで，Stageをクリックして，Commit
+messageにコメントを書きます（自分が分かれば何でもいいです）。Commitをクリックします。それがうまく言ったら，Pushをクリックすれば，完了です（初回は少し時間かかるかもしれません）。</p>
 <p><img src="fig/pavlovia07.png" /></p>
 <p><br /></p>
 </div>
 <div id="pavloviaでの課題のrun" class="section level2">
 <h2>Pavloviaでの課題のrun</h2>
-<p><a href="https://gitlab.pavlovia.org/dashboard/projects">PavloviaのGitlab</a>を確認して，一応課題がアップロードされているか確認します。ファイルが上がっていたら，次は，<a href="https://pavlovia.org">Pavlovia</a>にいって，Dashboard→Experimentsで自分の作成した課題を開きます。多分INACTIVEになっていると思うので，PILOTINGで試して，うまくいきそうなら，RUNNINGをクリックします。データが保存されているか確認するために，ためしに何度かやってみると良いです。</p>
+<p><a
+href="https://gitlab.pavlovia.org/dashboard/projects">PavloviaのGitlab</a>を確認して，一応課題がアップロードされているか確認します。ファイルが上がっていたら，次は，<a
+href="https://pavlovia.org">Pavlovia</a>にいって，Dashboard→Experimentsで自分の作成した課題を開きます。多分INACTIVEになっていると思うので，PILOTINGで試して，うまくいきそうなら，RUNNINGをクリックします。データが保存されているか確認するために，ためしに何度かやってみると良いです。</p>
 <p><br /></p>
 </div>
 <div id="pavloviaからデータをpullする" class="section level2">
@@ -466,7 +495,7 @@ jsPsych.init({
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -506,6 +535,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

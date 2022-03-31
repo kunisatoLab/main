@@ -13,8 +13,8 @@
 
 <title>強化学習モデル: ベイズ推定(2)</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -299,12 +303,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -388,26 +392,32 @@ div.tocify {
 
 <div id="認知モデリングの推奨実践法" class="section level2">
 <h2>認知モデリングの推奨実践法</h2>
-<p>Busemeyer &amp; Diederich(2010), Heathcote (2014), Palminteri et al.(2017)を参考にまとめると，以下のような感じになります。</p>
+<p>Busemeyer &amp; Diederich(2010), Heathcote (2014), Palminteri et
+al.(2017)を参考にまとめると，以下のような感じになります。</p>
 <ul>
 <li>A 認知課題と認知モデルを準備</li>
-<li>B 人工データ生成とパラメータリカバリーを確認（モデルや課題の修正）</li>
+<li>B
+人工データ生成とパラメータリカバリーを確認（モデルや課題の修正）</li>
 <li>C データ収集と行動データを確認</li>
 <li>D パラメータ推定</li>
 <li>E 相対モデル比較</li>
 <li>F モデル・シミュレーションと選択的影響テスト</li>
 </ul>
-<p><a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl1.html" target="_blank">「強化学習モデル: 最尤推定」</a>と<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル: ベイズ推定(1)」</a>では，ABCDとすすめてきました。今回は，今回は，EとFについて説明します（相対モデル比較に関連づけてモデル・リカバリーの説明もします）。</p>
+<p><a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl1.html" target="_blank">「強化学習モデル:
+最尤推定」</a>と<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル:
+ベイズ推定(1)」</a>では，ABCDとすすめてきました。今回は，今回は，EとFについて説明します（相対モデル比較に関連づけてモデル・リカバリーの説明もします）。</p>
 <div id="使用するrパッケージ" class="section level3">
 <h3>使用するRパッケージ</h3>
-<p>適宜必要なパッケージをインストールしてください(<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル: ベイズ推定(1)」</a>と同じです)。</p>
+<p>適宜必要なパッケージをインストールしてください(<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル:
+ベイズ推定(1)」</a>と同じです)。</p>
 <pre class="r"><code>rm(list = ls())
 library(tidyverse)
 library(cmdstanr)
 library(rstan)
 library(posterior)
 library(bridgesampling)</code></pre>
-<p><a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル: ベイズ推定(1)」</a>と同じく，人工データを生成するために，実験状況の入ったsim_dataの準備とq_learning_sim関数を準備をします。</p>
+<p><a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl2.html" target="_blank">「強化学習モデル:
+ベイズ推定(1)」</a>と同じく，人工データを生成するために，実験状況の入ったsim_dataの準備とq_learning_sim関数を準備をします。</p>
 <pre class="r"><code>sim_data &lt;- tibble(trial = 1:80,
                    prob_s1 = rep(c(0.2, 0.8), each = 40),
                    prob_s2 = rep(c(0.8, 0.2), each = 40),
@@ -480,10 +490,14 @@ for (i in 1:length(file_names)) {
 <h2>E 相対モデル比較</h2>
 <p>ここでは，sub02を対象にして，モデル比較をしてみたいと思います。モデル比較する場合には，以下の２種類があります。今回は，予測をしたいという話ではないので，WBICを使用します。</p>
 <ul>
-<li><p>予測の良さに基づくモデル選択法：KL距離をベースにしたものであり，予測をする上で悪いものを避けるという保守的なモデル選択ができる。例えば，AIC, DIC，WAICなどがあります。</p></li>
-<li><p>ベイズ的なモデル選択法(モデルと事前分布からみてどのくらいデータが意外か。この意外性が小さいほど良いモデルと考えられる)：BIC, WBIC, ベイズファクター,自由エネルギー</p></li>
+<li><p>予測の良さに基づくモデル選択法：KL距離をベースにしたものであり，予測をする上で悪いものを避けるという保守的なモデル選択ができる。例えば，AIC,
+DIC，WAICなどがあります。</p></li>
+<li><p>ベイズ的なモデル選択法(モデルと事前分布からみてどのくらいデータが意外か。この意外性が小さいほど良いモデルと考えられる)：BIC,
+WBIC, ベイズファクター,自由エネルギー</p></li>
 </ul>
-<p>WBICの計算をする場合は，stanコードの対数尤度の計算の部分で対数尤度に(1/log(データ数)) を掛ける必要があります。さらに，generated quantitiesブロックで対数尤度を計算します。それぞれは，以下になります。</p>
+<p>WBICの計算をする場合は，stanコードの対数尤度の計算の部分で対数尤度に(1/log(データ数))
+を掛ける必要があります。さらに，generated
+quantitiesブロックで対数尤度を計算します。それぞれは，以下になります。</p>
 <ul>
 <li>q_learning_WBIC.stan</li>
 </ul>
@@ -616,25 +630,35 @@ q_learning_prior_WBIC_sample &lt;- rstan::read_stan_csv(q_learning_prior_WBIC_mc
 <pre class="r"><code>WBIC_non &lt;- -mean(rowSums(rstan::extract(q_learning_WBIC_sample)$log_lik))
 WBIC_prior &lt;- -mean(rowSums(rstan::extract(q_learning_prior_WBIC_sample)$log_lik))
 paste(&quot;無情報事前分布のWBICは&quot;,WBIC_non)</code></pre>
-<pre><code>## [1] &quot;無情報事前分布のWBICは 52.6072371191108&quot;</code></pre>
+<pre><code>## [1] &quot;無情報事前分布のWBICは 50.2153192839427&quot;</code></pre>
 <pre class="r"><code>paste(&quot;有情報事前分布のWBICは&quot;,WBIC_prior)</code></pre>
-<pre><code>## [1] &quot;有情報事前分布のWBICは 49.5455223126708&quot;</code></pre>
+<pre><code>## [1] &quot;有情報事前分布のWBICは 49.4977832560652&quot;</code></pre>
 </div>
 </div>
 <div id="モデルリカバリーmodel-recovery" class="section level2">
 <h2>モデルリカバリー（Model Recovery）</h2>
 <p>これまでパラメータリカバリーをパラメータ推定のチェックに用いてきました。特定のモデルのパラメータ推定の精度を調べる上では，パラメータリカバリーが使えます。ただし，そもそもデータ生成に用いたれたモデルがモデル選択でちゃんと選ばれるのかについては，検討ができていません。生成モデルはあくまで研究者が仮定したものであって，複数の生成モデルが存在すると考えられるので，データからちゃんとモデルが選択できることが重要です。</p>
-<p>パラメータ推定後の相対モデル比較において，データ生成過程で用いられた生成モデルがちゃんと選ばれるか確認するモデルリカバリーという考えがあります(Wilson &amp; Collins, 2019)。例えば，特定の生成モデルAから生成されたシミュレーションデータに対して，複数の生成モデルA ,B,Cを用いてパラメータ推定してモデル比較した場合，BやCよりもAが選ばれる必要があります。これを検討するのがモデルリカバリーです。モデルリカバリーでは，全ての生成モデルから異なる値のパラメータを用いてシミュレーションデータを生成し，それらに対して，全ての生成モデルを用いてパラメータ推定を行うことを全ての組み合わせで行います。モデルリカバリーによって，検討しているモデルが研究目的から妥当か，追加すべきモデルはないか，パラメータ推定で識別不可能なモデルはないかを検討することができます。</p>
+<p>パラメータ推定後の相対モデル比較において，データ生成過程で用いられた生成モデルがちゃんと選ばれるか確認するモデルリカバリーという考えがあります(Wilson
+&amp; Collins,
+2019)。例えば，特定の生成モデルAから生成されたシミュレーションデータに対して，複数の生成モデルA
+,B,Cを用いてパラメータ推定してモデル比較した場合，BやCよりもAが選ばれる必要があります。これを検討するのがモデルリカバリーです。モデルリカバリーでは，全ての生成モデルから異なる値のパラメータを用いてシミュレーションデータを生成し，それらに対して，全ての生成モデルを用いてパラメータ推定を行うことを全ての組み合わせで行います。モデルリカバリーによって，検討しているモデルが研究目的から妥当か，追加すべきモデルはないか，パラメータ推定で識別不可能なモデルはないかを検討することができます。</p>
 <div id="モデルリカバリーで用いるモデル" class="section level3">
 <h3>モデルリカバリーで用いるモデル</h3>
 <p>あまり複雑にしないために，これまで用いてきたモデルとそのモデルを一部改変したモデルを考えます。</p>
 <ul>
 <li>上記で検討した情報事前分布をおいた強化学習モデル（Model 1）</li>
-<li>上記からβを除外した強化学習モデル（Model 2, β=1に仮定したモデルともいえます）</li>
+<li>上記からβを除外した強化学習モデル（Model 2,
+β=1に仮定したモデルともいえます）</li>
 </ul>
-<div id="αとβを仮定したモデルmodel-1から生成されたデータのモデルリカバリー" class="section level4">
-<h4>αとβを仮定したモデル(Model 1)から生成されたデータのモデルリカバリー</h4>
-<p>まずは，これまでと同様なαもβも存在する強化学習モデル(Model 1)でデータを生成します。それに対して，それと一致したモデル（Model 1, 上記のq_learning_prior_WBIC.stan）と一致しないモデル（Model 2, 以下のq_learning_prior_non_beta_WBIC.stan）を使って推定することで，モデルリカバリーをします。</p>
+<div
+id="αとβを仮定したモデルmodel-1から生成されたデータのモデルリカバリー"
+class="section level4">
+<h4>αとβを仮定したモデル(Model
+1)から生成されたデータのモデルリカバリー</h4>
+<p>まずは，これまでと同様なαもβも存在する強化学習モデル(Model
+1)でデータを生成します。それに対して，それと一致したモデル（Model 1,
+上記のq_learning_prior_WBIC.stan）と一致しないモデル（Model 2,
+以下のq_learning_prior_non_beta_WBIC.stan）を使って推定することで，モデルリカバリーをします。</p>
 <p>q_learning_prior_non_beta_WBIC.stanは，以下のようなコードになります。簡単にいうと，q_learning_weak_info_single_WBIC.stanからbetaを抜いただけです。</p>
 <pre><code>data {
   int&lt;lower=1&gt; trial;
@@ -684,7 +708,10 @@ generated quantities {
 }</code></pre>
 <p>まずは，q_learning_prior_non_beta_WBIC.stanをコンパイルします。</p>
 <pre><code>q_learning_prior_non_beta_WBIC &lt;- cmdstan_model(&#39;q_learning_prior_non_beta_WBIC.stan&#39;)</code></pre>
-<p>さて，以下のコードを走らせて，αとβを仮定したモデル(Model 1)で生成されたデータをαとβを仮定するモデル(Model 1)とαだけを仮定するモデル(Model 2)でフィッティングした時に，モデルが選択される確率を計算します。以下では，100回シミュテーションデータを生成して，MCMCで推定をするのでかなり時間がかかると思います（メモリもかなり使うと予想されます）。</p>
+<p>さて，以下のコードを走らせて，αとβを仮定したモデル(Model
+1)で生成されたデータをαとβを仮定するモデル(Model
+1)とαだけを仮定するモデル(Model
+2)でフィッティングした時に，モデルが選択される確率を計算します。以下では，100回シミュテーションデータを生成して，MCMCで推定をするのでかなり時間がかかると思います（メモリもかなり使うと予想されます）。</p>
 <pre><code>better_model1 &lt;- 0
 n_simulation &lt;- 100
 for (i in 1:n_simulation) {
@@ -726,9 +753,15 @@ for (i in 1:n_simulation) {
 fit_model1_sim_model1 &lt;- better_model1/n_simulation
 fit_model2_sim_model1 &lt;- (n_simulation - better_model1) / n_simulation</code></pre>
 </div>
-<div id="αのみを仮定したモデルmodel-2から生成されたデータのモデルリカバリー" class="section level4">
-<h4>αのみを仮定したモデル(Model 2)から生成されたデータのモデルリカバリー</h4>
-<p>次は，αのみを仮定したモデル（Model 2, βは仮定しない，つまり，βを１に固定するモデル）で生成されたデータをαとβを仮定するモデル(Model 1)とαだけを仮定するモデル(Model 2)でフィッティングした時に，モデルが選択される確率を計算します。以下では，100回シミュテーションデータを生成して，MCMCで推定をするのでかなり時間がかかると思います（メモリもかなり使うと予想されます）。</p>
+<div
+id="αのみを仮定したモデルmodel-2から生成されたデータのモデルリカバリー"
+class="section level4">
+<h4>αのみを仮定したモデル(Model
+2)から生成されたデータのモデルリカバリー</h4>
+<p>次は，αのみを仮定したモデル（Model 2,
+βは仮定しない，つまり，βを１に固定するモデル）で生成されたデータをαとβを仮定するモデル(Model
+1)とαだけを仮定するモデル(Model
+2)でフィッティングした時に，モデルが選択される確率を計算します。以下では，100回シミュテーションデータを生成して，MCMCで推定をするのでかなり時間がかかると思います（メモリもかなり使うと予想されます）。</p>
 <pre><code>better_model1 &lt;- 0
 n_simulation &lt;- 100
 beta_set &lt;- 1
@@ -771,7 +804,9 @@ fit_model1_sim_model2 &lt;- better_model1 / n_simulation
 fit_model2_sim_model2 &lt;- (n_simulation - better_model1) / n_simulation</code></pre>
 <p>ヒートマップ形式で図示します。</p>
 <ul>
-<li>alphaとbetaの両方があるモデル(Model 1)で生成したデータのパラメータ推定で，alphaとbetaの両方があるモデル(Model 1)の方が高い確率で選択されています。</li>
+<li>alphaとbetaの両方があるモデル(Model
+1)で生成したデータのパラメータ推定で，alphaとbetaの両方があるモデル(Model
+1)の方が高い確率で選択されています。</li>
 <li>alphaだけのモデル(Model2)で生成したデータのパタメータ推定で，alphaだけのモデル(Model2)の方が高い確率で選択されています。</li>
 </ul>
 <p>偶然，設定したβが１付近になってモデル識別が難しくなるケースがあったりするかもしれません。なお，今回は100回だけにしていますが，繰り返し回数を増やしたほうが良いかもしれません。</p>
@@ -790,24 +825,43 @@ ggplot(model_recovery, aes(x = fit_model, y = simulated_model, fill = Probabilit
 </div>
 </div>
 </div>
-<div id="f-モデルシミュレーションと選択的影響テスト" class="section level2">
+<div id="f-モデルシミュレーションと選択的影響テスト"
+class="section level2">
 <h2>F モデル・シミュレーションと選択的影響テスト</h2>
-<p>モデル・シミュレーションでは，<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl1.html" target="_blank">「強化学習モデル: 最尤推定」</a>で行ったような人工データ生成を最もフィットの良かった推定値を用いて行います。複数のモデルの中で最もデータ適合が良いモデルであったとしても，それは相対的に良いモデルになります。私達が想定したモデルはどれも悪いモデルだった場合は，相対的には良いモデルを選ぶことはできても，それが絶対的には悪いモデルある可能性があります。そこで，情報量規準などで最も良いとされたモデルの推定値を用いて，人工データ生成を行って，その生成されたデータが現実のデータに近いものかを評価します。モデルシミュレーションについては，Palminteri, Wyart, &amp; Koechlin(2017)が詳しいです。</p>
-<p>選択的影響テストとは，実験的操作を用いて，認知モデルの妥当性を検討する方法です（Heathcote et al., 2015）。選択的影響テストでは，認知モデルの特定のパラメータに影響すると考えられる実験的な操作をして，実際にパラメータに変化が生じるのかを検討します。この予想された変化をもって，パラメータとモデルの妥当性を示すことができます。例えば，反応時間に関する Drift-Diffusion Modelの妥当性検討では，色識別課題の条件を操作することで，操作に対応したパラメータの変化を確認していたりします(Voss, Rothermund, and Voss , 2004)。</p>
+<p>モデル・シミュレーションでは，<a href="https://kunisatolab.github.io/main/how-to-cognitive-modeling-rl1.html" target="_blank">「強化学習モデル:
+最尤推定」</a>で行ったような人工データ生成を最もフィットの良かった推定値を用いて行います。複数のモデルの中で最もデータ適合が良いモデルであったとしても，それは相対的に良いモデルになります。私達が想定したモデルはどれも悪いモデルだった場合は，相対的には良いモデルを選ぶことはできても，それが絶対的には悪いモデルある可能性があります。そこで，情報量規準などで最も良いとされたモデルの推定値を用いて，人工データ生成を行って，その生成されたデータが現実のデータに近いものかを評価します。モデルシミュレーションについては，Palminteri,
+Wyart, &amp; Koechlin(2017)が詳しいです。</p>
+<p>選択的影響テストとは，実験的操作を用いて，認知モデルの妥当性を検討する方法です（Heathcote
+et al.,
+2015）。選択的影響テストでは，認知モデルの特定のパラメータに影響すると考えられる実験的な操作をして，実際にパラメータに変化が生じるのかを検討します。この予想された変化をもって，パラメータとモデルの妥当性を示すことができます。例えば，反応時間に関する
+Drift-Diffusion
+Modelの妥当性検討では，色識別課題の条件を操作することで，操作に対応したパラメータの変化を確認していたりします(Voss,
+Rothermund, and Voss , 2004)。</p>
 </div>
 <div id="引用参考文献" class="section level2">
 <h2>引用・参考文献</h2>
 <ul>
-<li>Busemeyer, J. R., &amp; Diederich, A. (2010). Cognitive Modeling. SAGE.</li>
-<li>Heathcote, A., Brown, S. D., &amp; Wagenmakers, E.-J. (2015). An Introduction to Good Practices in Cognitive Modeling. In B. U. Forstmann &amp; E.-J. Wagenmakers (Eds.), An Introduction to Model-Based Cognitive Neuroscience (pp. 25–48). Springer New York.</li>
-<li>Palminteri, S., Wyart, V., &amp; Koechlin, E. (2017). The Importance of Falsification in Computational Cognitive Modeling. Trends in Cognitive Sciences, 21(6), 425–433.</li>
-<li>Voss, A., Rothermund, K., &amp; Voss, J. (2004). Interpreting the parameters of the diffusion model: an empirical validation. Memory &amp; Cognition, 32(7), 1206–1220.</li>
-<li>Wilson, R. C., &amp; Collins, A. G. (2019). Ten simple rules for the computational modeling of behavioral data. eLife, 8. <a href="https://doi.org/10.7554/eLife.49547" class="uri">https://doi.org/10.7554/eLife.49547</a></li>
+<li>Busemeyer, J. R., &amp; Diederich, A. (2010). Cognitive Modeling.
+SAGE.</li>
+<li>Heathcote, A., Brown, S. D., &amp; Wagenmakers, E.-J. (2015). An
+Introduction to Good Practices in Cognitive Modeling. In B. U. Forstmann
+&amp; E.-J. Wagenmakers (Eds.), An Introduction to Model-Based Cognitive
+Neuroscience (pp. 25–48). Springer New York.</li>
+<li>Palminteri, S., Wyart, V., &amp; Koechlin, E. (2017). The Importance
+of Falsification in Computational Cognitive Modeling. Trends in
+Cognitive Sciences, 21(6), 425–433.</li>
+<li>Voss, A., Rothermund, K., &amp; Voss, J. (2004). Interpreting the
+parameters of the diffusion model: an empirical validation. Memory &amp;
+Cognition, 32(7), 1206–1220.</li>
+<li>Wilson, R. C., &amp; Collins, A. G. (2019). Ten simple rules for the
+computational modeling of behavioral data. eLife, 8. <a
+href="https://doi.org/10.7554/eLife.49547"
+class="uri">https://doi.org/10.7554/eLife.49547</a></li>
 </ul>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -847,6 +901,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

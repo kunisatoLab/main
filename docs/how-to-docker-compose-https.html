@@ -13,8 +13,8 @@
 
 <title>Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW，shiny)をHTTPS化する方法</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -381,32 +385,56 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW，shiny)をHTTPS化する方法</h1>
+<h1 class="title toc-ignore">Docker-composeを使ってGCE上の複数のサービス(Rstudio,
+Jupyter notebook, JATOS, elabFTW，shiny)をHTTPS化する方法</h1>
 
 </div>
 
 
 <div id="はじめに" class="section level2">
 <h2>はじめに</h2>
-<p><a href="how-to-rstudio-gce-https.html">Docker-composeを使ってGCE上のRstudio serverをHTTPS化する方法</a>では，Google Compute Engine上でRocker(RStudio ServerのDocker)をベースにしたDockerでRStudio Serverを使う場合にHTTPS化する方法を解説しています。この場合，１つのサーバーにはRStudio serverしかおけないので，ちょっと不便です。もちろん，手動でいろいろやればできるのですが，毎回だと面倒です。そこで，サブドメインとdocker-composeとtraefikを活用して，一気に複数のサービス(Rstudio, Jupyter notebook, JATOS（ウェブ実験管理）, elabFTW（電子ラボノート）)を1つのサーバーで動かして，HTTPS化してみましょう（１サービス１サーバーだと４つ立ち上げることで負担ですが，これだと１つサーバーで４サーボスが稼働できるので，お得です！）。</p>
-<p>なお，国里は，サーバーに関して専門的な教育を受けたことはないので，間違っている部分も多いかと思います（雰囲気で動かしています）。本ページを参考に作業された結果，何らかの問題が生じた場合に，国里は責任を負えません。予めご了承ください（Google Compute Engineを使用すると課金されますので，慎重に作業ください。例えば何度もVMインスタンスを作成し，それを稼働したまま放置していたら，結構な金額になると思います）。また，お詳しい方は，誤りを見つけられましたら，ご指摘いただけましたら幸いです。</p>
+<p><a
+href="how-to-rstudio-gce-https.html">Docker-composeを使ってGCE上のRstudio
+serverをHTTPS化する方法</a>では，Google Compute Engine上でRocker(RStudio
+ServerのDocker)をベースにしたDockerでRStudio
+Serverを使う場合にHTTPS化する方法を解説しています。この場合，１つのサーバーにはRStudio
+serverしかおけないので，ちょっと不便です。もちろん，手動でいろいろやればできるのですが，毎回だと面倒です。そこで，サブドメインとdocker-composeとtraefikを活用して，一気に複数のサービス(Rstudio,
+Jupyter notebook, JATOS（ウェブ実験管理）,
+elabFTW（電子ラボノート）)を1つのサーバーで動かして，HTTPS化してみましょう（１サービス１サーバーだと４つ立ち上げることで負担ですが，これだと１つサーバーで４サーボスが稼働できるので，お得です！）。</p>
+<p>なお，国里は，サーバーに関して専門的な教育を受けたことはないので，間違っている部分も多いかと思います（雰囲気で動かしています）。本ページを参考に作業された結果，何らかの問題が生じた場合に，国里は責任を負えません。予めご了承ください（Google
+Compute
+Engineを使用すると課金されますので，慎重に作業ください。例えば何度もVMインスタンスを作成し，それを稼働したまま放置していたら，結構な金額になると思います）。また，お詳しい方は，誤りを見つけられましたら，ご指摘いただけましたら幸いです。</p>
 </div>
-<div id="google-compute-engineを使えるようにする" class="section level2">
+<div id="google-compute-engineを使えるようにする"
+class="section level2">
 <h2>1. Google Compute Engineを使えるようにする</h2>
-<p><a href="https://cloud.google.com/compute/?hl=ja">公式のドキュメント</a>などを参考にGoogle Compute Engineを使えるように設定します（これは解説資料も多いので省略します）。</p>
+<p><a
+href="https://cloud.google.com/compute/?hl=ja">公式のドキュメント</a>などを参考にGoogle
+Compute
+Engineを使えるように設定します（これは解説資料も多いので省略します）。</p>
 </div>
 <div id="仮想マシンvmの準備" class="section level2">
 <h2>2. 仮想マシン(VM)の準備</h2>
-<p>1.名前やマシンの構成は好みで選択してください（マシンの構成によって金額が変わるので，お財布と相談ください。なお，E2はコスパは良いのですが，複数人がRStudioにアクセスするとサーバーが落ちることがあるようです。少し割高に感じるかもしれませんが，N系を選ぶのが無難に思います）。ブートディスクの設定で変更を押して，Ubuntu 20.04 LTSを選んで，ディスクサイズは30~50GBくらいにしておきます。</p>
-<p>2.ファイヤーウォールの設定(「HTTP トラフィックを許可する」と「HTTPS トラフィックを許可する」にチェックをいれる)</p>
-<p>※ よく使う仮想マシン構成が決まっている場合は，インスタンステンプレートを使うと便利と思います。</p>
+<p>1.名前やマシンの構成は好みで選択してください（マシンの構成によって金額が変わるので，お財布と相談ください。なお，E2はコスパは良いのですが，複数人がRStudioにアクセスするとサーバーが落ちることがあるようです。少し割高に感じるかもしれませんが，N系を選ぶのが無難に思います）。ブートディスクの設定で変更を押して，Ubuntu
+20.04 LTSを選んで，ディスクサイズは30~50GBくらいにしておきます。</p>
+<p>2.ファイヤーウォールの設定(「HTTP トラフィックを許可する」と「HTTPS
+トラフィックを許可する」にチェックをいれる)</p>
+<p>※
+よく使う仮想マシン構成が決まっている場合は，インスタンステンプレートを使うと便利と思います。</p>
 <p>3.VMインスタンスを作成します。勝手に作ったVMが起動します。</p>
-<p>4.VMインスタンスは起動している間課金されるので，使わないときは停止しておきます。でも，VMインスタンスは起動のたびに外部IPが変わっちゃうのが困る場合は，<a href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address?hl=ja">静的外部 IP アドレスの予約</a>をします（常時起動している場合は，気にしなくても良いと思います）。</p>
+<p>4.VMインスタンスは起動している間課金されるので，使わないときは停止しておきます。でも，VMインスタンスは起動のたびに外部IPが変わっちゃうのが困る場合は，<a
+href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address?hl=ja">静的外部
+IP
+アドレスの予約</a>をします（常時起動している場合は，気にしなくても良いと思います）。</p>
 <p>5.このまま稼働させると，sshdに攻撃がされます（結構頻繁にアタックされます・・・(;´Д`;)）。SSHポート番号を変更しておきます。ちょっとややこしいですが，以下の手順でSSHポートは変更できます。</p>
 <ul>
-<li>GCPの「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール ルールの作成」を押して新しいSSHポートを設定します。名前やターゲットタグは好きな名前にしてください（私は適当に“ssh-allow-port”って名前にしています）。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは許可，ソースのIP範囲は， <code>0.0.0.0/0</code> とします。プロトコルは<code>tcp</code>でポートに好きなポート番号を入れます。</li>
+<li>GCPの「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール
+ルールの作成」を押して新しいSSHポートを設定します。名前やターゲットタグは好きな名前にしてください（私は適当に”ssh-allow-port”って名前にしています）。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは許可，ソースのIP範囲は，
+<code>0.0.0.0/0</code>
+とします。プロトコルは<code>tcp</code>でポートに好きなポート番号を入れます。</li>
 <li>設定した新しいファイアウォールルールを適用するため，VMインスタンスをクリックして，「編集」ボタンを押して，ネットワークタグに上記で決めたターゲットタグを入れて保存します。</li>
-<li>通常のSSH接続(22portを使用)をします（「Compute Engine」の「VMインスタンス」の当該VMインスタンスの右端にある「SSH」をクリックします）。</li>
+<li>通常のSSH接続(22portを使用)をします（「Compute
+Engine」の「VMインスタンス」の当該VMインスタンスの右端にある「SSH」をクリックします）。</li>
 <li>コンソールっぽい画面が出てきたら，以下のコマンドを打って，vimでsshdの設定ファイルを開きます。</li>
 </ul>
 <pre><code>sudo vim /etc/ssh/sshd_config</code></pre>
@@ -417,7 +445,10 @@ div.tocify {
 <pre><code>sudo systemctl restart sshd</code></pre>
 <ul>
 <li><p>ここで今22番portで開いた画面はそのままにして（閉じない），VMインスタンスの右端にある「SSH」の下矢印を押して，「ブラウザウィンドウでカスタムポートを開く」をクリックします。入力欄が出てくるので，そこに先程設定した新しいSSHのポートを入力して開きます。</p></li>
-<li><p>新しいSSHのポートでも開けたら，22番portを閉じます。もう一度，「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール ルールの作成」を押します。名前やターゲットタグは好きな名前にしてください（私は適当に“disallow-ssh22”って名前にしています)。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは<code>拒否</code>，ソースのIP範囲は， <code>0.0.0.0/0</code> とします。プロトコルは<code>tcp</code>でポートは<code>22</code>にします。</p></li>
+<li><p>新しいSSHのポートでも開けたら，22番portを閉じます。もう一度，「VPCネットワーク」→「ファイヤーウォールルール」で「ファイアウォール
+ルールの作成」を押します。名前やターゲットタグは好きな名前にしてください（私は適当に”disallow-ssh22”って名前にしています)。優先度は<code>1000</code>にして，トラフィックの方向は上り，一致した時のアクションは<code>拒否</code>，ソースのIP範囲は，
+<code>0.0.0.0/0</code>
+とします。プロトコルは<code>tcp</code>でポートは<code>22</code>にします。</p></li>
 <li><p>VMインスタンスをクリックして，「編集」を押し，ネットワークタグに上記で決めたターゲットタグを入れて保存します(これで，httpのタグ，httpsのタグ，新しいsshポートのタグ，22番ポートを閉じるタグの４つがあると思います)。</p></li>
 <li><p>通常のSSH接続(22番ポート)をしても接続できず，「ブラウザウィンドウでカスタムポートを開く」で自分で設定したSSHポートを使って接続できたら成功です。</p></li>
 <li><p>ちなみに，SSH接続後に以下を入力するとアクセス状況を見れます（<code>f</code>で次の画面に進んで，<code>q</code>で閉じます）。</p></li>
@@ -426,14 +457,19 @@ div.tocify {
 </div>
 <div id="ドメイン名の入手" class="section level2">
 <h2>3. ドメイン名の入手</h2>
-<p>色々とサービスがありますが，私は<a href="https://domains.google/">GoogleのDomainサービス</a>を使いました。少々お金はかかりますが（私の場合は年1400円でした）以下で必要になるます。ドメイン名はお好きなものを設定ください。ドメイン名が入手できたら，以下のように静的外部IPを使ってDNSの登録をします。</p>
+<p>色々とサービスがありますが，私は<a
+href="https://domains.google/">GoogleのDomainサービス</a>を使いました。少々お金はかかりますが（私の場合は年1400円でした）以下で必要になるます。ドメイン名はお好きなものを設定ください。ドメイン名が入手できたら，以下のように静的外部IPを使ってDNSの登録をします。</p>
 <p><img src="fig/https_fig1.png" /></p>
-<p>次に，サブドメインの設定をします。例えば，私がyoshihiko-kunisato-lab.comって名前のドメインを取得したら，その前に任意の文字を追加してサブドメインとして使えます。例えば，rstudio.yoshihiko-kunisato-lab.comって感じです。それをカスタムリソースレコード（Google domainの場合は）で設定します。＠のところに，rstudioって打ち込んで，IPv4アドレスってところに，上記の静的外部IPをいれて追加します。jupyter, note, jatosも同様に追加します。</p>
+<p>次に，サブドメインの設定をします。例えば，私がyoshihiko-kunisato-lab.comって名前のドメインを取得したら，その前に任意の文字を追加してサブドメインとして使えます。例えば，rstudio.yoshihiko-kunisato-lab.comって感じです。それをカスタムリソースレコード（Google
+domainの場合は）で設定します。＠のところに，rstudioって打ち込んで，IPv4アドレスってところに，上記の静的外部IPをいれて追加します。jupyter,
+note, jatosも同様に追加します。</p>
 <p><img src="fig/https_fig7.png" /></p>
 </div>
 <div id="仮想マシンvmにdockerをインストール" class="section level2">
 <h2>4. 仮想マシン(VM)にDockerをインストール</h2>
-<p>Compute EngineのページのVMインスタンスをみると先程設定したVMインスタンスがあると思います。こちらが起動していると接続というところの「SSH」がクリック可能になっていると思います。SSHをクリックしてください。すると，別ウィンドウが起動して，ターミナルが出現します。そこで，<a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">こちら</a>を参考に以下を打ち込んでDockerをインストールします。途中何か聞かれると思いますが，質問に従って，Yなどの返事をタイプください。</p>
+<p>Compute
+EngineのページのVMインスタンスをみると先程設定したVMインスタンスがあると思います。こちらが起動していると接続というところの「SSH」がクリック可能になっていると思います。SSHをクリックしてください。すると，別ウィンドウが起動して，ターミナルが出現します。そこで，<a
+href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">こちら</a>を参考に以下を打ち込んでDockerをインストールします。途中何か聞かれると思いますが，質問に従って，Yなどの返事をタイプください。</p>
 <pre><code>sudo apt update</code></pre>
 <pre><code>sudo apt install \
     apt-transport-https \
@@ -451,7 +487,8 @@ div.tocify {
 </div>
 <div id="docker-composeをインストール" class="section level2">
 <h2>5. docker-composeをインストール</h2>
-<p>続けて，<a href="https://docs.docker.com/compose/install/">こちら</a>を参考にして，Docker-composeもインストールします。</p>
+<p>続けて，<a
+href="https://docs.docker.com/compose/install/">こちら</a>を参考にして，Docker-composeもインストールします。</p>
 <pre><code>sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose
 
 sudo chmod +x /usr/local/bin/docker-compose
@@ -461,7 +498,13 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</code></pre>
 </div>
 <div id="docker-compose用ymlの準備" class="section level2">
 <h2>6. docker-compose用YMLの準備</h2>
-<p>DockerやDocker-composeについては解説をしませんので，<a href="https://knowledge.sakura.ad.jp/13265/">さくらナレッジのDocker入門</a>や<a href="https://www.amazon.co.jp/dp/4297100339/ref=cm_sw_r_tw_dp_U_x_HunBDbSJ25G3S">「Docker/Kubernetes 実践コンテナ開発入門」</a>などで別途学習をされると良いかと思います。今回は，docker-composeを使います。これは，複数のDockerを使う場合に，それらの構成をyamlで定義して，それを元にしてDockerを用意するサービスです。以下では，Https化を実現するリバースプロキシ＆ロードバランサ用<a href="https://containo.us/traefik/">Traefik</a>の導入と４つのサービスス(Rstudio, Jupyter notebook, JATOS, elabFTW)の導入に分けて説明をします（これは同時にやれますが，Traefikを単独で立ち上げて，あとからサービスの追加・削除ができたほうが便利なので分けています）。</p>
+<p>DockerやDocker-composeについては解説をしませんので，<a
+href="https://knowledge.sakura.ad.jp/13265/">さくらナレッジのDocker入門</a>や<a
+href="https://www.amazon.co.jp/dp/4297100339/ref=cm_sw_r_tw_dp_U_x_HunBDbSJ25G3S">「Docker/Kubernetes
+実践コンテナ開発入門」</a>などで別途学習をされると良いかと思います。今回は，docker-composeを使います。これは，複数のDockerを使う場合に，それらの構成をyamlで定義して，それを元にしてDockerを用意するサービスです。以下では，Https化を実現するリバースプロキシ＆ロードバランサ用<a
+href="https://containo.us/traefik/">Traefik</a>の導入と４つのサービスス(Rstudio,
+Jupyter notebook, JATOS,
+elabFTW)の導入に分けて説明をします（これは同時にやれますが，Traefikを単独で立ち上げて，あとからサービスの追加・削除ができたほうが便利なので分けています）。</p>
 <div id="traefikの用意" class="section level3">
 <h3>Traefikの用意</h3>
 <p>まず，以下をターミナルで実行します。１行目でdocker-composeで使うサーバー外につながるネットワークを用意します。２〜３行目でtraefik用フォルダと設定ファイルを作成します。４行目で，あとで，SSL暗号化の内容を書込み可能なように設定します。</p>
@@ -525,17 +568,24 @@ exposedByDefault = false
   onHostRule = true
   [acme.httpChallenge]
   entryPoint = &quot;http&quot;</code></pre>
-<p>では，設定した内容を元にして，traefikを起動してみます。docker-compose upをするわけですが，設定ファイルを/opt/traefik/においていますので，以下のようにします。しばらくして，doneって出てきたら成功です。</p>
+<p>では，設定した内容を元にして，traefikを起動してみます。docker-compose
+upをするわけですが，設定ファイルを/opt/traefik/においていますので，以下のようにします。しばらくして，doneって出てきたら成功です。</p>
 <pre><code>sudo docker-compose -f /opt/traefik/docker-compose.yml up -d</code></pre>
 </div>
 <div id="サーバー上で稼働させる４サービスの用意" class="section level3">
 <h3>サーバー上で稼働させる４サービスの用意</h3>
-<p>では，rstuio, jupyter notebook, JATOS, elabFTWの準備をしてきましょう。上記で設定したproxyという名前のネットワークを使って，traefikと各種サービスをつなげていきます。サーバーの外からHTTPS接続でtraefik経由でやりとりをします。traefikの便利なところは，上の方のやり方でtraefikを設定しておくと，後からサーバー上で動かすサービスの追加と削除ができることです。今回は，以下の４つのサービスを稼働させます。</p>
+<p>では，rstuio, jupyter notebook, JATOS,
+elabFTWの準備をしてきましょう。上記で設定したproxyという名前のネットワークを使って，traefikと各種サービスをつなげていきます。サーバーの外からHTTPS接続でtraefik経由でやりとりをします。traefikの便利なところは，上の方のやり方でtraefikを設定しておくと，後からサーバー上で動かすサービスの追加と削除ができることです。今回は，以下の４つのサービスを稼働させます。</p>
 <ul>
-<li><a href="https://hub.docker.com/r/ykunisato/paper-r">RとRstudio</a>: 国里がカスタマイズしたR用コンテナを使います。</li>
-<li><a href="https://hub.docker.com/r/ykunisato/ccp-lab-j">Jupyter notebook</a>:国里がカスタマイズしたjupyter notebookのコンテナを使います。</li>
-<li><a href="https://hub.docker.com/r/jatos/jatos">JATOS</a>: JATOSの公式コンテナを使います。</li>
-<li><a href="https://hub.docker.com/r/elabftw/elabimg">elabFTW</a>：elabFTWの公式コンテナを使います。</li>
+<li><a href="https://hub.docker.com/r/ykunisato/paper-r">RとRstudio</a>:
+国里がカスタマイズしたR用コンテナを使います。</li>
+<li><a href="https://hub.docker.com/r/ykunisato/ccp-lab-j">Jupyter
+notebook</a>:国里がカスタマイズしたjupyter
+notebookのコンテナを使います。</li>
+<li><a href="https://hub.docker.com/r/jatos/jatos">JATOS</a>:
+JATOSの公式コンテナを使います。</li>
+<li><a
+href="https://hub.docker.com/r/elabftw/elabimg">elabFTW</a>：elabFTWの公式コンテナを使います。</li>
 </ul>
 <p>なお，４つのサービスを一気に稼働させることもできます。しかし，多くの場合，「Rstudioだけメンテナンスしたい」，「JATOSだけストップしたい」など，それぞれのサービスを個別に動かしたり，修正したいことが多いです。そこで，以下では，それぞれ稼働させることにします。同じような作業を４回することになり少し手間ですが，メンテナンスは楽になります。</p>
 </div>
@@ -638,7 +688,9 @@ services:
     &lt;/ul&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<p>確認用にapp01を作ります。まず，shiny/shinyapps内にapp01フォルダを作ります。その上で，app01内にui.Rを作ります。なお，server.Rとui.Rは，<a href="https://github.com/tyosem/jpa2021">第85回日本心理学会TWS「Shiny 入門」</a>を参考にさせていただきました。</p>
+<p>確認用にapp01を作ります。まず，shiny/shinyapps内にapp01フォルダを作ります。その上で，app01内にui.Rを作ります。なお，server.Rとui.Rは，<a
+href="https://github.com/tyosem/jpa2021">第85回日本心理学会TWS「Shiny
+入門」</a>を参考にさせていただきました。</p>
 <pre><code>sudo mkdir -p shiny/shinyapps/app01
 sudo vim shiny/shinyapps/app01/ui.R </code></pre>
 <p>vimで開いたui.Rに以下を貼り付けて保存します（保存は，escで:wq）。</p>
@@ -845,10 +897,14 @@ services:
 <h3>動作確認</h3>
 <p>ブラウザに以下のURLを打ち込んでいって，動作確認をします。jatosはIDがadmin，パスワードがadminになっているので，ログインできたらすぐにadminのパスワードを変更ください。note(elabFTW)は，最初にログインしたユーザーがアドミンになるので，動作確認と同時に登録をなさってください。</p>
 <ul>
-<li><a href="https://jatos.ドメイン名" class="uri">https://jatos.ドメイン名</a></li>
-<li><a href="https://note.ドメイン名" class="uri">https://note.ドメイン名</a></li>
-<li><a href="https://rstudio.ドメイン名" class="uri">https://rstudio.ドメイン名</a></li>
-<li><a href="https://jupyter.ドメイン名" class="uri">https://jupyter.ドメイン名</a></li>
+<li><a href="https://jatos.ドメイン名"
+class="uri">https://jatos.ドメイン名</a></li>
+<li><a href="https://note.ドメイン名"
+class="uri">https://note.ドメイン名</a></li>
+<li><a href="https://rstudio.ドメイン名"
+class="uri">https://rstudio.ドメイン名</a></li>
+<li><a href="https://jupyter.ドメイン名"
+class="uri">https://jupyter.ドメイン名</a></li>
 </ul>
 </div>
 </div>
@@ -868,8 +924,18 @@ services:
 <pre><code>userdel -r ユーザ名</code></pre>
 <div id="ユーザーの一括追加" class="section level3">
 <h3>ユーザーの一括追加</h3>
-<p>上記の方法でもユーザーは追加できますが，人数が多くなると途方にくれてしまいます。そこで，以下ではnewusersを使った一括登録をします。まずは，以下のような感じの情報を表計算ソフトにいれます。ユーザーごとに変更が必要なのは，ユーザー名，ユーザーID（1001から連番にするので良いと思います），パスワード，ホームディレクトリ名（home/rstudioの下にユーザー名をいれる）です。残りの，グループID（50）, フルネーム（空白），ログインシェル（/bin/sh)は全員同じで問題ありません。</p>
-<table>
+<p>上記の方法でもユーザーは追加できますが，人数が多くなると途方にくれてしまいます。そこで，以下ではnewusersを使った一括登録をします。まずは，以下のような感じの情報を表計算ソフトにいれます。ユーザーごとに変更が必要なのは，ユーザー名，ユーザーID（1001から連番にするので良いと思います），パスワード，ホームディレクトリ名（home/rstudioの下にユーザー名をいれる）です。残りの，グループID（50）,
+フルネーム（空白），ログインシェル（/bin/sh)は全員同じで問題ありません。</p>
+<table style="width:100%;">
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>ユーザー名</th>
@@ -925,14 +991,15 @@ exit</code></pre>
 </div>
 <div id="バックアップ" class="section level2">
 <h2>バックアップ</h2>
-<p>各コンテナのフォルダを圧縮して，Google Storageに保存する（gsutilの導入が必要です）。</p>
+<p>各コンテナのフォルダを圧縮して，Google
+Storageに保存する（gsutilの導入が必要です）。</p>
 <pre><code>sudo tar czf backup.tar.gz rstudio jatos jupyter elabftw
 sudo gsutil cp ./backup.tar.gz gs://バケット名/`TZ=Asia/Tokyo date &quot;+%Y_%m%d_%H%M_%S&quot;`/
 sudo rm backup.tar.gz</code></pre>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 

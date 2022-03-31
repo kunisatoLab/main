@@ -13,7 +13,7 @@
 
 <title>Data URIによってJATOSサーバーの負荷を低くする方法</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -381,24 +385,34 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Data URIによってJATOSサーバーの負荷を低くする方法</h1>
+<h1 class="title toc-ignore">Data
+URIによってJATOSサーバーの負荷を低くする方法</h1>
 
 </div>
 
 
 <div id="サーバー負荷を低くして画像を呈示する" class="section level3">
 <h3>サーバー負荷を低くして画像を呈示する</h3>
-<p>サーバー上で動かしている<a href="https://www.jatos.org/">JSTOS(Just Another Tool for Online Studies)</a>でjsPsych課題 を実行する際には，サーバー負荷を考える必要があります。特に，複数の画像刺激を呈示するような実験課題だと，サーバー負荷が高くなります。実際，４０枚くらいの画像刺激を呈示する実験課題をJATOSで実行すると，ローカルと比べて，画像呈示に若干のタイムラグがあるように感じます。どうしたものかなと思っていたら，<a href="https://scrapbox.io/ru-takalab/cognition.run+jsPsych+Data_URI_scheme%E3%81%A7%E3%82%B5%E3%83%BC%E3%83%90%E3%81%AB%E5%84%AA%E3%81%97%E3%81%84%E3%82%AA%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%B3%E5%AE%9F%E9%A8%93">立命館大学の高橋康介先生の解説</a>を発見して，Data URI schemeの活用方法を知りました。詳しくは高橋先生の資料を読んでいただきたいのですが，自分のゼミ向けに少しまとめておきます。</p>
-<p>画像呈示時にHTMLファイル外の画像を読み込むのではなく，Data URI schemeを使って画像をテキストデータにした上で，それを課題のコード内に埋め込みます。このように画像ファイルを外部において読み込むのではなくて，HTMLファイル（もしくはjsファイル）内に埋め込んでしまうことで，サーバーがリクエストを送ることが減るので画像の表示速度が上がります。</p>
+<p>サーバー上で動かしている<a href="https://www.jatos.org/">JSTOS(Just
+Another Tool for Online Studies)</a>でjsPsych課題
+を実行する際には，サーバー負荷を考える必要があります。特に，複数の画像刺激を呈示するような実験課題だと，サーバー負荷が高くなります。実際，４０枚くらいの画像刺激を呈示する実験課題をJATOSで実行すると，ローカルと比べて，画像呈示に若干のタイムラグがあるように感じます。どうしたものかなと思っていたら，<a
+href="https://scrapbox.io/ru-takalab/cognition.run+jsPsych+Data_URI_scheme%E3%81%A7%E3%82%B5%E3%83%BC%E3%83%90%E3%81%AB%E5%84%AA%E3%81%97%E3%81%84%E3%82%AA%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%B3%E5%AE%9F%E9%A8%93">立命館大学の高橋康介先生の解説</a>を発見して，Data
+URI
+schemeの活用方法を知りました。詳しくは高橋先生の資料を読んでいただきたいのですが，自分のゼミ向けに少しまとめておきます。</p>
+<p>画像呈示時にHTMLファイル外の画像を読み込むのではなく，Data URI
+schemeを使って画像をテキストデータにした上で，それを課題のコード内に埋め込みます。このように画像ファイルを外部において読み込むのではなくて，HTMLファイル（もしくはjsファイル）内に埋め込んでしまうことで，サーバーがリクエストを送ることが減るので画像の表示速度が上がります。</p>
 <div id="画像ファイルをテキストデータにする" class="section level4">
 <h4>1.画像ファイルをテキストデータにする</h4>
-<p>Data URI schemeを使って画像をテキストデータにします。うちのゼミの場合は，刺激は，「stimuli」というフォルダに置いていると思います。そのフォルダ内の画像をテキストデータにします。その際に，<a href="https://github.com/ru-takalab/tips/blob/main/001_jsPsych_DataURI/imgs2uri.sh">高橋先生のシェルスクリプト</a>を使います。うちのゼミの場合は，simuliフォルダを使っているので，以下のようなスクリプトになります（以下はpngファイルですが，拡張子を変えればjpegなども可能です）。以下のスクリプトをstimuliフォルダと同じ階層にstim2uri.shという名前で保存します（名前はなんでもいいです）。</p>
+<p>Data URI
+schemeを使って画像をテキストデータにします。うちのゼミの場合は，刺激は，「stimuli」というフォルダに置いていると思います。そのフォルダ内の画像をテキストデータにします。その際に，<a
+href="https://github.com/ru-takalab/tips/blob/main/001_jsPsych_DataURI/imgs2uri.sh">高橋先生のシェルスクリプト</a>を使います。うちのゼミの場合は，simuliフォルダを使っているので，以下のようなスクリプトになります（以下はpngファイルですが，拡張子を変えればjpegなども可能です）。以下のスクリプトをstimuliフォルダと同じ階層にstim2uri.shという名前で保存します（名前はなんでもいいです）。</p>
 <pre><code>echo &quot;&quot; &gt; stimuli.js
 for f in stimuli/*.png; do
   out=$(echo &quot;const $(basename $f .png)=&quot;&quot;\&quot;data:stimuli/png;base64,&quot;)$(base64 $f)&quot;\&quot;;&quot;
   echo $out &gt;&gt; stimuli.js
 done</code></pre>
-<p>Macユーザーはターミナル，うちのゼミ生はRstudio sereverを使っているので，RstudioのTerminalに以下を打ち込みます。しばらくすると，stimuli.jsという名前のファイルができると思います。</p>
+<p>Macユーザーはターミナル，うちのゼミ生はRstudio
+sereverを使っているので，RstudioのTerminalに以下を打ち込みます。しばらくすると，stimuli.jsという名前のファイルができると思います。</p>
 <pre><code>bash stim2uri.sh </code></pre>
 </div>
 <div id="data-uriを課題に埋め込む" class="section level4">
@@ -409,12 +423,15 @@ const i1_2=&quot;data:stimuli/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZ...
 const i1_3=&quot;data:stimuli/png;base64,iVBORw0KGgoAAAANSUhEUgAAAa...
 ...</code></pre>
 <p>このstimuli.jsを外部ファイルとして読み込むこともできますが，なんか面倒だったので，stimuli.jsの中身を単純にコピペしちゃいましょう。うちのゼミだと，jsPsychのメインのコードは，task.jsに記述することになっているので，こちらに貼り付けちゃいます。</p>
-<p>stimuli.jsの内容を貼り付けると，const 変数名=“dhaifhsdafvlr…”の変数名がjsPsychで使えます。なので，上の例だと，以下のように画像の配列を作っちゃって，プラグインのstimulusで使えば，画像が呈示できます。</p>
+<p>stimuli.jsの内容を貼り付けると，const
+変数名=“dhaifhsdafvlr…”の変数名がjsPsychで使えます。なので，上の例だと，以下のように画像の配列を作っちゃって，プラグインのstimulusで使えば，画像が呈示できます。</p>
 <pre><code>var images = [i1_1, i1_2, i1_3,...]</code></pre>
 </div>
 <div id="jatosでの保存時の注意" class="section level4">
 <h4>3.JATOSでの保存時の注意</h4>
-<p>Data URI schemeを使って画像を埋め込むと，刺激呈示もラグを感じることがなくなりました。これでめでたしといきたいのですが，今度は，JATOSで結果が保存できなくなりました。エラーをみると，5MBを超えているから保存できないようです。そんなに結果のデータが重いわけがないと思って確認してみると，結果のstimulus内に上記のData URIでテキスト化したデータが入っています。これ１つが画像に相当する情報になるので，重くなったようです。そこで，データ保存時にstimulusは保存しないように，以下のように.ignore()を使ってみると，問題なく保存できました。</p>
+<p>Data URI
+schemeを使って画像を埋め込むと，刺激呈示もラグを感じることがなくなりました。これでめでたしといきたいのですが，今度は，JATOSで結果が保存できなくなりました。エラーをみると，5MBを超えているから保存できないようです。そんなに結果のデータが重いわけがないと思って確認してみると，結果のstimulus内に上記のData
+URIでテキスト化したデータが入っています。これ１つが画像に相当する情報になるので，重くなったようです。そこで，データ保存時にstimulusは保存しないように，以下のように.ignore()を使ってみると，問題なく保存できました。</p>
 <pre><code>on_finish: function() {
   var resultJson = jsPsych.data.get().ignore(&#39;stimulus&#39;).json();
   jatos.submitResultData(resultJson, jatos.startNextComponent);
@@ -423,7 +440,7 @@ const i1_3=&quot;data:stimuli/png;base64,iVBORw0KGgoAAAANSUhEUgAAAa...
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2021 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Code &amp; Tips</title>
+
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="icon-192x192.png">
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="site_style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Computational Clinical Psychology Lab</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="research.html">Research</a>
+</li>
+<li>
+  <a href="team.html">Team</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Publications
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="book.html">書籍</a>
+    </li>
+    <li>
+      <a href="articles.html">学術論文</a>
+    </li>
+    <li>
+      <a href="articles-japanese.html">学術論文（日本語）</a>
+    </li>
+    <li>
+      <a href="bulletin.html">紀要論文</a>
+    </li>
+    <li>
+      <a href="presentation.html">国際会議発表</a>
+    </li>
+    <li>
+      <a href="presentation-japanese.html">国内学会・研究会発表</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="research_module.html">Research Module</a>
+</li>
+<li>
+  <a href="education.html">Education</a>
+</li>
+<li>
+  <a href="news.html">News</a>
+</li>
+<li>
+  <a href="https://kunisatolab.github.io/english/index.html">English</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Code &amp; Tips</h1>
+
+</div>
+
+
+<p>☆は，学部ゼミでの必修事項,○は推奨事項です。</p>
+<div id="ゼミで使うツール" class="section level2">
+<h2>ゼミで使うツール</h2>
+<ul>
+<li>Slack:
+ゼミ内での連絡で使います(スマホとPCにアプリを入れておきましょう)。</li>
+<li>RStudio Server:
+データ収集（調査票，実験課題の作成），データ解析，卒論・修論の執筆のために使います。</li>
+<li>GitHub:
+卒論・修論に関連した各種ファイルを指導教員と共有したり，バージョン管理するために使います。</li>
+<li>OSF:事前登録で使います。整理された研究内容のアップロードにも使います。</li>
+<li>Googleスライド：ゼミでの口頭発表の際に使います。</li>
+<li>Googleドキュメント：ゼミでのディスカッションのメモなどに使います。</li>
+<li>Meet:
+大学が契約しているGoogleクラスルームのMeetです。対面でも画面共有で使います。</li>
+<li>JupyterHub:
+PythonやJuliaを用いたデータ解析のために使います(PythonとJuliaを使う学生のみアカウントを発行します)。</li>
+<li>JATOS:
+jsPsychで作成した認知課題・質問紙でデータ収集するために使います（JATOSでデータ収集する学生にのみアカウントを発行します）。</li>
+</ul>
+<p>＊国里のゼミではパソコンが必須になります。コロナ対策のためパソコンのあるゼミ室ではなく，広い教室を使うので各自ノートパソコンを持ってくるようにしてください。ノートパソコンがない・持ってこれない場合は，国里の方で毎回貸し出し可能ですので，申し出てください。</p>
+<p><br /></p>
+</div>
+<div id="ゼミの準備" class="section level2">
+<h2>ゼミの準備</h2>
+<ul>
+<li><p><a href="how-to-github.html">GitHubの準備</a> ☆</p></li>
+<li><p><a href="how-to-osf.html">OSFの準備</a> ☆</p></li>
+<li><p><a
+href="how-to-write-with-rstudio.html">RStudioで研究を行う準備</a>　☆</p></li>
+<li><p><a href="how-to-labnote.html">研究室での日々のルーティン作業</a>
+☆</p></li>
+</ul>
+<p><br /></p>
+</div>
+<div id="認知課題と質問紙の作成" class="section level2">
+<h2>認知課題と質問紙の作成</h2>
+<ul>
+<li><p><a href="how-to-jspsych1.html">jsPsychを用いた認知課題の作成1:
+jsPsychとJavaScript入門</a>　☆</p></li>
+<li><p><a href="how-to-jspsych2.html">jsPsychを用いた認知課題の作成2:
+ストループ課題</a>　☆</p></li>
+<li><p><a href="how-to-jspsych3.html">jsPsychを用いた認知課題の作成3:
+逆転学習課題</a>　☆</p></li>
+<li><p><a href="how-to-jspsych4.html">jsPsychを用いた認知課題の作成4:
+音声や動画の呈示と同意画面について</a>　☆</p></li>
+<li><p><a
+href="how-to-jspsych5.html">jsPsychを用いた質問票の作成</a>　☆</p></li>
+</ul>
+<p><br /></p>
+<div id="jspsych以外の方法" class="section level3">
+<h3>jsPsych以外の方法</h3>
+<ul>
+<li><p><a
+href="https://github.com/ykunisato/training-of-psychopy">PsychoPyを用いた認知課題の作成</a></p></li>
+<li><p><a
+href="how-to-presentation.html">Presentationを用いた認知課題の作成</a></p></li>
+</ul>
+<p><br /></p>
+</div>
+</div>
+<div id="jatosを用いた実験実施方法" class="section level2">
+<h2>JATOSを用いた実験実施方法</h2>
+<ul>
+<li><p><a
+href="how-to-jatos-local.html">JATOSをDockerを使ってローカルPCに導入する方法</a>　○</p></li>
+<li><p><a
+href="how-to-jatos-web.html">JATOSをDockerを使ってサーバーに導入する方法</a>　○</p></li>
+<li><p><a
+href="how-to-jspsych-jatos-local.html">JATOSをローカルで使用する方法</a>　○</p></li>
+<li><p><a
+href="how-to-jspsych-jatos-web.html">JATOSをサーバーで使用する方法</a>　○</p></li>
+<li><p><a
+href="how-to-labjs-jspsych-jatos.html">jsPsychとlab.jsをまぜてJATOSで動かす方法</a></p></li>
+<li><p><a href="jspsych-data-uri.html">Data
+URIによってJATOSサーバーの負荷を低くする方法</a>　</p></li>
+<li><p><a
+href="jspsych-id-jatos.html">JATOSでコンポーネント間でIDなどの対応づけをする方法</a></p></li>
+<li><p><a
+href="japsych-jatos-locak-backup.html">JATOSでローカルにもバックアップをとる方法</a></p></li>
+</ul>
+<p><br /></p>
+<div id="jatos以外の方法" class="section level3">
+<h3>JATOS以外の方法</h3>
+<ul>
+<li><p><a
+href="how-to-jspsych-firebase.html">jsPsychを用いたWEB実験(Firebaseを使う方法)</a></p></li>
+<li><p><a
+href="how-to-jspsych-pavlovia.html">jsPsychを用いたWEB実験(Pavloviaを使う方法)</a></p></li>
+<li><p><a
+href="how-to-jspsych-google-sheet.html">jsPsychを用いたWEB実験(Google
+Spreadsheetを使う方法)</a></p></li>
+</ul>
+<p><br /></p>
+</div>
+</div>
+<div id="データ解析" class="section level2">
+<h2>データ解析</h2>
+<ul>
+<li><p><a href="how-to-R-language.html">R言語の基本</a> ☆</p></li>
+<li><p><a
+href="how-to-dataHandling.html">認知課題の解析データセット作成</a>　☆</p></li>
+<li><p><a
+href="how-to-open-data.html">オープンデータの利用法</a></p></li>
+<li><p><a
+href="https://ykunisato.github.io/ccp-lab-slide/open_data/open_data.html">オープンデータの作り方</a></p></li>
+<li><p><a
+href="how-to-preregistration-aspredicted.html">事前登録をしてみよう！</a></p></li>
+<li><p><a
+href="how-to-reproducible-analysis.html">再生可能なデータ解析入門</a>　</p></li>
+<li><p><a
+href="how-to-rstudio-gce-https.html">Docker-composeを使ってGCE上のRstudio
+serverをHTTPS化する方法</a></p></li>
+<li><p><a
+href="how-to-docker-compose-https.html">Docker-composeを使ってGCE上の複数のサービス(Rstudio,
+Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法</a></p></li>
+<li><p><a
+href="https://ykunisato.github.io/ccp-lab-slide/spring_seminar_JSSP_2021/secondary_analysis/slide.html#1">２次分析研究</a></p></li>
+<li><p><a
+href="https://ykunisato.github.io/jpa2020-tws-002/">今日からできる再現可能な論文執筆(JPA2020・TWS)</a></p></li>
+</ul>
+<p><br /></p>
+</div>
+<div id="認知モデリング" class="section level2">
+<h2>認知モデリング</h2>
+<div id="強化学習モデル" class="section level3">
+<h3>強化学習モデル</h3>
+<ul>
+<li><p><a href="how-to-cognitive-modeling-rl1.html">強化学習モデル:
+最尤推定</a>　☆</p></li>
+<li><p><a href="how-to-cognitive-modeling-rl2.html">強化学習モデル:
+ベイズ推定(1)</a>　○</p></li>
+<li><p><a href="how-to-cognitive-modeling-rl3.html">強化学習モデル:
+ベイズ推定(2)</a>　○</p></li>
+<li><p><a href="how-to-cognitive-modeling-rl4.html">強化学習モデル:
+ベイズ推定(3)（準備中）</a>　○</p></li>
+<li><p><a
+href="how-to-cognitive-modeling-rl5.html">強化学習事態でのベイズ推論モデル（準備中）</a>　○</p></li>
+</ul>
+<p><br /></p>
+</div>
+<div id="逐次サンプリングモデル" class="section level3">
+<h3>逐次サンプリングモデル</h3>
+<ul>
+<li><p><a
+href="how-to-cognitive-modeling-ssm1.html">逐次サンプリングモデル：DDM(準備中)</a>　○</p></li>
+<li><p><a
+href="how-to-cognitive-modeling-ssm2.html">逐次サンプリングモデル:
+LBA(準備中)</a>　○</p></li>
+<li><p><a
+href="https://ykunisato.github.io/lbaStan/lbaStan.html">LBAモデルを用いた反応時間の解析</a></p></li>
+<li><p><a
+href="https://ykunisato.github.io/hlbaStan/hlbaStan.html">LBAモデルを用いた反応時間の解析:階層ベイズ編</a></p></li>
+</ul>
+<p><br /></p>
+</div>
+<div id="その他" class="section level3">
+<h3>その他</h3>
+<ul>
+<li><p><a
+href="how-to-hBayesDM.html">hBayesDMでベイジアン認知モデリング</a></p></li>
+<li><p><a
+href="how-to-graphicalModel.html">Rを用いたグラフィカルモデルの作成</a></p></li>
+<li><p><a href="https://ykunisato.github.io/lcmr/">latent cause
+model（開発中）</a></p></li>
+</ul>
+<p><br /></p>
+</div>
+</div>
+<div id="メタ分析" class="section level2">
+<h2>メタ分析</h2>
+<ul>
+<li><p><a href="how-to-meta1.html">メタ分析</a>　☆</p></li>
+<li><p><a href="how-to-meta2.html">ネットワークメタ分析</a>　☆</p></li>
+</ul>
+<p><br /></p>
+</div>
+<div id="心理ネットワークモデル" class="section level2">
+<h2>心理ネットワークモデル</h2>
+<ul>
+<li><p><a
+href="how-to-psychological-network1.html">心理ネットワーク入門1</a>
+☆</p></li>
+<li><p><a
+href="how-to-psychological-network2.html">心理ネットワーク入門2（準備中）</a>
+☆</p></li>
+<li><p><a
+href="https://github.com/ykunisato/kunisato-lab-materials/blob/main/learning_ODE.md">微分方程式について</a>(研究室限定資料)</p></li>
+</ul>
+<p><br /></p>
+</div>
+<div id="その他-1" class="section level2">
+<h2>その他</h2>
+<ul>
+<li><p><a
+href="how-to-elabftw.html">電子ラボノートeLabFTWの導入方法</a></p></li>
+<li><p><a
+href="how-to-google-doc.html">自動執筆量記録・報告システム</a></p></li>
+</ul>
+</div>
+
+<footer>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
+</footer>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

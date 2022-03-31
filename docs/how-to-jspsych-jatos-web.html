@@ -13,7 +13,7 @@
 
 <title>JATOSをサーバーで使用する方法</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -386,7 +390,8 @@ div.tocify {
 </div>
 
 
-<div id="ローカルのjatosで準備した課題をエクスポートする" class="section level3">
+<div id="ローカルのjatosで準備した課題をエクスポートする"
+class="section level3">
 <h3>ローカルのJATOSで準備した課題をエクスポートする</h3>
 <p>サーバー上のJATOSに課題をアップロードする場合，ローカルのJATOSで課題を準備してエクスポートしたものを読み込むのが便利です（jsPsychの場合は，推奨されています）。さきほど準備したローカルのJATOSのみて，以下の赤で囲っている部分の<code>Export</code>をクリックします。すると，これまで設定した実験課題がjzip形式で出力されます。なお，jzipは普通のzipと同じで，課題がまとめられて圧縮されたものです。</p>
 <p><img src="fig/jatos_fig7.png" width="600"></p>
@@ -404,10 +409,14 @@ div.tocify {
 <p><code>Choose worker Type</code>で<code>General Sigle</code>を選んで，<code>Continue</code>をクリックします。</p>
 <p>なお，worker Typeには以下の種類があります。</p>
 <ul>
-<li>Personal Single Worker: <strong>参加者ごと</strong>に<strong>１回</strong>だけ参加できるURLを発行</li>
-<li>Personal Multiple Worker:　<strong>参加者ごと</strong>に<strong>複数回</strong>参加できるURLを発行</li>
-<li>General Single Worker: <strong>複数の参加者</strong>が<strong>１回</strong>だけ参加できるURLを発行</li>
-<li>General Multiple Worker:<strong>複数の参加者</strong>が<strong>複数回</strong>参加できるURLを発行</li>
+<li>Personal Single Worker:
+<strong>参加者ごと</strong>に<strong>１回</strong>だけ参加できるURLを発行</li>
+<li>Personal Multiple
+Worker:　<strong>参加者ごと</strong>に<strong>複数回</strong>参加できるURLを発行</li>
+<li>General Single Worker:
+<strong>複数の参加者</strong>が<strong>１回</strong>だけ参加できるURLを発行</li>
+<li>General Multiple
+Worker:<strong>複数の参加者</strong>が<strong>複数回</strong>参加できるURLを発行</li>
 <li>Mturk Worker: Amazon Mechanical Turk用URLを発行</li>
 </ul>
 <p><img src="fig/jatos_fig12.png" width="600"></p>
@@ -418,12 +427,13 @@ div.tocify {
 <h3>ウェブ実験結果の確認</h3>
 <p>参加者の反応はJATOSサーバーに保存されます。結果を確認する場合，以下で赤い線で囲った<code>Results</code>をクリックします。</p>
 <p><img src="fig/jatos_fig14.png" width="600"></p>
-<p>以下のような画面がでてきます。Comp.Result IDの４も５も私が試しにやってみた結果ですが，４の方は，途中でやめており，５は最後まで取り組みました。参加者の反応データは，た<code>Export Results</code>をクリックして，全てか選択したものを出力できます（txt形式で出力されます）。</p>
+<p>以下のような画面がでてきます。Comp.Result
+IDの４も５も私が試しにやってみた結果ですが，４の方は，途中でやめており，５は最後まで取り組みました。参加者の反応データは，た<code>Export Results</code>をクリックして，全てか選択したものを出力できます（txt形式で出力されます）。</p>
 <p><img src="fig/jatos_fig15.png" width="600"></p>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2021 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 

@@ -11,10 +11,10 @@
 
 
 
-<title>jsPsychを用いたWEB実験の実施：JATOSでローカルでもサーバーでも実施してみよう！</title>
+<title>JATOSをDockerを使ってローカルPCに導入する方法</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -299,12 +303,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -381,21 +385,27 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">jsPsychを用いたWEB実験の実施：JATOSでローカルでもサーバーでも実施してみよう！</h1>
+<h1 class="title toc-ignore">JATOSをDockerを使ってローカルPCに導入する方法</h1>
 
 </div>
 
 
-<p><a href="https://www.jatos.org/">JSTOS(Just Another Tool for Online Studies)</a>を用いて，jsPsychで作成した実験課題をローカルもしくはオンラインで実施してみましょう。</p>
-<div id="jatosで用いるためにjspsychのコードを修正する" class="section level3">
+<p><a href="https://www.jatos.org/">JSTOS(Just Another Tool for Online
+Studies)</a>を用いて，jsPsychで作成した実験課題をローカルで実施してみましょう。</p>
+<div id="jatosで用いるためにjspsychのコードを修正する"
+class="section level3">
 <h3>JATOSで用いるためにjsPsychのコードを修正する</h3>
-<p>JATOSで用いるためにjsPsychのコードを修正します。詳細は，<a href="https://www.jatos.org/Adapt-Pre-written-Code-to-run-it-in-JATOS.html">こちら</a>を確認ください。</p>
+<p>JATOSで用いるためにjsPsychのコードを修正します。詳細は，<a
+href="https://www.jatos.org/Adapt-Pre-written-Code-to-run-it-in-JATOS.html">こちら</a>を確認ください。</p>
 <ul>
 <li>JATOSで動作するjsライブラリを読み込むために，HTMLファイルのheadに以下を追加します。</li>
 </ul>
 <pre><code>&lt;script src=&quot;jatos.js&quot;&gt;&lt;/script&gt;</code></pre>
 <ul>
-<li>jsPsych.initをjatos.onLoad内にいれ，データをJATOSに保存できるようにします。以下のように，var resultJson = jsPsych.data.get().json()と jatos.submitResultData(resultJson, jatos.startNextComponent)を追加することで，jsPsychの結果をJATOSに保存できるようになります。</li>
+<li>jsPsych.initをjatos.onLoad内にいれ，データをJATOSに保存できるようにします。以下のように，var
+resultJson = jsPsych.data.get().json()と
+jatos.submitResultData(resultJson,
+jatos.startNextComponent)を追加することで，jsPsychの結果をJATOSに保存できるようになります。</li>
 </ul>
 <pre><code>jatos.onLoad(function() {
   jsPsych.init( {
@@ -406,16 +416,6 @@ div.tocify {
     }
   });
 });</code></pre>
-</div>
-<div id="ローカルのjatosでjspsychを使えるようにする" class="section level2">
-<h2>ローカルのJATOSでjsPsychを使えるようにする</h2>
-<div id="jatosをdockerで準備する" class="section level3">
-<h3>JATOSをDockerで準備する。</h3>
-<p>まず，ローカルのパソコンにJATOSを用意します。インストール方法はいくつかありますが，dockerが簡単かと思います。dockerの導入方法は，<a href="https://ykunisato.github.io/jpa2020-tws-002/02.html">2 事前準備（Dockerとは）</a> を参照ください。以下のコマンドをターミナル(Macの場合。Windowsの場合は，コマンドプロンプトかつ，$(pwd)の代わりに“%cd%”にする)で実行してください。カレントディレクトにjatosというフォルダができるかと思います。なお，デフォルトでは日本ではないタイムゾーンになって日本時間とずれるので，-e TZ=Asia/Tokyoを追加しています。</p>
-<pre><code>docker run -d -p 9000:9000 -e TZ=Asia/Tokyo -v $(pwd)/jatos/study_assets_root:/opt/docker/study_assets_root --name jatos jatos/jatos:latest</code></pre>
-<p>ターミナル（コマンドプロンプト）でのインストール作業が終わったら，ブラウザのURLバーに<code>localhost:9000</code>を打ち込みます。</p>
-<p>以下のような画面がブラウザ上に出てくるので，Usernameに<code>admin</code>,Passwordに<code>admin</code>をいれてください（chromeだとパスワードについてのエラーが出るかもしれないですが，とりあえず，気にしなくて良いです）。</p>
-<p><img src="fig/jatos_fig3.png" width="600"></p>
 </div>
 <div id="jatosで実験を登録する" class="section level3">
 <h3>JATOSで実験を登録する</h3>
@@ -431,11 +431,8 @@ div.tocify {
 <p>以下の赤で囲っている部分の<code>Run</code>をクリックすると，ローカルで実験課題を実行できます。テストしてみてください。</p>
 <p><img src="fig/jatos_fig6.png" width="600"></p>
 </div>
-</div>
-<div id="jatosサーバー上でjspsychを使えるようにする" class="section level2">
-<h2>JATOSサーバー上でjsPsychを使えるようにする</h2>
-<p>ウェブ実験を行う場合は，なんらかのサーバー上にJATOSをおいて実施します。GCPで準備する場合は，<a href="https://kunisatolab.github.io/main/how-to-docker-compose-https.html">Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法</a>を参照ください。それ以外にも<a href="https://note.com/yoshi_majima/n/na07efd09097b">CentOS 8 &amp; Nginx で JATOS 環境を作って，lab.js でオンライン実験を組むときに嵌まりそうなポイント</a>や<a href="https://note.com/yoshi_majima/n/n304703126b22">OpenSesame で心理学実験をしてみよう #2 JATOS サーバを使ったオンライン実験を設定してみよう</a>などの有益な日本語資料もあるのでご自身の興味に合わせてご準備ください。</p>
-<div id="ローカルのjatosで準備した課題をエクスポートする" class="section level3">
+<div id="ローカルのjatosで準備した課題をエクスポートする"
+class="section level3">
 <h3>ローカルのJATOSで準備した課題をエクスポートする</h3>
 <p>サーバー上のJATOSに課題をアップロードする場合，ローカルのJATOSで課題を準備してエクスポートしたものを読み込むのが便利です（jsPsychの場合は，推奨されています）。さきほど準備したローカルのJATOSのみて，以下の赤で囲っている部分の<code>Export</code>をクリックします。すると，これまで設定した実験課題がjzip形式で出力されます。なお，jzipは普通のzipと同じで，課題がまとめられて圧縮されたものです。</p>
 <p><img src="fig/jatos_fig7.png" width="600"></p>
@@ -453,10 +450,14 @@ div.tocify {
 <p><code>Choose worker Type</code>で<code>General Sigle</code>を選んで，<code>Continue</code>をクリックします。</p>
 <p>なお，worker Typeには以下の種類があります。</p>
 <ul>
-<li>Personal Single Worker: <strong>参加者ごと</strong>に<strong>１回</strong>だけ参加できるURLを発行</li>
-<li>Personal Multiple Worker:　<strong>参加者ごと</strong>に<strong>複数回</strong>参加できるURLを発行</li>
-<li>General Single Worker: <strong>複数の参加者</strong>が<strong>１回</strong>だけ参加できるURLを発行</li>
-<li>General Multiple Worker:<strong>複数の参加者</strong>が<strong>複数回</strong>参加できるURLを発行</li>
+<li>Personal Single Worker:
+<strong>参加者ごと</strong>に<strong>１回</strong>だけ参加できるURLを発行</li>
+<li>Personal Multiple
+Worker:　<strong>参加者ごと</strong>に<strong>複数回</strong>参加できるURLを発行</li>
+<li>General Single Worker:
+<strong>複数の参加者</strong>が<strong>１回</strong>だけ参加できるURLを発行</li>
+<li>General Multiple
+Worker:<strong>複数の参加者</strong>が<strong>複数回</strong>参加できるURLを発行</li>
 <li>Mturk Worker: Amazon Mechanical Turk用URLを発行</li>
 </ul>
 <p><img src="fig/jatos_fig12.png" width="600"></p>
@@ -467,25 +468,29 @@ div.tocify {
 <h3>ウェブ実験結果の確認</h3>
 <p>参加者の反応はJATOSサーバーに保存されます。結果を確認する場合，以下で赤い線で囲った<code>Results</code>をクリックします。</p>
 <p><img src="fig/jatos_fig14.png" width="600"></p>
-<p>以下のような画面がでてきます。Comp.Result IDの４も５も私が試しにやってみた結果ですが，４の方は，途中でやめており，５は最後まで取り組みました。参加者の反応データは，た<code>Export Results</code>をクリックして，全てか選択したものを出力できます（txt形式で出力されます）。</p>
+<p>以下のような画面がでてきます。Comp.Result
+IDの４も５も私が試しにやってみた結果ですが，４の方は，途中でやめており，５は最後まで取り組みました。参加者の反応データは，た<code>Export Results</code>をクリックして，全てか選択したものを出力できます（txt形式で出力されます）。</p>
 <p><img src="fig/jatos_fig15.png" width="600"></p>
 </div>
-</div>
-<div id="おまけjspsychとlab.jsをまぜてjatosで動かす方法" class="section level2">
+<div id="おまけjspsychとlab.jsをまぜてjatosで動かす方法"
+class="section level2">
 <h2>おまけ：jsPsychとlab.jsをまぜてJATOSで動かす方法</h2>
 <p>jsPsychで作った課題とlab.jsで作った課題をJATOS上でまとめて動かしたい状況があるかと思います。例えば，lab.jsで課題やアンケートを作って，jsPsychでちょっとややこしい行動課題を作った場合，後からどちらかに統一するのはちょっと面倒です。可能ならそれぞれをJATOS上で統合して実行したいかなと思います。</p>
 <div id="jspsych課題の準備" class="section level3">
 <h3>jsPsych課題の準備</h3>
 <p>jsPsych課題は以下のGitHubリポジトリの構造を意識して設定をします。</p>
-<p><a href="https://github.com/ykunisato/template-jsPsych-task" class="uri">https://github.com/ykunisato/template-jsPsych-task</a></p>
+<p><a href="https://github.com/ykunisato/template-jsPsych-task"
+class="uri">https://github.com/ykunisato/template-jsPsych-task</a></p>
 <p>一般的には，jsPsych課題の名前のついたフォルダ内に，HTMLファイル，jsPsychのプラグインのフォルダ，刺激のフォルダなどを配置すると思います。JATOS上の統合をする場合は，以下のように，HTMLファイルはそれらの１つ上の階層におきます（HTMLファイルがname_of_repositoryフォルダから出て同じ階層にいるかと思います）。それに伴ってHTMLファイルないでのjsPsychプラグインのパス指定は，name_of_repositoryフォルダを含んだものになります（上記のGitHubリポジトリを参照ください）。</p>
 <p><img src="fig/jatos_fig17.png" width="600"></p>
 </div>
 <div id="lab.js課題の準備" class="section level3">
 <h3>lab.js課題の準備</h3>
-<p>lab.js Buliderで作業して完成したら（<a href="https://mklab-japan.github.io/jpa2021tws/labjs/">lab.jsの導入はこちらをどうぞ</a>），以下のように，JATOS形式で保存します。するとzipファイルがダウンロードされると思います。</p>
+<p>lab.js Buliderで作業して完成したら（<a
+href="https://mklab-japan.github.io/jpa2021tws/labjs/">lab.jsの導入はこちらをどうぞ</a>），以下のように，JATOS形式で保存します。するとzipファイルがダウンロードされると思います。</p>
 <p><img src="fig/jatos_fig21.png" width="600"></p>
-<p>ダウロードされたzipを開くと以下のようになっていると思います。 <img src="fig/jatos_fig16.png" width="600"></p>
+<p>ダウロードされたzipを開くと以下のようになっていると思います。
+<img src="fig/jatos_fig16.png" width="600"></p>
 <p>まず，study.jasを削除します。次に，Study内のindex.htmlを上の階層に移動させて，名前を変えます(ここではname_of_taskにしています)。そして，Studyフォルダも課題名にしておきます（以下のような感じにします）。最後に，index.htmlから名前を変更したHTMLファイルを開いて，パスを変更します（各種ファイルの間にname_of_taskフォルダ名が挟まります）。</p>
 <p><img src="fig/jatos_fig22.png" width="600"></p>
 </div>
@@ -495,14 +500,15 @@ div.tocify {
 <p><img src="fig/jatos_fig18.png" width="600"></p>
 <p>上の「JATOSで実験を登録する」を参考にJSATOS上でこの課題をローカルのJATOS上に登録していきます。今回は，Componentsでstroop.htmlとquestion.htmlを登録します。登録すると以下のような感じになります。stroopとquestionが登録されていますね。この順番で課題が実施されるので，JATOS上で実行すると，ストループ課題をしてから，質問紙が実施されます。</p>
 <p><img src="fig/jatos_fig19.png" width="600"></p>
-<p>ローカルで作成したJATOSify済みのフォルダをエクスポートすれば，サーバー上のJATOSで実行できて，オンライン実験が可能です。以下は，私で試してみた結果です（同一IPアドレスからアクセスするので，テストではGeneral Multipleで実施しました）。参加者ごとにWorkerIDが割り振られて，その下にストループと質問紙の回答があります。</p>
+<p>ローカルで作成したJATOSify済みのフォルダをエクスポートすれば，サーバー上のJATOSで実行できて，オンライン実験が可能です。以下は，私で試してみた結果です（同一IPアドレスからアクセスするので，テストではGeneral
+Multipleで実施しました）。参加者ごとにWorkerIDが割り振られて，その下にストループと質問紙の回答があります。</p>
 <p><img src="fig/jatos_fig20.png" width="600"></p>
 <p>jsPsychとlab.jsを混ぜることができるのは便利ですね。</p>
 </div>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -542,6 +548,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

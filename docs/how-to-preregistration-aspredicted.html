@@ -13,12 +13,22 @@
 
 <title>AsPredcted形式で事前登録をしてみよう！</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,6 +37,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="icon-192x192.png">
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -38,11 +49,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -55,32 +61,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 <link rel="stylesheet" href="site_style.css" type="text/css" />
@@ -92,10 +73,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -112,40 +89,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -173,7 +126,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -185,7 +138,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -196,10 +149,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -211,7 +177,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -337,7 +302,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -351,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -370,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -397,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -416,7 +381,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -427,23 +392,30 @@ div.tocify {
 
 <div id="心理学の再現可能性問題と事前登録" class="section level2">
 <h2>心理学の再現可能性問題と事前登録</h2>
-<p>心理学の再現可能性の問題が指摘されるようになって久しいわけですが，実はちょっとまだ良くわからないんだという方もおられるかもしれません。ざっと問題を把握する上では，心理学評論の特集<a href="https://www.jstage.jst.go.jp/browse/sjpr/59/1/_contents/-char/ja">「心理学の再現可能性」</a>を読むと良いかと思います。</p>
+<p>心理学の再現可能性の問題が指摘されるようになって久しいわけですが，実はちょっとまだ良くわからないんだという方もおられるかもしれません。ざっと問題を把握する上では，心理学評論の特集<a
+href="https://www.jstage.jst.go.jp/browse/sjpr/59/1/_contents/-char/ja">「心理学の再現可能性」</a>を読むと良いかと思います。</p>
 <p>この心理学の再現性問題では様々な問題が指摘されていますが，以下の２つは大きな問題となっています。</p>
 <ul>
 <li><p>統計学的に有意な差や関連を検出するために帰無仮説検定を繰り返し，統計学的に有意な結果だけを報告する（pハッキングと選択的報告）。</p></li>
 <li><p>データ収集＆解析後に仮説を作って，あたかも事前に立てた仮説だったかのように記載する(HARKing)。</p></li>
 </ul>
-<p>これらは問題のある研究実践である。しかし，提出された論文や報告だけから，pハッキングやHARKingが行われたかどうかは分からない。そこで，データ収集や解析を行う前に，研究の仮説・方法・解析などを，第三者が管理するサーバーなど（<a href="https://aspredicted.org/index.php">AsPredicted</a>や<a href="https://osf.io/prereg/">OSF</a>）にアップロードする事前登録が行われるようになってきています(山田祐樹先生の心理学ワールド記事<a href="https://psych.or.jp/publication/world083/pw15/">「自由を棄てて透明な心理学を掴む」</a>がわかりやすいかと思います）。</p>
+<p>これらは問題のある研究実践である。しかし，提出された論文や報告だけから，pハッキングやHARKingが行われたかどうかは分からない。そこで，データ収集や解析を行う前に，研究の仮説・方法・解析などを，第三者が管理するサーバーなど（<a
+href="https://aspredicted.org/index.php">AsPredicted</a>や<a
+href="https://osf.io/prereg/">OSF</a>）にアップロードする事前登録が行われるようになってきています(山田祐樹先生の心理学ワールド記事<a
+href="https://psych.or.jp/publication/world083/pw15/">「自由を棄てて透明な心理学を掴む」</a>がわかりやすいかと思います）。</p>
 <p><br></p>
 </div>
 <div id="aspredcted形式で事前登録してみる" class="section level2">
 <h2>AsPredcted形式で事前登録してみる</h2>
-<p>事前登録にもいくつか形式がありますが，「とりあえずやってみようかな」という時にいきなりハードな内容だとくじけてしまうかもしれません。その点，<a href="https://aspredicted.org/index.php">AsPredicted</a>の形式だと少しお手軽かもしれません。AsPredictedは，研究者が簡単に事前登録できるようにするためのプラットフォームであり，簡単な質問に簡潔に回答することで，事前登録ができるというものです。もちろん，登録するとタイムスタンプがついて，１枚のPDF形式になり，実に便利です。<a href="https://aspredicted.org/nfj4s.pdf">サンプルPDF</a>をみてもらうとわかりますが，簡潔なので，「これなら書けるかも」と思えるのではないでしょうか。基本的には，英語で書くことを考えていますが，日本語でも良いかもしれません。ただ，もう便利なソフトもある時代なので，英語で書くこともそこまで大変ではないです。実際ゼミ生には30分くらいで書いていました。</p>
+<p>事前登録にもいくつか形式がありますが，「とりあえずやってみようかな」という時にいきなりハードな内容だとくじけてしまうかもしれません。その点，<a
+href="https://aspredicted.org/index.php">AsPredicted</a>の形式だと少しお手軽かもしれません。AsPredictedは，研究者が簡単に事前登録できるようにするためのプラットフォームであり，簡単な質問に簡潔に回答することで，事前登録ができるというものです。もちろん，登録するとタイムスタンプがついて，１枚のPDF形式になり，実に便利です。<a
+href="https://aspredicted.org/nfj4s.pdf">サンプルPDF</a>をみてもらうとわかりますが，簡潔なので，「これなら書けるかも」と思えるのではないでしょうか。基本的には，英語で書くことを考えていますが，日本語でも良いかもしれません。ただ，もう便利なソフトもある時代なので，英語で書くこともそこまで大変ではないです。実際ゼミ生には30分くらいで書いていました。</p>
 <p><br></p>
 </div>
 <div id="aspredictedテンプレート用rmdファイル" class="section level2">
 <h2>AsPredictedテンプレート用Rmdファイル</h2>
-<p>AsPredcted形式で事前登録する場合は，AsPredictedのサイトを使っても良いですし，OSFにWordのテンプレートもあるので，そちらを使って，OSFにアップロードしても良いかと思います。私のゼミの卒論の場合，通常GitHubを使っているので，OSFのアカウントを事前登録のためだけのために作るのは少し手間だったので，自作した<a href="https://github.com/ykunisato/AsPredicted_Rmd_template">AsPredictedテンプレート用Rmdファイル</a>を使って作成したものを卒論用GitHubプライベートリポジトリにアップしています。</p>
+<p>AsPredcted形式で事前登録する場合は，AsPredictedのサイトを使っても良いですし，OSFにWordのテンプレートもあるので，そちらを使って，OSFにアップロードしても良いかと思います。私のゼミの卒論の場合，通常GitHubを使っているので，OSFのアカウントを事前登録のためだけのために作るのは少し手間だったので，自作した<a
+href="https://github.com/ykunisato/AsPredicted_Rmd_template">AsPredictedテンプレート用Rmdファイル</a>を使って作成したものを卒論用GitHubプライベートリポジトリにアップしています。</p>
 <p>以下では，AsPredictedテンプレート用Rmdファイルの説明をしていきます。まず，Rで以下のコードを実行して，AsPredictedテンプレート用Rmdファイルをダウンロードします。</p>
 <pre><code>download.file(&quot;https://raw.githubusercontent.com/ykunisato/AsPredicted_Rmd_template/master/AsPredicted_Rmd_template.Rmd&quot;, &quot;Aspredicted.Rmd&quot;)</code></pre>
 <p><br></p>
@@ -456,32 +428,47 @@ div.tocify {
 </ul>
 <p><br></p>
 </div>
-<div id="have-any-data-been-collected-for-this-study-already" class="section level3">
+<div id="have-any-data-been-collected-for-this-study-already"
+class="section level3">
 <h3>1. Have any data been collected for this study already?</h3>
 <ul>
-<li>Yes, at least some data have been collected for this study already</li>
+<li>Yes, at least some data have been collected for this study
+already</li>
 <li>No, no data have been collected for this study yet</li>
 </ul>
 <p>仮説を登録する前にデータ収集をしていたかどうかを聞いています。すでにデータ収集をしている場合は，Yesを選び（Noの１行を消す），そうじゃない場合はNoを選んでください(Yesの１行を消す)。</p>
 <p><br></p>
 </div>
-<div id="whats-the-main-question-being-asked-or-hypothesis-being-tested-in-this-study" class="section level3">
-<h3>2. What’s the main question being asked or hypothesis being tested in this study?</h3>
-<p>この研究における主な研究疑問や検証する仮説について書いてください。複数の文にわけて長く書くのではなく，１つの文で簡潔に書くようにしましょう（仮説は，「A will reduce B」のような独立変数と従属変数の関係が分かりやすい主張にする）。仮説が複数ある場合は，-を使ってリスト化します。</p>
+<div
+id="whats-the-main-question-being-asked-or-hypothesis-being-tested-in-this-study"
+class="section level3">
+<h3>2. What’s the main question being asked or hypothesis being tested
+in this study?</h3>
+<p>この研究における主な研究疑問や検証する仮説について書いてください。複数の文にわけて長く書くのではなく，１つの文で簡潔に書くようにしましょう（仮説は，「A
+will reduce
+B」のような独立変数と従属変数の関係が分かりやすい主張にする）。仮説が複数ある場合は，-を使ってリスト化します。</p>
 <p><br></p>
 </div>
-<div id="describe-the-key-dependent-variables-specifying-how-they-will-be-measured." class="section level3">
-<h3>3. Describe the key dependent variable(s) specifying how they will be measured.</h3>
+<div
+id="describe-the-key-dependent-variables-specifying-how-they-will-be-measured."
+class="section level3">
+<h3>3. Describe the key dependent variable(s) specifying how they will
+be measured.</h3>
 <p>主な従属変数（アウトカム）を書きましょう。その測定法も記載しましょう。複数ある場合は，-を使ってリスト化しましょう（類似したアウトカムがある場合は主要なアウトカムと副次的なアウトカムを決めます）。</p>
 <p><br></p>
 </div>
-<div id="how-many-and-which-conditions-will-participants-be-assigned-to" class="section level3">
-<h3>4. How many and which conditions will participants be assigned to?</h3>
+<div id="how-many-and-which-conditions-will-participants-be-assigned-to"
+class="section level3">
+<h3>4. How many and which conditions will participants be assigned
+to?</h3>
 <p>研究で操作する条件が複数ある場合は記載します。複数の条件に参加者を割り付ける方法も記載ください。</p>
 <p><br></p>
 </div>
-<div id="specify-exactly-which-analyses-you-will-conduct-to-examine-the-main-questionhypothesis." class="section level3">
-<h3>5. Specify exactly which analyses you will conduct to examine the main question/hypothesis.</h3>
+<div
+id="specify-exactly-which-analyses-you-will-conduct-to-examine-the-main-questionhypothesis."
+class="section level3">
+<h3>5. Specify exactly which analyses you will conduct to examine the
+main question/hypothesis.</h3>
 <p>研究疑問や仮説の検証にあたって，行う解析法について記載してください。</p>
 <p><br></p>
 </div>
@@ -490,24 +477,33 @@ div.tocify {
 <p>副次的な分析方法について記載してください</p>
 <p><br></p>
 </div>
-<div id="how-many-observations-will-be-collected-or-what-will-determine-the-sample-size-no-need-to-justify-decision-but-be-precise-about-exactly-how-the-number-will-be-determined." class="section level3">
-<h3>7. How many observations will be collected or what will determine the sample size? No need to justify decision, but be precise about exactly how the number will be determined.</h3>
+<div
+id="how-many-observations-will-be-collected-or-what-will-determine-the-sample-size-no-need-to-justify-decision-but-be-precise-about-exactly-how-the-number-will-be-determined."
+class="section level3">
+<h3>7. How many observations will be collected or what will determine
+the sample size? No need to justify decision, but be precise about
+exactly how the number will be determined.</h3>
 <p>サンプルサイズについて書いてください。サンプルサイズを決めた理由は書かなくても良いですが，数は正確に書いてください。</p>
 <p><br></p>
 </div>
-<div id="anything-else-you-would-like-to-pre-register-e.g.-data-exclusions-variables-collected-for-exploratory-purposes-unusual-analyses-planned" class="section level3">
-<h3>8. Anything else you would like to pre-register? (e.g., data exclusions, variables collected for exploratory purposes, unusual analyses planned?)</h3>
+<div
+id="anything-else-you-would-like-to-pre-register-e.g.-data-exclusions-variables-collected-for-exploratory-purposes-unusual-analyses-planned"
+class="section level3">
+<h3>8. Anything else you would like to pre-register? (e.g., data
+exclusions, variables collected for exploratory purposes, unusual
+analyses planned?)</h3>
 <p>上記以外で事前に登録しておきたことを記載ください（データの除外，探索的な目的でのデータ収集，一般的ではないデータ解析プランなど）。</p>
 <p><br></p>
 </div>
 </div>
-<div id="事前登録の最初の一歩としてのaspredicted" class="section level2">
+<div id="事前登録の最初の一歩としてのaspredicted"
+class="section level2">
 <h2>事前登録の最初の一歩としてのAsPredicted</h2>
 <p>ちょっと面倒な気もしなくもないですが，私達はちゃんとやっているつもりでも気が付かないうちに自分に都合のよい解釈をしてしまいがちです。あまり手間がかかってもやる気がなくなりますので，まずはAsPredicted形式のようなシンプルなものから始めてみるのはいかがでしょう？</p>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -538,7 +534,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -547,6 +543,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

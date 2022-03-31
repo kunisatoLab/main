@@ -1,0 +1,16 @@
+---
+title: "その他"
+---
+
+### jsPsych以外の方法
+
+- [PsychoPyを用いた認知課題の作成](https://github.com/ykunisato/training-of-psychopy)
+
+- [Presentationを用いた認知課題の作成](how-to-presentation.html)
+
+
+## 雑多なTips
+
+- [電子ラボノートeLabFTWの導入方法](how-to-elabftw.html)
+
+- [自動執筆量記録・報告システム](how-to-google-doc.html)

@@ -1,0 +1,9 @@
+---
+title: "心理ネットワーク・モジュール"
+---
+
+- [心理ネットワーク入門1](how-to-psychological-network1.html) ☆
+
+- [心理ネットワーク入門2（準備中）](how-to-psychological-network2.html) ☆
+
+- [微分方程式について](https://github.com/ykunisato/kunisato-lab-materials/blob/main/learning_ODE.md)(研究室限定資料)
