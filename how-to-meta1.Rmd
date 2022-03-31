@@ -21,16 +21,6 @@ embed_slide("https://ykunisato.github.io/ccp-lab-slide/spring_seminar_JSSP_2021/
 
 - [国里愛彦 (2015) 系統的展望とメタアナリシスの必須事項　行動療法研究, 41(1), 3-12.](http://jabt.umin.ne.jp/j/activities/pdf/guideline/Kunisato_2015.pdf)
 
-## GRADEについて
-
-診療ガイドラインの作成に使用されるGRADEアプローチについてまとめています。メタ分析が医療の中でどのように活用されるのか，臨床試験の評価をどのように行うのかについても確認ください。
-
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/1cUjBN4N112Vh1" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-40896238" title="介入研究の質のアセスメント" target="_blank">介入研究の質のアセスメント</a> </strong> from <strong><a href="https://www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong> </div>
-
-<br>
-<br>
-
-
 ## Rstanでベイジアンメタ分析
 
 メタ分析を行うRパッケージは，いろいろありますし，解説も多いので，ここでは，ベイジアンメタ分析について説明をしていきます。[『Network Meta-Analysis for Decision-Making』](https://www.amazon.co.jp/dp/1118647505/ref=cm_sw_em_r_mt_dp_U_i6l0EbR0Z21F1)
@@ -41,11 +31,13 @@ embed_slide("https://ykunisato.github.io/ccp-lab-slide/spring_seminar_JSSP_2021/
 以下のパッケージを使います。
 
 ```{r message=FALSE, warning=FALSE}
-library(rstan)
-library(tidybayes)
+library(cmdstanr)
 library(tidyverse)
-library(bayesplot)
 library(loo)
+library(rstan)
+library(bayesplot)
+library(posterior)
+library(tidybayes)
 ```
 
 
@@ -132,16 +124,24 @@ generated quantities {
 
 Stanコードが書けましたので，早速，コンパイル＆サンプリングをします。まず，以下推定のための設定です。
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 ld = length(study)
-rstan_options(auto_write = TRUE)
-options(mc.cores = parallel::detectCores())
-options(max.print = 99999)
-```
-
-
-```{r}
-fit_fixed <- stan("pairwise_fixed_effect.stan",data=list(ld = ld, nt = 2, ns = 11, study = study, treatment = treatment, dead = dead, sampleSize = sampleSize), chains = 4, iter = 5500, warmup = 500, thin = 1)
+# コンパイル
+fit_fixed <- cmdstan_model('pairwise_fixed_effect.stan')
+# サンプリング
+fit_fixed_mcmc <- fit_fixed$sample(
+  data=list(ld = ld, 
+            nt = 2, 
+            ns = 11, 
+            study = study, 
+            treatment = treatment, 
+            dead = dead, 
+            sampleSize = sampleSize),
+  seed = 123,
+  chains = 4,
+  iter_warmup = 500,
+  iter_sampling = 5500,
+  parallel_chains = 4)
 ```
 
 
@@ -149,49 +149,65 @@ fit_fixed <- stan("pairwise_fixed_effect.stan",data=list(ld = ld, nt = 2, ns = 1
 
 結果を簡単に確認します。
 ```{r}
-print(fit_fixed,digit = 3)
+fit_fixed_mcmc$summary()
 ```
 
 
-見にくいので，一部の結果のみを示します。若干ズレはありますが，教科書とほぼ同じ推定値になりました（関心のあるパラメータのみ掲載）。Rhatやn_effからもサンプリングも問題なさそうです。
+見にくいので，一部の結果のみを示します。若干ズレはありますが，教科書とほぼ同じ推定値になりました（関心のあるパラメータのみ掲載）。Rhatからサンプリングも問題なさそうです。
 
-| |mean|se_mea|sd|2.5%|97.5%|n_eff|Rhat|
-|---|---|---|---|---|---|---|---|
-|d01|-0.2344|0.0009|0.1194|-0.4689|-0.0026|17330|0.9999|
-|OR01|0.7967|0.0007|0.0954|0.6257|0.9974|17086|0.9999|
-|Prob_harm|0.0236|0.0012|0.1520|0.0000|0.0000|17264|0.9999|
+| |mean|sd|Rhat|
+|---|---|---|---|
+|d01|-0.231|0.119|1.000|
+|OR01|0.798|0.095|1.000|
+|Prob_harm|0.0238|0.152|1.000|
 
 
-なお，収束判定は以下のように可視化してもできます（コードのみで図は割愛します）。R hat，トレースプロット，自己相関，有効サンプルサイズの順番です。
+以下はMCMCについての診断結果です。問題はなさそうです。
+
 ```{r}
-stan_rhat(fit_fixed, pars = c("d01", "mu"))
-stan_trace(fit_fixed, pars = c("d01", "mu"),inc_warmup=T)
-stan_ac(fit_fixed, pars = c("d01", "mu"))
-stan_ess(fit_fixed, pars = c("d01", "mu"))
+fit_fixed_mcmc$cmdstan_diagnose()
+```
+
+以下のようにトレースプロットを示すことができます。d01(治療0と治療1の差)の場合は，以下になります。なお，各種MCMCの収束判断には，bayesplotをつかうのが便利です。
+
+```{r}
+# ggplotやtidyverseで扱いやすく処理する
+mcmc_samples = as_draws_df(fit_fixed_mcmc$draws())
+# d01のtrace plot
+mcmc_samples %>%
+  mutate(chain = as.factor(.chain)) %>% 
+  ggplot(aes(x = .iteration, y = d01, group = .chain, color = chain)) +
+  geom_line()
 ```
 
 
-治療0に対する治療1のオッズ比をプロットしてみます。ACC t-PAと比べて，PTCAが死亡率を下げることが分かりますね。
+d01(治療0と治療1の差)の事後分布は，以下になります。
 
 ```{r}
-fit_fixed %>% 
-  spread_draws(OR01) %>% 
-  ggplot(aes(x = OR01)) +
+mcmc_samples %>% 
+  ggplot(aes(x=d01)) +
+  stat_density(fill = "gray75")
+```
+
+解釈しやすいように，治療0に対する治療1のオッズ比の事後分布をプロットしてみます。ACC t-PAと比べて，PTCAが死亡率を下げることが分かりますね。
+
+```{r message=FALSE, warning=FALSE}
+mcmc_samples %>% 
+  ggplot(aes(x=OR01)) +
   stat_density(fill = "gray75") +
   stat_pointintervalh(aes(y = -0.05), point_interval = mean_qi, .width = .95) +
-  annotate("text", label = "mean, 95% quantile intervals", x = 1.1, y = -0.05, hjust = 0, vjust = 0.3) +
-  xlim(0.5,1.45)+
+  xlim(0.5,1.4)+
   labs(x="Odds ratio")
 ```
 
+単体では意味がないですが，モデル比較をすることもあるかと思います。上記のStanコードでは対数尤度を計算をしているのでWAICの計算ができます。以下では，mcmc_samplesからlog_likだけ抽出して，マトリックス形式にした上で，looパッケージでWAICを計算しています。
 
-
-
-単体では意味がないですが，モデル比較をすることもあるかと思い，Stanコードでは対数尤度も計算をしています。以下のコードでWAICも算出できます。
-
-```{r}
-log_like <- extract_log_lik(fit_fixed)
-waic(log_like)
+```{r message=FALSE, warning=FALSE}
+mcmc_samples %>% 
+  select(starts_with("log_lik")) %>% 
+  as.matrix() %>% 
+  waic()
 ```
+
 
 これで，メタ分析の基本形である固定効果モデルをStanで実行できました！

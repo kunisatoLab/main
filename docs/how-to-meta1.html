@@ -13,8 +13,8 @@
 
 <title>メタ分析</title>
 
-<script src="site_libs/header-attrs-2.7.1/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="site_style.css" type="text/css" />
 
 
@@ -87,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -299,12 +303,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -312,7 +316,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +335,7 @@ div.tocify {
   <a href="team.html">Team</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Publications
      
     <span class="caret"></span>
@@ -358,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -389,40 +393,46 @@ div.tocify {
 <div id="メタ分析の実施手順" class="section level2">
 <h2>メタ分析の実施手順</h2>
 <p>まず，メタ分析について，以下のスライドを参考に，概要をつかんでください。</p>
-<iframe src="https://ykunisato.github.io/ccp-lab-slide/spring_seminar_JSSP_2021/meta_analysis/slide.html#1" width="672" height="400px">
+<iframe src="https://ykunisato.github.io/ccp-lab-slide/spring_seminar_JSSP_2021/meta_analysis/slide.html#1" width="672" height="400px" data-external="1">
 </iframe>
 <p><br> <br></p>
 <p>また，以下の国里の論文を読んで，メタ分析の必須事項についても確認ください。</p>
 <ul>
-<li><a href="http://jabt.umin.ne.jp/j/activities/pdf/guideline/Kunisato_2015.pdf">国里愛彦 (2015) 系統的展望とメタアナリシスの必須事項　行動療法研究, 41(1), 3-12.</a></li>
+<li><a
+href="http://jabt.umin.ne.jp/j/activities/pdf/guideline/Kunisato_2015.pdf">国里愛彦
+(2015) 系統的展望とメタアナリシスの必須事項　行動療法研究, 41(1),
+3-12.</a></li>
 </ul>
-</div>
-<div id="gradeについて" class="section level2">
-<h2>GRADEについて</h2>
-<p>診療ガイドラインの作成に使用されるGRADEアプローチについてまとめています。メタ分析が医療の中でどのように活用されるのか，臨床試験の評価をどのように行うのかについても確認ください。</p>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/1cUjBN4N112Vh1" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
-<div style="margin-bottom:5px">
-<strong> <a href="//www.slideshare.net/YoshihikoKunisato/ss-40896238" title="介入研究の質のアセスメント" target="_blank">介入研究の質のアセスメント</a> </strong> from <strong><a href="https://www.slideshare.net/YoshihikoKunisato" target="_blank">Senshu University</a></strong>
-</div>
-<p><br> <br></p>
 </div>
 <div id="rstanでベイジアンメタ分析" class="section level2">
 <h2>Rstanでベイジアンメタ分析</h2>
-<p>メタ分析を行うRパッケージは，いろいろありますし，解説も多いので，ここでは，ベイジアンメタ分析について説明をしていきます。<a href="https://www.amazon.co.jp/dp/1118647505/ref=cm_sw_em_r_mt_dp_U_i6l0EbR0Z21F1">『Network Meta-Analysis for Decision-Making』</a> は，ベイジアンメタ分析を学ぶ上で良い本ですが，紹介されているコードがWinBUGSだったりします（これ以外の書籍もWinBUGSが多い）。Mac &amp; Stanユーザーとしては，WinBUGSはきついので，第2章で紹介されている一対比較(つまりネットワークメタ分析ではない普通の)データの固定効果モデルのコードをStanコードに書き直して説明しています。</p>
+<p>メタ分析を行うRパッケージは，いろいろありますし，解説も多いので，ここでは，ベイジアンメタ分析について説明をしていきます。<a
+href="https://www.amazon.co.jp/dp/1118647505/ref=cm_sw_em_r_mt_dp_U_i6l0EbR0Z21F1">『Network
+Meta-Analysis for Decision-Making』</a>
+は，ベイジアンメタ分析を学ぶ上で良い本ですが，紹介されているコードがWinBUGSだったりします（これ以外の書籍もWinBUGSが多い）。Mac
+&amp;
+Stanユーザーとしては，WinBUGSはきついので，第2章で紹介されている一対比較(つまりネットワークメタ分析ではない普通の)データの固定効果モデルのコードをStanコードに書き直して説明しています。</p>
 <div id="使用するパッケージ" class="section level3">
 <h3>使用するパッケージ</h3>
 <p>以下のパッケージを使います。</p>
-<pre class="r"><code>library(rstan)
-library(tidybayes)
+<pre class="r"><code>library(cmdstanr)
 library(tidyverse)
+library(loo)
+library(rstan)
 library(bayesplot)
-library(loo)</code></pre>
+library(posterior)
+library(tidybayes)</code></pre>
 </div>
 <div id="データ" class="section level3">
 <h3>データ</h3>
-<p>使用するのは，『Network Meta-Analysis for Decision-Making』の２章で紹介されている血栓溶解薬のデータです(Caldwell et la., 2005のデータ)。データセット全体の中からACC t-PA(治療0,今回はこれをコントロールにする)とPTCA(治療1)を比較した11の試験を使います。つまり，一対比較(Pairwise comparison)データです。</p>
-<p>studyは研究のID，treatmentは治療の種類(0=ACC t-PA，1=PTCA)，deadは死者数，sampleSizeはその治療に参加した患者数です。studyNameは第1著者の姓か研究プロジェクト名， studyYearは論文の出版年です。</p>
+<p>使用するのは，『Network Meta-Analysis for
+Decision-Making』の２章で紹介されている血栓溶解薬のデータです(Caldwell
+et la., 2005のデータ)。データセット全体の中からACC
+t-PA(治療0,今回はこれをコントロールにする)とPTCA(治療1)を比較した11の試験を使います。つまり，一対比較(Pairwise
+comparison)データです。</p>
+<p>studyは研究のID，treatmentは治療の種類(0=ACC
+t-PA，1=PTCA)，deadは死者数，sampleSizeはその治療に参加した患者数です。studyNameは第1著者の姓か研究プロジェクト名，
+studyYearは論文の出版年です。</p>
 <pre class="r"><code>study &lt;-c(1,2,3,4,5,6,7,8,9,10,11,1,2,3,4,5,6,7,8,9,10,11)
 treatment &lt;- c(0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1)
 dead &lt;- c(3,10,40,5,5,2,19,59,5,16,8,1,3,32,5,3,3,20,52,2,12,6)
@@ -433,10 +443,12 @@ studyYear &lt;- c(1996,1997,1997,1999,2000,2001,2002,2002,2002,2002,2002,1996,19
 # データフレーム化
 data_pair &lt;- data_frame(study,treatment,dead,sampleSize,treatmentName,studyName,studyYear)</code></pre>
 <pre><code>## Warning: `data_frame()` was deprecated in tibble 1.1.0.
-## Please use `tibble()` instead.</code></pre>
+## Please use `tibble()` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
 <p>以下のような感じのデータです。</p>
 <pre class="r"><code>head(data_pair)</code></pre>
-<pre><code>## # A tibble: 6 x 7
+<pre><code>## # A tibble: 6 × 7
 ##   study treatment  dead sampleSize treatmentName studyName studyYear
 ##   &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;         &lt;dbl&gt;
 ## 1     1         0     3         55 Acc_tPA       Ribichini      1996
@@ -451,8 +463,9 @@ data_pair &lt;- data_frame(study,treatment,dead,sampleSize,treatmentName,studyNa
 <p>まず，data{}ブロックにおいて，使用するデータの定義をしています。教科書は行列形式でdeadやsampleSizeを読み込む形式ですが，少し今後の拡張を考えると面倒です。まずlong型のデータセットにしてから（上記のデータはすでにそうなっています），各列をStanに読み込ませます。</p>
 <p>parameters{}ブロックでは，推定するパラメータとして，mu(各研究におけるベースライン=ここでは治療0の効果)とd01(治療0と治療1の差=治療0よりも治療1が優れるor劣る効果の大きさ)を準備しています。</p>
 <p>model{}ブロックでは，死者数が二項分布に従うとして，死者数が，binomial_logit(試験の参加人数，死亡確率を構成する式)から生成されます。なお，死亡確率を構成する式は，治療が0の場合，はその試験のmuのみで，治療1の場合は，その試験のmuにd01を足したものになります。d01とmuの事前分布としては，幅のひろーい正規分布としました。</p>
-<p>generated quantities{}ブロックでは，d01から治療0に対する治療1のオッズ比や有害の確率を計算したり，モデル比較用の対数尤度(log_lik)も計算しています。</p>
-<p>以下のStanコードを“pairwise_fixed_effect.stan”という名前で保存します。</p>
+<p>generated
+quantities{}ブロックでは，d01から治療0に対する治療1のオッズ比や有害の確率を計算したり，モデル比較用の対数尤度(log_lik)も計算しています。</p>
+<p>以下のStanコードを”pairwise_fixed_effect.stan”という名前で保存します。</p>
 <pre><code>data{
   int ld;             // length of data
   int nt;             // number of treatment
@@ -498,183 +511,383 @@ generated quantities {
 <h3>パラメータ推定</h3>
 <p>Stanコードが書けましたので，早速，コンパイル＆サンプリングをします。まず，以下推定のための設定です。</p>
 <pre class="r"><code>ld = length(study)
-rstan_options(auto_write = TRUE)
-options(mc.cores = parallel::detectCores())
-options(max.print = 99999)</code></pre>
-<pre class="r"><code>fit_fixed &lt;- stan(&quot;pairwise_fixed_effect.stan&quot;,data=list(ld = ld, nt = 2, ns = 11, study = study, treatment = treatment, dead = dead, sampleSize = sampleSize), chains = 4, iter = 5500, warmup = 500, thin = 1)</code></pre>
+# コンパイル
+fit_fixed &lt;- cmdstan_model(&#39;pairwise_fixed_effect.stan&#39;)
+# サンプリング
+fit_fixed_mcmc &lt;- fit_fixed$sample(
+  data=list(ld = ld, 
+            nt = 2, 
+            ns = 11, 
+            study = study, 
+            treatment = treatment, 
+            dead = dead, 
+            sampleSize = sampleSize),
+  seed = 123,
+  chains = 4,
+  iter_warmup = 500,
+  iter_sampling = 5500,
+  parallel_chains = 4)</code></pre>
+<pre><code>## Running MCMC with 4 parallel chains...
+## 
+## Chain 1 Iteration:    1 / 6000 [  0%]  (Warmup) 
+## Chain 1 Iteration:  100 / 6000 [  1%]  (Warmup) 
+## Chain 1 Iteration:  200 / 6000 [  3%]  (Warmup) 
+## Chain 1 Iteration:  300 / 6000 [  5%]  (Warmup) 
+## Chain 1 Iteration:  400 / 6000 [  6%]  (Warmup) 
+## Chain 1 Iteration:  500 / 6000 [  8%]  (Warmup) 
+## Chain 1 Iteration:  501 / 6000 [  8%]  (Sampling) 
+## Chain 1 Iteration:  600 / 6000 [ 10%]  (Sampling) 
+## Chain 1 Iteration:  700 / 6000 [ 11%]  (Sampling) 
+## Chain 1 Iteration:  800 / 6000 [ 13%]  (Sampling) 
+## Chain 1 Iteration:  900 / 6000 [ 15%]  (Sampling) 
+## Chain 1 Iteration: 1000 / 6000 [ 16%]  (Sampling) 
+## Chain 1 Iteration: 1100 / 6000 [ 18%]  (Sampling) 
+## Chain 1 Iteration: 1200 / 6000 [ 20%]  (Sampling) 
+## Chain 1 Iteration: 1300 / 6000 [ 21%]  (Sampling) 
+## Chain 1 Iteration: 1400 / 6000 [ 23%]  (Sampling) 
+## Chain 1 Iteration: 1500 / 6000 [ 25%]  (Sampling) 
+## Chain 1 Iteration: 1600 / 6000 [ 26%]  (Sampling) 
+## Chain 1 Iteration: 1700 / 6000 [ 28%]  (Sampling) 
+## Chain 1 Iteration: 1800 / 6000 [ 30%]  (Sampling) 
+## Chain 1 Iteration: 1900 / 6000 [ 31%]  (Sampling) 
+## Chain 2 Iteration:    1 / 6000 [  0%]  (Warmup) 
+## Chain 2 Iteration:  100 / 6000 [  1%]  (Warmup) 
+## Chain 2 Iteration:  200 / 6000 [  3%]  (Warmup) 
+## Chain 2 Iteration:  300 / 6000 [  5%]  (Warmup) 
+## Chain 2 Iteration:  400 / 6000 [  6%]  (Warmup) 
+## Chain 2 Iteration:  500 / 6000 [  8%]  (Warmup) 
+## Chain 2 Iteration:  501 / 6000 [  8%]  (Sampling) 
+## Chain 2 Iteration:  600 / 6000 [ 10%]  (Sampling) 
+## Chain 2 Iteration:  700 / 6000 [ 11%]  (Sampling) 
+## Chain 2 Iteration:  800 / 6000 [ 13%]  (Sampling) 
+## Chain 2 Iteration:  900 / 6000 [ 15%]  (Sampling) 
+## Chain 2 Iteration: 1000 / 6000 [ 16%]  (Sampling) 
+## Chain 2 Iteration: 1100 / 6000 [ 18%]  (Sampling) 
+## Chain 2 Iteration: 1200 / 6000 [ 20%]  (Sampling) 
+## Chain 2 Iteration: 1300 / 6000 [ 21%]  (Sampling) 
+## Chain 2 Iteration: 1400 / 6000 [ 23%]  (Sampling) 
+## Chain 2 Iteration: 1500 / 6000 [ 25%]  (Sampling) 
+## Chain 2 Iteration: 1600 / 6000 [ 26%]  (Sampling) 
+## Chain 2 Iteration: 1700 / 6000 [ 28%]  (Sampling) 
+## Chain 2 Iteration: 1800 / 6000 [ 30%]  (Sampling) 
+## Chain 3 Iteration:    1 / 6000 [  0%]  (Warmup) 
+## Chain 3 Iteration:  100 / 6000 [  1%]  (Warmup) 
+## Chain 3 Iteration:  200 / 6000 [  3%]  (Warmup) 
+## Chain 3 Iteration:  300 / 6000 [  5%]  (Warmup) 
+## Chain 3 Iteration:  400 / 6000 [  6%]  (Warmup) 
+## Chain 3 Iteration:  500 / 6000 [  8%]  (Warmup) 
+## Chain 3 Iteration:  501 / 6000 [  8%]  (Sampling) 
+## Chain 3 Iteration:  600 / 6000 [ 10%]  (Sampling) 
+## Chain 3 Iteration:  700 / 6000 [ 11%]  (Sampling) 
+## Chain 3 Iteration:  800 / 6000 [ 13%]  (Sampling) 
+## Chain 3 Iteration:  900 / 6000 [ 15%]  (Sampling) 
+## Chain 3 Iteration: 1000 / 6000 [ 16%]  (Sampling) 
+## Chain 3 Iteration: 1100 / 6000 [ 18%]  (Sampling) 
+## Chain 3 Iteration: 1200 / 6000 [ 20%]  (Sampling) 
+## Chain 3 Iteration: 1300 / 6000 [ 21%]  (Sampling) 
+## Chain 3 Iteration: 1400 / 6000 [ 23%]  (Sampling) 
+## Chain 3 Iteration: 1500 / 6000 [ 25%]  (Sampling) 
+## Chain 3 Iteration: 1600 / 6000 [ 26%]  (Sampling) 
+## Chain 3 Iteration: 1700 / 6000 [ 28%]  (Sampling) 
+## Chain 3 Iteration: 1800 / 6000 [ 30%]  (Sampling) 
+## Chain 3 Iteration: 1900 / 6000 [ 31%]  (Sampling) 
+## Chain 3 Iteration: 2000 / 6000 [ 33%]  (Sampling) 
+## Chain 3 Iteration: 2100 / 6000 [ 35%]  (Sampling) 
+## Chain 3 Iteration: 2200 / 6000 [ 36%]  (Sampling) 
+## Chain 3 Iteration: 2300 / 6000 [ 38%]  (Sampling) 
+## Chain 3 Iteration: 2400 / 6000 [ 40%]  (Sampling) 
+## Chain 3 Iteration: 2500 / 6000 [ 41%]  (Sampling) 
+## Chain 3 Iteration: 2600 / 6000 [ 43%]  (Sampling) 
+## Chain 3 Iteration: 2700 / 6000 [ 45%]  (Sampling) 
+## Chain 3 Iteration: 2800 / 6000 [ 46%]  (Sampling) 
+## Chain 3 Iteration: 2900 / 6000 [ 48%]  (Sampling) 
+## Chain 3 Iteration: 3000 / 6000 [ 50%]  (Sampling) 
+## Chain 3 Iteration: 3100 / 6000 [ 51%]  (Sampling) 
+## Chain 4 Iteration:    1 / 6000 [  0%]  (Warmup) 
+## Chain 4 Iteration:  100 / 6000 [  1%]  (Warmup) 
+## Chain 4 Iteration:  200 / 6000 [  3%]  (Warmup) 
+## Chain 4 Iteration:  300 / 6000 [  5%]  (Warmup) 
+## Chain 4 Iteration:  400 / 6000 [  6%]  (Warmup) 
+## Chain 4 Iteration:  500 / 6000 [  8%]  (Warmup) 
+## Chain 4 Iteration:  501 / 6000 [  8%]  (Sampling) 
+## Chain 4 Iteration:  600 / 6000 [ 10%]  (Sampling) 
+## Chain 4 Iteration:  700 / 6000 [ 11%]  (Sampling) 
+## Chain 4 Iteration:  800 / 6000 [ 13%]  (Sampling) 
+## Chain 4 Iteration:  900 / 6000 [ 15%]  (Sampling) 
+## Chain 4 Iteration: 1000 / 6000 [ 16%]  (Sampling) 
+## Chain 4 Iteration: 1100 / 6000 [ 18%]  (Sampling) 
+## Chain 4 Iteration: 1200 / 6000 [ 20%]  (Sampling) 
+## Chain 4 Iteration: 1300 / 6000 [ 21%]  (Sampling) 
+## Chain 4 Iteration: 1400 / 6000 [ 23%]  (Sampling) 
+## Chain 4 Iteration: 1500 / 6000 [ 25%]  (Sampling) 
+## Chain 4 Iteration: 1600 / 6000 [ 26%]  (Sampling) 
+## Chain 4 Iteration: 1700 / 6000 [ 28%]  (Sampling) 
+## Chain 4 Iteration: 1800 / 6000 [ 30%]  (Sampling) 
+## Chain 4 Iteration: 1900 / 6000 [ 31%]  (Sampling) 
+## Chain 4 Iteration: 2000 / 6000 [ 33%]  (Sampling) 
+## Chain 4 Iteration: 2100 / 6000 [ 35%]  (Sampling) 
+## Chain 4 Iteration: 2200 / 6000 [ 36%]  (Sampling) 
+## Chain 4 Iteration: 2300 / 6000 [ 38%]  (Sampling) 
+## Chain 4 Iteration: 2400 / 6000 [ 40%]  (Sampling) 
+## Chain 4 Iteration: 2500 / 6000 [ 41%]  (Sampling) 
+## Chain 4 Iteration: 2600 / 6000 [ 43%]  (Sampling) 
+## Chain 4 Iteration: 2700 / 6000 [ 45%]  (Sampling) 
+## Chain 4 Iteration: 2800 / 6000 [ 46%]  (Sampling) 
+## Chain 4 Iteration: 2900 / 6000 [ 48%]  (Sampling) 
+## Chain 4 Iteration: 3000 / 6000 [ 50%]  (Sampling) 
+## Chain 4 Iteration: 3100 / 6000 [ 51%]  (Sampling) 
+## Chain 4 Iteration: 3200 / 6000 [ 53%]  (Sampling) 
+## Chain 1 Iteration: 2000 / 6000 [ 33%]  (Sampling) 
+## Chain 1 Iteration: 2100 / 6000 [ 35%]  (Sampling) 
+## Chain 1 Iteration: 2200 / 6000 [ 36%]  (Sampling) 
+## Chain 1 Iteration: 2300 / 6000 [ 38%]  (Sampling) 
+## Chain 1 Iteration: 2400 / 6000 [ 40%]  (Sampling) 
+## Chain 1 Iteration: 2500 / 6000 [ 41%]  (Sampling) 
+## Chain 1 Iteration: 2600 / 6000 [ 43%]  (Sampling) 
+## Chain 1 Iteration: 2700 / 6000 [ 45%]  (Sampling) 
+## Chain 1 Iteration: 2800 / 6000 [ 46%]  (Sampling) 
+## Chain 1 Iteration: 2900 / 6000 [ 48%]  (Sampling) 
+## Chain 1 Iteration: 3000 / 6000 [ 50%]  (Sampling) 
+## Chain 1 Iteration: 3100 / 6000 [ 51%]  (Sampling) 
+## Chain 1 Iteration: 3200 / 6000 [ 53%]  (Sampling) 
+## Chain 1 Iteration: 3300 / 6000 [ 55%]  (Sampling) 
+## Chain 1 Iteration: 3400 / 6000 [ 56%]  (Sampling) 
+## Chain 1 Iteration: 3500 / 6000 [ 58%]  (Sampling) 
+## Chain 1 Iteration: 3600 / 6000 [ 60%]  (Sampling) 
+## Chain 1 Iteration: 3700 / 6000 [ 61%]  (Sampling) 
+## Chain 1 Iteration: 3800 / 6000 [ 63%]  (Sampling) 
+## Chain 1 Iteration: 3900 / 6000 [ 65%]  (Sampling) 
+## Chain 1 Iteration: 4000 / 6000 [ 66%]  (Sampling) 
+## Chain 1 Iteration: 4100 / 6000 [ 68%]  (Sampling) 
+## Chain 1 Iteration: 4200 / 6000 [ 70%]  (Sampling) 
+## Chain 1 Iteration: 4300 / 6000 [ 71%]  (Sampling) 
+## Chain 1 Iteration: 4400 / 6000 [ 73%]  (Sampling) 
+## Chain 1 Iteration: 4500 / 6000 [ 75%]  (Sampling) 
+## Chain 1 Iteration: 4600 / 6000 [ 76%]  (Sampling) 
+## Chain 1 Iteration: 4700 / 6000 [ 78%]  (Sampling) 
+## Chain 1 Iteration: 4800 / 6000 [ 80%]  (Sampling) 
+## Chain 1 Iteration: 4900 / 6000 [ 81%]  (Sampling) 
+## Chain 1 Iteration: 5000 / 6000 [ 83%]  (Sampling) 
+## Chain 1 Iteration: 5100 / 6000 [ 85%]  (Sampling) 
+## Chain 1 Iteration: 5200 / 6000 [ 86%]  (Sampling) 
+## Chain 1 Iteration: 5300 / 6000 [ 88%]  (Sampling) 
+## Chain 2 Iteration: 1900 / 6000 [ 31%]  (Sampling) 
+## Chain 2 Iteration: 2000 / 6000 [ 33%]  (Sampling) 
+## Chain 2 Iteration: 2100 / 6000 [ 35%]  (Sampling) 
+## Chain 2 Iteration: 2200 / 6000 [ 36%]  (Sampling) 
+## Chain 2 Iteration: 2300 / 6000 [ 38%]  (Sampling) 
+## Chain 2 Iteration: 2400 / 6000 [ 40%]  (Sampling) 
+## Chain 2 Iteration: 2500 / 6000 [ 41%]  (Sampling) 
+## Chain 2 Iteration: 2600 / 6000 [ 43%]  (Sampling) 
+## Chain 2 Iteration: 2700 / 6000 [ 45%]  (Sampling) 
+## Chain 2 Iteration: 2800 / 6000 [ 46%]  (Sampling) 
+## Chain 2 Iteration: 2900 / 6000 [ 48%]  (Sampling) 
+## Chain 2 Iteration: 3000 / 6000 [ 50%]  (Sampling) 
+## Chain 2 Iteration: 3100 / 6000 [ 51%]  (Sampling) 
+## Chain 2 Iteration: 3200 / 6000 [ 53%]  (Sampling) 
+## Chain 2 Iteration: 3300 / 6000 [ 55%]  (Sampling) 
+## Chain 2 Iteration: 3400 / 6000 [ 56%]  (Sampling) 
+## Chain 2 Iteration: 3500 / 6000 [ 58%]  (Sampling) 
+## Chain 2 Iteration: 3600 / 6000 [ 60%]  (Sampling) 
+## Chain 2 Iteration: 3700 / 6000 [ 61%]  (Sampling) 
+## Chain 2 Iteration: 3800 / 6000 [ 63%]  (Sampling) 
+## Chain 2 Iteration: 3900 / 6000 [ 65%]  (Sampling) 
+## Chain 2 Iteration: 4000 / 6000 [ 66%]  (Sampling) 
+## Chain 2 Iteration: 4100 / 6000 [ 68%]  (Sampling) 
+## Chain 2 Iteration: 4200 / 6000 [ 70%]  (Sampling) 
+## Chain 2 Iteration: 4300 / 6000 [ 71%]  (Sampling) 
+## Chain 2 Iteration: 4400 / 6000 [ 73%]  (Sampling) 
+## Chain 2 Iteration: 4500 / 6000 [ 75%]  (Sampling) 
+## Chain 2 Iteration: 4600 / 6000 [ 76%]  (Sampling) 
+## Chain 2 Iteration: 4700 / 6000 [ 78%]  (Sampling) 
+## Chain 2 Iteration: 4800 / 6000 [ 80%]  (Sampling) 
+## Chain 2 Iteration: 4900 / 6000 [ 81%]  (Sampling) 
+## Chain 2 Iteration: 5000 / 6000 [ 83%]  (Sampling) 
+## Chain 2 Iteration: 5100 / 6000 [ 85%]  (Sampling) 
+## Chain 3 Iteration: 3200 / 6000 [ 53%]  (Sampling) 
+## Chain 3 Iteration: 3300 / 6000 [ 55%]  (Sampling) 
+## Chain 3 Iteration: 3400 / 6000 [ 56%]  (Sampling) 
+## Chain 3 Iteration: 3500 / 6000 [ 58%]  (Sampling) 
+## Chain 3 Iteration: 3600 / 6000 [ 60%]  (Sampling) 
+## Chain 3 Iteration: 3700 / 6000 [ 61%]  (Sampling) 
+## Chain 3 Iteration: 3800 / 6000 [ 63%]  (Sampling) 
+## Chain 3 Iteration: 3900 / 6000 [ 65%]  (Sampling) 
+## Chain 3 Iteration: 4000 / 6000 [ 66%]  (Sampling) 
+## Chain 3 Iteration: 4100 / 6000 [ 68%]  (Sampling) 
+## Chain 3 Iteration: 4200 / 6000 [ 70%]  (Sampling) 
+## Chain 3 Iteration: 4300 / 6000 [ 71%]  (Sampling) 
+## Chain 3 Iteration: 4400 / 6000 [ 73%]  (Sampling) 
+## Chain 3 Iteration: 4500 / 6000 [ 75%]  (Sampling) 
+## Chain 3 Iteration: 4600 / 6000 [ 76%]  (Sampling) 
+## Chain 3 Iteration: 4700 / 6000 [ 78%]  (Sampling) 
+## Chain 3 Iteration: 4800 / 6000 [ 80%]  (Sampling) 
+## Chain 3 Iteration: 4900 / 6000 [ 81%]  (Sampling) 
+## Chain 3 Iteration: 5000 / 6000 [ 83%]  (Sampling) 
+## Chain 4 Iteration: 3300 / 6000 [ 55%]  (Sampling) 
+## Chain 4 Iteration: 3400 / 6000 [ 56%]  (Sampling) 
+## Chain 4 Iteration: 3500 / 6000 [ 58%]  (Sampling) 
+## Chain 4 Iteration: 3600 / 6000 [ 60%]  (Sampling) 
+## Chain 4 Iteration: 3700 / 6000 [ 61%]  (Sampling) 
+## Chain 4 Iteration: 3800 / 6000 [ 63%]  (Sampling) 
+## Chain 4 Iteration: 3900 / 6000 [ 65%]  (Sampling) 
+## Chain 4 Iteration: 4000 / 6000 [ 66%]  (Sampling) 
+## Chain 4 Iteration: 4100 / 6000 [ 68%]  (Sampling) 
+## Chain 4 Iteration: 4200 / 6000 [ 70%]  (Sampling) 
+## Chain 4 Iteration: 4300 / 6000 [ 71%]  (Sampling) 
+## Chain 4 Iteration: 4400 / 6000 [ 73%]  (Sampling) 
+## Chain 4 Iteration: 4500 / 6000 [ 75%]  (Sampling) 
+## Chain 4 Iteration: 4600 / 6000 [ 76%]  (Sampling) 
+## Chain 4 Iteration: 4700 / 6000 [ 78%]  (Sampling) 
+## Chain 4 Iteration: 4800 / 6000 [ 80%]  (Sampling) 
+## Chain 4 Iteration: 4900 / 6000 [ 81%]  (Sampling) 
+## Chain 1 Iteration: 5400 / 6000 [ 90%]  (Sampling) 
+## Chain 1 Iteration: 5500 / 6000 [ 91%]  (Sampling) 
+## Chain 1 Iteration: 5600 / 6000 [ 93%]  (Sampling) 
+## Chain 1 Iteration: 5700 / 6000 [ 95%]  (Sampling) 
+## Chain 1 Iteration: 5800 / 6000 [ 96%]  (Sampling) 
+## Chain 1 Iteration: 5900 / 6000 [ 98%]  (Sampling) 
+## Chain 1 Iteration: 6000 / 6000 [100%]  (Sampling) 
+## Chain 2 Iteration: 5200 / 6000 [ 86%]  (Sampling) 
+## Chain 2 Iteration: 5300 / 6000 [ 88%]  (Sampling) 
+## Chain 2 Iteration: 5400 / 6000 [ 90%]  (Sampling) 
+## Chain 2 Iteration: 5500 / 6000 [ 91%]  (Sampling) 
+## Chain 2 Iteration: 5600 / 6000 [ 93%]  (Sampling) 
+## Chain 2 Iteration: 5700 / 6000 [ 95%]  (Sampling) 
+## Chain 2 Iteration: 5800 / 6000 [ 96%]  (Sampling) 
+## Chain 2 Iteration: 5900 / 6000 [ 98%]  (Sampling) 
+## Chain 2 Iteration: 6000 / 6000 [100%]  (Sampling) 
+## Chain 3 Iteration: 5100 / 6000 [ 85%]  (Sampling) 
+## Chain 3 Iteration: 5200 / 6000 [ 86%]  (Sampling) 
+## Chain 3 Iteration: 5300 / 6000 [ 88%]  (Sampling) 
+## Chain 3 Iteration: 5400 / 6000 [ 90%]  (Sampling) 
+## Chain 3 Iteration: 5500 / 6000 [ 91%]  (Sampling) 
+## Chain 3 Iteration: 5600 / 6000 [ 93%]  (Sampling) 
+## Chain 3 Iteration: 5700 / 6000 [ 95%]  (Sampling) 
+## Chain 3 Iteration: 5800 / 6000 [ 96%]  (Sampling) 
+## Chain 3 Iteration: 5900 / 6000 [ 98%]  (Sampling) 
+## Chain 3 Iteration: 6000 / 6000 [100%]  (Sampling) 
+## Chain 4 Iteration: 5000 / 6000 [ 83%]  (Sampling) 
+## Chain 4 Iteration: 5100 / 6000 [ 85%]  (Sampling) 
+## Chain 4 Iteration: 5200 / 6000 [ 86%]  (Sampling) 
+## Chain 4 Iteration: 5300 / 6000 [ 88%]  (Sampling) 
+## Chain 4 Iteration: 5400 / 6000 [ 90%]  (Sampling) 
+## Chain 4 Iteration: 5500 / 6000 [ 91%]  (Sampling) 
+## Chain 4 Iteration: 5600 / 6000 [ 93%]  (Sampling) 
+## Chain 4 Iteration: 5700 / 6000 [ 95%]  (Sampling) 
+## Chain 4 Iteration: 5800 / 6000 [ 96%]  (Sampling) 
+## Chain 4 Iteration: 5900 / 6000 [ 98%]  (Sampling) 
+## Chain 4 Iteration: 6000 / 6000 [100%]  (Sampling) 
+## Chain 1 finished in 0.5 seconds.
+## Chain 2 finished in 0.4 seconds.
+## Chain 3 finished in 0.4 seconds.
+## Chain 4 finished in 0.4 seconds.
+## 
+## All 4 chains finished successfully.
+## Mean chain execution time: 0.4 seconds.
+## Total execution time: 0.6 seconds.</code></pre>
 </div>
 <div id="推定結果" class="section level3">
 <h3>推定結果</h3>
 <p>結果を簡単に確認します。</p>
-<pre class="r"><code>print(fit_fixed,digit = 3)</code></pre>
-<pre><code>## Inference for Stan model: pairwise_fixed_effect.
-## 4 chains, each with iter=5500; warmup=500; thin=1; 
-## post-warmup draws per chain=5000, total post-warmup draws=20000.
-## 
-##                  mean se_mean    sd      2.5%       25%       50%       75%
-## d01            -0.236   0.001 0.118    -0.468    -0.314    -0.236    -0.156
-## mu[1]          -3.295   0.003 0.543    -4.469    -3.631    -3.256    -2.912
-## mu[2]          -2.533   0.002 0.299    -3.148    -2.729    -2.522    -2.326
-## mu[3]          -2.592   0.001 0.134    -2.864    -2.681    -2.589    -2.501
-## mu[4]          -2.578   0.002 0.339    -3.281    -2.795    -2.564    -2.343
-## mu[5]          -2.750   0.002 0.379    -3.550    -2.994    -2.730    -2.483
-## mu[6]          -3.149   0.003 0.486    -4.192    -3.452    -3.117    -2.810
-## mu[7]          -2.925   0.001 0.174    -3.280    -3.039    -2.922    -2.806
-## mu[8]          -2.471   0.001 0.113    -2.695    -2.547    -2.470    -2.393
-## mu[9]          -3.061   0.002 0.405    -3.930    -3.315    -3.039    -2.776
-## mu[10]         -2.622   0.001 0.202    -3.036    -2.753    -2.616    -2.485
-## mu[11]         -2.088   0.001 0.286    -2.684    -2.278    -2.078    -1.891
-## OR01            0.796   0.001 0.094     0.626     0.731     0.790     0.856
-## Prob_harm       0.022   0.001 0.147     0.000     0.000     0.000     0.000
-## log_lik[1]     -1.985   0.007 0.682    -3.862    -2.184    -1.733    -1.526
-## log_lik[2]     -2.966   0.007 0.996    -5.601    -3.402    -2.654    -2.209
-## log_lik[3]     -3.061   0.005 0.466    -4.374    -3.170    -2.880    -2.763
-## log_lik[4]     -1.995   0.004 0.411    -3.156    -2.087    -1.836    -1.734
-## log_lik[5]     -2.067   0.005 0.503    -3.517    -2.193    -1.873    -1.740
-## log_lik[6]     -1.628   0.004 0.476    -2.987    -1.741    -1.446    -1.324
-## log_lik[7]     -2.818   0.005 0.596    -4.495    -2.982    -2.585    -2.422
-## log_lik[8]     -3.312   0.005 0.558    -4.871    -3.436    -3.099    -2.959
-## log_lik[9]     -2.233   0.006 0.683    -4.173    -2.432    -1.980    -1.770
-## log_lik[10]    -2.582   0.005 0.448    -3.830    -2.674    -2.412    -2.303
-## log_lik[11]    -2.207   0.004 0.421    -3.424    -2.309    -2.042    -1.936
-## log_lik[12]    -1.331   0.003 0.442    -2.555    -1.469    -1.163    -1.029
-## log_lik[13]    -2.489   0.005 0.865    -4.683    -2.919    -2.284    -1.827
-## log_lik[14]    -2.907   0.004 0.396    -4.038    -2.995    -2.754    -2.654
-## log_lik[15]    -2.005   0.004 0.410    -3.159    -2.108    -1.846    -1.737
-## log_lik[16]    -1.737   0.004 0.373    -2.780    -1.823    -1.594    -1.502
-## log_lik[17]    -1.909   0.005 0.566    -3.498    -2.077    -1.697    -1.523
-## log_lik[18]    -2.895   0.005 0.629    -4.636    -3.099    -2.663    -2.459
-## log_lik[19]    -3.253   0.005 0.546    -4.760    -3.386    -3.041    -2.902
-## log_lik[20]    -1.681   0.003 0.490    -3.038    -1.841    -1.497    -1.343
-## log_lik[21]    -2.389   0.004 0.357    -3.398    -2.469    -2.251    -2.165
-## log_lik[22]    -2.033   0.003 0.348    -3.025    -2.114    -1.899    -1.811
-## lp__        -1163.332   0.027 2.479 -1169.114 -1164.767 -1163.011 -1161.526
-##                 97.5% n_eff  Rhat
-## d01            -0.007 19981 1.000
-## mu[1]          -2.350 28955 1.000
-## mu[2]          -1.980 34459 1.000
-## mu[3]          -2.338 31456 1.000
-## mu[4]          -1.953 34990 1.000
-## mu[5]          -2.063 31552 1.000
-## mu[6]          -2.286 33361 1.000
-## mu[7]          -2.597 32212 1.000
-## mu[8]          -2.253 26140 1.000
-## mu[9]          -2.331 30073 1.000
-## mu[10]         -2.237 29509 1.000
-## mu[11]         -1.564 38946 1.000
-## OR01            0.993 19854 1.000
-## Prob_harm       0.000 18067 1.000
-## log_lik[1]     -1.469 10815 1.000
-## log_lik[2]     -2.024 18930 1.000
-## log_lik[3]     -2.730 10541 1.000
-## log_lik[4]     -1.706  9984 1.000
-## log_lik[5]     -1.703 10011 1.000
-## log_lik[6]     -1.291 14604 1.000
-## log_lik[7]     -2.373 14152 1.000
-## log_lik[8]     -2.920 12468 1.000
-## log_lik[9]     -1.709 12496 1.001
-## log_lik[10]    -2.274  8986 1.000
-## log_lik[11]    -1.905 10375 1.000
-## log_lik[12]    -0.991 19791 1.000
-## log_lik[13]    -1.492 33641 1.000
-## log_lik[14]    -2.626 10776 1.000
-## log_lik[15]    -1.706 10925 1.000
-## log_lik[16]    -1.475 11324 1.000
-## log_lik[17]    -1.472 13441 1.000
-## log_lik[18]    -2.397 16628 1.000
-## log_lik[19]    -2.863 14092 1.000
-## log_lik[20]    -1.295 20866 1.000
-## log_lik[21]    -2.141  9257 1.000
-## log_lik[22]    -1.785 10190 1.000
-## lp__        -1159.462  8203 1.000
-## 
-## Samples were drawn using NUTS(diag_e) at Wed Apr 14 04:51:33 2021.
-## For each parameter, n_eff is a crude measure of effective sample size,
-## and Rhat is the potential scale reduction factor on split chains (at 
-## convergence, Rhat=1).</code></pre>
-<p>見にくいので，一部の結果のみを示します。若干ズレはありますが，教科書とほぼ同じ推定値になりました（関心のあるパラメータのみ掲載）。Rhatやn_effからもサンプリングも問題なさそうです。</p>
+<pre class="r"><code>fit_fixed_mcmc$summary()</code></pre>
+<pre><code>## # A tibble: 37 × 10
+##    variable      mean    median    sd   mad        q5        q95  rhat ess_bulk
+##    &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+##  1 lp__     -1163.    -1163.    2.46  2.37  -1168.    -1160.      1.00    8787.
+##  2 d01         -0.233    -0.233 0.119 0.120    -0.427    -0.0375  1.00   21792.
+##  3 mu[1]       -3.30     -3.26  0.535 0.522    -4.24     -2.48    1.00   36729.
+##  4 mu[2]       -2.53     -2.52  0.297 0.291    -3.04     -2.06    1.00   32652.
+##  5 mu[3]       -2.59     -2.59  0.133 0.134    -2.82     -2.38    1.00   33102.
+##  6 mu[4]       -2.58     -2.56  0.341 0.333    -3.17     -2.05    1.00   39300.
+##  7 mu[5]       -2.75     -2.73  0.377 0.370    -3.41     -2.17    1.00   38113.
+##  8 mu[6]       -3.15     -3.12  0.485 0.476    -4.01     -2.41    1.00   36256.
+##  9 mu[7]       -2.92     -2.92  0.171 0.171    -3.21     -2.65    1.00   35735.
+## 10 mu[8]       -2.47     -2.47  0.113 0.113    -2.66     -2.29    1.00   30578.
+## # … with 27 more rows, and 1 more variable: ess_tail &lt;dbl&gt;</code></pre>
+<p>見にくいので，一部の結果のみを示します。若干ズレはありますが，教科書とほぼ同じ推定値になりました（関心のあるパラメータのみ掲載）。Rhatからサンプリングも問題なさそうです。</p>
 <table>
 <thead>
 <tr class="header">
 <th></th>
 <th>mean</th>
-<th>se_mea</th>
 <th>sd</th>
-<th>2.5%</th>
-<th>97.5%</th>
-<th>n_eff</th>
 <th>Rhat</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>d01</td>
-<td>-0.2344</td>
-<td>0.0009</td>
-<td>0.1194</td>
-<td>-0.4689</td>
-<td>-0.0026</td>
-<td>17330</td>
-<td>0.9999</td>
+<td>-0.231</td>
+<td>0.119</td>
+<td>1.000</td>
 </tr>
 <tr class="even">
 <td>OR01</td>
-<td>0.7967</td>
-<td>0.0007</td>
-<td>0.0954</td>
-<td>0.6257</td>
-<td>0.9974</td>
-<td>17086</td>
-<td>0.9999</td>
+<td>0.798</td>
+<td>0.095</td>
+<td>1.000</td>
 </tr>
 <tr class="odd">
 <td>Prob_harm</td>
-<td>0.0236</td>
-<td>0.0012</td>
-<td>0.1520</td>
-<td>0.0000</td>
-<td>0.0000</td>
-<td>17264</td>
-<td>0.9999</td>
+<td>0.0238</td>
+<td>0.152</td>
+<td>1.000</td>
 </tr>
 </tbody>
 </table>
-<p>なお，収束判定は以下のように可視化してもできます（コードのみで図は割愛します）。R hat，トレースプロット，自己相関，有効サンプルサイズの順番です。</p>
-<pre class="r"><code>stan_rhat(fit_fixed, pars = c(&quot;d01&quot;, &quot;mu&quot;))</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p>以下はMCMCについての診断結果です。問題はなさそうです。</p>
+<pre class="r"><code>fit_fixed_mcmc$cmdstan_diagnose()</code></pre>
+<pre><code>## Processing csv files: /tmp/RtmpQUT3ms/pairwise_fixed_effect-202203312138-1-0f3f86.csv, /tmp/RtmpQUT3ms/pairwise_fixed_effect-202203312138-2-0f3f86.csv, /tmp/RtmpQUT3ms/pairwise_fixed_effect-202203312138-3-0f3f86.csv, /tmp/RtmpQUT3ms/pairwise_fixed_effect-202203312138-4-0f3f86.csv
+## 
+## Checking sampler transitions treedepth.
+## Treedepth satisfactory for all transitions.
+## 
+## Checking sampler transitions for divergences.
+## No divergent transitions found.
+## 
+## Checking E-BFMI - sampler transitions HMC potential energy.
+## E-BFMI satisfactory.
+## 
+## Effective sample size satisfactory.
+## 
+## Split R-hat values satisfactory all parameters.
+## 
+## Processing complete, no problems detected.</code></pre>
+<p>以下のようにトレースプロットを示すことができます。d01(治療0と治療1の差)の場合は，以下になります。なお，各種MCMCの収束判断には，bayesplotをつかうのが便利です。</p>
+<pre class="r"><code># ggplotやtidyverseで扱いやすく処理する
+mcmc_samples = as_draws_df(fit_fixed_mcmc$draws())
+# d01のtrace plot
+mcmc_samples %&gt;%
+  mutate(chain = as.factor(.chain)) %&gt;% 
+  ggplot(aes(x = .iteration, y = d01, group = .chain, color = chain)) +
+  geom_line()</code></pre>
 <p><img src="how-to-meta1_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<pre class="r"><code>stan_trace(fit_fixed, pars = c(&quot;d01&quot;, &quot;mu&quot;),inc_warmup=T)</code></pre>
-<p><img src="how-to-meta1_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
-<pre class="r"><code>stan_ac(fit_fixed, pars = c(&quot;d01&quot;, &quot;mu&quot;))</code></pre>
-<p><img src="how-to-meta1_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
-<pre class="r"><code>stan_ess(fit_fixed, pars = c(&quot;d01&quot;, &quot;mu&quot;))</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="how-to-meta1_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
-<p>治療0に対する治療1のオッズ比をプロットしてみます。ACC t-PAと比べて，PTCAが死亡率を下げることが分かりますね。</p>
-<pre class="r"><code>fit_fixed %&gt;% 
-  spread_draws(OR01) %&gt;% 
-  ggplot(aes(x = OR01)) +
+<p>d01(治療0と治療1の差)の事後分布は，以下になります。</p>
+<pre class="r"><code>mcmc_samples %&gt;% 
+  ggplot(aes(x=d01)) +
+  stat_density(fill = &quot;gray75&quot;)</code></pre>
+<p><img src="how-to-meta1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>解釈しやすいように，治療0に対する治療1のオッズ比の事後分布をプロットしてみます。ACC
+t-PAと比べて，PTCAが死亡率を下げることが分かりますね。</p>
+<pre class="r"><code>mcmc_samples %&gt;% 
+  ggplot(aes(x=OR01)) +
   stat_density(fill = &quot;gray75&quot;) +
   stat_pointintervalh(aes(y = -0.05), point_interval = mean_qi, .width = .95) +
-  annotate(&quot;text&quot;, label = &quot;mean, 95% quantile intervals&quot;, x = 1.1, y = -0.05, hjust = 0, vjust = 0.3) +
-  xlim(0.5,1.45)+
+  xlim(0.5,1.4)+
   labs(x=&quot;Odds ratio&quot;)</code></pre>
-<pre><code>## Warning: &#39;stat_pointintervalh&#39; is deprecated.
-## Use &#39;stat_pointinterval&#39; instead.
-## See help(&quot;Deprecated&quot;) and help(&quot;tidybayes-deprecated&quot;).</code></pre>
-<p><img src="how-to-meta1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>単体では意味がないですが，モデル比較をすることもあるかと思い，Stanコードでは対数尤度も計算をしています。以下のコードでWAICも算出できます。</p>
-<pre class="r"><code>log_like &lt;- extract_log_lik(fit_fixed)
-waic(log_like)</code></pre>
-<pre><code>## Warning: 
-## 4 (18.2%) p_waic estimates greater than 0.4. We recommend trying loo instead.</code></pre>
+<p><img src="how-to-meta1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>単体では意味がないですが，モデル比較をすることもあるかと思います。上記のStanコードでは対数尤度を計算をしているのでWAICの計算ができます。以下では，mcmc_samplesからlog_likだけ抽出して，マトリックス形式にした上で，looパッケージでWAICを計算しています。</p>
+<pre class="r"><code>mcmc_samples %&gt;% 
+  select(starts_with(&quot;log_lik&quot;)) %&gt;% 
+  as.matrix() %&gt;% 
+  waic()</code></pre>
 <pre><code>## 
-## Computed from 20000 by 22 log-likelihood matrix
+## Computed from 22000 by 22 log-likelihood matrix
 ## 
 ##           Estimate  SE
-## elpd_waic    -55.9 2.9
-## p_waic         6.7 1.0
-## waic         111.8 5.9
+## elpd_waic    -55.8 2.9
+## p_waic         6.6 1.0
+## waic         111.6 5.8
 ## 
 ## 4 (18.2%) p_waic estimates greater than 0.4. We recommend trying loo instead.</code></pre>
 <p>これで，メタ分析の基本形である固定効果モデルをStanで実行できました！</p>
@@ -682,7 +895,7 @@ waic(log_like)</code></pre>
 </div>
 
 <footer>
-  <p>Copyright &copy; 2013-2020 Yoshihiko Kunisato. All rights reserved </p>
+  <p>Copyright &copy; 2013-2022 Yoshihiko Kunisato. All rights reserved </p>
 </footer>
 
 
@@ -722,6 +935,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

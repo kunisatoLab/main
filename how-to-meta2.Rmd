@@ -27,11 +27,13 @@ title: "ネットワークメタ分析"
 
 
 ```{r message=FALSE, warning=FALSE}
-library(rstan)
-library(tidybayes)
+library(cmdstanr)
 library(tidyverse)
-library(bayesplot)
 library(loo)
+library(rstan)
+library(bayesplot)
+library(posterior)
+library(tidybayes)
 library(gemtc)
 library(gridExtra)
 ```
@@ -436,13 +438,17 @@ grid.arrange(d0_rank_p, d1_rank_p, d2_rank_p, d3_rank_p, d4_rank_p, d5_rank_p,d6
 
 ランキングの結果からは，PTCAが１位というのが分かりますね。
 
-### モデル比較
 
-単体では意味がないですが，モデル比較をすることもあるかと思い，Stanコードでは対数尤度も計算をしています。以下のコードでWAICも算出できます。
+#### モデル比較
+
+
+単体では意味がないですが，モデル比較をすることもあるかと思います。上記のStanコードでは対数尤度を計算をしているのでWAICの計算ができます。以下では，mcmc_samplesからlog_likだけ抽出して，マトリックス形式にした上で，looパッケージでWAICを計算しています（マトリックス形式にするのに時間がかかります）。
 
 ```{r}
-log_like <- extract_log_lik(fit_fixed_net)
-waic(log_like)
+mcmc_samples %>% 
+  select(starts_with("log_lik")) %>% 
+  as.matrix() %>% 
+  waic()
 ```
 
 これで，固定効果モデルのネットワークメタ分析をStanで実行できました！今回は，ネットワークメタ分析の推定だけを記事にしましたが，ネットワークメタ分析には，同質性，類似性，一貫性などの前提があります。その前提を確認する必要があります。
