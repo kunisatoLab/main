@@ -2,15 +2,27 @@
 title: "オンラインデータ収集モジュール"
 ---
 
+コロナ禍もあるので，現状では，JATOSをサーバー上で使用することを予定していますが，ローカルでも使えます。
+
 ## JATOSを用いた実験実施方法
 
-- [JATOSをDockerを使ってローカルPCに導入する方法](how-to-jatos-local.html)　○
+### JATOSをローカルで使う
 
-- [JATOSをDockerを使ってサーバーに導入する方法](how-to-jatos-web.html)　○
+- [JATOSをDockerを使ってローカルPCに導入する方法](how-to-jatos-local.html)　
 
-- [JATOSをローカルで使用する方法](how-to-jspsych-jatos-local.html)　○
+- [JATOSをローカルで使用する方法](how-to-jspsych-jatos-local.html)　
 
-- [JATOSをサーバーで使用する方法](how-to-jspsych-jatos-web.html)　○
+<br />
+
+### JATOSをサーバー上で使う
+
+- [JATOSをDockerを使ってサーバーに導入する方法](how-to-jatos-web.html)　
+
+- [JATOSをサーバーで使用する方法](how-to-jspsych-jatos-web.html)　☆
+
+<br />
+
+### JATOSに関するTips
 
 - [jsPsychとlab.jsをまぜてJATOSで動かす方法](how-to-labjs-jspsych-jatos.html) 
 
@@ -19,6 +31,8 @@ title: "オンラインデータ収集モジュール"
 - [JATOSでコンポーネント間でIDなどの対応づけをする方法](jspsych-id-jatos.html)
 
 - [JATOSでローカルにもバックアップをとる方法](japsych-jatos-locak-backup.html)
+
+☆がついているものは必須事項です。
 
 <br />
 

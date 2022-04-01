@@ -199,7 +199,7 @@ ld = length(study)
 # コンパイル
 fit_fixed_net <- cmdstan_model('netmeta_network_fixed_effect.stan')
 # サンプリング
-fit_fixed_net_mcmc <- fit_fixed$sample(
+fit_fixed_net_mcmc <- fit_fixed_net$sample(
   data=list(ld = ld, 
             nct = 6, 
             ns = 36, 
@@ -214,6 +214,9 @@ fit_fixed_net_mcmc <- fit_fixed$sample(
   iter_sampling = 5500,
   parallel_chains = 4)
 ```
+
+
+
 
 ### 推定結果の要約
 

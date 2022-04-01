@@ -2,23 +2,31 @@
 title: "Research Module"
 ---
 
-## 基本モジュール
+## 基本モジュール（全員が学ぶ内容）
 
 - [研究スタート・モジュール](research-start-module.html)
 
 - [認知課題と質問紙の作成モジュール](cognitivetask-questionnaire-module.html)
 
+- [事前登録モジュール](preregistration-module.html)
+
 - [オンラインデータ収集モジュール](data-collection-module.html)
 
 - [データ解析モジュール](data-analysis-module.html)
 
-## 追加モジュール
+<br />
+
+## 追加モジュール（各自のテーマに応じて学ぶ内容）
 
 - [認知モデリング・モジュール](cognitive-modeling-module.html)
+
+- [２次分析研究モジュール](secondary-analysis-module.html)
 
 - [メタ分析モジュール](meta-analysis-module.html)
 
 - [心理ネットワーク・モジュール](psychological-network-module.html)
+
+- [Dockerを用いた環境構築モジュール](docker-module.html)
 
 - [その他](other-module.html)
 

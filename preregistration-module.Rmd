@@ -1,0 +1,13 @@
+---
+title: "事前登録モジュール"
+---
+
+事前登録は，１と２を参考にして，OSFを使って実施しましょう。３は「そういうのもあるんだあ」という程度にしてください。
+
+- [1. 事前登録のやり方(山田，2022, 日本社会心理学会 2021年度第9回春の方法論セミナー )](https://www.socialpsychology.jp/seminar/pdf/2021SS_Yamada.pdf) ☆
+
+- [2. 実証的研究の事前登録の現状と実践(長谷川ら, 2021, 心理学研究)](https://www.jstage.jst.go.jp/article/jjpsy/92/3/92_92.20217/_article/-char/ja) ☆
+
+- [3. 事前登録をしてみよう！](how-to-preregistration-aspredicted.html)
+
+☆がついているものは必須事項です。

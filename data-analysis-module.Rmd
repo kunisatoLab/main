@@ -2,22 +2,16 @@
 title: "データ解析モジュール"
 ---
 
-- [R言語の基本](how-to-R-language.html) ☆
+1と２は行ってください。３〜５は参考程度に確認ください。
 
-- [認知課題の解析データセット作成](how-to-dataHandling.html)　☆
+- [1. R言語の基本](how-to-R-language.html) ☆
 
-- [オープンデータの利用法](how-to-open-data.html)
+- [2. 認知課題の解析データセット作成](how-to-dataHandling.html) ☆
 
-- [オープンデータの作り方](https://ykunisato.github.io/ccp-lab-slide/open_data/open_data.html)
+- [3. 再生可能なデータ解析入門](how-to-reproducible-analysis.html)　
 
-- [事前登録をしてみよう！](how-to-preregistration-aspredicted.html)
+- [4. 今日からできる再現可能な論文執筆(JPA2020・TWS)](https://ykunisato.github.io/jpa2020-tws-002/)
 
-- [再生可能なデータ解析入門](how-to-reproducible-analysis.html)　
+- [5. 再現可能な日本語論文執筆入門:jpaRmdで実現する再現可能で低コストな日本語論文執筆のはじめの一歩](https://ykunisato.github.io/jpa2021-tws-jpaRmd/index.html)
 
-- [Docker-composeを使ってGCE上のRstudio serverをHTTPS化する方法](how-to-rstudio-gce-https.html)
-
-- [Docker-composeを使ってGCE上の複数のサービス(Rstudio, Jupyter notebook, JATOS, elabFTW)をHTTPS化する方法](how-to-docker-compose-https.html)
-
-- [２次分析研究](https://ykunisato.github.io/ccp-lab-slide/spring_seminar_JSSP_2021/secondary_analysis/slide.html#1)
-
-- [今日からできる再現可能な論文執筆(JPA2020・TWS)](https://ykunisato.github.io/jpa2020-tws-002/)
+☆がついているものは必須事項です。
