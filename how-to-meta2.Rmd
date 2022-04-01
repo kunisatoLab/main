@@ -194,7 +194,7 @@ generated quantities{
 
 Stanコードが書けましたので，早速，コンパイル＆サンプリングをします。
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 ld = length(study)
 # コンパイル
 fit_fixed_net <- cmdstan_model('netmeta_network_fixed_effect.stan')
@@ -215,9 +215,6 @@ fit_fixed_net_mcmc <- fit_fixed_net$sample(
   parallel_chains = 4)
 ```
 
-
-
-
 ### 推定結果の要約
 
 結果を簡単に確認します。
@@ -232,34 +229,36 @@ fit_fixed_net_mcmc$summary()
 |---|---|---|---|
 |d[1]            |-0.003  |0.030     |1.000|
 |d[2]            |-0.157  |0.043     |1.000|
-|d[3]            |-0.043  |0.047     |1.000|
-|d[4]            |-0.111  |0.060     |1.000|
-|d[5]            |-0.152  |0.077     |1.000|
-|d[6]            |-0.475  |0.100     |1.000|
+|d[3]            |-0.043  |0.046     |1.000|
+|d[4]            |-0.111  |0.059     |1.000|
+|d[5]            |-0.152  |0.076     |1.000|
+|d[6]            |-0.474  |0.101     |1.000|
 
-今回は省略をしますが，各種MCMCの収束判断には，bayesplotをつかうのが便利です。
+以下はMCMCについての診断結果です。問題はなさそうです。
 
+```{r}
+fit_fixed_net_mcmc$cmdstan_diagnose()
+```
 
+今回は省略をしますが，各種MCMCの収束判断には，以下のようにbayesplotをつかうのが便利です。
 
-
-
-
-<ここから>
-
-
-
-
+```{r}
+fit_fixed_net_mcmc$draws("d[1]") %>% 
+  mcmc_trace()
+```
 
 
 ### 各治療のオッズ比
 
 オッズ比をプロットすると以下のようになります。実際は比較してないペアについても，算出できています。
 
+mcmc_samples = as_draws_df(fit_fixed_mcmc$draws())
+
 ```{r}
 fit_fixed_net_mcmc %>% 
   spread_draws(OR[pair]) %>% 
   ggplot(aes(x = OR,y = as.factor(pair))) +
-  geom_halfeyeh(.width = .95) +
+  stat_halfeye(.width = .95) +
   ylab("Treatment") +
   scale_y_discrete(breaks = c(1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15,16,17,
                               18,19,20,21), 
@@ -279,19 +278,17 @@ fit_fixed_net_mcmc %>%
 
 [一対比較のベイジアンメタ分析の結果](https://kunisatolab.github.io/main/how-to-meta1.html)と比べた時，Acc t-PAに対するPTCAの相対効果について，一対比較とネットワークとで比較すると（下表），ネットワークのほうが効果がやや大きくなり（オッズ比が小さくなり），その確信区間が狭くなっていることが分かります。間接効果を含めることで，事後分布の幅が狭くなっており，精度が高くなっていることが分かります。
 
-| |mean |se_mean     |sd        |2.5%        |97.5% |n_eff   |Rhat|
-|---|---|---|---|---|---|---|---|
-|一対比較|0.7967|0.0007|0.0954|0.6257|0.9974|17086|0.9999|
-|ネットワーク|0.7311  |0.0005 |0.0714      |0.6010  |0.8796 |25052 |1.0000|
-
-
+| |mean|sd|
+|---|---|---|
+|一対比較|0.798|0.095|
+|ネットワーク| 0.732 | 0.072|
 
 ### ランキング
 
 各治療のdが推定できましたので，これを使って，治療のランキングを作ります。サンプリングの結果生じたdのサンプルを使って，一回のサンプリングごとに治療のランキングを計算して，順位ごとに1か0の値を保存していきます。最終的にその平均値を計算することで各治療の順位の確率を計算します。コードが実に汎用性の低い＆冗長なものになっているので，良い案があれば，ご指摘いただけると嬉しいです。
 
 ```{r}
-d <- fit_fixed_net %>%
+d <- fit_fixed_net_mcmc %>%
   spread_draws(d[treatment]) %>% 
   spread(treatment,d) %>% 
   rename(
@@ -436,7 +433,7 @@ grid.arrange(d0_rank_p, d1_rank_p, d2_rank_p, d3_rank_p, d4_rank_p, d5_rank_p,d6
 単体では意味がないですが，モデル比較をすることもあるかと思います。上記のStanコードでは対数尤度を計算をしているのでWAICの計算ができます。以下では，mcmc_samplesからlog_likだけ抽出して，マトリックス形式にした上で，looパッケージでWAICを計算しています（マトリックス形式にするのに時間がかかります）。
 
 ```{r}
-mcmc_samples %>% 
+as_draws_df(fit_fixed_net_mcmc$draws()) %>% 
   select(starts_with("log_lik")) %>% 
   as.matrix() %>% 
   waic()
