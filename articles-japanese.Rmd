@@ -6,7 +6,7 @@ title: "学術論文（日本語）"
 
 - [43]  国里愛彦・山本哲也　マインドフルネス研究の未来を切り開く新たな方法論　心理学評論
 
-- [42] 国里愛彦・土屋政雄　認知行動療法における研究の再現可能性を高める　認知行動療法研究
+- [42] 国里愛彦・土屋政雄　認知行動療法における研究の再現可能性を高める　認知行動療法研究 [Link](https://www.jstage.jst.go.jp/article/jjbct/advpub/0/advpub_21-004/_article/-char/ja)
 
 - [41] 国里愛彦・片平健太郎・沖村 宰・山下祐一　認知行動療法に対する計算論的アプローチ　認知行動療法研究　[Link](https://www.jstage.jst.go.jp/article/jjbct/advpub/0/advpub_20-036/_article/-char/ja/)
 
