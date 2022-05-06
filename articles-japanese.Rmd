@@ -4,13 +4,16 @@ title: "学術論文（日本語）"
 
 ### 印刷中
 
-- [43]  国里愛彦・山本哲也　マインドフルネス研究の未来を切り開く新たな方法論　心理学評論
+- [43] 国里愛彦・土屋政雄　認知行動療法における研究の再現可能性を高める　認知行動療法研究 [Link](https://www.jstage.jst.go.jp/article/jjbct/advpub/0/advpub_21-004/_article/-char/ja)
 
-- [42] 国里愛彦・土屋政雄　認知行動療法における研究の再現可能性を高める　認知行動療法研究 [Link](https://www.jstage.jst.go.jp/article/jjbct/advpub/0/advpub_21-004/_article/-char/ja)
+### 2022
 
-- [41] 国里愛彦・片平健太郎・沖村 宰・山下祐一　認知行動療法に対する計算論的アプローチ　認知行動療法研究　[Link](https://www.jstage.jst.go.jp/article/jjbct/advpub/0/advpub_20-036/_article/-char/ja/)
+- [42] 国里愛彦・片平健太郎・沖村 宰・山下祐一(2022). 認知行動療法に対する計算論的アプローチ　認知行動療法研究, 48(1),1-10.　[Link](https://www.jstage.jst.go.jp/article/jjbct/advpub/0/advpub_20-036/_article/-char/ja/)
+
 
 ### 2021
+
+- [41]  国里愛彦・山本哲也(2021). マインドフルネス研究の未来を切り開く新たな方法論　心理学評論,64(4), 599-618.[論文PDF](materials/PDF/kunisato_yamamoto_2021_JPR.pdf)
 
 - [40] 国里愛彦(2021)恐怖の再発と潜在原因モデルー計算論的精神医学入門ー　基礎心理学研究, 40(1), 50-53.[Link](https://www.jstage.jst.go.jp/article/psychono/40/1/40_40.11/_pdf/-char/ja)
 
@@ -24,9 +27,9 @@ title: "学術論文（日本語）"
 
 - [37] 畑琴音・小野はるか・小川祐子・竹下若那・国里愛彦・鈴木伸一 (2019).がん患者用活動抑制尺度(SIP-C)の作成と信頼性・妥当性の検討　総合病院精神医学, 31(4), 422-429. [Link](https://jglobal.jst.go.jp/detail?JGLOBAL_ID=202002290198644052)
 
-- [36] 杣取恵太・国里愛彦 (2019). アンヘドニア(anhedonia)と遅延割引：Lempert & Pizzagalli(2010)の追試　心理学評論, 62(3), 231-243. [論文PDF](materials/PDF/somatori_kunisato_2019_replication_study.pdf),　[採択後プレプリント](https://psyarxiv.com/4zbc5/)，　[事前審査のプレプリントとマテリアル](https://osf.io/vj7w3/)，　[データと解析コード](https://github.com/ykunisato/somatori_kunisato_2019_replication_study)，　[特集号のページ](http://team1mile.com/sjpr62-3/)
+- [36] 杣取恵太・国里愛彦 (2019). アンヘドニア(anhedonia)と遅延割引：Lempert & Pizzagalli(2010)の追試　心理学評論, 62(3), 231-243. [Link](https://www.jstage.jst.go.jp/article/sjpr/62/3/62_231/_article/-char/ja),　[事前審査のプレプリントとマテリアル](https://osf.io/vj7w3/)，　[データと解析コード](https://github.com/ykunisato/somatori_kunisato_2019_replication_study)，　[特集号のページ](http://team1mile.com/sjpr62-3/)
 
-- [35] 国里愛彦・片平健太郎・沖村 宰・山下祐一 (2019).うつに対する計算論的アプローチ：強化学習モデルの観点から　心理学評論, 62(1), 88-103. [PDF](materials/PDF/うつに対する計算論的アプローチ 強化学習モデルの観点から.pdf) [Link](https://ci.nii.ac.jp/naid/130007749836)
+- [35] 国里愛彦・片平健太郎・沖村 宰・山下祐一 (2019).うつに対する計算論的アプローチ：強化学習モデルの観点から　心理学評論, 62(1), 88-103. [Link](https://www.jstage.jst.go.jp/article/sjpr/62/1/62_88/_article/-char/ja/)
 
 - [34] 佐藤秀樹・国里愛彦・小関俊祐・鈴木伸一 (2019). Rumination about an Interpersonal Offense Scale（RIO）日本語版の作成と信頼性・妥当性の検討　認知療法研究，12(2)，111-119． [Link](https://ci.nii.ac.jp/naid/40022008784)
 
