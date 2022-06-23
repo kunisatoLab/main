@@ -5,6 +5,9 @@ title: "学術論文"
 
 ### in press
 
+- [40] PSACR-001. (in press).
+In COVID-19 health messaging, loss framing increases anxiety without concomitant benefits: Experimental evidence from 84 countries. Affective Science.
+
 - [39] Psychological Science Accelerator Self-Determination Theory Collaboration (in press). A global experiment on motivating social distancing during the COVID-19 pandemic. Proceedings of the National Academy of Sciences. DOI: 10.31234/osf.io/n3dyf
 
 - [38] Somatori, K. & Kunisato, Y. (in press) Metacognitive Ability and the Precision of Confidence. Frontiers in Human Neuroscience, section Cognitive Neuroscience [Link](https://www.frontiersin.org/articles/10.3389/fnhum.2022.706538/abstract)
