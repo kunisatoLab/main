@@ -13,7 +13,7 @@
 
 <title>研究室のメンバー</title>
 
-<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -148,11 +148,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -399,7 +403,13 @@ div.tocify {
 <div id="pd-学術振興会特別研究員" class="section level3">
 <h3>PD (学術振興会特別研究員）</h3>
 <ul>
-<li><a href="https://researchmap.jp/aaa911">遠山朝子</a></li>
+<li><a href="https://researchmap.jp/aaa911">遠山朝子</a>
+<ul>
+<li><a
+href="materials/FB/sleep1.pdf">研究「学習を伴う意思決定と気分や睡眠との関係」のFB</a></li>
+<li><a
+href="materials/FB/sleep2.pdf">研究「学習を伴う意思決定と気分・個人特性・睡眠との関係」のFB</a></li>
+</ul></li>
 </ul>
 </div>
 <div id="大学院生博士過程" class="section level3">

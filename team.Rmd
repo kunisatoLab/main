@@ -9,6 +9,8 @@ title: "研究室のメンバー"
 ### PD (学術振興会特別研究員）
 
 - [遠山朝子](https://researchmap.jp/aaa911)
+  -  [研究「学習を伴う意思決定と気分や睡眠との関係」のFB](materials/FB/sleep1.pdf)
+  - [研究「学習を伴う意思決定と気分・個人特性・睡眠との関係」のFB](materials/FB/sleep2.pdf)
 
 ### 大学院生（博士過程）
 
