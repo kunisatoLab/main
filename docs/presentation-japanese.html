@@ -13,7 +13,7 @@
 
 <title>国内学会・研究会発表</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -148,11 +148,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -431,14 +435,14 @@ href="https://ykunisato.github.io/ccp-lab-slide/tws-psynet-2022/doc-psynet-basic
 シンポジウム「知覚・認知・社会・発達・臨床心理学におけるオンライン実験の苦悩と工夫:心理学教育・研究のあり方の将来展望」　指定討論　東京(日本大学)　オンデマンド</p></li>
 <li><p>[139]国里愛彦(2022).
 シンポジウム「情報科学とロボット工学が拓く発達・知覚・臨床心理学の新たな学術領域」　指定討論　東京(日本大学)　オンデマンド</p></li>
-<li><p>[138]国里愛彦(2022).
-オープンデータ・オープンマテリアルの活用と課題　実行委員会企画シンポジウム「テスト学におけるオープンサイエンス　日本テスト学会第20回大会　2022年9月4日（日）14:30〜16:10
-<a
-href="https://ykunisato.github.io/ccp-lab-slide/test-2022/slide_test.html#1">スライド</a></p></li>
 </ul>
 <div id="発表予定-1" class="section level4">
 <h4>↑発表予定</h4>
 <ul>
+<li><p>[138]国里愛彦(2022).
+オープンデータ・オープンマテリアルの活用と課題　実行委員会企画シンポジウム「テスト学におけるオープンサイエンス　日本テスト学会第20回大会　2022年9月4日（日）14:30〜16:10
+<a
+href="https://ykunisato.github.io/ccp-lab-slide/test-2022/slide_test.html#1">スライド</a></p></li>
 <li><p>[137]伊藤 正哉，西村 拓一，中島 俊，竹林 由武，古徳 純一，村中
 誠司，樫原 潤，国里 愛彦，菅原 大地(2022).
 企画セッション「デジタル－人間融合による精神の超高精細ケア：多種・大量・精密データ戦略の構築」　企画オーガナイザー　2022年度人工知能学会全国大会（第36回）京都　京都国際会議場　2022年6月17日</p></li>
