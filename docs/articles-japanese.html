@@ -13,7 +13,7 @@
 
 <title>学術論文（日本語）</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -148,11 +148,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -393,18 +397,19 @@ div.tocify {
 <div id="印刷中" class="section level3">
 <h3>印刷中</h3>
 <ul>
-<li><p>[45]
+<li>[45]
 宮崎友里・重松潤・大井瞳・笹森千佳歩・山田美紗子・高階光梨・国里愛彦・井上真里・竹林由武・宋龍平・中島俊・堀越勝・久我弘典(印刷中).
 心理療法におけるインフォームド・コンセント(Informed Consent:
-IC)の役割と最近の動向：ナラティブレビュー 認知行動療法研究</p></li>
-<li><p>[44] 国里愛彦・土屋政雄(印刷中).
-認知行動療法における研究の再現可能性を高める　認知行動療法研究 <a
-href="https://www.jstage.jst.go.jp/article/jjbct/advpub/0/advpub_21-004/_article/-char/ja">Link</a></p></li>
+IC)の役割と最近の動向：ナラティブレビュー 認知行動療法研究</li>
 </ul>
 </div>
 <div id="section" class="section level3">
 <h3>2022</h3>
 <ul>
+<li><p>[44] 国里愛彦・土屋政雄(2022).
+認知行動療法における研究の再現可能性を高める　認知行動療法研究, 48(2),
+113-122. <a
+href="https://www.jstage.jst.go.jp/article/jjbct/48/2/48_21-004/_article/-char/ja">Link</a></p></li>
 <li><p>[43] 井上のどか・飯島雄大・国里愛彦(2022).
 摂食行動の情動調節効果における有効性認知及び食事時間の関連の検討
 感情心理学研究, 29(1), 9-15.</p></li>

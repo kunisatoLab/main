@@ -7,28 +7,28 @@ title: "学術論文"
 
 - [42] Kowal, M.,... Kunisato, Y., ...Zumárraga-Espinosa, M.(in press) Predictors of Enhancing Human Physical Attractiveness: Data from 93 Countries. Evolution and Human Behavior.[Link](https://www.sciencedirect.com/science/article/pii/S1090513822000472)
 
-- [41] Hasegawa, A., Oura, S., Yamamoto, T., Kunisato, Y., Fukui, Y.(in press) Preliminary validation of the self-report measure assessing experiences of negative independent and dependent event frequency in japanese university students. Journal of Rational-Emotive & Cognitive-Behavior Therapy.
-
-- [40] PSACR-001. (in press).
+- [41] PSACR-001. (in press).
 In COVID-19 health messaging, loss framing increases anxiety without concomitant benefits: Experimental evidence from 84 countries. Affective Science.
-
-- [39] Psychological Science Accelerator Self-Determination Theory Collaboration (in press). A global experiment on motivating social distancing during the COVID-19 pandemic. Proceedings of the National Academy of Sciences. DOI: 10.31234/osf.io/n3dyf
 
 ### 2022
 
+- [40] Hasegawa, A., Oura, S., Yamamoto, T., Kunisato, Y., Fukui, Y.(2022) Preliminary validation of the self-report measure assessing experiences of negative independent and dependent event frequency in japanese university students. Journal of Rational-Emotive & Cognitive-Behavior Therapy. [Link](https://doi.org/10.1007/s10942-022-00469-9)
+
+- [39] Psychological Science Accelerator Self-Determination Theory Collaboration (2022). A global experiment on motivating social distancing during the COVID-19 pandemic. Proceedings of the National Academy of Sciences, 119(22), e2111091119. [Link](https://doi.org/10.1073/pnas.2111091119)
+
 - [38] Somatori, K. & Kunisato, Y. (2022) Metacognitive Ability and the Precision of Confidence. Frontiers in Human Neuroscience, section Cognitive Neuroscience [Link](https://www.frontiersin.org/articles/10.3389/fnhum.2022.706538/abstract)
 
-- [37] Hasegawa, A., Oura, S., Yamamoto, T., Kunisato, Y., Matsuda, Y., & Adachi, M. (2022) Causes and consequences of stress generation: Longitudinal associations of negative events, aggressive behaviors, rumination, and depressive symptoms. Current Psychology
+- [37] Hasegawa, A., Oura, S., Yamamoto, T., Kunisato, Y., Matsuda, Y., & Adachi, M. (2022) Causes and consequences of stress generation: Longitudinal associations of negative events, aggressive behaviors, rumination, and depressive symptoms. Current Psychology.[link](https://doi.org/10.1007/s12144-022-02859-9)
 
 ### 2021
 
-- [36] Hasegawa, A., Somatori, K., Nishimura, H., Hattori, Y., & Kunisato, Y. (2021). Depression, rumination, and impulsive action: A latent variable approach to behavioral impulsivity. The Journal of Psychology. https://doi.org/10.1080/00223980.2021.1956871
+- [36] Hasegawa, A., Somatori, K., Nishimura, H., Hattori, Y., & Kunisato, Y. (2021). Depression, rumination, and impulsive action: A latent variable approach to behavioral impulsivity. The Journal of Psychology, 155(8), 717-737. [link](https://doi.org/10.1080/00223980.2021.1956871)
 
-- [35] Kashihara, J., Takebayashi, Y., Kunisato, Y., & Ito, M. (2021) Classifying patients with depressive and anxiety disorders according to symptom network structures: A Gaussian graphical mixture model-based clustering. PLoS ONE 16(9): e0256902. https://doi.org/10.1371/journal.pone.0256902
+- [35] Kashihara, J., Takebayashi, Y., Kunisato, Y., & Ito, M. (2021) Classifying patients with depressive and anxiety disorders according to symptom network structures: A Gaussian graphical mixture model-based clustering. PLoS ONE 16(9): e0256902. [Link](https://doi.org/10.1371/journal.pone.0256902)
 
-- [34] Wang K., Goldenberg A., Dorison, C.A., Miller, J.K., Uusberg, A., Lerner, J.S., Gross, J.J., Agesin, B.B., Bernardo, M., Campos, O., Eudave, L., Grzech, K., Ozery, D.H., Jackson, E.A., Luis Garcia, E.O., Drexler, S.M., Jurković, A.P., Rana, K., Wilson, J.P., ... Kunisato, Y.,...Moshontz, H. (in press) A multi-country test of brief reappraisal interventions on emotions during the COVID-19 pandemic. Nature Human Behavior https://doi.org/10.1038/s41562-021-01173-x
+- [34] Wang K., Goldenberg A., Dorison, C.A., Miller, J.K., Uusberg, A., Lerner, J.S., Gross, J.J., Agesin, B.B., Bernardo, M., Campos, O., Eudave, L., Grzech, K., Ozery, D.H., Jackson, E.A., Luis Garcia, E.O., Drexler, S.M., Jurković, A.P., Rana, K., Wilson, J.P., ... Kunisato, Y.,...Moshontz, H. (in press) A multi-country test of brief reappraisal interventions on emotions during the COVID-19 pandemic. Nature Human Behavior, 5, 1089–1110.[Link](https://doi.org/10.1038/s41562-021-01173-x)
 
-- [33] Shimono, Y., Hasegawa, A., Tsuchihara, K., Tanaka, K., Matsuda, Y., & Kunisato, Y.(2021) Longitudinal association between autistic traits and affinity for hikikomori in Japanese university students. Current Psychology. https://doi.org/10.1007/s12144-020-01287-x
+- [33] Shimono, Y., Hasegawa, A., Tsuchihara, K., Tanaka, K., Matsuda, Y., & Kunisato, Y.(2021) Longitudinal association between autistic traits and affinity for hikikomori in Japanese university students. Current Psychology. [Link](https://doi.org/10.1007/s12144-020-01287-x)
 
 - [32] van Doorn, J., van den Bergh, D., Dablander, F., van Dongen, N., Derks, K., Evans, N., Gronau, Q., Haaf, J., Kunisato, Y., Ly, A., Marsman, M., Sarafoglou, A., Stefan, A., & Wagenmakers, EJ.(2011) Strong public claims may not reflect researchers' private convictions. Significance, 18(1), 44-45.[Pre Print](https://psyarxiv.com/pc4ad/)
 
