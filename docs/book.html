@@ -13,7 +13,7 @@
 
 <title>書籍</title>
 
-<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -148,11 +148,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -362,7 +366,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="code_tips.html">Code &amp; Tips</a>
+  <a href="research-module.html">Research Module</a>
 </li>
 <li>
   <a href="education.html">Education</a>
@@ -391,6 +395,16 @@ div.tocify {
 
 
 <div id="section" class="section level3">
+<h3>2022</h3>
+<ul>
+<li>[28] 国里愛彦(2022).「第5章　気質とパーソナリティ」Chen, X &amp;
+Schmidt, L.A.(著)『児童心理学・発達科学ハンドブック【第3巻】』
+リチャード・M・ラーナー(編集主幹),マイケル・E・ラム(編)，二宮克美・子安増生(監訳),
+小塩真司・仲真紀子(編訳), 福村出版,pp.220-286.<a
+href="https://www.fukumura.co.jp/book/b612546.html">link</a></li>
+</ul>
+</div>
+<div id="section-1" class="section level3">
 <h3>2021</h3>
 <ul>
 <li><p>[27] 国里愛彦(2021).
@@ -400,7 +414,7 @@ div.tocify {
 2021年2月25日</p></li>
 </ul>
 </div>
-<div id="section-1" class="section level3">
+<div id="section-2" class="section level3">
 <h3>2020</h3>
 <ul>
 <li>[25] 国里愛彦(2020).
@@ -408,7 +422,7 @@ div.tocify {
 遠見書房</li>
 </ul>
 </div>
-<div id="section-2" class="section level3">
+<div id="section-3" class="section level3">
 <h3>2019</h3>
 <ul>
 <li><p>[24]宗田卓史・国里愛彦・片平健太郎・沖村
@@ -427,7 +441,7 @@ href="https://www.amazon.co.jp/dp/432625131X/ref=cm_sw_r_tw_dp_U_x_KM7SCbP877MA8
 href="https://www.amazon.co.jp/dp/4830636262/ref=cm_sw_em_r_mt_dp_U_DL7SCbXZFBA0R">Amazon.co.jp</a></p></li>
 </ul>
 </div>
-<div id="section-3" class="section level3">
+<div id="section-4" class="section level3">
 <h3>2018</h3>
 <ul>
 <li><p>[20] 国里愛彦(2018).
@@ -447,7 +461,7 @@ pp.79-86. <a href="http://amzn.asia/d/9TMdHZs">Amazon.co.jp</a></p></li>
 href="http://amzn.asia/d/73OpXuw">Amazon.co.jp</a></p></li>
 </ul>
 </div>
-<div id="section-4" class="section level3">
+<div id="section-5" class="section level3">
 <h3>2017</h3>
 <ul>
 <li><p>[16]
@@ -465,7 +479,7 @@ href="http://amzn.asia/hZ4yMKn">Amazon.co.jp</a></p></li>
 <a href="http://amzn.asia/0GOsHDM">Amazon.co.jp</a></p></li>
 </ul>
 </div>
-<div id="section-5" class="section level3">
+<div id="section-6" class="section level3">
 <h3>2016</h3>
 <ul>
 <li><p>[13] 国里愛彦 (2016).
@@ -478,7 +492,7 @@ pp.56-65. 2016/3/30 <a
 href="http://amzn.asia/3mCXXJN">Amazon.co.jp</a></p></li>
 </ul>
 </div>
-<div id="section-6" class="section level3">
+<div id="section-7" class="section level3">
 <h3>2015</h3>
 <ul>
 <li>[11] 国里愛彦(2015) 行動医学と生物統計学
@@ -486,7 +500,7 @@ p73-78「行動医学テキスト」日本行動医学会編集（編集委員�
 <a href="http://amzn.asia/cpANGJ5">Amazon.co.jp</a></li>
 </ul>
 </div>
-<div id="section-7" class="section level3">
+<div id="section-8" class="section level3">
 <h3>2013</h3>
 <ul>
 <li><p>[10]
@@ -503,7 +517,7 @@ href="http://amzn.asia/6FVAVlc">Amazon.co.jp</a></p></li>
 href="http://amzn.asia/eRIahSG">Amazon.co.jp</a></p></li>
 </ul>
 </div>
-<div id="section-8" class="section level3">
+<div id="section-9" class="section level3">
 <h3>2012</h3>
 <ul>
 <li>[6]
@@ -511,7 +525,7 @@ href="http://amzn.asia/eRIahSG">Amazon.co.jp</a></p></li>
 <a href="http://amzn.asia/9GW1z8K">Amazon.co.jp</a></li>
 </ul>
 </div>
-<div id="section-9" class="section level3">
+<div id="section-10" class="section level3">
 <h3>2011</h3>
 <ul>
 <li><p>[5]
@@ -532,7 +546,7 @@ href="http://amzn.asia/4jBendY">Amazon.co.jp</a></p></li>
 p 264-270） <a href="http://amzn.asia/72OLvVf">Amazon.co.jp</a></p></li>
 </ul>
 </div>
-<div id="section-10" class="section level3">
+<div id="section-11" class="section level3">
 <h3>2008</h3>
 <ul>
 <li>[1]
