@@ -13,7 +13,7 @@
 
 <title>国里愛彦 (YOSHIHIKO KUNISATO, Ph.D.)</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -148,11 +148,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -428,7 +432,7 @@ resonance imaging study」</p>
 <h3>職歴・教育歴</h3>
 <p>2008(平成20)年7月～2009(平成21)年3月　医療法人社団更正会　草津病院　非常勤心理士<br />
 2009(平成21)年4月～2011(平成23)年3月　日本学術振興会　特別研究員(DC1)<br />
-2011(平成23)年4月〜2013(平成25)年3月　早稲田大学人間科学学術院　助手(鈴木伸一研究室)
+2011(平成23)年4月〜2013(平成25)年3月　早稲田大学人間科学学術院　助手(鈴木伸一研究室)<br />
 2013(平成25)年4月〜2015(平成27)年3月　専修大学人間科学部心理学科　講師<br />
 2011(平成23)年5月〜2016(平成28)年3月　独立行政法人　国立精神・神経医療研究センター　技術研究生<br />
 2013(平成25)年5月〜　早稲田大学重点領域研究機構応用脳科学研究所　招聘研究員<br />
