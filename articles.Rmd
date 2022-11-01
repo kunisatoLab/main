@@ -5,6 +5,10 @@ title: "学術論文"
 
 ### in press
 
+- [43] Buchanan, E. M., ... Kunisato, Y., ... Primbs, M. (in press).
+The Psychological Science Accelerator's COVID-19 rapid-response dataset.
+Scientific Data.
+
 - [42] Kowal, M.,... Kunisato, Y., ...Zumárraga-Espinosa, M.(in press) Predictors of Enhancing Human Physical Attractiveness: Data from 93 Countries. Evolution and Human Behavior.[Link](https://www.sciencedirect.com/science/article/pii/S1090513822000472)
 
 ### 2022
