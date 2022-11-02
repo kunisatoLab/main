@@ -462,7 +462,7 @@ sub01 %>%
 sub01 %>% 
 	filter(trial_type == "html-button-response") %>% 
   mutate(trial = 1:80, 
-         s1_prob = rep(c(0.8,0.2),each = 40),
+         s1_prob = rep(c(0.2,0.8),each = 40),
          reward = ifelse(button_pressed == 0, reward_s1, reward_s2)) %>% 
   select(trial,choice=button_pressed, rt, reward, s1_prob,reward_s1, reward_s2)
 ```

@@ -13,7 +13,7 @@
 
 <title>強化学習モデル: 最尤推定</title>
 
-<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -148,11 +148,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -181,8 +185,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -190,16 +194,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -652,7 +649,7 @@ P\left(a_{t}\right)\right)
 <pre class="r"><code>data &lt;- q_learning_sim(alpha = 0.2, beta = 5,data = sim_data) 
 result &lt;- q_learning_ll(alpha = 0.2, beta = 5,data = data) 
 result$ll</code></pre>
-<pre><code>## [1] -21.32361</code></pre>
+<pre><code>## [1] -30.00726</code></pre>
 <p>alpha = 0.2, beta = 5で生成されたデータにたいして，alpha = 0.6, beta
 =
 1の時の尤度を計算します。尤度が小さくなったかと思います。他にもαとβを変更して（生成時の値alpha
@@ -660,7 +657,7 @@ result$ll</code></pre>
 5に近づけたり，遠ざけたりする），尤度の挙動を確認してみましょう。</p>
 <pre class="r"><code>result &lt;- q_learning_ll(alpha = 0.6, beta = 1,data = data) 
 result$ll</code></pre>
-<pre><code>## [1] -38.75351</code></pre>
+<pre><code>## [1] -39.97707</code></pre>
 <ul>
 <li>3.最良の評価を与えるパラメータを決定する</li>
 </ul>
@@ -756,7 +753,7 @@ maxIndex &lt;- which.max(grid_result$calc_results$store_loglike)
 paste(&quot;最尤推定値: α =&quot;,grid_result$calc_results$store_alpha[maxIndex],
       &quot;β =&quot;,grid_result$calc_results$store_beta[maxIndex], 
       &quot;,対数尤度: Log Likelihood = &quot;,grid_result$calc_results$store_loglike[maxIndex])</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.36 β = 4.4 ,対数尤度: Log Likelihood =  -26.5071942804073&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.17 β = 5.4 ,対数尤度: Log Likelihood =  -28.7681469985063&quot;</code></pre>
 </div>
 <div id="価値と行動選択確率のプロットモデルシミュレーション"
 class="section level4">
@@ -790,8 +787,8 @@ data_original_estimated &lt;- tibble(trial = data$trial,
 <pre class="r"><code>table(data_original_estimated$choice_original,data_original_estimated$choice_estimated)</code></pre>
 <pre><code>##    
 ##      0  1
-##   0 31 10
-##   1 11 28</code></pre>
+##   0 40  5
+##   1  7 28</code></pre>
 </div>
 </div>
 </div>
@@ -824,60 +821,62 @@ file_names</code></pre>
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>sub01</code></pre>
 <pre><code>## # A tibble: 325 × 13
-##    trial_type trial_index time_elapsed internal_node_id rt    stimulus key_press
-##    &lt;chr&gt;            &lt;dbl&gt;        &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;    
-##  1 pavlovia             0            3 0.0-0.0          &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;     
-##  2 html-keyb…           1        39995 0.0-1.0          3999… &quot;&lt;p&gt;&lt;sp… 32       
-##  3 fullscreen           2        44140 0.0-2.0          &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;     
-##  4 html-keyb…           3        48023 0.0-3.0          3882… &quot;&lt;p sty… 32       
-##  5 html-butt…           4        49837 0.0-4.0-0.0      812.…  &lt;NA&gt;    &lt;NA&gt;     
-##  6 html-keyb…           5        50340 0.0-4.0-1.0      null  &quot;&lt;p sty… null     
-##  7 html-keyb…           6        51345 0.0-4.0-2.0      null  &quot;&lt;p sty… null     
-##  8 html-keyb…           7        52069 0.0-4.0-3.0      null  &quot;&lt;p sty… null     
-##  9 html-butt…           8        52833 0.0-4.0-0.1      762.…  &lt;NA&gt;    &lt;NA&gt;     
-## 10 html-keyb…           9        53335 0.0-4.0-1.1      null  &quot;&lt;p sty… null     
-## # … with 315 more rows, and 6 more variables: success &lt;lgl&gt;,
-## #   button_pressed &lt;dbl&gt;, left_right_s1 &lt;dbl&gt;, left_right_s2 &lt;dbl&gt;,
-## #   reward_s1 &lt;dbl&gt;, reward_s2 &lt;dbl&gt;</code></pre>
+##    trial…¹ trial…² time_…³ inter…⁴ rt    stimu…⁵ key_p…⁶ success butto…⁷ left_…⁸
+##    &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;lgl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+##  1 pavlov…       0       3 0.0-0.0 &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;    NA           NA      NA
+##  2 html-k…       1   39995 0.0-1.0 3999… &quot;&lt;p&gt;&lt;s… 32      NA           NA      NA
+##  3 fullsc…       2   44140 0.0-2.0 &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;    TRUE         NA      NA
+##  4 html-k…       3   48023 0.0-3.0 3882… &quot;&lt;p st… 32      NA           NA      NA
+##  5 html-b…       4   49837 0.0-4.… 812.…  &lt;NA&gt;   &lt;NA&gt;    NA            0       1
+##  6 html-k…       5   50340 0.0-4.… null  &quot;&lt;p st… null    NA           NA      NA
+##  7 html-k…       6   51345 0.0-4.… null  &quot;&lt;p st… null    NA           NA      NA
+##  8 html-k…       7   52069 0.0-4.… null  &quot;&lt;p st… null    NA           NA      NA
+##  9 html-b…       8   52833 0.0-4.… 762.…  &lt;NA&gt;   &lt;NA&gt;    NA            0       1
+## 10 html-k…       9   53335 0.0-4.… null  &quot;&lt;p st… null    NA           NA      NA
+## # … with 315 more rows, 3 more variables: left_right_s2 &lt;dbl&gt;, reward_s1 &lt;dbl&gt;,
+## #   reward_s2 &lt;dbl&gt;, and abbreviated variable names ¹​trial_type, ²​trial_index,
+## #   ³​time_elapsed, ⁴​internal_node_id, ⁵​stimulus, ⁶​key_press, ⁷​button_pressed,
+## #   ⁸​left_right_s1</code></pre>
 <p>教示とか刺激が出た時(trial_typeがhtml-keyboard-response)やpavloviaの関数(trial_typeがpavlovia)は邪魔なので除外する（このデータはpavloviaで収集されました）。</p>
 <pre class="r"><code>sub01 %&gt;% 
     filter(trial_type == &quot;html-button-response&quot;)</code></pre>
 <pre><code>## # A tibble: 80 × 13
-##    trial_type trial_index time_elapsed internal_node_id rt    stimulus key_press
-##    &lt;chr&gt;            &lt;dbl&gt;        &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;    
-##  1 html-butt…           4        49837 0.0-4.0-0.0      812.… &lt;NA&gt;     &lt;NA&gt;     
-##  2 html-butt…           8        52833 0.0-4.0-0.1      762.… &lt;NA&gt;     &lt;NA&gt;     
-##  3 html-butt…          12        55853 0.0-4.0-0.2      489.… &lt;NA&gt;     &lt;NA&gt;     
-##  4 html-butt…          16        59331 0.0-4.0-0.3      1375… &lt;NA&gt;     &lt;NA&gt;     
-##  5 html-butt…          20        63031 0.0-4.0-0.4      1011… &lt;NA&gt;     &lt;NA&gt;     
-##  6 html-butt…          24        66559 0.0-4.0-0.5      928.… &lt;NA&gt;     &lt;NA&gt;     
-##  7 html-butt…          28        70521 0.0-4.0-0.6      1152… &lt;NA&gt;     &lt;NA&gt;     
-##  8 html-butt…          32        73915 0.0-4.0-0.7      756.… &lt;NA&gt;     &lt;NA&gt;     
-##  9 html-butt…          36        77303 0.0-4.0-0.8      1195… &lt;NA&gt;     &lt;NA&gt;     
-## 10 html-butt…          40        80805 0.0-4.0-0.9      1268… &lt;NA&gt;     &lt;NA&gt;     
-## # … with 70 more rows, and 6 more variables: success &lt;lgl&gt;,
-## #   button_pressed &lt;dbl&gt;, left_right_s1 &lt;dbl&gt;, left_right_s2 &lt;dbl&gt;,
-## #   reward_s1 &lt;dbl&gt;, reward_s2 &lt;dbl&gt;</code></pre>
+##    trial…¹ trial…² time_…³ inter…⁴ rt    stimu…⁵ key_p…⁶ success butto…⁷ left_…⁸
+##    &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;lgl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+##  1 html-b…       4   49837 0.0-4.… 812.… &lt;NA&gt;    &lt;NA&gt;    NA            0       1
+##  2 html-b…       8   52833 0.0-4.… 762.… &lt;NA&gt;    &lt;NA&gt;    NA            0       1
+##  3 html-b…      12   55853 0.0-4.… 489.… &lt;NA&gt;    &lt;NA&gt;    NA            0       1
+##  4 html-b…      16   59331 0.0-4.… 1375… &lt;NA&gt;    &lt;NA&gt;    NA            0       2
+##  5 html-b…      20   63031 0.0-4.… 1011… &lt;NA&gt;    &lt;NA&gt;    NA            0       1
+##  6 html-b…      24   66559 0.0-4.… 928.… &lt;NA&gt;    &lt;NA&gt;    NA            0       2
+##  7 html-b…      28   70521 0.0-4.… 1152… &lt;NA&gt;    &lt;NA&gt;    NA            0       2
+##  8 html-b…      32   73915 0.0-4.… 756.… &lt;NA&gt;    &lt;NA&gt;    NA            0       2
+##  9 html-b…      36   77303 0.0-4.… 1195… &lt;NA&gt;    &lt;NA&gt;    NA            0       1
+## 10 html-b…      40   80805 0.0-4.… 1268… &lt;NA&gt;    &lt;NA&gt;    NA            0       2
+## # … with 70 more rows, 3 more variables: left_right_s2 &lt;dbl&gt;, reward_s1 &lt;dbl&gt;,
+## #   reward_s2 &lt;dbl&gt;, and abbreviated variable names ¹​trial_type, ²​trial_index,
+## #   ³​time_elapsed, ⁴​internal_node_id, ⁵​stimulus, ⁶​key_press, ⁷​button_pressed,
+## #   ⁸​left_right_s1</code></pre>
 <p>まず，tiral番号を追加する。次に，s1の報酬確率を追加する(前半40試行は0.8,後半40試行は0.2)。選択に応じたフィードバックを追加する。必要な列だけ選択する。button_pressedはchoiceって名前にする。</p>
 <pre class="r"><code>sub01 %&gt;% 
     filter(trial_type == &quot;html-button-response&quot;) %&gt;% 
   mutate(trial = 1:80, 
-         s1_prob = rep(c(0.8,0.2),each = 40),
+         s1_prob = rep(c(0.2,0.8),each = 40),
          reward = ifelse(button_pressed == 0, reward_s1, reward_s2)) %&gt;% 
   select(trial,choice=button_pressed, rt, reward, s1_prob,reward_s1, reward_s2)</code></pre>
 <pre><code>## # A tibble: 80 × 7
 ##    trial choice rt                 reward s1_prob reward_s1 reward_s2
 ##    &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-##  1     1      0 812.3649999979534       1     0.8         1         0
-##  2     2      0 762.6200000013341       1     0.8         1         1
-##  3     3      0 489.58000000129687      1     0.8         1         1
-##  4     4      0 1375.0050000016927      1     0.8         1         0
-##  5     5      0 1011.4749999993364      1     0.8         1         0
-##  6     6      0 928.5450000024866       1     0.8         1         0
-##  7     7      0 1152.509999999893       1     0.8         1         0
-##  8     8      0 756.2650000036228       1     0.8         1         0
-##  9     9      0 1195.609999995213       0     0.8         0         0
-## 10    10      0 1268.1650000013178      0     0.8         0         0
+##  1     1      0 812.3649999979534       1     0.2         1         0
+##  2     2      0 762.6200000013341       1     0.2         1         1
+##  3     3      0 489.58000000129687      1     0.2         1         1
+##  4     4      0 1375.0050000016927      1     0.2         1         0
+##  5     5      0 1011.4749999993364      1     0.2         1         0
+##  6     6      0 928.5450000024866       1     0.2         1         0
+##  7     7      0 1152.509999999893       1     0.2         1         0
+##  8     8      0 756.2650000036228       1     0.2         1         0
+##  9     9      0 1195.609999995213       0     0.2         0         0
+## 10    10      0 1268.1650000013178      0     0.2         0         0
 ## # … with 70 more rows</code></pre>
 <p>いい感じなので，これでsub01として上書きする。</p>
 <pre class="r"><code>sub01 &lt;- sub01 %&gt;% 
@@ -1064,9 +1063,7 @@ for (i in 1:length(file_names)) {
 grid_result1 &lt;- grid_search(data)
 grid_result2 &lt;- grid_search2(data)</code></pre>
 <pre><code>## Warning: `data_frame()` was deprecated in tibble 1.1.0.
-## Please use `tibble()` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
+## ℹ Please use `tibble()` instead.</code></pre>
 <p>元々のグリッドサーチはいい感じに推定できていると思います。</p>
 <pre class="r"><code>rownames(grid_result1$store_3d) &lt;- NULL
 y &lt;- seq(0,1,0.01)
@@ -1077,13 +1074,13 @@ image.plot(x,y,grid_result1$store_3d)</code></pre>
 paste(&quot;最尤推定値: α =&quot;,grid_result1$calc_results$store_alpha[maxIndex],
       &quot;β =&quot;,grid_result1$calc_results$store_beta[maxIndex], 
       &quot;,対数尤度: Log Likelihood = &quot;,grid_result1$calc_results$store_loglike[maxIndex])</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.21 β = 6.8 ,対数尤度: Log Likelihood =  -10.7381687527344&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.28 β = 6.2 ,対数尤度: Log Likelihood =  -19.2790098864996&quot;</code></pre>
 <p>当たり前ですが，間隔を広げたり，範囲を狭めると，範囲外の推定値は求まりませんし（βは範囲外），きめが荒いので，推定値もずれます。実際は，グリッドサーチではなく，最適化手法を使って最尤推定値を求めたり，ベイズ推定で求めたりします。ただ，推定においては，狭い範囲内で最も良いだけの値（局所最適解という）をもってくる可能性があるのは気をつけないといけません。</p>
 <pre class="r"><code>maxIndex &lt;- which.max(grid_result2$calc_results$store_loglike)
 paste(&quot;最尤推定値: α =&quot;,grid_result2$calc_results$store_alpha[maxIndex],
       &quot;β =&quot;,grid_result2$calc_results$store_beta[maxIndex], 
       &quot;,対数尤度: Log Likelihood = &quot;,grid_result2$calc_results$store_loglike[maxIndex])</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.6 β = 1 ,対数尤度: Log Likelihood =  -33.7595314670729&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.8 β = 1 ,対数尤度: Log Likelihood =  -36.6820187021628&quot;</code></pre>
 <pre class="r"><code>rownames(grid_result2$store_3d) &lt;- NULL
 y &lt;- seq(0,1,0.2)
 x &lt;- seq(0,1,0.2)
@@ -1172,7 +1169,7 @@ href="result_pso">こちら</a>が簡潔でわかりやすいかと思います�
                       upper = c(1,15))
 
 print(paste(&quot;最尤推定値: α =&quot;,result_pso$par[1],&quot;β =&quot;,result_pso$par[2], &quot;,対数尤度: Log Likelihood = &quot;, -result_pso$value))</code></pre>
-<pre><code>## [1] &quot;最尤推定値: α = 0.691211119372265 β = 2.26477599855068 ,対数尤度: Log Likelihood =  -38.8506377123594&quot;</code></pre>
+<pre><code>## [1] &quot;最尤推定値: α = 0.691211123315245 β = 2.26477595802011 ,対数尤度: Log Likelihood =  -38.8506377123594&quot;</code></pre>
 </div>
 <div id="つの比較" class="section level4">
 <h4>３つの比較</h4>
