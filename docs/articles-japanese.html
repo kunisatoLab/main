@@ -13,7 +13,7 @@
 
 <title>学術論文（日本語）</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -185,8 +185,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -194,16 +194,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -396,16 +389,17 @@ div.tocify {
 
 <div id="印刷中" class="section level3">
 <h3>印刷中</h3>
-<ul>
-<li>[45]
-宮崎友里・重松潤・大井瞳・笹森千佳歩・山田美紗子・高階光梨・国里愛彦・井上真里・竹林由武・宋龍平・中島俊・堀越勝・久我弘典(印刷中).
-心理療法におけるインフォームド・コンセント(Informed Consent:
-IC)の役割と最近の動向：ナラティブレビュー 認知行動療法研究</li>
-</ul>
 </div>
 <div id="section" class="section level3">
 <h3>2022</h3>
 <ul>
+<li><p>[46] 国里愛彦(2022).
+データ，解析コード，マテリアルをどのようにオープンにすればよいのか？　学会企画チュートリアル・セミナー「『心理学の７つの大罪』から考える心理学研究法」
+教育心理学年報, 61, 294-296.</p></li>
+<li><p>[45]
+宮崎友里・重松潤・大井瞳・笹森千佳歩・山田美紗子・高階光梨・国里愛彦・井上真里・竹林由武・宋龍平・中島俊・堀越勝・久我弘典(印刷中).
+心理療法におけるインフォームド・コンセント(Informed Consent:
+IC)の役割と最近の動向：ナラティブレビュー 認知行動療法研究</p></li>
 <li><p>[44] 国里愛彦・土屋政雄(2022).
 認知行動療法における研究の再現可能性を高める　認知行動療法研究, 48(2),
 113-122. <a
