@@ -13,7 +13,7 @@
 
 <title>強化学習モデル: ベイズ推定(2)</title>
 
-<script src="site_libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -148,11 +148,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -181,8 +185,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -190,16 +194,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -503,8 +500,8 @@ quantitiesブロックで対数尤度を計算します。それぞれは，以�
 </ul>
 <pre><code>data {
   int&lt;lower=1&gt; trial;
-  int&lt;lower=1,upper=2&gt; choice[trial]; // 1 or 2
-  int&lt;lower=0,upper=1&gt; reward[trial]; // 0 or 1
+  array[trial] int&lt;lower=1,upper=2&gt; choice; // 1 or 2
+  array[trial] int&lt;lower=0,upper=1&gt; reward; // 0 or 1
 }
 parameters {
   real&lt;lower=0.0,upper=1.0&gt; alpha; //学習率
@@ -544,14 +541,15 @@ generated quantities {
       }
     }
   }
-}</code></pre>
+}
+</code></pre>
 <ul>
 <li>q_learning_prior_WBIC.stan</li>
 </ul>
 <pre><code>data {
   int&lt;lower=1&gt; trial;
-  int&lt;lower=1,upper=2&gt; choice[trial]; // 1 or 2
-  int&lt;lower=0,upper=1&gt; reward[trial]; // 0 or 1
+  array[trial] int&lt;lower=1,upper=2&gt; choice; // 1 or 2
+  array[trial] int&lt;lower=0,upper=1&gt; reward; // 0 or 1
 }
 parameters {
   real&lt;lower=0.0,upper=1.0&gt; alpha; //学習率
@@ -594,7 +592,8 @@ generated quantities {
       }
     }
   }
-}</code></pre>
+}
+</code></pre>
 <div id="wbicによるモデル比較" class="section level3">
 <h3>WBICによるモデル比較</h3>
 <p>推定してモデル比較してみましょう。まずは，モデルをコンパイルします。</p>
@@ -630,9 +629,9 @@ q_learning_prior_WBIC_sample &lt;- rstan::read_stan_csv(q_learning_prior_WBIC_mc
 <pre class="r"><code>WBIC_non &lt;- -mean(rowSums(rstan::extract(q_learning_WBIC_sample)$log_lik))
 WBIC_prior &lt;- -mean(rowSums(rstan::extract(q_learning_prior_WBIC_sample)$log_lik))
 paste(&quot;無情報事前分布のWBICは&quot;,WBIC_non)</code></pre>
-<pre><code>## [1] &quot;無情報事前分布のWBICは 50.2153192839427&quot;</code></pre>
+<pre><code>## [1] &quot;無情報事前分布のWBICは 51.712855984715&quot;</code></pre>
 <pre class="r"><code>paste(&quot;有情報事前分布のWBICは&quot;,WBIC_prior)</code></pre>
-<pre><code>## [1] &quot;有情報事前分布のWBICは 49.4977832560652&quot;</code></pre>
+<pre><code>## [1] &quot;有情報事前分布のWBICは 49.5467001469408&quot;</code></pre>
 </div>
 </div>
 <div id="モデルリカバリーmodel-recovery" class="section level2">
@@ -662,8 +661,8 @@ class="section level4">
 <p>q_learning_prior_non_beta_WBIC.stanは，以下のようなコードになります。簡単にいうと，q_learning_weak_info_single_WBIC.stanからbetaを抜いただけです。</p>
 <pre><code>data {
   int&lt;lower=1&gt; trial;
-  int&lt;lower=1,upper=2&gt; choice[trial]; // 1 or 2
-  int&lt;lower=0,upper=1&gt; reward[trial]; // 0 or 1
+  array[trial] int&lt;lower=1,upper=2&gt; choice; // 1 or 2
+  array[trial] int&lt;lower=0,upper=1&gt; reward; // 0 or 1
 }
 
 parameters {
@@ -705,7 +704,8 @@ generated quantities {
       }
     }
   }
-}</code></pre>
+}
+</code></pre>
 <p>まずは，q_learning_prior_non_beta_WBIC.stanをコンパイルします。</p>
 <pre><code>q_learning_prior_non_beta_WBIC &lt;- cmdstan_model(&#39;q_learning_prior_non_beta_WBIC.stan&#39;)</code></pre>
 <p>さて，以下のコードを走らせて，αとβを仮定したモデル(Model

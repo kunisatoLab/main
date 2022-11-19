@@ -118,8 +118,8 @@ WBICの計算をする場合は，stanコードの対数尤度の計算の部分
 ```
 data {
   int<lower=1> trial;
-  int<lower=1,upper=2> choice[trial]; // 1 or 2
-  int<lower=0,upper=1> reward[trial]; // 0 or 1
+  array[trial] int<lower=1,upper=2> choice; // 1 or 2
+  array[trial] int<lower=0,upper=1> reward; // 0 or 1
 }
 parameters {
   real<lower=0.0,upper=1.0> alpha; //学習率
@@ -160,6 +160,7 @@ generated quantities {
     }
   }
 }
+
 ```
 
 - q_learning_prior_WBIC.stan
@@ -167,8 +168,8 @@ generated quantities {
 ```
 data {
   int<lower=1> trial;
-  int<lower=1,upper=2> choice[trial]; // 1 or 2
-  int<lower=0,upper=1> reward[trial]; // 0 or 1
+  array[trial] int<lower=1,upper=2> choice; // 1 or 2
+  array[trial] int<lower=0,upper=1> reward; // 0 or 1
 }
 parameters {
   real<lower=0.0,upper=1.0> alpha; //学習率
@@ -212,6 +213,7 @@ generated quantities {
     }
   }
 }
+
 ```
 
 ### WBICによるモデル比較
@@ -321,8 +323,8 @@ q_learning_prior_non_beta_WBIC.stanは，以下のようなコードになりま
 ```
 data {
   int<lower=1> trial;
-  int<lower=1,upper=2> choice[trial]; // 1 or 2
-  int<lower=0,upper=1> reward[trial]; // 0 or 1
+  array[trial] int<lower=1,upper=2> choice; // 1 or 2
+  array[trial] int<lower=0,upper=1> reward; // 0 or 1
 }
 
 parameters {
@@ -365,6 +367,7 @@ generated quantities {
     }
   }
 }
+
 ```
 
 まずは，q_learning_prior_non_beta_WBIC.stanをコンパイルします。

@@ -1,8 +1,8 @@
 data {
   int<lower=1> N;
   int<lower=1> trial;
-  int<lower=1,upper=2> choice[trial]; // 1 or 2
-  int<lower=0,upper=1> reward[trial]; // 0 or 1
+  array[trial] int<lower=1,upper=2> choice; // 1 or 2
+  array[trial] int<lower=0,upper=1> reward; // 0 or 1
 }
 
 parameters {
