@@ -5,6 +5,8 @@ title: "学術論文"
 
 ### in press
 
+- [44] Dismantling cognitive-behavioral therapy components for attention-deficit hyperactivity disorder in adolescents and adults: protocol for a network meta-analysis. BMJ Open
+
 - [43] Buchanan, E. M., ... Kunisato, Y., ... Primbs, M. (in press).
 The Psychological Science Accelerator's COVID-19 rapid-response dataset.
 Scientific Data.
