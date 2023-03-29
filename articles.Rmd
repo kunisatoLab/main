@@ -5,23 +5,21 @@ title: "学術論文"
 
 ### in press
 
-- [44] Dismantling cognitive-behavioral therapy components for attention-deficit hyperactivity disorder in adolescents and adults: protocol for a network meta-analysis. BMJ Open
+- [44] Hamatani, S., Matsumoto, K., Kunisato, Y., Okawa, S., Yamashita, M., Mizuno, Y. (in press) Dismantling cognitive-behavioral therapy components for attention-deficit hyperactivity disorder in adolescents and adults: protocol for a network meta-analysis. BMJ Open
 
-- [43] Buchanan, E. M., ... Kunisato, Y., ... Primbs, M. (in press).
-The Psychological Science Accelerator's COVID-19 rapid-response dataset.
-Scientific Data.
-
-- [42] Kowal, M.,... Kunisato, Y., ...Zumárraga-Espinosa, M.(in press) Predictors of Enhancing Human Physical Attractiveness: Data from 93 Countries. Evolution and Human Behavior.[Link](https://www.sciencedirect.com/science/article/pii/S1090513822000472)
+- [43] Buchanan, E. M., ... Kunisato, Y., ... Primbs, M. (2023). The Psychological Science Accelerator’s COVID-19 rapid-response dataset. Scientific Data, 10, 87.
 
 ### 2022
 
-- [41] Dorison, C.A., Lerner, J.S., Heller, B.H... Kunisato, Y.,... Nicholas A. Coles (2022). In COVID-19 Health Messaging, Loss Framing Increases Anxiety with Little-to-No Concomitant Benefits: Experimental Evidence from 84 Countries. Affective Science. [link](https://doi.org/10.1007/s42761-022-00128-3)
+- [42] Kowal, M.,... Kunisato, Y., ...Zumárraga-Espinosa, M.(2022) Predictors of Enhancing Human Physical Attractiveness: Data from 93 Countries. Evolution and Human Behavior, 43(6), 455-474. [Link](https://www.sciencedirect.com/science/article/pii/S1090513822000472)
+
+- [41] Dorison, C.A., Lerner, J.S., Heller, B.H... Kunisato, Y.,... Nicholas A. Coles (2022). In COVID-19 Health Messaging, Loss Framing Increases Anxiety with Little-to-No Concomitant Benefits: Experimental Evidence from 84 Countries. Affective Science, 3(3), 577-602.  [link](https://doi.org/10.1007/s42761-022-00128-3)
 
 - [40] Hasegawa, A., Oura, S., Yamamoto, T., Kunisato, Y., Fukui, Y.(2022) Preliminary validation of the self-report measure assessing experiences of negative independent and dependent event frequency in japanese university students. Journal of Rational-Emotive & Cognitive-Behavior Therapy. [Link](https://doi.org/10.1007/s10942-022-00469-9)
 
 - [39] Psychological Science Accelerator Self-Determination Theory Collaboration (2022). A global experiment on motivating social distancing during the COVID-19 pandemic. Proceedings of the National Academy of Sciences, 119(22), e2111091119. [Link](https://doi.org/10.1073/pnas.2111091119)
 
-- [38] Somatori, K. & Kunisato, Y. (2022) Metacognitive Ability and the Precision of Confidence. Frontiers in Human Neuroscience, section Cognitive Neuroscience [Link](https://www.frontiersin.org/articles/10.3389/fnhum.2022.706538/abstract)
+- [38] Somatori, K. & Kunisato, Y. (2022) Metacognitive Ability and the Precision of Confidence. Frontiers in Human Neuroscience, section Cognitive Neuroscience，16, 10.3389/fnhum.2022.706538 [Link](https://www.frontiersin.org/articles/10.3389/fnhum.2022.706538/abstract)
 
 - [37] Hasegawa, A., Oura, S., Yamamoto, T., Kunisato, Y., Matsuda, Y., & Adachi, M. (2022) Causes and consequences of stress generation: Longitudinal associations of negative events, aggressive behaviors, rumination, and depressive symptoms. Current Psychology.[link](https://doi.org/10.1007/s12144-022-02859-9)
 
@@ -33,9 +31,9 @@ Scientific Data.
 
 - [34] Wang K., Goldenberg A., Dorison, C.A., Miller, J.K., Uusberg, A., Lerner, J.S., Gross, J.J., Agesin, B.B., Bernardo, M., Campos, O., Eudave, L., Grzech, K., Ozery, D.H., Jackson, E.A., Luis Garcia, E.O., Drexler, S.M., Jurković, A.P., Rana, K., Wilson, J.P., ... Kunisato, Y.,...Moshontz, H. (in press) A multi-country test of brief reappraisal interventions on emotions during the COVID-19 pandemic. Nature Human Behavior, 5, 1089–1110.[Link](https://doi.org/10.1038/s41562-021-01173-x)
 
-- [33] Shimono, Y., Hasegawa, A., Tsuchihara, K., Tanaka, K., Matsuda, Y., & Kunisato, Y.(2021) Longitudinal association between autistic traits and affinity for hikikomori in Japanese university students. Current Psychology. [Link](https://doi.org/10.1007/s12144-020-01287-x)
+- [33] Shimono, Y., Hasegawa, A., Tsuchihara, K., Tanaka, K., Matsuda, Y., & Kunisato, Y.(2021) Longitudinal association between autistic traits and affinity for hikikomori in Japanese university students. Current Psychology, 41, 8842–8849. [Link](https://doi.org/10.1007/s12144-020-01287-x)
 
-- [32] van Doorn, J., van den Bergh, D., Dablander, F., van Dongen, N., Derks, K., Evans, N., Gronau, Q., Haaf, J., Kunisato, Y., Ly, A., Marsman, M., Sarafoglou, A., Stefan, A., & Wagenmakers, EJ.(2011) Strong public claims may not reflect researchers' private convictions. Significance, 18(1), 44-45.[Pre Print](https://psyarxiv.com/pc4ad/)
+- [32] van Doorn, J., van den Bergh, D., Dablander, F., van Dongen, N., Derks, K., Evans, N., Gronau, Q., Haaf, J., Kunisato, Y., Ly, A., Marsman, M., Sarafoglou, A., Stefan, A., & Wagenmakers, EJ.(2021) Strong public claims may not reflect researchers' private convictions. Significance, 18(1), 44-45.[Pre Print](https://psyarxiv.com/pc4ad/)
 
 
 ### 2020
