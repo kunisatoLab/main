@@ -138,20 +138,22 @@ sudo apt update
 ```
 
 ```
-sudo apt install \
-    apt-transport-https \
+sudo apt-get install \
     ca-certificates \
     curl \
-    gnupg-agent \
-    software-properties-common
+    gnupg
 ```
 
 ```
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo mkdir -m 0755 -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 ```
 
 ```
-sudo apt-key fingerprint 0EBFCD88
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
 
 ```
@@ -162,17 +164,24 @@ sudo add-apt-repository \
 ```
 
 ```
-sudo apt install docker-ce docker-ce-cli containerd.io
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+```
+sudo apt-get update
+```
+
+```
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
 同様に，docker-composeをインストールします。
 
 ```
-sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-
-sudo chmod +x /usr/local/bin/docker-compose
-
-sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+sudo apt install docker-compose-plugin
 ```
 
 
@@ -260,7 +269,7 @@ exposedByDefault = false
 では，設定した内容を元にして，traefikを起動するのですが，さくらのパケットフィルタリングの制限をかけた状態でtraefikを立ち上げると，Let’s Encryptからの認証を得られないので，80/443番をあけておきましょう。パケットフィルタリングの設定ができたら，以下を実行します。しばらくして，doneって出てきたら成功です。
 
 ```
-sudo docker-compose -f /opt/traefik/docker-compose.yml up -d
+sudo docker compose -f /opt/traefik/docker-compose.yml up -d
 ```
 
 
@@ -298,6 +307,12 @@ services:
       - traefik.frontend.rule=Host:ドメイン名
       - traefik.port=9000
       - traefik.protocol=http
+```
+
+設定できたら，Docker composeで
+
+```
+sudo docker compose -f dir_docker_compose/jatos/docker-compose.yml up -d
 ```
 
 これでご自身のドメイン名のURLにJATOSが用意されているかと思います。最初は，ID:admin, パスワード:adminに設定されていますので，立ち上がったらすぐにadminのパスワードを適切な難易度のものに変更ください。あとは，adminでユーザーを追加したりできますし，JATOSでウェブ実験ができるようになっていると思います。
