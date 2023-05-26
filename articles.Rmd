@@ -5,7 +5,9 @@ title: "学術論文"
 
 ### in press
 
-- [44] Hamatani, S., Matsumoto, K., Kunisato, Y., Okawa, S., Yamashita, M., Mizuno, Y. (in press) Dismantling cognitive-behavioral therapy components for attention-deficit hyperactivity disorder in adolescents and adults: protocol for a network meta-analysis. BMJ Open
+- [45] Toyama, A., Katahira, K., Kunisato, Y. (in press). Examinations of Biases by Model Misspecification and Parameter Reliability of Reinforcement Learning Models. Computational Brain & Behavior
+
+- [44] Hamatani, S., Matsumoto, K., Kunisato, Y., Okawa, S., Yamashita, M., Mizuno, Y. (in press). Dismantling cognitive-behavioral therapy components for attention-deficit hyperactivity disorder in adolescents and adults: protocol for a network meta-analysis. BMJ Open
 
 - [43] Buchanan, E. M., ... Kunisato, Y., ... Primbs, M. (2023). The Psychological Science Accelerator’s COVID-19 rapid-response dataset. Scientific Data, 10, 87.
 
