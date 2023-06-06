@@ -13,7 +13,7 @@
 
 <title>書籍</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -185,8 +185,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -194,16 +194,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -397,6 +390,11 @@ div.tocify {
 <div id="section" class="section level3">
 <h3>2022</h3>
 <ul>
+<li><p>[30] 国里愛彦(2022). 「EysenckのパーソナリティモデルとBig
+Five(pp.140-141)」・「BIS/BASとBig
+Five(pp.142-143)」谷伊織・阿部晋吾・小塩真司 (編)　『Big
+Fiveパーソナリティ・ハンドブック　5つの因子から「性格」を読み解く』福村出版.
+2023年6月9日</p></li>
 <li><p>[29] 国里愛彦(2022).
 「第５章　神経科学研究」　岩壁茂・杉浦義典（編）『現代の臨床心理学４　臨床心理学研究法』　東京大学出版会，pp.195-210.
 2022年9月16日</p></li>
