@@ -5,11 +5,11 @@ title: "学術論文"
 
 ### in press
 
-- [45] Toyama, A., Katahira, K., Kunisato, Y. (in press). Examinations of Biases by Model Misspecification and Parameter Reliability of Reinforcement Learning Models. Computational Brain & Behavior
+- [45] Toyama, A., Katahira, K., Kunisato, Y. (2023). Examinations of Biases by Model Misspecification and Parameter Reliability of Reinforcement Learning Models. Computational Brain & Behavior DOI: https://doi.org/10.1007/s42113-023-00175-4
 
-- [44] Hamatani, S., Matsumoto, K., Kunisato, Y., Okawa, S., Yamashita, M., Mizuno, Y. (in press). Dismantling cognitive-behavioral therapy components for attention-deficit hyperactivity disorder in adolescents and adults: protocol for a network meta-analysis. BMJ Open
+- [44] Hamatani, S., Matsumoto, K., Kunisato, Y., Okawa, S., Yamashita, M., Mizuno, Y. (2023). Dismantling cognitive-behavioral therapy components for attention-deficit hyperactivity disorder in adolescents and adults: protocol for a network meta-analysis. BMJ Open, 13:e068547. DOI: http://dx.doi.org/10.1136/bmjopen-2022-068547
 
-- [43] Buchanan, E. M., ... Kunisato, Y., ... Primbs, M. (2023). The Psychological Science Accelerator’s COVID-19 rapid-response dataset. Scientific Data, 10, 87.
+- [43] Buchanan, E. M., ... Kunisato, Y., ... Primbs, M. (2023). The Psychological Science Accelerator’s COVID-19 rapid-response dataset. Scientific Data, 10, 87. DOI: https://doi.org/10.1038/s41597-022-01811-7
 
 ### 2022
 
