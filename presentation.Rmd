@@ -1,6 +1,13 @@
 ---
 title: "国際会議発表"
 ---
+
+### 2023
+
+- [45 ] Takumi Omizu, Yoshihiko Kunisato(2023). Network simulation of depression as a complex system with treatment components. ALIFE 2023: Ghost in the Machine, July24-29, Sapporo. [link](https://doi.org/10.1162/isal_a_00612)
+
+
+
 ### 2021
 
 - [44] Toyama, A. & Kunisato, Y. (2021). Characteristic learning process in insomnia. The 54th Annual Meeting of the Society for Mathematical Psychology, July 1-12, Virtual.
