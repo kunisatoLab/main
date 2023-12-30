@@ -21,6 +21,13 @@ Dockerがインストールできたら，以下のコマンドを実行しま�
 docker run -d -p 9000:9000 -e TZ=Asia/Tokyo -v $(pwd)/jatos/study_assets_root:/opt/docker/study_assets_root --name jatos jatos/jatos:latest
 ```
 
+- 2023/12/30追記　JATOSのバージョン3.8.5をMacで使っていたところ，study_assets_rootの場所が変わったようでした。/opt/docker/study_assets_root から /opt/jatos_data/study_assets_root/ に変更する必要があります。
+
+```
+docker run -d -p 9000:9000 -e TZ=Asia/Tokyo -v $(pwd)/jatos/study_assets_root:/opt/jatos_data/study_assets_root/ --name jatos jatos/jatos:latest
+```
+
+
 #### Windowsの場合
 
 コマンドプロンプトを開いて，以下をコピペして実行してください。
