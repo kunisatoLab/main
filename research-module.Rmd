@@ -2,7 +2,6 @@
 title: "Research Module"
 ---
 
-研究で用いるリサーチモジュールは，徐々にE-learningサイト[CCP Lab Research Module](https://ccp-lab.sakura.ne.jp/wordpress/?post_type=course&course-orderby=title)に移行しています。ゼミ生は，[CCP Lab Research Module](https://ccp-lab.sakura.ne.jp/wordpress/?post_type=course&course-orderby=title)からE-learningを進めましょう。
 
 ## 基本モジュール（全員が学ぶ内容）
 
