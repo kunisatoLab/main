@@ -23,7 +23,7 @@ GoogleでGitHubと検索するか，<a href="https://github.com/" target="_blank
 <br />
 <br />
 
-**アカウントの用意ができたら，slackで国里にアカウント名を知らせてください。**　国里が学生用プライベートリポジトリとゼミ生用マテリアルリポジトリを共有します。
+**アカウントの用意ができたら，Discordで国里にアカウント名を知らせてください。**　国里が学生用プライベートリポジトリとゼミ生用マテリアルリポジトリを共有します。
 
 <br />
 <br />
@@ -49,24 +49,27 @@ GoogleでGitHubと検索するか，<a href="https://github.com/" target="_blank
 
 GitHubへのアクセスは，RStudioで用意されている公開鍵を使ったSSH接続の設定をしましょう。なんだかややこしそうですが，通常のパスワード認証よりも安全性高く接続できると思ってください。
 
-RStudioで「Tools」をクリックして，「Global Options...」をクリックします。「Git/SVN」で「Create RSA Key...」をクリックします。
+RStudioで「Tools」をクリックして，「Global Options...」をクリックします。「Git/SVN」で「Create SSH Key...」をクリックします。
 
-![](fig/git_ssh1.png)
+![](fig/git-ssh1.png)
 
-Passphraseを設定したほうがGitHubへのアクセスに対しては強固ではありますが，Passphraseが有用な状況というのは，サーバーに侵入されている状態なので，あまり意味がないので，ここでは設定をしません。そのままCreateをクリックします。
 
-![](fig/git_ssh2.png) 
 
-以下のようにRSA Keyが作られます。とりあえず，「close」を押して閉じます。「View Public Key」をクリックして，鍵を表示させて，コピーします。
 
-![](fig/git_ssh3.png) 
+Passphraseを設定したほうがGitHubへのアクセスに対しては強固ではありますが，ここでは設定をしません。そのままCreateをクリックします(ED25519でいいです)。
+
+![](fig/git-ssh2.png) 
+
+Keyが作られますが，とりあえず「close」を押して閉じます。「View Public Key」をクリックして，鍵を表示させて，コピーします。
+
+![](fig/git-ssh3.png)
 
 GitHubにログインして，右上のアカウントのアイコンをクリックして，「Settings」をクリックします。そして，以下の画面にあるように「SSH and GPG keys」をクリックし，「New SSH key」をクリックします。
 
 ![](fig/git_ssh4.png)
 
 
-適当にタイトルを決めて(例えば，「lab rstudio server」とか)，上記のRSA Keyをコピペします。これで登録完了です。
+適当にタイトルを決めて(例えば，「lab rstudio server」とか)，上記のPublic Keyをコピペします。これで登録完了です。
 
 ![](fig/git_ssh5.png)
 
