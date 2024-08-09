@@ -2,6 +2,12 @@
 title: "国内学会・研究会発表"
 ---
 
+## 2024
+
+
+- 国里愛彦(2024).  [生成AIを用いたjsPsychプログラミング](materials/jspsych_with_AI.pdf)　計算論的臨床心理学サマースクール
+- 国里愛彦(2024). [心理学のゲーミファイ](materials/gamify_psychology.pdf)　計算論的臨床心理学サマースクール
+
 ## 2023
 
 ### ポスター発表
