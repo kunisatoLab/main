@@ -11,6 +11,10 @@ title: "Computational Clinical Psychology Lab"
 
 <br />
 
+2013年に専修大学に着任してから，「計算論的臨床心理学」を標榜してきましたが，もう少し関心を整理すると，計算論的個性記述心理学(computational idiographic psychology)になるのではないかと思っています(2024年)
+
+<br />
+
 ### 大学院生・日本学術振興会特別研究員(PD)の募集
 本研究室では，大学院進学に関する研究室訪問を積極的に受け入れています（詳細は[こちら](education.html)）。
 
