@@ -7,7 +7,7 @@ title: "学術論文"
 
 ### 2024
 
-- [47] Omizu, T. and Kunisato. Y.(2024). Exploring Effective Intervention Strategies for Depression as a Complex System: Targeted Interventions through Network Simulations. Japanese Psychological Research. DOI:https://doi.org/10.1111/jpr.12553 [Code](https://osf.io/ta782/)
+- [47] Omizu, T. and Kunisato. Y.(2024). Exploring Effective Intervention Strategies for Depression as a Complex System: Targeted Interventions through Network Simulations. Japanese Psychological Research. DOI: https://doi.org/10.1111/jpr.12553 [Code](https://osf.io/ta782/)
 
 - [46] Kashihara, J., Sugawara, D., Kunisato, Y., Takebayashi, Y., Nakajima, S., Ito, M.(2024). Possible Futures for the Psychological Network Approach: Agenda for Clinical Scientists. Japanese Psychological Research. DOI: https://doi.org/10.1111/jpr.12538
 
