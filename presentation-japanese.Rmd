@@ -27,9 +27,11 @@ title: "国内学会・研究会発表"
 
 - [162] 国里愛彦(2024). 公認心理師養成における統計・研究法の必要性　シンポジウム「質の高い公認心理師を育てる学部教育のあり方」日本心理学会第88回大会　熊本　[オンデマンド](https://pub.confit.atlas.jp/ja/event/jpa2024/presentation/1OD01-01-01)
 
-- 国里愛彦(2024).  [生成AIを用いたjsPsychプログラミング](materials/jspsych_with_AI.pdf)　計算論的臨床心理学サマースクール
+- 国里愛彦(2024). Computational Idiographic Approaches: The Potential for Personalized Assessment 精神医学の計算論と生物学の研究会　山中湖 2024年11月3日（日）
 
-- 国里愛彦(2024). [心理学のゲーミファイ](materials/gamify_psychology.pdf)　計算論的臨床心理学サマースクール
+- 国里愛彦(2024).  [生成AIを用いたjsPsychプログラミング](materials/jspsych_with_AI.pdf)　計算論的臨床心理学サマースクール　神田　2024年8月8日（木）
+
+- 国里愛彦(2024). [心理学のゲーミファイ](materials/gamify_psychology.pdf)　計算論的臨床心理学サマースクール　神田　2024年8月8日（木）
 
 ## 2023
 
