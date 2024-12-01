@@ -5,9 +5,11 @@ title: "学術論文"
 
 ### in press
 
-- [48] Ishizu, K.,Ohtsuki, T., Shimoda, Y., Kunisato, Y.(2014). ACT in school settings: A pilot study of ACT-based universal group psycho-educational program among Japanese early adolescents. Journal of Contextual Behavioral Science. DOI: https://doi.org/10.1016/j.jcbs.2024.100851
-
 ### 2024
+
+- [49] Matsumoto, K., Hamatani, S., Kunisato, Y., Mizuno, Y. (2024). Components of Cognitive Behavioural Therapy for Mitigating Core Symptoms in Attention-Deficit Hyperactivity Disorder: A Systematic Review and Network Meta-analysis. BMJ Mental Health.
+
+- [48] Ishizu, K.,Ohtsuki, T., Shimoda, Y., Kunisato, Y.(2024). ACT in school settings: A pilot study of ACT-based universal group psycho-educational program among Japanese early adolescents. Journal of Contextual Behavioral Science. DOI: https://doi.org/10.1016/j.jcbs.2024.100851
 
 - [47] Omizu, T. and Kunisato. Y.(2024). Exploring Effective Intervention Strategies for Depression as a Complex System: Targeted Interventions through Network Simulations. Japanese Psychological Research. DOI: https://doi.org/10.1111/jpr.12553 [Code](https://osf.io/ta782/)
 
