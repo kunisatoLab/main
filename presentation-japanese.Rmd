@@ -1,6 +1,12 @@
 ---
 title: "国内学会・研究会発表"
 ---
+## 2025
+### ポスター発表
+
+### 口頭発表・シンポジウム・研究会
+
+- 国里愛彦 (2025). [ベイズ推論モデル：Rによる能動的推論モデル入門](https://ykunisato.github.io/ccp-lab-slide/cpsy-tokyo-2025-Bayesian-inference.html#/title-slide) CPSY TOKYO 2025 東京 2025年2月19日（水）
 
 ## 2024
 ### ポスター発表
