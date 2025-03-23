@@ -5,7 +5,10 @@ title: "学術論文"
 
 ### in press
 
-- [50] Pfuhl, G.,...Kunisato, Y., ...Piotr Sorokowski, P.(2025). A preliminary study on the role of personal history of infectious and parasitic diseases on self-reported health across countries. Public Health
+### 2025
+
+- [50] Pfuhl, G.,...Kunisato, Y., ...Piotr Sorokowski, P.(2025). A preliminary study on the role of personal history of infectious and parasitic diseases on self-reported health across countries. Public Health, 242, 220–227. [Link](https://doi.org/10.1016/j.puhe.2025.02.030)
+
 
 ### 2024
 
