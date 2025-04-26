@@ -3,11 +3,11 @@ title: "紀要論文・報告書・研究論文以外の原稿など"
 ---
 ### 2025
 
-- [27] 大水拓海・国里愛彦　単一事例研究への心理ネットワーク分析の適用：graphicalVARを用いたチュートリアル　[preprint](https://osf.io/preprints/psyarxiv/vjy2e)
+- [27] 大水拓海・国里愛彦(2025). 単一事例研究への心理ネットワーク分析の適用 : graphicalVARを用いたチュートリアル 専修人間科学論集　心理学篇, 15(1), 45-56.　[preprint](https://osf.io/preprints/psyarxiv/vjy2e)　[リンク](https://senshu-u.repo.nii.ac.jp/records/2001214)
 
 ### 2024
 
-- [26] 国里愛彦(2024). オンラインアセスメントとオープンサイエンス 専修大学 人文科学研究所月報, 331, 9-20.
+- [26] 国里愛彦(2024). オンラインアセスメントとオープンサイエンス 専修大学 人文科学研究所月報, 331, 9-20.[リンク](https://senshu-u.repo.nii.ac.jp/records/2001008)
 
 ### 2023
 
