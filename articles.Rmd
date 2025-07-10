@@ -5,13 +5,13 @@ title: "学術論文"
 
 ### in press
 
-- [53] Soda, T., Toyama, A., Takeda1, M., Kunisato, Y.,  & Yamashita, Y. (in press). Reliability and Validity of the DSM-5 Level 1 Cross-Cutting Symptom Measure in Japan: Insights into General and Specific Psychiatric Symptom Assessment.
-
-- [52] Kowal, M.,...Kunisato, Y.,...Prazeres, F. (in press). Cross-cultural data on romantic love and mate preferences from 117,293 participants across 175 countries. Scientific Data.
-
-- [51] Buchanan, E. M.,...Kunisato, Y.,...Lewis, S.C. (in press). Measuring the semantic priming effect across many languages. Nature Human Behaviour.
+- [53] Buchanan, E. M.,...Kunisato, Y.,...Lewis, S.C. (in press). Measuring the semantic priming effect across many languages. Nature Human Behaviour.
 
 ### 2025
+
+- [52] Kowal, M.,...Kunisato, Y.,...Prazeres, F. (2025). Cross-cultural data on romantic love and mate preferences from 117,293 participants across 175 countries. Scientific Data, 12, 1103.https://doi.org/10.1038/s41597-025-05365-2
+
+- [51] Soda, T., Toyama, A., Takeda, M., Kunisato, Y., & Yamashita, Y. (2025). Reliability and Validity of the DSM-5 Level 1 Cross-Cutting Symptom Measure in Japan: Insights into General and Specific Psychiatric Symptom Assessment. Journal of Personality Assessment, 1–13. https://doi.org/10.1080/00223891.2025.2527702
 
 - [50] Pfuhl, G.,...Kunisato, Y., ...Piotr Sorokowski, P.(2025). A preliminary study on the role of personal history of infectious and parasitic diseases on self-reported health across countries. Public Health, 242, 220–227. [Link](https://doi.org/10.1016/j.puhe.2025.02.030)
 
