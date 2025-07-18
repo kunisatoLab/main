@@ -2,9 +2,13 @@
 title: "国際会議発表"
 ---
 
+### 2025
+
+- [46] Kunisato, Y. & Warashina, K.(2025). The Influence of the Number of Latent Causes on Perceived Physical Threat in a Panic Network. Computational Psychiatry Conference 2025, July14-16, Tübingen. 
+
 ### 2023
 
-- [45 ] Takumi Omizu, Yoshihiko Kunisato(2023). Network simulation of depression as a complex system with treatment components. ALIFE 2023: Ghost in the Machine, July24-29, Sapporo. [link](https://doi.org/10.1162/isal_a_00612)
+- [45] Omizu,T. & Kunisato, Y.(2023). Network simulation of depression as a complex system with treatment components. ALIFE 2023: Ghost in the Machine, July24-29, Sapporo. [link](https://doi.org/10.1162/isal_a_00612)
 
 
 
