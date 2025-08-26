@@ -8,7 +8,7 @@ title: "学術論文（日本語）"
 
 ### 2025
 
-- [48] 国里愛彦(2025). 進化論の観点から孤独感研究を行うための計算論的枠組み―大坪論文へのコメント―　心理学評論, 68(1), 25–29. [論文PDF](materials/PDF/kunisato2025.pdf)
+- [48] 国里愛彦(2025). 進化論の観点から孤独感研究を行うための計算論的枠組み―大坪論文へのコメント―　心理学評論, 68(1), 25–29. [論文PDF](materials/PDF/kunisato2025.pdf)　[シミュレーションコード](https://github.com/ykunisato/Active-inference-based-toy-model-for-loneliness-ABM)
 
 
 ### 2024
