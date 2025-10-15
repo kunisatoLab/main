@@ -3,6 +3,8 @@ title: "紀要論文・報告書・研究論文以外の原稿など"
 ---
 ### 2025
 
+- [28] 国里愛彦(2025). ビッグデータと心理学─自然主義的心理学は可能か？ 心理学ワールド 111号[リンク](https://psych.or.jp/publication/world111/pw14#mainNote)
+
 - [27] 大水拓海・国里愛彦(2025). 単一事例研究への心理ネットワーク分析の適用 : graphicalVARを用いたチュートリアル 専修人間科学論集　心理学篇, 15(1), 45-56.　[preprint](https://osf.io/preprints/psyarxiv/vjy2e)　[リンク](https://senshu-u.repo.nii.ac.jp/records/2001214)
 
 ### 2024
