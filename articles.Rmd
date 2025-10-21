@@ -5,10 +5,11 @@ title: "学術論文"
 
 ### in press
 
+- [54] Matsumoto, K. et al.(in press)Self-Help Cognitive Behavioral Therapy for Gaze Anxiety in Young Adults: Protocol of a 3-Arms, Multicenter, Randomized Controlled Trial. Psychiatry and Clinical Neurosciences Reports.
 
 ### 2025
 
-- [53] Buchanan, E. M.,...Kunisato, Y.,...Lewis, S.C. (in press). Measuring the semantic priming effect across many languages. Nature Human Behaviour. https://doi.org/10.1038/s41562-025-02254-x
+- [53] Buchanan, E. M.,...Kunisato, Y.,...Lewis, S.C. (2025). Measuring the semantic priming effect across many languages. Nature Human Behaviour. https://doi.org/10.1038/s41562-025-02254-x
 
 - [52] Kowal, M.,...Kunisato, Y.,...Prazeres, F. (2025). Cross-cultural data on romantic love and mate preferences from 117,293 participants across 175 countries. Scientific Data, 12, 1103.https://doi.org/10.1038/s41597-025-05365-2
 
